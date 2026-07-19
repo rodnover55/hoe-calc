@@ -20,14 +20,17 @@ const GRADE_LABEL = ['База', 'Улучшение I', 'Улучшение II'
 
 export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) {
   const selected = selectedId ? UNITS_BY_ID.get(selectedId) : undefined;
-  const [faction, setFaction] = useState<Faction | ''>(selected?.faction ?? '');
+  // Фракция выводится из выбранного юнита (в том числе восстановленного из
+  // ссылки); своё состояние нужно только режиму ручного ввода.
+  const [manualFaction, setManualFaction] = useState<Faction | ''>('');
+  const faction = selected ? selected.faction : manualFaction;
 
   const units = faction ? baseUnits(faction) : [];
   const grades = selected ? gradesOf(selected) : [];
   const baseId = selected ? (selected.upgradeOf ?? selected.id) : '';
 
   const pickFaction = (next: string) => {
-    setFaction(next as Faction | '');
+    setManualFaction(next as Faction | '');
     const first = next ? baseUnits(next as Faction)[0] : undefined;
     onSelect(first ?? null);
   };

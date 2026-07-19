@@ -1,5 +1,5 @@
-import { Fragment, useMemo, useState } from 'react';
-import type { AttackAbilities, AttackerStats, DamageStep, DefenderStats, Luck } from './formula';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import type { AttackerStats, DamageStep, DefenderStats, Luck } from './formula';
 import { calculateAbilityDamage, calculateDamage } from './formula';
 import type { AttackMode } from './abilityEffects';
 import { attackModesFor, damageReduction, defaultRetaliation, doubleStrikeFor } from './abilityEffects';
@@ -7,10 +7,9 @@ import { NumberField } from './components/NumberField';
 import { UnitPicker } from './components/UnitPicker';
 import type { UnitPreset } from './units';
 import { UNITS_BY_ID } from './units';
+import type { AttackParams } from './urlState';
+import { SHARE_PARAM, decodeAppState, encodeAppState } from './urlState';
 import './App.css';
-
-/** Условия атаки, задаваемые в форме; остальное выводится из режима */
-type AttackParams = Omit<AttackAbilities, 'rangePenalty' | 'modeMultiplier' | 'doubleStrike'>;
 
 const formatNumber = (value: number) => value.toLocaleString('ru');
 
@@ -39,39 +38,52 @@ function Formula({ steps }: { steps: DamageStep[] }) {
   );
 }
 
-export default function App() {
-  const [attacker, setAttacker] = useState<AttackerStats>({
-    count: 100,
-    health: 120,
-    topHealth: 120,
-    damageMin: 50,
-    damageMax: 75,
-    attack: 36,
-    defense: 20,
-    heroAttack: 0,
-    heroDefense: 0,
-  });
-  const [attack, setAttack] = useState<AttackParams>({
-    distance: 1,
-    generalModifiers: 0,
-    typeModifiers: 0,
-    retaliation: true,
-  });
-  const [modeId, setModeId] = useState('base');
-  const [defender, setDefender] = useState<DefenderStats>({
-    count: 100,
-    health: 150,
-    topHealth: 150,
-    damageMin: 30,
-    damageMax: 50,
-    attack: 30,
-    defense: 12,
-    heroAttack: 0,
-    heroDefense: 0,
-  });
+const DEFAULT_ATTACKER: AttackerStats = {
+  count: 100,
+  health: 120,
+  topHealth: 120,
+  damageMin: 50,
+  damageMax: 75,
+  attack: 36,
+  defense: 20,
+  heroAttack: 0,
+  heroDefense: 0,
+};
 
-  const [attackerUnitId, setAttackerUnitId] = useState<string | null>(null);
-  const [defenderUnitId, setDefenderUnitId] = useState<string | null>(null);
+const DEFAULT_ATTACK: AttackParams = {
+  distance: 1,
+  generalModifiers: 0,
+  typeModifiers: 0,
+  retaliation: true,
+};
+
+const DEFAULT_DEFENDER: DefenderStats = {
+  count: 100,
+  health: 150,
+  topHealth: 150,
+  damageMin: 30,
+  damageMax: 50,
+  attack: 30,
+  defense: 12,
+  heroAttack: 0,
+  heroDefense: 0,
+};
+
+// Состояние из ссылки читается один раз при загрузке страницы.
+const restored = decodeAppState(new URLSearchParams(window.location.search).get(SHARE_PARAM));
+
+export default function App() {
+  const [attacker, setAttacker] = useState<AttackerStats>(restored?.attacker ?? DEFAULT_ATTACKER);
+  const [attack, setAttack] = useState<AttackParams>(restored?.attack ?? DEFAULT_ATTACK);
+  const [modeId, setModeId] = useState(restored?.modeId ?? 'base');
+  const [defender, setDefender] = useState<DefenderStats>(restored?.defender ?? DEFAULT_DEFENDER);
+
+  const [attackerUnitId, setAttackerUnitId] = useState<string | null>(
+    restored?.attackerUnitId ?? null,
+  );
+  const [defenderUnitId, setDefenderUnitId] = useState<string | null>(
+    restored?.defenderUnitId ?? null,
+  );
 
   const patchAttacker = (patch: Partial<AttackerStats>) =>
     setAttacker((prev) => ({ ...prev, ...patch }));
@@ -79,6 +91,50 @@ export default function App() {
     setAttack((prev) => ({ ...prev, ...patch }));
   const patchDefender = (patch: Partial<DefenderStats>) =>
     setDefender((prev) => ({ ...prev, ...patch }));
+
+  const encodedState = useMemo(
+    () => encodeAppState({ attacker, attack, modeId, defender, attackerUnitId, defenderUnitId }),
+    [attacker, attack, modeId, defender, attackerUnitId, defenderUnitId],
+  );
+
+  // Адресная строка всегда отражает текущее состояние; дебаунс укладывает
+  // зажатый спиннер числового поля в лимит replaceState Safari (~100/30 с).
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const url = new URL(window.location.href);
+      url.searchParams.set(SHARE_PARAM, encodedState);
+      try {
+        window.history.replaceState(null, '', url);
+      } catch {
+        // Превышен лимит replaceState: адрес обновит следующее изменение.
+      }
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [encodedState]);
+
+  const [copied, setCopied] = useState(false);
+  const copiedTimer = useRef<number>(undefined);
+
+  // Ссылка строится из текущего состояния, а не адресной строки: та может
+  // отставать на окно дебаунса.
+  const copyLink = async () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set(SHARE_PARAM, encodedState);
+    try {
+      await navigator.clipboard.writeText(url.toString());
+    } catch {
+      // Не-secure контекст или старый браузер: копирование через выделение.
+      const textarea = document.createElement('textarea');
+      textarea.value = url.toString();
+      document.body.append(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      textarea.remove();
+    }
+    setCopied(true);
+    window.clearTimeout(copiedTimer.current);
+    copiedTimer.current = window.setTimeout(() => setCopied(false), 1500);
+  };
 
   const attackerUnit = attackerUnitId ? (UNITS_BY_ID.get(attackerUnitId) ?? null) : null;
   const defenderUnit = defenderUnitId ? (UNITS_BY_ID.get(defenderUnitId) ?? null) : null;
@@ -153,7 +209,16 @@ export default function App() {
 
   return (
     <main>
-      <h1>Калькулятор урона — Heroes of Might and Magic: Olden Era</h1>
+      <header className="page-header">
+        <h1>Калькулятор урона — Heroes of Might and Magic: Olden Era</h1>
+        <button
+          type="button"
+          className={copied ? 'share-button share-button--copied' : 'share-button'}
+          onClick={copyLink}
+        >
+          {copied ? 'Скопировано' : 'Скопировать ссылку'}
+        </button>
+      </header>
 
       <div className="columns">
         <section className="column">
