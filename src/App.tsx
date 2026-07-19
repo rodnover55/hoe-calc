@@ -3,8 +3,26 @@ import type { AttackerStats, DamageStep, DefenderStats, Luck } from './formula';
 import { calculateAbilityDamage, calculateDamage } from './formula';
 import type { AttackMode } from './abilityEffects';
 import { attackModesFor, damageReduction, defaultRetaliation, doubleStrikeFor } from './abilityEffects';
+import { HeroPresetPanel } from './components/HeroPresetPanel';
 import { NumberField } from './components/NumberField';
 import { UnitPicker } from './components/UnitPicker';
+import { UnitPresetPanel } from './components/UnitPresetPanel';
+import type { HeroPreset, PresetSelection, PresetStore, SavedUnit } from './presets';
+import {
+  EMPTY_SELECTION,
+  EMPTY_STORE,
+  addHero,
+  addUnit,
+  createHeroPreset,
+  createSavedUnit,
+  defaultUnitName,
+  patchHero,
+  patchUnit,
+  removeHero,
+  removeUnit,
+  sameSnapshot,
+  snapshotOf,
+} from './presets';
 import type { UnitPreset } from './units';
 import { UNITS_BY_ID } from './units';
 import type { AttackParams } from './urlState';
@@ -102,6 +120,11 @@ export default function App() {
     restored?.defenderUnitId ?? null,
   );
 
+  const [presets, setPresets] = useState<PresetStore>(restored?.presets ?? EMPTY_STORE);
+  const [presetSel, setPresetSel] = useState<PresetSelection>(
+    restored?.presetSelection ?? EMPTY_SELECTION,
+  );
+
   const patchAttacker = (patch: Partial<AttackerStats>) =>
     setAttacker((prev) => ({ ...prev, ...patch }));
   const patchAttack = (patch: Partial<AttackParams>) =>
@@ -110,8 +133,18 @@ export default function App() {
     setDefender((prev) => ({ ...prev, ...patch }));
 
   const encodedState = useMemo(
-    () => encodeAppState({ attacker, attack, modeId, defender, attackerUnitId, defenderUnitId }),
-    [attacker, attack, modeId, defender, attackerUnitId, defenderUnitId],
+    () =>
+      encodeAppState({
+        attacker,
+        attack,
+        modeId,
+        defender,
+        attackerUnitId,
+        defenderUnitId,
+        presets,
+        presetSelection: presetSel,
+      }),
+    [attacker, attack, modeId, defender, attackerUnitId, defenderUnitId, presets, presetSel],
   );
 
   // Адресная строка всегда отражает текущее состояние; дебаунс укладывает
@@ -179,15 +212,21 @@ export default function App() {
     setAttackerUnitId(unit?.id ?? null);
     if (unit) patchAttacker(presetStats(unit));
     selectMode(attackModesFor(unit)[0], unit);
+    // Стек больше не соответствует сохранённому отряду; пресет героя
+    // остаётся выбранным — в него можно добавить новый отряд.
+    setPresetSel((sel) => ({ ...sel, attackerSavedUnitId: null }));
   };
 
   const selectDefenderUnit = (unit: UnitPreset | null) => {
     setDefenderUnitId(unit?.id ?? null);
     if (unit) patchDefender(presetStats(unit));
+    setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: null }));
   };
 
   // Режим атаки принадлежит атакующему, поэтому после обмена он строится
   // заново по способностям нового атакующего, как при выборе юнита.
+  // Списки пресетов к сторонам привязаны и не переезжают, поэтому выбор
+  // пресетов сбрасывается: стеки больше не соответствуют своим спискам.
   const swapSides = () => {
     const nextAttackerUnit = defenderUnitId ? (UNITS_BY_ID.get(defenderUnitId) ?? null) : null;
     setAttacker(defender);
@@ -195,7 +234,221 @@ export default function App() {
     setAttackerUnitId(defenderUnitId);
     setDefenderUnitId(attackerUnitId);
     selectMode(attackModesFor(nextAttackerUnit)[0], nextAttackerUnit);
+    setPresetSel(EMPTY_SELECTION);
   };
+
+  // Сохранённый отряд применяется в обход selectAttackerUnit: статы
+  // берутся из снапшота пресета, а не из базы юнитов.
+  const applyAttackerSavedUnit = (saved: SavedUnit) => {
+    const unit = saved.unitId ? (UNITS_BY_ID.get(saved.unitId) ?? null) : null;
+    setAttackerUnitId(unit?.id ?? null);
+    patchAttacker(saved.stats);
+    selectMode(attackModesFor(unit)[0], unit);
+    setPresetSel((sel) => ({ ...sel, attackerSavedUnitId: saved.id }));
+  };
+
+  const applyDefenderSavedUnit = (saved: SavedUnit) => {
+    const unit = saved.unitId ? (UNITS_BY_ID.get(saved.unitId) ?? null) : null;
+    setDefenderUnitId(unit?.id ?? null);
+    patchDefender(saved.stats);
+    setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: saved.id }));
+  };
+
+  // Выбор пресета героя применяет только его статы; первый отряд
+  // автоматически не применяется — это отдельный клик по списку.
+  const selectAttackerHeroPreset = (preset: HeroPreset | null) => {
+    if (preset) patchAttacker({ heroAttack: preset.heroAttack, heroDefense: preset.heroDefense });
+    setPresetSel((sel) => ({
+      ...sel,
+      attackerHeroId: preset?.id ?? null,
+      attackerSavedUnitId: null,
+    }));
+  };
+
+  const selectDefenderHeroPreset = (preset: HeroPreset | null) => {
+    if (preset) patchDefender({ heroAttack: preset.heroAttack, heroDefense: preset.heroDefense });
+    setPresetSel((sel) => ({
+      ...sel,
+      defenderHeroId: preset?.id ?? null,
+      defenderSavedUnitId: null,
+    }));
+  };
+
+  const createAttackerHeroPreset = () => {
+    const preset = createHeroPreset(attacker, attackerUnitId);
+    setPresets((prev) => ({ ...prev, attacker: addHero(prev.attacker, preset) }));
+    setPresetSel((sel) => ({
+      ...sel,
+      attackerHeroId: preset.id,
+      attackerSavedUnitId: preset.units[0].id,
+    }));
+  };
+
+  const createDefenderHeroPreset = () => {
+    const preset = createHeroPreset(defender, defenderUnitId);
+    setPresets((prev) => ({ ...prev, defender: addHero(prev.defender, preset) }));
+    setPresetSel((sel) => ({
+      ...sel,
+      defenderHeroId: preset.id,
+      defenderSavedUnitId: preset.units[0].id,
+    }));
+  };
+
+  const updateAttackerHeroPreset = () => {
+    const heroId = presetSel.attackerHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({
+      ...prev,
+      attacker: patchHero(prev.attacker, heroId, {
+        heroAttack: attacker.heroAttack,
+        heroDefense: attacker.heroDefense,
+      }),
+    }));
+  };
+
+  const updateDefenderHeroPreset = () => {
+    const heroId = presetSel.defenderHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({
+      ...prev,
+      defender: patchHero(prev.defender, heroId, {
+        heroAttack: defender.heroAttack,
+        heroDefense: defender.heroDefense,
+      }),
+    }));
+  };
+
+  const renameAttackerHeroPreset = (name: string) => {
+    const heroId = presetSel.attackerHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({ ...prev, attacker: patchHero(prev.attacker, heroId, { name }) }));
+  };
+
+  const renameDefenderHeroPreset = (name: string) => {
+    const heroId = presetSel.defenderHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({ ...prev, defender: patchHero(prev.defender, heroId, { name }) }));
+  };
+
+  // Удаление снимает выбор; текущие статы в форме остаются как есть.
+  const deleteAttackerHeroPreset = () => {
+    const heroId = presetSel.attackerHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({ ...prev, attacker: removeHero(prev.attacker, heroId) }));
+    setPresetSel((sel) => ({ ...sel, attackerHeroId: null, attackerSavedUnitId: null }));
+  };
+
+  const deleteDefenderHeroPreset = () => {
+    const heroId = presetSel.defenderHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({ ...prev, defender: removeHero(prev.defender, heroId) }));
+    setPresetSel((sel) => ({ ...sel, defenderHeroId: null, defenderSavedUnitId: null }));
+  };
+
+  const addAttackerSavedUnit = () => {
+    const heroId = presetSel.attackerHeroId;
+    if (!heroId) return;
+    const saved = createSavedUnit(attacker, attackerUnitId);
+    setPresets((prev) => ({ ...prev, attacker: addUnit(prev.attacker, heroId, saved) }));
+    setPresetSel((sel) => ({ ...sel, attackerSavedUnitId: saved.id }));
+  };
+
+  const addDefenderSavedUnit = () => {
+    const heroId = presetSel.defenderHeroId;
+    if (!heroId) return;
+    const saved = createSavedUnit(defender, defenderUnitId);
+    setPresets((prev) => ({ ...prev, defender: addUnit(prev.defender, heroId, saved) }));
+    setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: saved.id }));
+  };
+
+  // Пересохранение отряда обновляет юнит и статы; имя остаётся авторским.
+  const updateAttackerSavedUnit = (savedUnitId: string) => {
+    const heroId = presetSel.attackerHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({
+      ...prev,
+      attacker: patchUnit(prev.attacker, heroId, savedUnitId, {
+        unitId: attackerUnitId,
+        stats: snapshotOf(attacker),
+      }),
+    }));
+    setPresetSel((sel) => ({ ...sel, attackerSavedUnitId: savedUnitId }));
+  };
+
+  const updateDefenderSavedUnit = (savedUnitId: string) => {
+    const heroId = presetSel.defenderHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({
+      ...prev,
+      defender: patchUnit(prev.defender, heroId, savedUnitId, {
+        unitId: defenderUnitId,
+        stats: snapshotOf(defender),
+      }),
+    }));
+    setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: savedUnitId }));
+  };
+
+  const renameAttackerSavedUnit = (savedUnitId: string, name: string) => {
+    const heroId = presetSel.attackerHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({
+      ...prev,
+      attacker: patchUnit(prev.attacker, heroId, savedUnitId, { name }),
+    }));
+  };
+
+  const renameDefenderSavedUnit = (savedUnitId: string, name: string) => {
+    const heroId = presetSel.defenderHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({
+      ...prev,
+      defender: patchUnit(prev.defender, heroId, savedUnitId, { name }),
+    }));
+  };
+
+  const deleteAttackerSavedUnit = (savedUnitId: string) => {
+    const heroId = presetSel.attackerHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({ ...prev, attacker: removeUnit(prev.attacker, heroId, savedUnitId) }));
+    setPresetSel((sel) =>
+      sel.attackerSavedUnitId === savedUnitId ? { ...sel, attackerSavedUnitId: null } : sel,
+    );
+  };
+
+  const deleteDefenderSavedUnit = (savedUnitId: string) => {
+    const heroId = presetSel.defenderHeroId;
+    if (!heroId) return;
+    setPresets((prev) => ({ ...prev, defender: removeUnit(prev.defender, heroId, savedUnitId) }));
+    setPresetSel((sel) =>
+      sel.defenderSavedUnitId === savedUnitId ? { ...sel, defenderSavedUnitId: null } : sel,
+    );
+  };
+
+  const attackerHeroPreset =
+    presets.attacker.find((preset) => preset.id === presetSel.attackerHeroId) ?? null;
+  const defenderHeroPreset =
+    presets.defender.find((preset) => preset.id === presetSel.defenderHeroId) ?? null;
+  const attackerSavedUnit =
+    attackerHeroPreset?.units.find((unit) => unit.id === presetSel.attackerSavedUnitId) ?? null;
+  const defenderSavedUnit =
+    defenderHeroPreset?.units.find((unit) => unit.id === presetSel.defenderSavedUnitId) ?? null;
+
+  const attackerHeroDirty =
+    attackerHeroPreset !== null &&
+    (attackerHeroPreset.heroAttack !== attacker.heroAttack ||
+      attackerHeroPreset.heroDefense !== attacker.heroDefense);
+  const defenderHeroDirty =
+    defenderHeroPreset !== null &&
+    (defenderHeroPreset.heroAttack !== defender.heroAttack ||
+      defenderHeroPreset.heroDefense !== defender.heroDefense);
+  const attackerUnitDirty =
+    attackerSavedUnit !== null &&
+    (attackerSavedUnit.unitId !== attackerUnitId ||
+      !sameSnapshot(attackerSavedUnit.stats, snapshotOf(attacker)));
+  const defenderUnitDirty =
+    defenderSavedUnit !== null &&
+    (defenderSavedUnit.unitId !== defenderUnitId ||
+      !sameSnapshot(defenderSavedUnit.stats, snapshotOf(defender)));
 
   const result = useMemo(
     () =>
@@ -260,6 +513,17 @@ export default function App() {
       <div className="columns">
         <section className="column">
           <h2>Атакующий</h2>
+          <HeroPresetPanel
+            idPrefix="attacker"
+            presets={presets.attacker}
+            selectedId={presetSel.attackerHeroId}
+            dirty={attackerHeroDirty}
+            onCreate={createAttackerHeroPreset}
+            onSelect={selectAttackerHeroPreset}
+            onUpdate={updateAttackerHeroPreset}
+            onRename={renameAttackerHeroPreset}
+            onDelete={deleteAttackerHeroPreset}
+          />
           <div className="group">
             <div className="group-title">Герой</div>
             <NumberField
@@ -279,6 +543,26 @@ export default function App() {
           </div>
           <div className="group">
             <div className="group-title">Юнит</div>
+            {attackerHeroPreset && (
+              <UnitPresetPanel
+                idPrefix="attacker"
+                units={attackerHeroPreset.units}
+                selectedId={presetSel.attackerSavedUnitId}
+                dirty={attackerUnitDirty}
+                currentUnitName={defaultUnitName(attackerUnitId, attacker.count)}
+                onAdd={addAttackerSavedUnit}
+                onSelect={(unit) =>
+                  unit
+                    ? applyAttackerSavedUnit(unit)
+                    : setPresetSel((sel) => ({ ...sel, attackerSavedUnitId: null }))
+                }
+                onUpdate={() => updateAttackerSavedUnit(presetSel.attackerSavedUnitId ?? '')}
+                onRename={(name) =>
+                  renameAttackerSavedUnit(presetSel.attackerSavedUnitId ?? '', name)
+                }
+                onDelete={() => deleteAttackerSavedUnit(presetSel.attackerSavedUnitId ?? '')}
+              />
+            )}
             <UnitPicker
               idPrefix="attacker"
               selectedId={attackerUnitId}
@@ -404,6 +688,17 @@ export default function App() {
 
         <section className="column">
           <h2>Защищающийся</h2>
+          <HeroPresetPanel
+            idPrefix="defender"
+            presets={presets.defender}
+            selectedId={presetSel.defenderHeroId}
+            dirty={defenderHeroDirty}
+            onCreate={createDefenderHeroPreset}
+            onSelect={selectDefenderHeroPreset}
+            onUpdate={updateDefenderHeroPreset}
+            onRename={renameDefenderHeroPreset}
+            onDelete={deleteDefenderHeroPreset}
+          />
           <div className="group">
             <div className="group-title">Герой</div>
             <NumberField
@@ -423,6 +718,26 @@ export default function App() {
           </div>
           <div className="group">
             <div className="group-title">Юнит</div>
+            {defenderHeroPreset && (
+              <UnitPresetPanel
+                idPrefix="defender"
+                units={defenderHeroPreset.units}
+                selectedId={presetSel.defenderSavedUnitId}
+                dirty={defenderUnitDirty}
+                currentUnitName={defaultUnitName(defenderUnitId, defender.count)}
+                onAdd={addDefenderSavedUnit}
+                onSelect={(unit) =>
+                  unit
+                    ? applyDefenderSavedUnit(unit)
+                    : setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: null }))
+                }
+                onUpdate={() => updateDefenderSavedUnit(presetSel.defenderSavedUnitId ?? '')}
+                onRename={(name) =>
+                  renameDefenderSavedUnit(presetSel.defenderSavedUnitId ?? '', name)
+                }
+                onDelete={() => deleteDefenderSavedUnit(presetSel.defenderSavedUnitId ?? '')}
+              />
+            )}
             <UnitPicker
               idPrefix="defender"
               selectedId={defenderUnitId}

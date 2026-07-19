@@ -1,0 +1,113 @@
+import { useState } from 'react';
+import type { HeroPreset } from '../presets';
+
+interface HeroPresetPanelProps {
+  idPrefix: string;
+  /** Пресеты своей стороны: у атакующего и защитника списки раздельные */
+  presets: HeroPreset[];
+  /** id выбранного пресета героя; null — без пресета */
+  selectedId: string | null;
+  /** Статы героя в форме отличаются от сохранённых в пресете */
+  dirty: boolean;
+  onCreate: () => void;
+  onSelect: (preset: HeroPreset | null) => void;
+  onUpdate: () => void;
+  onRename: (name: string) => void;
+  onDelete: () => void;
+}
+
+/**
+ * Пресеты героя одной стороны: по умолчанию виден только комбобокс
+ * выбора, кнопка ✎ разворачивает редактирование — сохранение,
+ * обновление, переименование и удаление с подтверждением.
+ */
+export function HeroPresetPanel({
+  idPrefix,
+  presets,
+  selectedId,
+  dirty,
+  onCreate,
+  onSelect,
+  onUpdate,
+  onRename,
+  onDelete,
+}: HeroPresetPanelProps) {
+  const selected = presets.find((preset) => preset.id === selectedId) ?? null;
+  const [editing, setEditing] = useState(false);
+
+  const confirmDelete = () => {
+    if (!selected) return;
+    if (window.confirm(`Удалить пресет «${selected.name}» и его отряды?`)) onDelete();
+  };
+
+  return (
+    <div className="group">
+      <div className="group-title">Пресеты</div>
+      <div className="preset-head">
+        <div className="field">
+          <select
+            id={`${idPrefix}-hero-preset`}
+            aria-label="Пресет героя"
+            value={selectedId ?? ''}
+            onChange={(e) =>
+              onSelect(
+                e.target.value
+                  ? (presets.find((preset) => preset.id === e.target.value) ?? null)
+                  : null,
+              )
+            }
+          >
+            <option value="">— без пресета —</option>
+            {presets.map((preset) => (
+              <option key={preset.id} value={preset.id}>
+                {preset.id === selectedId && dirty ? `${preset.name} *` : preset.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button
+          type="button"
+          className={editing ? 'preset-edit-toggle preset-edit-toggle--active' : 'preset-edit-toggle'}
+          aria-expanded={editing}
+          aria-label="Редактировать пресеты героя"
+          title="Редактировать пресеты героя"
+          onClick={() => setEditing(!editing)}
+        >
+          ✎
+        </button>
+      </div>
+      {editing && (
+        <>
+          <div className="preset-actions">
+            <button type="button" onClick={onCreate}>
+              Сохранить героя
+            </button>
+            {selected && (
+              <>
+                <button type="button" disabled={!dirty} onClick={onUpdate}>
+                  Обновить
+                </button>
+                <button type="button" onClick={confirmDelete}>
+                  Удалить
+                </button>
+              </>
+            )}
+          </div>
+          {selected && (
+            <div className="field">
+              <label className="field-label" htmlFor={`${idPrefix}-hero-preset-name`}>
+                Название
+              </label>
+              <input
+                id={`${idPrefix}-hero-preset-name`}
+                type="text"
+                value={selected.name}
+                onChange={(e) => onRename(e.target.value)}
+              />
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}

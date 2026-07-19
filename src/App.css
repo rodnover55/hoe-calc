@@ -429,3 +429,62 @@ select:focus {
   color: var(--text-muted);
   margin-top: 1.5rem;
 }
+
+.preset-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.preset-head .field {
+  flex: 1;
+  min-width: 0;
+}
+
+.preset-edit-toggle {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.preset-edit-toggle--active {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.preset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preset-actions button {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.preset-actions button:disabled {
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.preset-actions button:focus-visible,
+.preset-edit-toggle:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
