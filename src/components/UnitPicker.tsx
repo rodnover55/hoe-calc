@@ -4,10 +4,12 @@ import {
   ATTACK_TYPE_LABEL,
   FACTION_LABEL,
   FACTION_ORDER,
+  GRADE_LABEL,
   UNITS_BY_ID,
   baseUnits,
   gradesOf,
 } from '../units';
+import { UnitSearch } from './UnitSearch';
 
 interface UnitPickerProps {
   idPrefix: string;
@@ -16,13 +18,12 @@ interface UnitPickerProps {
   onSelect: (unit: UnitPreset | null) => void;
 }
 
-const GRADE_LABEL = ['База', 'Улучшение I', 'Улучшение II'];
-
 export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) {
   const selected = selectedId ? UNITS_BY_ID.get(selectedId) : undefined;
   // Фракция выводится из выбранного юнита (в том числе восстановленного из
   // ссылки); своё состояние нужно только режиму ручного ввода.
   const [manualFaction, setManualFaction] = useState<Faction | ''>('');
+  const [searching, setSearching] = useState(false);
   const faction = selected ? selected.faction : manualFaction;
 
   const units = faction ? baseUnits(faction) : [];
@@ -41,43 +42,70 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
 
   return (
     <div className="unit-picker">
-      <div className="unit-picker-row">
-        <div className="field">
-          <label className="field-label" htmlFor={`${idPrefix}-faction`}>
-            Фракция
-          </label>
-          <select
-            id={`${idPrefix}-faction`}
-            value={faction}
-            onChange={(e) => pickFaction(e.target.value)}
-          >
-            <option value="">— вручную —</option>
-            {FACTION_ORDER.map((f) => (
-              <option key={f} value={f}>
-                {FACTION_LABEL[f]}
-              </option>
-            ))}
-          </select>
-        </div>
-        {faction && (
-          <div className="field">
-            <label className="field-label" htmlFor={`${idPrefix}-unit`}>
-              Юнит
-            </label>
-            <select
-              id={`${idPrefix}-unit`}
-              value={baseId}
-              onChange={(e) => pickUnit(e.target.value)}
-            >
-              {units.map((unit) => (
-                <option key={unit.id} value={unit.id}>
-                  {unit.name}
-                </option>
-              ))}
-            </select>
+      {searching ? (
+        <UnitSearch
+          idPrefix={idPrefix}
+          onPick={onSelect}
+          onClose={() => setSearching(false)}
+        />
+      ) : (
+        <div className="unit-picker-head">
+          <div className="unit-picker-row">
+            <div className="field">
+              <label className="field-label" htmlFor={`${idPrefix}-faction`}>
+                Фракция
+              </label>
+              <select
+                id={`${idPrefix}-faction`}
+                value={faction}
+                onChange={(e) => pickFaction(e.target.value)}
+              >
+                <option value="">— вручную —</option>
+                {FACTION_ORDER.map((f) => (
+                  <option key={f} value={f}>
+                    {FACTION_LABEL[f]}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {faction && (
+              <div className="field">
+                <label className="field-label" htmlFor={`${idPrefix}-unit`}>
+                  Юнит
+                </label>
+                <select
+                  id={`${idPrefix}-unit`}
+                  value={baseId}
+                  onChange={(e) => pickUnit(e.target.value)}
+                >
+                  {units.map((unit) => (
+                    <option key={unit.id} value={unit.id}>
+                      {unit.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+          <button
+            type="button"
+            className="unit-search-toggle"
+            aria-label="Найти юнита по названию"
+            title="Найти юнита по названию"
+            onClick={() => setSearching(true)}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.5" />
+              <path
+                d="M10.5 10.5 14 14"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
       {selected && grades.length > 1 && (
         <div className="field">
           <label className="field-label" htmlFor={`${idPrefix}-grade`}>

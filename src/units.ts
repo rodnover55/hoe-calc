@@ -75,6 +75,9 @@ export const FACTION_ORDER: Faction[] = [
   'neutral',
 ];
 
+/** Подписи грейдов юнита по значению поля grade */
+export const GRADE_LABEL = ['База', 'Улучшение I', 'Улучшение II'];
+
 export const ATTACK_TYPE_LABEL: Record<AttackType, string> = {
   melee: 'ближний бой',
   long_reach: 'удар через гекс',
