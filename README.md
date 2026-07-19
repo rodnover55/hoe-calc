@@ -96,7 +96,7 @@ source: https://www.olden-era.com/ru/units/warden_gnat
 (фанатская база по игре). Обновить базу целиком:
 
 ```bash
-python3 scripts/update_units.py
+npm run update-units
 ```
 
 ## Разработка
