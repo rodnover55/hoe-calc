@@ -16,6 +16,23 @@ const formatNumber = (value: number) => value.toLocaleString('ru');
 const formatRange = (min: number, max: number) =>
   min === max ? formatNumber(min) : `${formatNumber(min)} – ${formatNumber(max)}`;
 
+/** Склонение слова «удар» после числительного: 1 удар, 2 удара, 5 ударов */
+const strikesWord = (n: number) => {
+  const mod100 = n % 100;
+  const mod10 = n % 10;
+  if (mod10 === 1 && mod100 !== 11) return 'удар';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'удара';
+  return 'ударов';
+};
+
+/** «за 3 удара», «за 2–4 удара»; без верхней границы — «минимум за 3 удара» */
+const formatStrikes = (min: number, max: number | null) =>
+  max === null
+    ? `минимум за ${formatNumber(min)} ${strikesWord(min)}`
+    : min === max
+      ? `за ${formatNumber(min)} ${strikesWord(min)}`
+      : `за ${formatNumber(min)}–${formatNumber(max)} ${strikesWord(max)}`;
+
 const LUCK_LABEL: Record<Luck, string> = {
   unlucky: 'Неудача',
   normal: 'Обычный',
@@ -212,7 +229,11 @@ export default function App() {
             base: special.base,
             perUnit: special.perUnit,
             reduction: reduction?.percent,
-            defender: { health: defender.health, topHealth: defender.topHealth },
+            defender: {
+              count: defender.count,
+              health: defender.health,
+              topHealth: defender.topHealth,
+            },
           })
         : null,
     [special, attacker, defender, reduction],
@@ -475,6 +496,8 @@ export default function App() {
                   {specialResult.killsMin === specialResult.killsMax
                     ? formatNumber(specialResult.killsMin)
                     : `${formatNumber(specialResult.killsMin)}–${formatNumber(specialResult.killsMax)}`}
+                  {specialResult.strikesMin !== null &&
+                    ` · весь отряд: ${formatStrikes(specialResult.strikesMin, specialResult.strikesMax)}`}
                 </span>
               </span>
             </div>
@@ -495,6 +518,7 @@ export default function App() {
                     {row.killsMin === row.killsMax
                       ? formatNumber(row.killsMin)
                       : `${formatNumber(row.killsMin)}–${formatNumber(row.killsMax)}`}
+                    {` · весь отряд: ${formatStrikes(row.strikesMin, row.strikesMax)}`}
                   </span>
                 </span>
               </div>
@@ -581,7 +605,9 @@ export default function App() {
         Ответный удар проставляется автоматически: дальняя атака, атака через гекс и
         «Стремительный удар» ответа не провоцируют, галочку можно переключить вручную.
         Погибшие: первым гибнет верхний юнит с неполным здоровьем, дальше урон делится на полное
-        здоровье (округление вниз); расчётное число не ограничено размером отряда. Ответный удар: по урону атаки считаются выжившие существа защитника (суммарное здоровье
+        здоровье (округление вниз); расчётное число не ограничено размером отряда.
+        «Весь отряд: за N ударов» — сколько ударов с уроном строки нужно, чтобы выбить
+        суммарное здоровье отряда защитника (границы — по максимальному и минимальному урону). Ответный удар: по урону атаки считаются выжившие существа защитника (суммарное здоровье
         минус урон, округление числа существ вверх), затем они бьют по обычной формуле со своим
         уроном и модификатором (20 + ATK защитника) / (20 + DEF атакующего); удача, дальность и
         модификаторы атаки на ответ не влияют. Второй удар («Двойной удар», при стрельбе —

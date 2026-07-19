@@ -115,6 +115,10 @@ export interface LuckDamage {
   /** Погибшие существа защитника; не ограничено размером отряда */
   killsMin: number;
   killsMax: number;
+  /** Ударов с максимальным уроном строки до гибели всего отряда защитника */
+  strikesMin: number;
+  /** Ударов с минимальным уроном строки до гибели всего отряда защитника */
+  strikesMax: number;
   /** Ответный удар выживших; null, если ответа не будет */
   retaliation: RetaliationDamage | null;
   /** Второй удар после ответа; null, если двойного удара нет */
@@ -182,8 +186,9 @@ export interface AbilityAttackInput {
   perUnit?: number;
   /** Снижение урона защитой цели, % (отрицательное значение) */
   reduction?: number;
-  /** Отряд защитника для подсчёта погибших */
+  /** Отряд защитника для подсчёта погибших и ударов до его гибели */
   defender: {
+    count: number;
     health: number;
     topHealth: number;
   };
@@ -195,6 +200,10 @@ export interface AbilityDamageResult {
   average: number;
   killsMin: number;
   killsMax: number;
+  /** Ударов с максимальным уроном до гибели всего отряда; null при нулевом уроне */
+  strikesMin: number | null;
+  /** Ударов с минимальным уроном до гибели всего отряда; null при нулевом уроне */
+  strikesMax: number | null;
   /** Формула урона способности с подставленными значениями */
   steps: DamageStep[];
 }
@@ -210,8 +219,10 @@ export function calculateAbilityDamage(input: AbilityAttackInput): AbilityDamage
   const count = Math.max(1, input.count);
   const damageMin = Math.max(0, input.damageMin);
   const damageMax = Math.max(damageMin, input.damageMax);
+  const defCount = Math.max(1, input.defender.count);
   const defHealth = Math.max(1, input.defender.health);
   const defTopHealth = Math.min(defHealth, Math.max(1, input.defender.topHealth));
+  const defTotalHealth = (defCount - 1) * defHealth + defTopHealth;
   const reduction = Math.min(0, input.reduction ?? 0);
   const reductionFactor = Math.max(0, 1 + reduction / 100);
 
@@ -248,6 +259,8 @@ export function calculateAbilityDamage(input: AbilityAttackInput): AbilityDamage
     average: Math.round((min + max) / 2),
     killsMin: killsFrom(min, defTopHealth, defHealth),
     killsMax: killsFrom(max, defTopHealth, defHealth),
+    strikesMin: max > 0 ? Math.ceil(defTotalHealth / max) : null,
+    strikesMax: min > 0 ? Math.ceil(defTotalHealth / min) : null,
     steps,
   };
 }
@@ -383,6 +396,8 @@ export function calculateDamage(input: DamageInput): DamageResult {
       average: Math.round((min + max) / 2),
       killsMin: killsFrom(min, defTopHealth, defHealth),
       killsMax: killsFrom(max, defTopHealth, defHealth),
+      strikesMin: Math.ceil(defTotalHealth / max),
+      strikesMax: Math.ceil(defTotalHealth / min),
       retaliation,
       secondStrike,
     };
