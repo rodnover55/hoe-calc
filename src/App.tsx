@@ -1,5 +1,5 @@
 import { Fragment, useMemo, useState } from 'react';
-import type { AttackParams, AttackerStats, DamageStep, DefenderStats, Luck } from './formula';
+import type { AttackAbilities, AttackerStats, DamageStep, DefenderStats, Luck } from './formula';
 import { calculateDamage } from './formula';
 import { NumberField } from './components/NumberField';
 import { UnitPicker } from './components/UnitPicker';
@@ -45,7 +45,7 @@ export default function App() {
     heroAttack: 0,
     heroDefense: 0,
   });
-  const [attack, setAttack] = useState<AttackParams>({
+  const [attack, setAttack] = useState<AttackAbilities>({
     distance: 1,
     halfDamage: false,
     generalModifiers: 0,
@@ -69,7 +69,7 @@ export default function App() {
 
   const patchAttacker = (patch: Partial<AttackerStats>) =>
     setAttacker((prev) => ({ ...prev, ...patch }));
-  const patchAttack = (patch: Partial<AttackParams>) =>
+  const patchAttack = (patch: Partial<AttackAbilities>) =>
     setAttack((prev) => ({ ...prev, ...patch }));
   const patchDefender = (patch: Partial<DefenderStats>) =>
     setDefender((prev) => ({ ...prev, ...patch }));
@@ -94,7 +94,7 @@ export default function App() {
   };
 
   const result = useMemo(
-    () => calculateDamage(attacker, attack, defender),
+    () => calculateDamage({ attacker, abilities: attack, defender }),
     [attacker, attack, defender],
   );
 

@@ -1,3 +1,13 @@
+/**
+ * Расчёт урона боя Heroes of Might and Magic: Olden Era.
+ *
+ * Экспортирует чистую функцию `calculateDamage`: полное описание боя —
+ * оба отряда с характеристиками героев и учитываемые абилки атаки —
+ * приходит одним входным объектом, результат — диапазоны урона и потерь
+ * по вариантам удачи, ответный удар выживших и формула расчёта с
+ * подставленными значениями.
+ */
+
 export type Luck = 'normal' | 'lucky' | 'unlucky';
 
 export interface AttackerStats {
@@ -42,7 +52,8 @@ export interface DefenderStats {
   heroDefense: number;
 }
 
-export interface AttackParams {
+/** Учитываемые абилки и условия атаки */
+export interface AttackAbilities {
   /** Гексы до цели (для дальнобойной атаки) */
   distance: number;
   /** Половинный урон: стрелок вплотную или через препятствие */
@@ -53,6 +64,16 @@ export interface AttackParams {
   typeModifiers: number;
   /** Будет ли ответный удар */
   retaliation: boolean;
+}
+
+/** Полное описание боя: обе стороны с героями и абилки атаки */
+export interface DamageInput {
+  /** Атакующий отряд вместе с характеристиками героя */
+  attacker: AttackerStats;
+  /** Учитываемые абилки и условия атаки */
+  abilities: AttackAbilities;
+  /** Защищающийся отряд вместе с характеристиками героя */
+  defender: DefenderStats;
 }
 
 export interface RetaliationDamage {
@@ -128,11 +149,25 @@ const round = (x: number): number => (x % 1 >= 0.5 ? Math.ceil(x) : Math.floor(x
 const killsFrom = (damage: number, topHealth: number, health: number): number =>
   damage < topHealth ? 0 : 1 + Math.floor((damage - topHealth) / health);
 
-export function calculateDamage(
-  attacker: AttackerStats,
-  attack: AttackParams,
-  defender: DefenderStats,
-): DamageResult {
+/**
+ * Считает урон удара и ответного удара по полному описанию боя.
+ *
+ * Чистая функция: результат определяется только входным объектом.
+ * Некорректный вход приводится к допустимому вместо ошибки: количество
+ * существ и здоровье — минимум 1, урон и характеристики — минимум 0,
+ * максимальный урон — не меньше минимального, неполное здоровье верхнего
+ * юнита — не больше полного, дистанция — минимум 1 гекс.
+ *
+ * @param input полное описание боя: атакующий и защищающийся отряды с
+ *   характеристиками героев и учитываемые абилки атаки.
+ * @returns диапазоны урона и погибших по вариантам удачи с ответным
+ *   ударом выживших, модификаторы АТК/ЗЩТ обеих сторон, признак
+ *   ограничения типовых модификаторов и формула расчёта с подставленными
+ *   значениями.
+ */
+export function calculateDamage(input: DamageInput): DamageResult {
+  const { attacker, abilities, defender } = input;
+
   const count = Math.max(1, attacker.count);
   const health = Math.max(1, attacker.health);
   const topHealth = Math.min(health, Math.max(1, attacker.topHealth));
@@ -155,13 +190,13 @@ export function calculateDamage(
 
   const attackDefenseModifier = (20 + unitAtk + heroAtk) / (20 + unitDef + heroDef);
   const retaliationModifier = (20 + defUnitAtk + defHeroAtk) / (20 + attUnitDef + attHeroDef);
-  const generalRaw = 1 + attack.generalModifiers / 100;
+  const generalRaw = 1 + abilities.generalModifiers / 100;
   const general = Math.max(0, generalRaw);
-  const typeRaw = 1 + attack.typeModifiers / 100;
+  const typeRaw = 1 + abilities.typeModifiers / 100;
   const type = Math.max(0.1, typeRaw);
   const typeCapped = typeRaw < 0.1;
-  const distance = Math.max(1, attack.distance);
-  const range = rangeFactor(distance, attack.halfDamage);
+  const distance = Math.max(1, abilities.distance);
+  const range = rangeFactor(distance, abilities.halfDamage);
 
   /** Сколько существ защитника переживёт указанный урон */
   const defTotalHealth = (defCount - 1) * defHealth + defTopHealth;
@@ -202,7 +237,7 @@ export function calculateDamage(
       average: Math.round((min + max) / 2),
       killsMin: killsFrom(min, defTopHealth, defHealth),
       killsMax: killsFrom(max, defTopHealth, defHealth),
-      retaliation: attack.retaliation ? retaliationAfter(min, max) : null,
+      retaliation: abilities.retaliation ? retaliationAfter(min, max) : null,
     };
   });
 
@@ -216,12 +251,12 @@ export function calculateDamage(
     rangeParts.push(
       rangeRaw < 0.5
         ? `max(0.5; ${penalty})`
-        : attack.halfDamage
+        : abilities.halfDamage
           ? `(${penalty})`
           : penalty,
     );
   }
-  if (attack.halfDamage) rangeParts.push('0.5');
+  if (abilities.halfDamage) rangeParts.push('0.5');
 
   const steps: DamageStep[] = [
     { label: 'отряд × урон', text: `${count} × (${damageMin}–${damageMax})` },
@@ -233,12 +268,12 @@ export function calculateDamage(
       label: `общие = ${general.toFixed(2)}`,
       text:
         generalRaw < 0
-          ? `max(0; ${pctText(attack.generalModifiers)})`
-          : pctText(attack.generalModifiers),
+          ? `max(0; ${pctText(abilities.generalModifiers)})`
+          : pctText(abilities.generalModifiers),
     },
     {
       label: `типовые = ${type.toFixed(2)}${typeCapped ? ' (мин 10%)' : ''}`,
-      text: typeCapped ? `max(0.1; ${pctText(attack.typeModifiers)})` : pctText(attack.typeModifiers),
+      text: typeCapped ? `max(0.1; ${pctText(abilities.typeModifiers)})` : pctText(abilities.typeModifiers),
     },
     {
       label: `дальность = ${range.toFixed(2)}`,
