@@ -68,7 +68,7 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
             >
               {units.map((unit) => (
                 <option key={unit.id} value={unit.id}>
-                  {unit.tier} — {unit.name}
+                  {unit.name}
                 </option>
               ))}
             </select>
@@ -112,6 +112,19 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
             </div>
           </div>
         </div>
+      )}
+      {selected && (selected.abilities?.length ?? 0) > 0 && (
+        <details className="unit-abilities">
+          <summary>Способности ({selected.abilities?.length})</summary>
+          <ul>
+            {selected.abilities?.map((ability) => (
+              <li key={ability.id}>
+                <strong>{ability.name}</strong>
+                {ability.description ? ` — ${ability.description}` : ''}
+              </li>
+            ))}
+          </ul>
+        </details>
       )}
     </div>
   );

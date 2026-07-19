@@ -21,6 +21,16 @@ export interface UnitStats {
   speed: number;
 }
 
+/** Способность юнита с olden-era.com */
+export interface UnitAbility {
+  /** Слаг способности: имя файла её иконки на olden-era.com */
+  id: string;
+  /** Русское название */
+  name: string;
+  /** Русское описание */
+  description: string;
+}
+
 export interface UnitPreset {
   id: string;
   /** Русское название */
@@ -38,6 +48,8 @@ export interface UnitPreset {
   stats: UnitStats;
   attackType: AttackType;
   flying: boolean;
+  /** Способности юнита; влияющие на расчёт перечислены в abilityEffects.ts */
+  abilities?: UnitAbility[];
   growth?: number;
   cost?: number;
   source?: string;

@@ -15,6 +15,13 @@ stats:
   speed: 3
 attackType: melee
 flying: false
+abilities:
+  - id: undead
+    name: "Нежить"
+    description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+  - id: melee_attack
+    name: "Ближний бой"
+    description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
 growth: 1
 cost: 13
 source: https://www.olden-era.com/ru/units/skeleton

@@ -1,10 +1,16 @@
 import { Fragment, useMemo, useState } from 'react';
 import type { AttackAbilities, AttackerStats, DamageStep, DefenderStats, Luck } from './formula';
-import { calculateDamage } from './formula';
+import { calculateAbilityDamage, calculateDamage } from './formula';
+import type { AttackMode } from './abilityEffects';
+import { attackModesFor, damageReduction, defaultRetaliation, doubleStrikeFor } from './abilityEffects';
 import { NumberField } from './components/NumberField';
 import { UnitPicker } from './components/UnitPicker';
 import type { UnitPreset } from './units';
+import { UNITS_BY_ID } from './units';
 import './App.css';
+
+/** Условия атаки, задаваемые в форме; остальное выводится из режима */
+type AttackParams = Omit<AttackAbilities, 'rangePenalty' | 'modeMultiplier' | 'doubleStrike'>;
 
 const formatNumber = (value: number) => value.toLocaleString('ru');
 
@@ -45,13 +51,13 @@ export default function App() {
     heroAttack: 0,
     heroDefense: 0,
   });
-  const [attack, setAttack] = useState<AttackAbilities>({
+  const [attack, setAttack] = useState<AttackParams>({
     distance: 1,
-    halfDamage: false,
     generalModifiers: 0,
     typeModifiers: 0,
     retaliation: true,
   });
+  const [modeId, setModeId] = useState('base');
   const [defender, setDefender] = useState<DefenderStats>({
     count: 100,
     health: 150,
@@ -69,10 +75,23 @@ export default function App() {
 
   const patchAttacker = (patch: Partial<AttackerStats>) =>
     setAttacker((prev) => ({ ...prev, ...patch }));
-  const patchAttack = (patch: Partial<AttackAbilities>) =>
+  const patchAttack = (patch: Partial<AttackParams>) =>
     setAttack((prev) => ({ ...prev, ...patch }));
   const patchDefender = (patch: Partial<DefenderStats>) =>
     setDefender((prev) => ({ ...prev, ...patch }));
+
+  const attackerUnit = attackerUnitId ? (UNITS_BY_ID.get(attackerUnitId) ?? null) : null;
+  const defenderUnit = defenderUnitId ? (UNITS_BY_ID.get(defenderUnitId) ?? null) : null;
+  const modes = useMemo(() => attackModesFor(attackerUnit), [attackerUnit]);
+  const mode = modes.find((m) => m.id === modeId) ?? modes[0];
+  const doubleStrike = doubleStrikeFor(attackerUnit, mode);
+  const reduction = damageReduction(defenderUnit, mode);
+
+  // Смена режима заново проставляет ответный удар; дальше он правится вручную.
+  const selectMode = (next: AttackMode, unit: UnitPreset | null) => {
+    setModeId(next.id);
+    patchAttack({ retaliation: defaultRetaliation(unit, next) });
+  };
 
   const presetStats = (unit: UnitPreset) => ({
     health: unit.stats.health,
@@ -86,6 +105,7 @@ export default function App() {
   const selectAttackerUnit = (unit: UnitPreset | null) => {
     setAttackerUnitId(unit?.id ?? null);
     if (unit) patchAttacker(presetStats(unit));
+    selectMode(attackModesFor(unit)[0], unit);
   };
 
   const selectDefenderUnit = (unit: UnitPreset | null) => {
@@ -94,8 +114,41 @@ export default function App() {
   };
 
   const result = useMemo(
-    () => calculateDamage({ attacker, abilities: attack, defender }),
-    [attacker, attack, defender],
+    () =>
+      calculateDamage({
+        attacker,
+        abilities: {
+          ...attack,
+          typeModifiers: attack.typeModifiers + (mode.special ? 0 : (reduction?.percent ?? 0)),
+          rangePenalty: mode.rangePenalty,
+          modeMultiplier: mode.multiplier,
+          doubleStrike,
+        },
+        defender,
+      }),
+    [attacker, attack, defender, mode, doubleStrike, reduction],
+  );
+
+  // Способности с собственным уроном считаются отдельной формулой.
+  const special = mode.special;
+  const specialResult = useMemo(
+    () =>
+      special
+        ? calculateAbilityDamage({
+            count: attacker.count,
+            damageMin: attacker.damageMin,
+            damageMax: attacker.damageMax,
+            factor: special.factor,
+            attackModifier: special.ignoreDefense
+              ? (20 + Math.max(0, attacker.attack) + Math.max(0, attacker.heroAttack)) / 20
+              : 1,
+            base: special.base,
+            perUnit: special.perUnit,
+            reduction: reduction?.percent,
+            defender: { health: defender.health, topHealth: defender.topHealth },
+          })
+        : null,
+    [special, attacker, defender, reduction],
   );
 
   return (
@@ -184,44 +237,67 @@ export default function App() {
 
         <section className="column">
           <h2>Атака</h2>
-          <NumberField
-            id="distance"
-            label="Гексы до цели"
-            value={attack.distance}
-            min={1}
-            max={20}
-            onChange={(distance) => patchAttack({ distance })}
-          />
-          <NumberField
-            id="general-modifiers"
-            label="Общие модификаторы, % (сумма)"
-            value={attack.generalModifiers}
-            step={5}
-            onChange={(generalModifiers) => patchAttack({ generalModifiers })}
-          />
-          <NumberField
-            id="type-modifiers"
-            label="Типовые модификаторы, % (сумма)"
-            value={attack.typeModifiers}
-            step={5}
-            onChange={(typeModifiers) => patchAttack({ typeModifiers })}
-          />
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              checked={attack.halfDamage}
-              onChange={(e) => patchAttack({ halfDamage: e.target.checked })}
+          <div className="mode-group">
+            <div className="group-title">Режим атаки</div>
+            {modes.map((m) => (
+              <label className="radio" key={m.id}>
+                <input
+                  type="radio"
+                  name="attack-mode"
+                  checked={m.id === mode.id}
+                  onChange={() => selectMode(m, attackerUnit)}
+                />
+                {m.label}
+              </label>
+            ))}
+          </div>
+          {mode.rangePenalty && (
+            <NumberField
+              id="distance"
+              label="Гексы до цели"
+              value={attack.distance}
+              min={1}
+              max={20}
+              onChange={(distance) => patchAttack({ distance })}
             />
-            Половинный урон (стрелок вплотную / через препятствие)
-          </label>
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              checked={attack.retaliation}
-              onChange={(e) => patchAttack({ retaliation: e.target.checked })}
-            />
-            Ответный удар
-          </label>
+          )}
+          {!mode.special && (
+            <>
+              <NumberField
+                id="general-modifiers"
+                label="Общие модификаторы, % (сумма)"
+                value={attack.generalModifiers}
+                step={5}
+                onChange={(generalModifiers) => patchAttack({ generalModifiers })}
+              />
+              <NumberField
+                id="type-modifiers"
+                label="Типовые модификаторы, % (сумма)"
+                value={attack.typeModifiers}
+                step={5}
+                onChange={(typeModifiers) => patchAttack({ typeModifiers })}
+              />
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  checked={attack.retaliation}
+                  onChange={(e) => patchAttack({ retaliation: e.target.checked })}
+                />
+                Ответный удар
+              </label>
+            </>
+          )}
+          {mode.special && (
+            <p className="mode-note">
+              Урон способности не зависит от АТК/ЗЩТ, модификаторов, дальности и удачи и не
+              провоцирует ответный удар.
+            </p>
+          )}
+          {reduction && (
+            <p className="mode-note">
+              Защита цели: {reduction.percent}% ({reduction.source}) — учтено автоматически.
+            </p>
+          )}
         </section>
 
         <section className="column">
@@ -305,24 +381,46 @@ export default function App() {
       </div>
 
       <div className="cards">
-        <div className="card">
-          <div className="label">Итоговый урон (средний)</div>
-          {result.byLuck.map((row) => (
-            <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
-              <span className="damage-luck">{LUCK_LABEL[row.luck]}</span>
+        {specialResult && (
+          <div className="card">
+            <div className="label">Урон способности</div>
+            <div className="damage-row">
+              <span className="damage-luck">{mode.label}</span>
               <span className="damage-value">
-                {formatRange(row.min, row.max)}{' '}
-                <span className="damage-avg">({formatNumber(row.average)})</span>
+                {formatRange(specialResult.min, specialResult.max)}{' '}
+                <span className="damage-avg">({formatNumber(specialResult.average)})</span>
                 <span className="damage-sub">
                   умрёт:{' '}
-                  {row.killsMin === row.killsMax
-                    ? formatNumber(row.killsMin)
-                    : `${formatNumber(row.killsMin)}–${formatNumber(row.killsMax)}`}
+                  {specialResult.killsMin === specialResult.killsMax
+                    ? formatNumber(specialResult.killsMin)
+                    : `${formatNumber(specialResult.killsMin)}–${formatNumber(specialResult.killsMax)}`}
                 </span>
               </span>
             </div>
-          ))}
-        </div>
+            <Formula steps={specialResult.steps} />
+          </div>
+        )}
+        {!specialResult && (
+          <div className="card">
+            <div className="label">Удар атакующего (средний)</div>
+            {result.byLuck.map((row) => (
+              <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
+                <span className="damage-luck">{LUCK_LABEL[row.luck]}</span>
+                <span className="damage-value">
+                  {formatRange(row.min, row.max)}{' '}
+                  <span className="damage-avg">({formatNumber(row.average)})</span>
+                  <span className="damage-sub">
+                    умрёт:{' '}
+                    {row.killsMin === row.killsMax
+                      ? formatNumber(row.killsMin)
+                      : `${formatNumber(row.killsMin)}–${formatNumber(row.killsMax)}`}
+                  </span>
+                </span>
+              </div>
+            ))}
+            <Formula steps={result.steps} />
+          </div>
+        )}
         {attack.retaliation && (
           <div className="card">
             <div className="label">Ответный удар (средний)</div>
@@ -349,18 +447,41 @@ export default function App() {
                 </div>
               );
             })}
+            <Formula steps={result.retaliationSteps} />
           </div>
         )}
-      </div>
-
-      <div className="card formula-card">
-        <div className="label">Урон</div>
-        <Formula steps={result.steps} />
-        {attack.retaliation && (
-          <>
-            <div className="label">Ответный удар</div>
-            <Formula steps={result.retaliationSteps} />
-          </>
+        {doubleStrike && (
+          <div className="card">
+            <div className="label">Второй удар (средний)</div>
+            {result.byLuck.map((row) => {
+              const second = row.secondStrike;
+              if (!second) return null;
+              return (
+                <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
+                  <span className="damage-luck">{LUCK_LABEL[row.luck]}</span>
+                  {second.attackersMax > 0 ? (
+                    <span className="damage-value">
+                      {formatRange(second.min, second.max)}{' '}
+                      <span className="damage-avg">({formatNumber(second.average)})</span>
+                      <span className="damage-sub">
+                        бьют:{' '}
+                        {second.attackersMin === second.attackersMax
+                          ? formatNumber(second.attackersMin)
+                          : `${formatNumber(second.attackersMin)}–${formatNumber(second.attackersMax)}`}{' '}
+                        · умрёт:{' '}
+                        {second.killsMin === second.killsMax
+                          ? formatNumber(second.killsMin)
+                          : `${formatNumber(second.killsMin)}–${formatNumber(second.killsMax)}`}
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="damage-avg">отряд уничтожен — второго удара нет</span>
+                  )}
+                </div>
+              );
+            })}
+            <Formula steps={result.secondStrikeSteps} />
+          </div>
         )}
       </div>
 
@@ -368,12 +489,24 @@ export default function App() {
         ATK — атака существа плюс атака героя, DEF — защита существа плюс защита героя.
         Типовые бонусы и штрафы
         сначала суммируются; после них должно остаться хотя бы 10% урона. Итог всегда наносит
-        минимум 1 урона. Дальнобойная атака теряет 10% за каждый гекс сверх трёх (максимум −50%).
+        минимум 1 урона. Режимы атаки строятся по способностям выбранного юнита: у стрелка
+        дальняя атака теряет 10% за каждый гекс сверх трёх (максимум −50%; «Снайпер» стреляет
+        без штрафа), ближняя атака идёт с половинным уроном (кроме «Дуэлянта»), боевые стойки
+        дают ×0.5. Активные способности с собственным уроном (чистым или магическим) считаются
+        по формуле из описания: АТК/ЗЩТ, модификаторы, дальность и удача на них не действуют;
+        магический урон снижает «Защита от магии» цели, чистый не снижается ничем. Постоянные
+        защитные способности цели («Защита от выстрелов», «Защита в ближнем бою», «Презрение»)
+        уменьшают урон соответствующего типа атаки автоматически.
+        Ответный удар проставляется автоматически: дальняя атака, атака через гекс и
+        «Стремительный удар» ответа не провоцируют, галочку можно переключить вручную.
         Погибшие: первым гибнет верхний юнит с неполным здоровьем, дальше урон делится на полное
         здоровье (округление вниз); расчётное число не ограничено размером отряда. Ответный удар: по урону атаки считаются выжившие существа защитника (суммарное здоровье
         минус урон, округление числа существ вверх), затем они бьют по обычной формуле со своим
         уроном и модификатором (20 + ATK защитника) / (20 + DEF атакующего); удача, дальность и
-        модификаторы атаки на ответ не влияют. Данные — официальная вики игры; игра в раннем
+        модификаторы атаки на ответ не влияют. Второй удар («Двойной удар», при стрельбе —
+        «Двойной выстрел») наносят выжившие после ответа атакующие по остатку отряда защитника;
+        удача действует на оба удара одинаково, хотя в игре она выпадает на каждый удар отдельно.
+        Данные — официальная вики игры; игра в раннем
         доступе, цифры могут меняться.
       </p>
     </main>

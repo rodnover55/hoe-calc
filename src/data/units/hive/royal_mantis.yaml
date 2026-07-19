@@ -16,6 +16,25 @@ stats:
   speed: 4
 attackType: melee
 flying: false
+abilities:
+  - id: hive_spawn
+    name: "Порождение Роя"
+    description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+  - id: melee_attack
+    name: "Ближний бой"
+    description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+  - id: adaptation_attack_ii
+    name: "Адаптация. Атака"
+    description: "Наносит +30% урона до конца раунда."
+  - id: hivemind_vanguard
+    name: "Рой. Авангард"
+    description: "В начале боя получает +1 к атаке за каждое другое уникальное существо Роя в армии. Убив отряд противника, генерирует очки концентрации: 2."
+  - id: adaptation_defence_ii
+    name: "Адаптация. Защита"
+    description: "Получает –30% урона до конца раунда."
+  - id: adaptation_speed_ii
+    name: "Adaptation: Speed"
+    description: "Gains 3 Speed until the end of the round."
 growth: 12
 cost: 1214
 source: https://www.olden-era.com/ru/units/royal_mantis

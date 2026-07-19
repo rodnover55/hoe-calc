@@ -15,6 +15,22 @@ stats:
   speed: 4
 attackType: melee
 flying: false
+abilities:
+  - id: hive_spawn
+    name: "Порождение Роя"
+    description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+  - id: melee_attack
+    name: "Ближний бой"
+    description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+  - id: adaptation_attack_i
+    name: "Адаптация. Атака"
+    description: "Наносит +20% урона до конца раунда."
+  - id: adaptation_defence_i
+    name: "Адаптация. Защита"
+    description: "Получает –20% урона до конца раунда."
+  - id: adaptation_speed_i
+    name: "Адаптация. Скорость"
+    description: "Получает +2 к скорости до конца раунда."
 growth: 12
 cost: 1012
 source: https://www.olden-era.com/ru/units/mantis

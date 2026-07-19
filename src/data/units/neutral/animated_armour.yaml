@@ -15,6 +15,22 @@ stats:
   speed: 4
 attackType: melee
 flying: false
+abilities:
+  - id: embodiment
+    name: "Воплощение"
+    description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+  - id: melee_attack
+    name: "Ближний бой"
+    description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+  - id: melee_defence_3
+    name: "Защита в ближнем бою III"
+    description: "Получает –60% урона в ближнем бою."
+  - id: magic_defence_3
+    name: "Защита от магии III"
+    description: "Получает –60% магического урона."
+  - id: ranged_defence_3
+    name: "Защита от выстрелов III"
+    description: "Получает –60% урона от выстрелов."
 growth: 8
 cost: 412
 source: https://www.olden-era.com/ru/units/animated_armour

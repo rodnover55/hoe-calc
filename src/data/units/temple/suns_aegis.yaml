@@ -1,6 +1,6 @@
 id: suns_aegis
 name: "Эгида Солнца"
-nameEn: "Sun&#x27;s Aegis"
+nameEn: "Sun's Aegis"
 faction: temple
 tier: 1
 grade: 2
@@ -16,6 +16,19 @@ stats:
   speed: 5
 attackType: melee
 flying: false
+abilities:
+  - id: aegis
+    name: "Эгида"
+    description: "Это существо и все дружественные отряды на соседних с ним гексах получают –30% урона от выстрелов."
+  - id: anointed_for_defence
+    name: "Помазан на защиту"
+    description: "Получает +2 к защите до конца боя каждый раз, когда на него накладывают положительный эффект."
+  - id: melee_attack
+    name: "Ближний бой"
+    description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+  - id: living
+    name: "Живое существо"
+    description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
 growth: 8
 cost: 23
 source: https://www.olden-era.com/ru/units/suns_aegis

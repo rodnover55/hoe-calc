@@ -123,17 +123,61 @@ select:focus {
   margin-top: 5px;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 12px;
+.mode-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-@media (max-width: 720px) {
-  .cards {
-    grid-template-columns: 1fr;
-  }
+.mode-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.radio input {
+  margin-top: 4px;
+}
+
+.unit-abilities {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.unit-abilities summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.unit-abilities ul {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  line-height: 1.4;
+}
+
+.unit-abilities strong {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .group {
@@ -153,20 +197,14 @@ select:focus {
   letter-spacing: 0.04em;
 }
 
-.formula-card {
-  margin-bottom: 1rem;
-}
-
 .formula {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 6px 12px;
-  margin-top: 8px;
-}
-
-.formula-card .formula + .label {
-  margin-top: 14px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
 }
 
 .formula-part {
