@@ -1,0 +1,113 @@
+main {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 1.5rem;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 720px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.column {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.column h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+input[type='number'],
+select {
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+input[type='number']:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.checkbox input {
+  margin-top: 5px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.card .label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.card .value {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.steps {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.note {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 1.5rem;
+}
