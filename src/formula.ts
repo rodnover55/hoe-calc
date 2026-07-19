@@ -11,10 +11,14 @@ export interface AttackerStats {
   damageMin: number;
   /** Максимальный урон одного существа */
   damageMax: number;
-  /** Атака: существо + герой */
+  /** Атака существа */
   attack: number;
-  /** Защита: существо + герой (для расчёта ответного удара) */
+  /** Защита существа (для расчёта ответного удара) */
   defense: number;
+  /** Атака героя; прибавляется к атаке существа */
+  heroAttack: number;
+  /** Защита героя; прибавляется к защите существа */
+  heroDefense: number;
 }
 
 export interface DefenderStats {
@@ -28,10 +32,14 @@ export interface DefenderStats {
   damageMin: number;
   /** Максимальный урон одного существа */
   damageMax: number;
-  /** Атака: существо + герой (для расчёта ответного удара) */
+  /** Атака существа (для расчёта ответного удара) */
   attack: number;
-  /** Защита: существо + герой */
+  /** Защита существа */
   defense: number;
+  /** Атака героя; прибавляется к атаке существа */
+  heroAttack: number;
+  /** Защита героя; прибавляется к защите существа */
+  heroDefense: number;
 }
 
 export interface AttackParams {
@@ -73,7 +81,9 @@ export interface LuckDamage {
 }
 
 export interface DamageStep {
+  /** Подпись под множителем; для вычисляемых множителей включает значение */
   label: string;
+  /** Множитель с подставленными значениями */
   text: string;
 }
 
@@ -86,7 +96,10 @@ export interface DamageResult {
   retaliationModifier: number;
   /** Сработало ли ограничение типовых модификаторов в 10% */
   typeCapped: boolean;
+  /** Полная формула урона с подставленными значениями, по множителям */
   steps: DamageStep[];
+  /** Формула ответного удара с подставленными значениями */
+  retaliationSteps: DamageStep[];
 }
 
 export const LUCK_FACTOR: Record<Luck, number> = {
@@ -125,23 +138,30 @@ export function calculateDamage(
   const topHealth = Math.min(health, Math.max(1, attacker.topHealth));
   const damageMin = Math.max(0, attacker.damageMin);
   const damageMax = Math.max(damageMin, attacker.damageMax);
-  const atk = Math.max(0, attacker.attack);
-  const def = Math.max(0, defender.defense);
+  const unitAtk = Math.max(0, attacker.attack);
+  const heroAtk = Math.max(0, attacker.heroAttack);
+  const unitDef = Math.max(0, defender.defense);
+  const heroDef = Math.max(0, defender.heroDefense);
 
   const defCount = Math.max(1, defender.count);
   const defHealth = Math.max(1, defender.health);
   const defTopHealth = Math.min(defHealth, Math.max(1, defender.topHealth));
   const defDamageMin = Math.max(0, defender.damageMin);
   const defDamageMax = Math.max(defDamageMin, defender.damageMax);
+  const defUnitAtk = Math.max(0, defender.attack);
+  const defHeroAtk = Math.max(0, defender.heroAttack);
+  const attUnitDef = Math.max(0, attacker.defense);
+  const attHeroDef = Math.max(0, attacker.heroDefense);
 
-  const attackDefenseModifier = (20 + atk) / (20 + def);
-  const retaliationModifier =
-    (20 + Math.max(0, defender.attack)) / (20 + Math.max(0, attacker.defense));
-  const general = Math.max(0, 1 + attack.generalModifiers / 100);
+  const attackDefenseModifier = (20 + unitAtk + heroAtk) / (20 + unitDef + heroDef);
+  const retaliationModifier = (20 + defUnitAtk + defHeroAtk) / (20 + attUnitDef + attHeroDef);
+  const generalRaw = 1 + attack.generalModifiers / 100;
+  const general = Math.max(0, generalRaw);
   const typeRaw = 1 + attack.typeModifiers / 100;
   const type = Math.max(0.1, typeRaw);
   const typeCapped = typeRaw < 0.1;
-  const range = rangeFactor(Math.max(1, attack.distance), attack.halfDamage);
+  const distance = Math.max(1, attack.distance);
+  const range = rangeFactor(distance, attack.halfDamage);
 
   /** Сколько существ защитника переживёт указанный урон */
   const defTotalHealth = (defCount - 1) * defHealth + defTopHealth;
@@ -186,18 +206,54 @@ export function calculateDamage(
     };
   });
 
-  const steps: DamageStep[] = [
-    { label: 'отряд', text: `${count} × (${damageMin}–${damageMax})` },
-    { label: 'АТК/ЗЩТ', text: `×${attackDefenseModifier.toFixed(2)}` },
-  ];
-  if (general !== 1) steps.push({ label: 'общие', text: `×${general.toFixed(2)}` });
-  if (type !== 1) {
-    steps.push({
-      label: typeCapped ? 'типовые, ограничено 10%' : 'типовые',
-      text: `×${type.toFixed(2)}`,
-    });
+  /** Подставленная форма процентного модификатора: «1 + 25/100» */
+  const pctText = (percent: number) => `1 ${percent >= 0 ? '+' : '−'} ${Math.abs(percent)}/100`;
+
+  const rangeParts: string[] = [];
+  if (distance > 3) {
+    const rangeRaw = 1 - 0.1 * (distance - 3);
+    const penalty = `1 − 0.1×(${distance}−3)`;
+    rangeParts.push(
+      rangeRaw < 0.5
+        ? `max(0.5; ${penalty})`
+        : attack.halfDamage
+          ? `(${penalty})`
+          : penalty,
+    );
   }
-  if (range !== 1) steps.push({ label: 'дальность/половина', text: `×${range.toFixed(2)}` });
+  if (attack.halfDamage) rangeParts.push('0.5');
+
+  const steps: DamageStep[] = [
+    { label: 'отряд × урон', text: `${count} × (${damageMin}–${damageMax})` },
+    {
+      label: `АТК/ЗЩТ = ${attackDefenseModifier.toFixed(2)}`,
+      text: `(20 + ${unitAtk} + ${heroAtk}) / (20 + ${unitDef} + ${heroDef})`,
+    },
+    {
+      label: `общие = ${general.toFixed(2)}`,
+      text:
+        generalRaw < 0
+          ? `max(0; ${pctText(attack.generalModifiers)})`
+          : pctText(attack.generalModifiers),
+    },
+    {
+      label: `типовые = ${type.toFixed(2)}${typeCapped ? ' (мин 10%)' : ''}`,
+      text: typeCapped ? `max(0.1; ${pctText(attack.typeModifiers)})` : pctText(attack.typeModifiers),
+    },
+    {
+      label: `дальность = ${range.toFixed(2)}`,
+      text: rangeParts.length > 0 ? rangeParts.join(' × ') : '1',
+    },
+    { label: 'удача', text: '(0.5 / 1 / 1.5)' },
+  ];
+
+  const retaliationSteps: DamageStep[] = [
+    { label: 'выжившие × урон', text: `выжившие × (${defDamageMin}–${defDamageMax})` },
+    {
+      label: `АТК/ЗЩТ = ${retaliationModifier.toFixed(2)}`,
+      text: `(20 + ${defUnitAtk} + ${defHeroAtk}) / (20 + ${attUnitDef} + ${attHeroDef})`,
+    },
+  ];
 
   return {
     byLuck,
@@ -205,5 +261,6 @@ export function calculateDamage(
     retaliationModifier,
     typeCapped,
     steps,
+    retaliationSteps,
   };
 }

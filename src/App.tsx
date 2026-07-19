@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import type { AttackParams, AttackerStats, DefenderStats, Luck } from './formula';
+import { Fragment, useMemo, useState } from 'react';
+import type { AttackParams, AttackerStats, DamageStep, DefenderStats, Luck } from './formula';
 import { calculateDamage } from './formula';
 import { NumberField } from './components/NumberField';
 import { UnitPicker } from './components/UnitPicker';
@@ -11,14 +11,27 @@ const formatNumber = (value: number) => value.toLocaleString('ru');
 const formatRange = (min: number, max: number) =>
   min === max ? formatNumber(min) : `${formatNumber(min)} – ${formatNumber(max)}`;
 
-const formatModifier = (modifier: number) =>
-  `${modifier.toFixed(2)} (${modifier >= 1 ? '+' : ''}${Math.round((modifier - 1) * 100)}%)`;
-
 const LUCK_LABEL: Record<Luck, string> = {
   unlucky: 'Неудача',
   normal: 'Обычный',
   lucky: 'Удача',
 };
+
+function Formula({ steps }: { steps: DamageStep[] }) {
+  return (
+    <div className="formula">
+      {steps.map((step, index) => (
+        <Fragment key={step.label}>
+          {index > 0 && <span className="formula-op">×</span>}
+          <span className="formula-part">
+            <span className="formula-value">{step.text}</span>
+            <span className="formula-label">{step.label}</span>
+          </span>
+        </Fragment>
+      ))}
+    </div>
+  );
+}
 
 export default function App() {
   const [attacker, setAttacker] = useState<AttackerStats>({
@@ -29,6 +42,8 @@ export default function App() {
     damageMax: 75,
     attack: 36,
     defense: 20,
+    heroAttack: 0,
+    heroDefense: 0,
   });
   const [attack, setAttack] = useState<AttackParams>({
     distance: 1,
@@ -45,6 +60,8 @@ export default function App() {
     damageMax: 50,
     attack: 30,
     defense: 12,
+    heroAttack: 0,
+    heroDefense: 0,
   });
 
   const [attackerUnitId, setAttackerUnitId] = useState<string | null>(null);
@@ -88,61 +105,81 @@ export default function App() {
       <div className="columns">
         <section className="column">
           <h2>Атакующий</h2>
-          <UnitPicker
-            idPrefix="attacker"
-            selectedId={attackerUnitId}
-            onSelect={selectAttackerUnit}
-          />
-          <NumberField
-            id="count"
-            label="Кол-во существ"
-            value={attacker.count}
-            min={1}
-            onChange={(count) => patchAttacker({ count })}
-          />
-          <NumberField
-            id="attacker-health"
-            label="Здоровье существа"
-            value={attacker.health}
-            min={1}
-            onChange={(health) => patchAttacker({ health })}
-          />
-          <NumberField
-            id="attacker-top-health"
-            label="Неполное здоровье юнита"
-            value={attacker.topHealth}
-            min={1}
-            max={attacker.health}
-            onChange={(topHealth) => patchAttacker({ topHealth })}
-          />
-          <NumberField
-            id="damage-min"
-            label="Урон мин"
-            value={attacker.damageMin}
-            min={0}
-            onChange={(damageMin) => patchAttacker({ damageMin })}
-          />
-          <NumberField
-            id="damage-max"
-            label="Урон макс"
-            value={attacker.damageMax}
-            min={0}
-            onChange={(damageMax) => patchAttacker({ damageMax })}
-          />
-          <NumberField
-            id="attack"
-            label="Атака (существо + герой)"
-            value={attacker.attack}
-            min={0}
-            onChange={(attack) => patchAttacker({ attack })}
-          />
-          <NumberField
-            id="attacker-defense"
-            label="Защита (существо + герой)"
-            value={attacker.defense}
-            min={0}
-            onChange={(defense) => patchAttacker({ defense })}
-          />
+          <div className="group">
+            <div className="group-title">Герой</div>
+            <NumberField
+              id="attacker-hero-attack"
+              label="Атака"
+              value={attacker.heroAttack}
+              min={0}
+              onChange={(heroAttack) => patchAttacker({ heroAttack })}
+            />
+            <NumberField
+              id="attacker-hero-defense"
+              label="Защита"
+              value={attacker.heroDefense}
+              min={0}
+              onChange={(heroDefense) => patchAttacker({ heroDefense })}
+            />
+          </div>
+          <div className="group">
+            <div className="group-title">Юнит</div>
+            <UnitPicker
+              idPrefix="attacker"
+              selectedId={attackerUnitId}
+              onSelect={selectAttackerUnit}
+            />
+            <NumberField
+              id="count"
+              label="Кол-во существ"
+              value={attacker.count}
+              min={1}
+              onChange={(count) => patchAttacker({ count })}
+            />
+            <NumberField
+              id="attacker-health"
+              label="Здоровье существа"
+              value={attacker.health}
+              min={1}
+              onChange={(health) => patchAttacker({ health })}
+            />
+            <NumberField
+              id="attacker-top-health"
+              label="Неполное здоровье юнита"
+              value={attacker.topHealth}
+              min={1}
+              max={attacker.health}
+              onChange={(topHealth) => patchAttacker({ topHealth })}
+            />
+            <NumberField
+              id="damage-min"
+              label="Урон мин"
+              value={attacker.damageMin}
+              min={0}
+              onChange={(damageMin) => patchAttacker({ damageMin })}
+            />
+            <NumberField
+              id="damage-max"
+              label="Урон макс"
+              value={attacker.damageMax}
+              min={0}
+              onChange={(damageMax) => patchAttacker({ damageMax })}
+            />
+            <NumberField
+              id="attack"
+              label="Атака существа"
+              value={attacker.attack}
+              min={0}
+              onChange={(attack) => patchAttacker({ attack })}
+            />
+            <NumberField
+              id="attacker-defense"
+              label="Защита существа"
+              value={attacker.defense}
+              min={0}
+              onChange={(defense) => patchAttacker({ defense })}
+            />
+          </div>
         </section>
 
         <section className="column">
@@ -189,61 +226,81 @@ export default function App() {
 
         <section className="column">
           <h2>Защищающийся</h2>
-          <UnitPicker
-            idPrefix="defender"
-            selectedId={defenderUnitId}
-            onSelect={selectDefenderUnit}
-          />
-          <NumberField
-            id="defender-count"
-            label="Кол-во существ (до удара)"
-            value={defender.count}
-            min={1}
-            onChange={(count) => patchDefender({ count })}
-          />
-          <NumberField
-            id="defender-health"
-            label="Здоровье существа"
-            value={defender.health}
-            min={1}
-            onChange={(health) => patchDefender({ health })}
-          />
-          <NumberField
-            id="defender-top-health"
-            label="Неполное здоровье юнита"
-            value={defender.topHealth}
-            min={1}
-            max={defender.health}
-            onChange={(topHealth) => patchDefender({ topHealth })}
-          />
-          <NumberField
-            id="defender-damage-min"
-            label="Урон мин"
-            value={defender.damageMin}
-            min={0}
-            onChange={(damageMin) => patchDefender({ damageMin })}
-          />
-          <NumberField
-            id="defender-damage-max"
-            label="Урон макс"
-            value={defender.damageMax}
-            min={0}
-            onChange={(damageMax) => patchDefender({ damageMax })}
-          />
-          <NumberField
-            id="defender-attack"
-            label="Атака (существо + герой)"
-            value={defender.attack}
-            min={0}
-            onChange={(attack) => patchDefender({ attack })}
-          />
-          <NumberField
-            id="defense"
-            label="Защита (существо + герой)"
-            value={defender.defense}
-            min={0}
-            onChange={(defense) => patchDefender({ defense })}
-          />
+          <div className="group">
+            <div className="group-title">Герой</div>
+            <NumberField
+              id="defender-hero-attack"
+              label="Атака"
+              value={defender.heroAttack}
+              min={0}
+              onChange={(heroAttack) => patchDefender({ heroAttack })}
+            />
+            <NumberField
+              id="defender-hero-defense"
+              label="Защита"
+              value={defender.heroDefense}
+              min={0}
+              onChange={(heroDefense) => patchDefender({ heroDefense })}
+            />
+          </div>
+          <div className="group">
+            <div className="group-title">Юнит</div>
+            <UnitPicker
+              idPrefix="defender"
+              selectedId={defenderUnitId}
+              onSelect={selectDefenderUnit}
+            />
+            <NumberField
+              id="defender-count"
+              label="Кол-во существ (до удара)"
+              value={defender.count}
+              min={1}
+              onChange={(count) => patchDefender({ count })}
+            />
+            <NumberField
+              id="defender-health"
+              label="Здоровье существа"
+              value={defender.health}
+              min={1}
+              onChange={(health) => patchDefender({ health })}
+            />
+            <NumberField
+              id="defender-top-health"
+              label="Неполное здоровье юнита"
+              value={defender.topHealth}
+              min={1}
+              max={defender.health}
+              onChange={(topHealth) => patchDefender({ topHealth })}
+            />
+            <NumberField
+              id="defender-damage-min"
+              label="Урон мин"
+              value={defender.damageMin}
+              min={0}
+              onChange={(damageMin) => patchDefender({ damageMin })}
+            />
+            <NumberField
+              id="defender-damage-max"
+              label="Урон макс"
+              value={defender.damageMax}
+              min={0}
+              onChange={(damageMax) => patchDefender({ damageMax })}
+            />
+            <NumberField
+              id="defender-attack"
+              label="Атака существа"
+              value={defender.attack}
+              min={0}
+              onChange={(attack) => patchDefender({ attack })}
+            />
+            <NumberField
+              id="defense"
+              label="Защита существа"
+              value={defender.defense}
+              min={0}
+              onChange={(defense) => patchDefender({ defense })}
+            />
+          </div>
         </section>
       </div>
 
@@ -296,26 +353,20 @@ export default function App() {
         )}
       </div>
 
-      <div className="card modifier-card">
-        <div>
-          <div className="label">Модификатор АТК/ЗЩТ</div>
-          <div className="value">{formatModifier(result.attackDefenseModifier)}</div>
-        </div>
+      <div className="card formula-card">
+        <div className="label">Урон</div>
+        <Formula steps={result.steps} />
         {attack.retaliation && (
-          <div>
-            <div className="label">Модификатор ответа</div>
-            <div className="value">{formatModifier(result.retaliationModifier)}</div>
-          </div>
+          <>
+            <div className="label">Ответный удар</div>
+            <Formula steps={result.retaliationSteps} />
+          </>
         )}
       </div>
 
-      <div className="steps">
-        Расчёт: {result.steps.map((step) => `${step.text} (${step.label})`).join(' ')}
-      </div>
-
       <p className="note">
-        Формула: (кол-во существ) × (урон существа) × ((20 + ATK) / (20 + DEF)) × (общие
-        модификаторы) × (типовые модификаторы, минимум 10%) × (удача). Типовые бонусы и штрафы
+        ATK — атака существа плюс атака героя, DEF — защита существа плюс защита героя.
+        Типовые бонусы и штрафы
         сначала суммируются; после них должно остаться хотя бы 10% урона. Итог всегда наносит
         минимум 1 урона. Дальнобойная атака теряет 10% за каждый гекс сверх трёх (максимум −50%).
         Погибшие: первым гибнет верхний юнит с неполным здоровьем, дальше урон делится на полное
