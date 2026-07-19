@@ -18,7 +18,14 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-.share-button {
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.share-button,
+.swap-button {
   height: 36px;
   padding: 0 14px;
   font-size: 14px;
@@ -29,7 +36,8 @@ h1 {
   cursor: pointer;
 }
 
-.share-button:focus-visible {
+.share-button:focus-visible,
+.swap-button:focus-visible {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);

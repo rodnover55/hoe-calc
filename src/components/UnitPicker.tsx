@@ -24,6 +24,15 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
   // ссылки); своё состояние нужно только режиму ручного ввода.
   const [manualFaction, setManualFaction] = useState<Faction | ''>('');
   const [searching, setSearching] = useState(false);
+
+  // Родитель может сбросить выбор извне (кнопка обмена сторон); без сброса
+  // фракции пикер показывал бы список юнитов, где ничего не выбрано.
+  const [prevSelectedId, setPrevSelectedId] = useState(selectedId);
+  if (selectedId !== prevSelectedId) {
+    setPrevSelectedId(selectedId);
+    if (!selectedId) setManualFaction('');
+  }
+
   const faction = selected ? selected.faction : manualFaction;
 
   const units = faction ? baseUnits(faction) : [];

@@ -169,6 +169,17 @@ export default function App() {
     if (unit) patchDefender(presetStats(unit));
   };
 
+  // Режим атаки принадлежит атакующему, поэтому после обмена он строится
+  // заново по способностям нового атакующего, как при выборе юнита.
+  const swapSides = () => {
+    const nextAttackerUnit = defenderUnitId ? (UNITS_BY_ID.get(defenderUnitId) ?? null) : null;
+    setAttacker(defender);
+    setDefender(attacker);
+    setAttackerUnitId(defenderUnitId);
+    setDefenderUnitId(attackerUnitId);
+    selectMode(attackModesFor(nextAttackerUnit)[0], nextAttackerUnit);
+  };
+
   const result = useMemo(
     () =>
       calculateDamage({
@@ -211,13 +222,18 @@ export default function App() {
     <main>
       <header className="page-header">
         <h1>Калькулятор урона — Heroes of Might and Magic: Olden Era</h1>
-        <button
-          type="button"
-          className={copied ? 'share-button share-button--copied' : 'share-button'}
-          onClick={copyLink}
-        >
-          {copied ? 'Скопировано' : 'Скопировать ссылку'}
-        </button>
+        <div className="header-actions">
+          <button type="button" className="swap-button" onClick={swapSides}>
+            ⇄ Поменять местами
+          </button>
+          <button
+            type="button"
+            className={copied ? 'share-button share-button--copied' : 'share-button'}
+            onClick={copyLink}
+          >
+            {copied ? 'Скопировано' : 'Скопировать ссылку'}
+          </button>
+        </div>
       </header>
 
       <div className="columns">
