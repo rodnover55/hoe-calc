@@ -6,6 +6,15 @@ import './App.css';
 
 const formatNumber = (value: number) => value.toLocaleString('ru');
 
+const formatRange = (min: number, max: number) =>
+  min === max ? formatNumber(min) : `${formatNumber(min)} – ${formatNumber(max)}`;
+
+const LUCK_LABEL: Record<Luck, string> = {
+  unlucky: 'Неудача',
+  normal: 'Обычный',
+  lucky: 'Удача',
+};
+
 export default function App() {
   const [attacker, setAttacker] = useState<AttackerStats>({
     count: 100,
@@ -14,7 +23,6 @@ export default function App() {
     attack: 36,
   });
   const [attack, setAttack] = useState<AttackParams>({
-    luck: 'normal',
     distance: 1,
     halfDamage: false,
     generalModifiers: 0,
@@ -77,20 +85,6 @@ export default function App() {
 
         <section className="column column-attack">
           <h2>Атака</h2>
-          <div className="field">
-            <label className="field-label" htmlFor="luck">
-              Удача
-            </label>
-            <select
-              id="luck"
-              value={attack.luck}
-              onChange={(e) => patchAttack({ luck: e.target.value as Luck })}
-            >
-              <option value="normal">Обычный удар</option>
-              <option value="lucky">Удачный (×1.5)</option>
-              <option value="unlucky">Неудачный (×0.5)</option>
-            </select>
-          </div>
           <NumberField
             id="distance"
             label="Гексы до цели"
@@ -137,12 +131,16 @@ export default function App() {
 
       <div className="cards">
         <div className="card">
-          <div className="label">Итоговый урон</div>
-          <div className="value">
-            {result.min === result.max
-              ? formatNumber(result.min)
-              : `${formatNumber(result.min)} – ${formatNumber(result.max)}`}
-          </div>
+          <div className="label">Итоговый урон (средний)</div>
+          {result.byLuck.map((row) => (
+            <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
+              <span className="damage-luck">{LUCK_LABEL[row.luck]}</span>
+              <span className="damage-value">
+                {formatRange(row.min, row.max)}{' '}
+                <span className="damage-avg">({formatNumber(row.average)})</span>
+              </span>
+            </div>
+          ))}
         </div>
         <div className="card">
           <div className="label">Модификатор АТК/ЗЩТ</div>
@@ -150,10 +148,6 @@ export default function App() {
             {modifier.toFixed(2)} ({modifier >= 1 ? '+' : ''}
             {Math.round((modifier - 1) * 100)}%)
           </div>
-        </div>
-        <div className="card">
-          <div className="label">Средний урон</div>
-          <div className="value">{formatNumber(result.average)}</div>
         </div>
       </div>
 

@@ -17,7 +17,6 @@ export interface DefenderStats {
 }
 
 export interface AttackParams {
-  luck: Luck;
   /** Гексы до цели (для дальнобойной атаки) */
   distance: number;
   /** Половинный урон: стрелок вплотную или через препятствие */
@@ -33,10 +32,16 @@ export interface DamageStep {
   text: string;
 }
 
-export interface DamageResult {
+export interface LuckDamage {
+  luck: Luck;
   min: number;
   max: number;
   average: number;
+}
+
+export interface DamageResult {
+  /** Диапазоны урона по вариантам удачи: неудача, обычный, удача */
+  byLuck: LuckDamage[];
   /** Множитель (20 + ATK) / (20 + DEF) */
   attackDefenseModifier: number;
   /** Сработало ли ограничение типовых модификаторов в 10% */
@@ -49,6 +54,8 @@ export const LUCK_FACTOR: Record<Luck, number> = {
   lucky: 1.5,
   unlucky: 0.5,
 };
+
+export const LUCK_ORDER: Luck[] = ['unlucky', 'normal', 'lucky'];
 
 /** Дальнобойная атака теряет 10% за каждый гекс сверх трёх, максимум −50% */
 export function rangeFactor(distance: number, halfDamage: boolean): number {
@@ -77,12 +84,15 @@ export function calculateDamage(
   const typeRaw = 1 + attack.typeModifiers / 100;
   const type = Math.max(0.1, typeRaw);
   const typeCapped = typeRaw < 0.1;
-  const luck = LUCK_FACTOR[attack.luck];
   const range = rangeFactor(Math.max(1, attack.distance), attack.halfDamage);
 
-  const total = attackDefenseModifier * general * type * luck * range;
-  const min = Math.max(1, round(count * damageMin * total));
-  const max = Math.max(1, round(count * damageMax * total));
+  const base = attackDefenseModifier * general * type * range;
+  const byLuck = LUCK_ORDER.map((luck) => {
+    const total = base * LUCK_FACTOR[luck];
+    const min = Math.max(1, round(count * damageMin * total));
+    const max = Math.max(1, round(count * damageMax * total));
+    return { luck, min, max, average: Math.round((min + max) / 2) };
+  });
 
   const steps: DamageStep[] = [
     { label: 'отряд', text: `${count} × (${damageMin}–${damageMax})` },
@@ -96,12 +106,9 @@ export function calculateDamage(
     });
   }
   if (range !== 1) steps.push({ label: 'дальность/половина', text: `×${range.toFixed(2)}` });
-  if (luck !== 1) steps.push({ label: 'удача', text: `×${luck.toFixed(1)}` });
 
   return {
-    min,
-    max,
-    average: Math.round((min + max) / 2),
+    byLuck,
     attackDefenseModifier,
     typeCapped,
     steps,

@@ -80,9 +80,15 @@ select:focus {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: 1.4fr 1fr;
   gap: 12px;
   margin-bottom: 1rem;
+}
+
+@media (max-width: 540px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
@@ -99,6 +105,38 @@ select:focus {
 .card .value {
   font-size: 24px;
   font-weight: 500;
+}
+
+.damage-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.damage-luck {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.damage-value {
+  font-size: 18px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.damage-avg {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.damage-row--unlucky .damage-value {
+  color: var(--danger);
+}
+
+.damage-row--lucky .damage-value {
+  color: var(--success);
 }
 
 .steps {

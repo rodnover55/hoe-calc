@@ -6,6 +6,8 @@
   --text-muted: #888780;
   --border: #d3d1c7;
   --accent: #185fa5;
+  --danger: #a04545;
+  --success: #3f7d46;
   --radius: 8px;
 }
 
@@ -18,6 +20,8 @@
     --text-muted: #888780;
     --border: #444441;
     --accent: #85b7eb;
+    --danger: #d99090;
+    --success: #96c49b;
   }
 }
 
