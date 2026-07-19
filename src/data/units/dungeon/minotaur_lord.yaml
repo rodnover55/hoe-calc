@@ -1,0 +1,21 @@
+id: minotaur_lord
+name: "Минотавр-лорд"
+nameEn: "Minotaur Lord"
+faction: dungeon
+tier: 4
+grade: 1
+upgradeOf: minotaur
+image: units/dungeon/minotaur_lord.webp
+stats:
+  health: 40
+  attack: 11
+  defense: 15
+  damageMin: 12
+  damageMax: 14
+  initiative: 6
+  speed: 6
+attackType: melee
+flying: false
+growth: 15
+cost: 1214
+source: https://www.olden-era.com/ru/units/minotaur_lord

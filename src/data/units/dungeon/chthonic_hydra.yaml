@@ -1,0 +1,21 @@
+id: chthonic_hydra
+name: "Хтоническая гидра"
+nameEn: "Chthonic Hydra"
+faction: dungeon
+tier: 6
+grade: 1
+upgradeOf: hydra
+image: units/dungeon/chthonic_hydra.webp
+stats:
+  health: 160
+  attack: 24
+  defense: 30
+  damageMin: 25
+  damageMax: 28
+  initiative: 6
+  speed: 5
+attackType: melee
+flying: false
+growth: 30
+cost: 2528
+source: https://www.olden-era.com/ru/units/chthonic_hydra

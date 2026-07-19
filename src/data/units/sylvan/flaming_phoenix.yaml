@@ -1,0 +1,21 @@
+id: flaming_phoenix
+name: "Пылающий феникс"
+nameEn: "Flaming Phoenix"
+faction: sylvan
+tier: 7
+grade: 2
+upgradeOf: phoenix
+image: units/sylvan/flaming_phoenix.webp
+stats:
+  health: 300
+  attack: 36
+  defense: 27
+  damageMin: 45
+  damageMax: 65
+  initiative: 16
+  speed: 10
+attackType: melee
+flying: true
+growth: 27
+cost: 4565
+source: https://www.olden-era.com/ru/units/flaming_phoenix

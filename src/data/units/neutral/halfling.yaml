@@ -1,0 +1,20 @@
+id: halfling
+name: "Полурослик"
+nameEn: "Halfling"
+faction: neutral
+tier: 2
+grade: 0
+image: units/neutral/halfling.webp
+stats:
+  health: 6
+  attack: 6
+  defense: 6
+  damageMin: 3
+  damageMax: 3
+  initiative: 6
+  speed: 6
+attackType: ranged
+flying: false
+growth: 6
+cost: 33
+source: https://www.olden-era.com/ru/units/halfling

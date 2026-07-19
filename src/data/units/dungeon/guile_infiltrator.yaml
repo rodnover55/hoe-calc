@@ -1,0 +1,21 @@
+id: guile_infiltrator
+name: "Коварный инфильтратор"
+nameEn: "Guile Infiltrator"
+faction: dungeon
+tier: 2
+grade: 1
+upgradeOf: infiltrator
+image: units/dungeon/guile_infiltrator.webp
+stats:
+  health: 13
+  attack: 6
+  defense: 4
+  damageMin: 3
+  damageMax: 6
+  initiative: 6
+  speed: 7
+attackType: melee
+flying: false
+growth: 4
+cost: 36
+source: https://www.olden-era.com/ru/units/guile_infiltrator

@@ -1,0 +1,21 @@
+id: barghest
+name: "Баргест"
+nameEn: "Barghest"
+faction: necropolis
+tier: 3
+grade: 1
+upgradeOf: undead_pet
+image: units/necropolis/barghest.webp
+stats:
+  health: 14
+  attack: 4
+  defense: 6
+  damageMin: 3
+  damageMax: 5
+  initiative: 8
+  speed: 6
+attackType: melee
+flying: false
+growth: 6
+cost: 35
+source: https://www.olden-era.com/ru/units/barghest

@@ -1,0 +1,21 @@
+id: black_dragon
+name: "Чёрный дракон"
+nameEn: "Black Dragon"
+faction: dungeon
+tier: 7
+grade: 1
+upgradeOf: cave_dragon
+image: units/dungeon/black_dragon.webp
+stats:
+  health: 350
+  attack: 29
+  defense: 32
+  damageMin: 65
+  damageMax: 75
+  initiative: 14
+  speed: 9
+attackType: melee
+flying: true
+growth: 32
+cost: 6575
+source: https://www.olden-era.com/ru/units/black_dragon

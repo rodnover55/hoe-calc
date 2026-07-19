@@ -1,0 +1,21 @@
+id: ferocious_rashoth
+name: "Свирепый Ра&#x27;Шот"
+nameEn: "Ferocious Ra&#x27;Shoth"
+faction: schism
+tier: 1
+grade: 2
+upgradeOf: rashoth
+image: units/schism/ferocious_rashoth.webp
+stats:
+  health: 10
+  attack: 4
+  defense: 4
+  damageMin: 3
+  damageMax: 3
+  initiative: 5
+  speed: 6
+attackType: melee
+flying: true
+growth: 4
+cost: 33
+source: https://www.olden-era.com/ru/units/ferocious_rashoth

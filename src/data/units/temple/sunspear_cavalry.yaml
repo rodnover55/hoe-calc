@@ -1,0 +1,21 @@
+id: sunspear_cavalry
+name: "Кавалерия Солнечного копья"
+nameEn: "Sunspear Cavalry"
+faction: temple
+tier: 5
+grade: 2
+upgradeOf: cavalry
+image: units/temple/sunspear_cavalry.webp
+stats:
+  health: 85
+  attack: 14
+  defense: 22
+  damageMin: 12
+  damageMax: 16
+  initiative: 10
+  speed: 8
+attackType: melee
+flying: false
+growth: 22
+cost: 1216
+source: https://www.olden-era.com/ru/units/sunspear_cavalry

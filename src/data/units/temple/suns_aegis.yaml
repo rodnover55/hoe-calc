@@ -1,0 +1,21 @@
+id: suns_aegis
+name: "Эгида Солнца"
+nameEn: "Sun&#x27;s Aegis"
+faction: temple
+tier: 1
+grade: 2
+upgradeOf: swordsman
+image: units/temple/suns_aegis.webp
+stats:
+  health: 15
+  attack: 5
+  defense: 8
+  damageMin: 2
+  damageMax: 3
+  initiative: 5
+  speed: 5
+attackType: melee
+flying: false
+growth: 8
+cost: 23
+source: https://www.olden-era.com/ru/units/suns_aegis

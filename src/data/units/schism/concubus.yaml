@@ -1,0 +1,20 @@
+id: concubus
+name: "Конкуб"
+nameEn: "Concubus"
+faction: schism
+tier: 5
+grade: 0
+image: units/schism/concubus.webp
+stats:
+  health: 60
+  attack: 16
+  defense: 13
+  damageMin: 14
+  damageMax: 20
+  initiative: 5
+  speed: 2
+attackType: ranged
+flying: false
+growth: 13
+cost: 1420
+source: https://www.olden-era.com/ru/units/concubus

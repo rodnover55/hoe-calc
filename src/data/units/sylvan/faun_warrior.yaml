@@ -1,0 +1,21 @@
+id: faun_warrior
+name: "Фавн-воин"
+nameEn: "Faun Warrior"
+faction: sylvan
+tier: 1
+grade: 2
+upgradeOf: faun
+image: units/sylvan/faun_warrior.webp
+stats:
+  health: 11
+  attack: 6
+  defense: 6
+  damageMin: 4
+  damageMax: 6
+  initiative: 6
+  speed: 4
+attackType: melee
+flying: false
+growth: 6
+cost: 46
+source: https://www.olden-era.com/ru/units/faun_warrior

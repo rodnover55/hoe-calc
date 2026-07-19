@@ -1,0 +1,20 @@
+id: red_dragon
+name: "Красный дракон"
+nameEn: "Red Dragon"
+faction: neutral
+tier: 7
+grade: 0
+image: units/neutral/red_dragon.webp
+stats:
+  health: 325
+  attack: 33
+  defense: 32
+  damageMin: 60
+  damageMax: 70
+  initiative: 12
+  speed: 9
+attackType: melee
+flying: true
+growth: 32
+cost: 6070
+source: https://www.olden-era.com/ru/units/red_dragon

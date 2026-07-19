@@ -1,0 +1,21 @@
+id: stinger
+name: "Жалоносец"
+nameEn: "Stinger"
+faction: hive
+tier: 3
+grade: 1
+upgradeOf: hornet
+image: units/hive/stinger.webp
+stats:
+  health: 20
+  attack: 7
+  defense: 10
+  damageMin: 4
+  damageMax: 9
+  initiative: 12
+  speed: 9
+attackType: melee
+flying: true
+growth: 10
+cost: 49
+source: https://www.olden-era.com/ru/units/stinger

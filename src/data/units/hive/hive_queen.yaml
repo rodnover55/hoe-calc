@@ -1,0 +1,20 @@
+id: hive_queen
+name: "Королева улья"
+nameEn: "Hive Queen"
+faction: hive
+tier: 7
+grade: 0
+image: units/hive/hive_queen.webp
+stats:
+  health: 200
+  attack: 25
+  defense: 25
+  damageMin: 60
+  damageMax: 60
+  initiative: 8
+  speed: 6
+attackType: melee
+flying: false
+growth: 25
+cost: 6060
+source: https://www.olden-era.com/ru/units/hive_queen

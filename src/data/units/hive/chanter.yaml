@@ -1,0 +1,21 @@
+id: chanter
+name: "Певец роя"
+nameEn: "Chanter"
+faction: hive
+tier: 3
+grade: 2
+upgradeOf: hornet
+image: units/hive/chanter.webp
+stats:
+  health: 25
+  attack: 7
+  defense: 10
+  damageMin: 4
+  damageMax: 9
+  initiative: 4
+  speed: 11
+attackType: melee
+flying: true
+growth: 10
+cost: 49
+source: https://www.olden-era.com/ru/units/chanter

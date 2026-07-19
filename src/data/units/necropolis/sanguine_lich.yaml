@@ -1,0 +1,21 @@
+id: sanguine_lich
+name: "Кровавый лич"
+nameEn: "Sanguine Lich"
+faction: necropolis
+tier: 5
+grade: 2
+upgradeOf: lich
+image: units/necropolis/sanguine_lich.webp
+stats:
+  health: 45
+  attack: 12
+  defense: 16
+  damageMin: 13
+  damageMax: 16
+  initiative: 4
+  speed: 3
+attackType: ranged
+flying: false
+growth: 16
+cost: 1316
+source: https://www.olden-era.com/ru/units/sanguine_lich

@@ -1,0 +1,20 @@
+id: worldwatcher
+name: "Миростраж"
+nameEn: "Worldwatcher"
+faction: neutral
+tier: 6
+grade: 0
+image: units/neutral/worldwatcher.webp
+stats:
+  health: 75
+  attack: 25
+  defense: 25
+  damageMin: 25
+  damageMax: 25
+  initiative: 8
+  speed: 3
+attackType: ranged
+flying: false
+growth: 25
+cost: 2525
+source: https://www.olden-era.com/ru/units/worldwatcher

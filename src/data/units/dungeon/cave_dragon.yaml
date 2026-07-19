@@ -1,0 +1,20 @@
+id: cave_dragon
+name: "Пещерный дракон"
+nameEn: "Cave Dragon"
+faction: dungeon
+tier: 7
+grade: 0
+image: units/dungeon/cave_dragon.webp
+stats:
+  health: 275
+  attack: 29
+  defense: 25
+  damageMin: 50
+  damageMax: 60
+  initiative: 11
+  speed: 8
+attackType: melee
+flying: true
+growth: 25
+cost: 5060
+source: https://www.olden-era.com/ru/units/cave_dragon

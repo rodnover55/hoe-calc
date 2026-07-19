@@ -1,0 +1,20 @@
+id: herbomancer
+name: "Травомант"
+nameEn: "Herbomancer"
+faction: sylvan
+tier: 5
+grade: 0
+image: units/sylvan/herbomancer.webp
+stats:
+  health: 60
+  attack: 12
+  defense: 14
+  damageMin: 15
+  damageMax: 18
+  initiative: 6
+  speed: 4
+attackType: long_reach
+flying: false
+growth: 14
+cost: 1518
+source: https://www.olden-era.com/ru/units/herbomancer

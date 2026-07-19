@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import type { AttackParams, AttackerStats, DefenderStats, Luck } from './formula';
 import { calculateDamage } from './formula';
 import { NumberField } from './components/NumberField';
+import { UnitPicker } from './components/UnitPicker';
+import type { UnitPreset } from './units';
 import './App.css';
 
 const formatNumber = (value: number) => value.toLocaleString('ru');
@@ -45,12 +47,34 @@ export default function App() {
     defense: 12,
   });
 
+  const [attackerUnitId, setAttackerUnitId] = useState<string | null>(null);
+  const [defenderUnitId, setDefenderUnitId] = useState<string | null>(null);
+
   const patchAttacker = (patch: Partial<AttackerStats>) =>
     setAttacker((prev) => ({ ...prev, ...patch }));
   const patchAttack = (patch: Partial<AttackParams>) =>
     setAttack((prev) => ({ ...prev, ...patch }));
   const patchDefender = (patch: Partial<DefenderStats>) =>
     setDefender((prev) => ({ ...prev, ...patch }));
+
+  const presetStats = (unit: UnitPreset) => ({
+    health: unit.stats.health,
+    topHealth: unit.stats.health,
+    damageMin: unit.stats.damageMin,
+    damageMax: unit.stats.damageMax,
+    attack: unit.stats.attack,
+    defense: unit.stats.defense,
+  });
+
+  const selectAttackerUnit = (unit: UnitPreset | null) => {
+    setAttackerUnitId(unit?.id ?? null);
+    if (unit) patchAttacker(presetStats(unit));
+  };
+
+  const selectDefenderUnit = (unit: UnitPreset | null) => {
+    setDefenderUnitId(unit?.id ?? null);
+    if (unit) patchDefender(presetStats(unit));
+  };
 
   const result = useMemo(
     () => calculateDamage(attacker, attack, defender),
@@ -64,6 +88,11 @@ export default function App() {
       <div className="columns">
         <section className="column">
           <h2>Атакующий</h2>
+          <UnitPicker
+            idPrefix="attacker"
+            selectedId={attackerUnitId}
+            onSelect={selectAttackerUnit}
+          />
           <NumberField
             id="count"
             label="Кол-во существ"
@@ -160,6 +189,11 @@ export default function App() {
 
         <section className="column">
           <h2>Защищающийся</h2>
+          <UnitPicker
+            idPrefix="defender"
+            selectedId={defenderUnitId}
+            onSelect={selectDefenderUnit}
+          />
           <NumberField
             id="defender-count"
             label="Кол-во существ (до удара)"

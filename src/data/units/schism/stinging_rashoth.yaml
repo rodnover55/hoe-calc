@@ -1,0 +1,21 @@
+id: stinging_rashoth
+name: "Жгучий Ра&#x27;Шот"
+nameEn: "Stinging Ra&#x27;Shoth"
+faction: schism
+tier: 1
+grade: 1
+upgradeOf: rashoth
+image: units/schism/stinging_rashoth.webp
+stats:
+  health: 10
+  attack: 5
+  defense: 5
+  damageMin: 3
+  damageMax: 3
+  initiative: 4
+  speed: 4
+attackType: ranged
+flying: true
+growth: 5
+cost: 33
+source: https://www.olden-era.com/ru/units/stinging_rashoth

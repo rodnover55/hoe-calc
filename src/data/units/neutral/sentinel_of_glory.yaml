@@ -1,0 +1,20 @@
+id: sentinel_of_glory
+name: "Страж славы"
+nameEn: "Sentinel of Glory"
+faction: neutral
+tier: 7
+grade: 0
+image: units/neutral/sentinel_of_glory.webp
+stats:
+  health: 400
+  attack: 40
+  defense: 40
+  damageMin: 50
+  damageMax: 50
+  initiative: 7
+  speed: 7
+attackType: melee
+flying: true
+growth: 40
+cost: 5050
+source: https://www.olden-era.com/ru/units/sentinel_of_glory

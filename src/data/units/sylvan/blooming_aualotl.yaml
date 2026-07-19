@@ -1,0 +1,21 @@
+id: blooming_aualotl
+name: "Цветущий аквалотль"
+nameEn: "Blooming Aqualotl"
+faction: sylvan
+tier: 4
+grade: 2
+upgradeOf: aqualotl
+image: units/sylvan/blooming_aualotl.webp
+stats:
+  health: 40
+  attack: 11
+  defense: 14
+  damageMin: 14
+  damageMax: 18
+  initiative: 7
+  speed: 6
+attackType: ranged
+flying: false
+growth: 14
+cost: 1418
+source: https://www.olden-era.com/ru/units/blooming_aualotl

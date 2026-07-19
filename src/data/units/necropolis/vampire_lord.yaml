@@ -1,0 +1,21 @@
+id: vampire_lord
+name: "Вампир-лорд"
+nameEn: "Vampire Lord"
+faction: necropolis
+tier: 7
+grade: 1
+upgradeOf: vampire
+image: units/necropolis/vampire_lord.webp
+stats:
+  health: 175
+  attack: 22
+  defense: 26
+  damageMin: 30
+  damageMax: 30
+  initiative: 13
+  speed: 8
+attackType: melee
+flying: true
+growth: 26
+cost: 3030
+source: https://www.olden-era.com/ru/units/vampire_lord

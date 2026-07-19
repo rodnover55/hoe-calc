@@ -1,0 +1,20 @@
+id: ghoul
+name: "Гуль"
+nameEn: "Ghoul"
+faction: neutral
+tier: 2
+grade: 0
+image: units/neutral/ghoul.webp
+stats:
+  health: 20
+  attack: 9
+  defense: 6
+  damageMin: 4
+  damageMax: 7
+  initiative: 5
+  speed: 5
+attackType: melee
+flying: false
+growth: 6
+cost: 47
+source: https://www.olden-era.com/ru/units/ghoul

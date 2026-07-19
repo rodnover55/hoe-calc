@@ -1,0 +1,21 @@
+id: bleak_infiltrator
+name: "Мрачный инфильтратор"
+nameEn: "Bleak Infiltrator"
+faction: dungeon
+tier: 2
+grade: 2
+upgradeOf: infiltrator
+image: units/dungeon/bleak_infiltrator.webp
+stats:
+  health: 13
+  attack: 6
+  defense: 4
+  damageMin: 3
+  damageMax: 6
+  initiative: 9
+  speed: 6
+attackType: melee
+flying: false
+growth: 4
+cost: 36
+source: https://www.olden-era.com/ru/units/bleak_infiltrator

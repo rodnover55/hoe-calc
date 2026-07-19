@@ -1,0 +1,21 @@
+id: royal_mantis
+name: "Глубинный скорпион"
+nameEn: "Spelaean Scorpion"
+faction: hive
+tier: 4
+grade: 2
+upgradeOf: mantis
+image: units/hive/royal_mantis.webp
+stats:
+  health: 45
+  attack: 14
+  defense: 12
+  damageMin: 12
+  damageMax: 14
+  initiative: 4
+  speed: 4
+attackType: melee
+flying: false
+growth: 12
+cost: 1214
+source: https://www.olden-era.com/ru/units/royal_mantis

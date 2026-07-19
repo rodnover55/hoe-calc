@@ -1,0 +1,20 @@
+id: giant_toad
+name: "Гигантская жаба"
+nameEn: "Giant Toad"
+faction: neutral
+tier: 5
+grade: 0
+image: units/neutral/giant_toad.webp
+stats:
+  health: 95
+  attack: 19
+  defense: 22
+  damageMin: 18
+  damageMax: 18
+  initiative: 8
+  speed: 4
+attackType: melee
+flying: false
+growth: 22
+cost: 1818
+source: https://www.olden-era.com/ru/units/giant_toad

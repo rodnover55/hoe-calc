@@ -1,0 +1,21 @@
+id: hierophant
+name: "Иерофант"
+nameEn: "Hierophant"
+faction: temple
+tier: 4
+grade: 1
+upgradeOf: light_weaver
+image: units/temple/hierophant.webp
+stats:
+  health: 35
+  attack: 13
+  defense: 16
+  damageMin: 11
+  damageMax: 11
+  initiative: 6
+  speed: 4
+attackType: ranged
+flying: false
+growth: 16
+cost: 1111
+source: https://www.olden-era.com/ru/units/hierophant

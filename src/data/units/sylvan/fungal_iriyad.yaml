@@ -1,0 +1,21 @@
+id: fungal_iriyad
+name: "Грибной ирияд"
+nameEn: "Fungal Iriyad"
+faction: sylvan
+tier: 3
+grade: 2
+upgradeOf: vine_iriyad
+image: units/sylvan/fungal_iriyad.webp
+stats:
+  health: 45
+  attack: 6
+  defense: 11
+  damageMin: 4
+  damageMax: 8
+  initiative: 3
+  speed: 4
+attackType: melee
+flying: false
+growth: 11
+cost: 48
+source: https://www.olden-era.com/ru/units/fungal_iriyad

@@ -1,0 +1,20 @@
+id: mantis
+name: "Скорпион"
+nameEn: "Scorpion"
+faction: hive
+tier: 4
+grade: 0
+image: units/hive/mantis.webp
+stats:
+  health: 45
+  attack: 12
+  defense: 12
+  damageMin: 10
+  damageMax: 12
+  initiative: 3
+  speed: 4
+attackType: melee
+flying: false
+growth: 12
+cost: 1012
+source: https://www.olden-era.com/ru/units/mantis

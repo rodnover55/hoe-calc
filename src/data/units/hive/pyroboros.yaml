@@ -1,0 +1,21 @@
+id: pyroboros
+name: "Пироборос"
+nameEn: "Pyroboros"
+faction: hive
+tier: 6
+grade: 1
+upgradeOf: waurms
+image: units/hive/pyroboros.webp
+stats:
+  health: 120
+  attack: 21
+  defense: 21
+  damageMin: 21
+  damageMax: 23
+  initiative: 9
+  speed: 8
+attackType: ranged
+flying: false
+growth: 21
+cost: 2123
+source: https://www.olden-era.com/ru/units/pyroboros

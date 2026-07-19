@@ -1,0 +1,21 @@
+id: rift_arbitrator
+name: "Арбитр разлома"
+nameEn: "Rift Arbitrator"
+faction: schism
+tier: 6
+grade: 1
+upgradeOf: arbitrator
+image: units/schism/rift_arbitrator.webp
+stats:
+  health: 75
+  attack: 26
+  defense: 28
+  damageMin: 18
+  damageMax: 22
+  initiative: 10
+  speed: 5
+attackType: ranged
+flying: false
+growth: 28
+cost: 1822
+source: https://www.olden-era.com/ru/units/rift_arbitrator

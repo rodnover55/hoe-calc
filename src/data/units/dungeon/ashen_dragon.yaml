@@ -1,0 +1,21 @@
+id: ashen_dragon
+name: "Пепельный дракон"
+nameEn: "Ashen Dragon"
+faction: dungeon
+tier: 7
+grade: 2
+upgradeOf: cave_dragon
+image: units/dungeon/ashen_dragon.webp
+stats:
+  health: 300
+  attack: 37
+  defense: 25
+  damageMin: 65
+  damageMax: 75
+  initiative: 12
+  speed: 11
+attackType: melee
+flying: true
+growth: 25
+cost: 6575
+source: https://www.olden-era.com/ru/units/ashen_dragon

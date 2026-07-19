@@ -1,0 +1,21 @@
+id: crystal_iriyad
+name: "Кристальный ирияд"
+nameEn: "Crystal Iriyad"
+faction: sylvan
+tier: 3
+grade: 1
+upgradeOf: vine_iriyad
+image: units/sylvan/crystal_iriyad.webp
+stats:
+  health: 45
+  attack: 6
+  defense: 11
+  damageMin: 5
+  damageMax: 7
+  initiative: 3
+  speed: 5
+attackType: melee
+flying: false
+growth: 11
+cost: 57
+source: https://www.olden-era.com/ru/units/crystal_iriyad

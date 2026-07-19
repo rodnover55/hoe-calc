@@ -1,0 +1,20 @@
+id: phoenix
+name: "Феникс"
+nameEn: "Phoenix"
+faction: sylvan
+tier: 7
+grade: 0
+image: units/sylvan/phoenix.webp
+stats:
+  health: 200
+  attack: 28
+  defense: 26
+  damageMin: 45
+  damageMax: 65
+  initiative: 14
+  speed: 8
+attackType: melee
+flying: true
+growth: 26
+cost: 4565
+source: https://www.olden-era.com/ru/units/phoenix

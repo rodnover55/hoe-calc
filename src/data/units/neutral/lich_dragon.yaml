@@ -1,0 +1,20 @@
+id: lich_dragon
+name: "Дракон-лих"
+nameEn: "Lich Dragon"
+faction: neutral
+tier: 8
+grade: 0
+image: units/neutral/lich_dragon.webp
+stats:
+  health: 999
+  attack: 66
+  defense: 66
+  damageMin: 99
+  damageMax: 99
+  initiative: 9
+  speed: 9
+attackType: melee
+flying: true
+growth: 66
+cost: 9999
+source: https://www.olden-era.com/ru/units/lich_dragon

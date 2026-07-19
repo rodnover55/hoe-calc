@@ -1,0 +1,20 @@
+id: wight
+name: "Вайт"
+nameEn: "Wight"
+faction: necropolis
+tier: 2
+grade: 0
+image: units/necropolis/wight.webp
+stats:
+  health: 8
+  attack: 3
+  defense: 0
+  damageMin: 2
+  damageMax: 4
+  initiative: 5
+  speed: 6
+attackType: melee
+flying: true
+growth: 0
+cost: 24
+source: https://www.olden-era.com/ru/units/wight

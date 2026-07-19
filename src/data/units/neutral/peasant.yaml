@@ -1,0 +1,20 @@
+id: peasant
+name: "Крестьянин"
+nameEn: "Peasant"
+faction: neutral
+tier: 2
+grade: 0
+image: units/neutral/peasant.webp
+stats:
+  health: 5
+  attack: 1
+  defense: 1
+  damageMin: 1
+  damageMax: 1
+  initiative: 1
+  speed: 1
+attackType: melee
+flying: false
+growth: 1
+cost: 11
+source: https://www.olden-era.com/ru/units/peasant

@@ -1,0 +1,20 @@
+id: aqualotl
+name: "Аквалотль"
+nameEn: "Aqualotl"
+faction: sylvan
+tier: 4
+grade: 0
+image: units/sylvan/aqualotl.webp
+stats:
+  health: 40
+  attack: 11
+  defense: 10
+  damageMin: 10
+  damageMax: 14
+  initiative: 5
+  speed: 5
+attackType: ranged
+flying: false
+growth: 10
+cost: 1014
+source: https://www.olden-era.com/ru/units/aqualotl

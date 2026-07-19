@@ -1,0 +1,21 @@
+id: devourer
+name: "ПОЖИРАТЕЛЬ"
+nameEn: "DEVOURER"
+faction: hive
+tier: 6
+grade: 2
+upgradeOf: waurms
+image: units/hive/devourer.webp
+stats:
+  health: 120
+  attack: 21
+  defense: 21
+  damageMin: 26
+  damageMax: 28
+  initiative: 8
+  speed: 10
+attackType: melee
+flying: false
+growth: 21
+cost: 2628
+source: https://www.olden-era.com/ru/units/devourer

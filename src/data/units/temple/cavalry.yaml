@@ -1,0 +1,20 @@
+id: cavalry
+name: "Кавалерия храма"
+nameEn: "Cavalry"
+faction: temple
+tier: 5
+grade: 0
+image: units/temple/cavalry.webp
+stats:
+  health: 85
+  attack: 12
+  defense: 17
+  damageMin: 10
+  damageMax: 14
+  initiative: 10
+  speed: 7
+attackType: melee
+flying: false
+growth: 17
+cost: 1014
+source: https://www.olden-era.com/ru/units/cavalry

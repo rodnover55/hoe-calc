@@ -1,0 +1,21 @@
+id: mist_qilin
+name: "Туманный цилинь"
+nameEn: "Mist Qilin"
+faction: sylvan
+tier: 6
+grade: 2
+upgradeOf: qilin
+image: units/sylvan/mist_qilin.webp
+stats:
+  health: 135
+  attack: 24
+  defense: 24
+  damageMin: 27
+  damageMax: 36
+  initiative: 13
+  speed: 7
+attackType: melee
+flying: false
+growth: 24
+cost: 2736
+source: https://www.olden-era.com/ru/units/mist_qilin

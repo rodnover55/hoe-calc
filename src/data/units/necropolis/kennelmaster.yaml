@@ -1,0 +1,21 @@
+id: kennelmaster
+name: "Псарь"
+nameEn: "Kennelmaster"
+faction: necropolis
+tier: 4
+grade: 2
+upgradeOf: graverobber
+image: units/necropolis/kennelmaster.webp
+stats:
+  health: 30
+  attack: 14
+  defense: 10
+  damageMin: 6
+  damageMax: 9
+  initiative: 5
+  speed: 6
+attackType: long_reach
+flying: false
+growth: 10
+cost: 69
+source: https://www.olden-era.com/ru/units/kennelmaster

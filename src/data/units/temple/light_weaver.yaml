@@ -1,0 +1,20 @@
+id: light_weaver
+name: "Ткач света"
+nameEn: "Lightweaver"
+faction: temple
+tier: 4
+grade: 0
+image: units/temple/light_weaver.webp
+stats:
+  health: 35
+  attack: 11
+  defense: 11
+  damageMin: 11
+  damageMax: 11
+  initiative: 4
+  speed: 2
+attackType: ranged
+flying: false
+growth: 11
+cost: 1111
+source: https://www.olden-era.com/ru/units/light_weaver

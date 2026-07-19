@@ -1,0 +1,21 @@
+id: marksman
+name: "Стрелок храма"
+nameEn: "Marksman"
+faction: temple
+tier: 2
+grade: 2
+upgradeOf: crossbowman
+image: units/temple/marksman.webp
+stats:
+  health: 10
+  attack: 6
+  defense: 3
+  damageMin: 3
+  damageMax: 4
+  initiative: 6
+  speed: 3
+attackType: ranged
+flying: false
+growth: 3
+cost: 34
+source: https://www.olden-era.com/ru/units/marksman

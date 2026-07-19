@@ -1,0 +1,21 @@
+id: excommunicator
+name: "Экскоммуникатор"
+nameEn: "Excommunicator"
+faction: temple
+tier: 6
+grade: 2
+upgradeOf: inquisitor
+image: units/temple/excommunicator.webp
+stats:
+  health: 90
+  attack: 26
+  defense: 24
+  damageMin: 23
+  damageMax: 33
+  initiative: 8
+  speed: 6
+attackType: melee
+flying: false
+growth: 24
+cost: 2333
+source: https://www.olden-era.com/ru/units/excommunicator

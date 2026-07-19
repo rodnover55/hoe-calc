@@ -1,0 +1,21 @@
+id: sporemancer
+name: "Споромант"
+nameEn: "Sporemancer"
+faction: sylvan
+tier: 5
+grade: 2
+upgradeOf: herbomancer
+image: units/sylvan/sporemancer.webp
+stats:
+  health: 60
+  attack: 16
+  defense: 18
+  damageMin: 15
+  damageMax: 18
+  initiative: 8
+  speed: 6
+attackType: long_reach
+flying: false
+growth: 18
+cost: 1518
+source: https://www.olden-era.com/ru/units/sporemancer

@@ -1,0 +1,21 @@
+id: infernal_hydra
+name: "Инфернальная гидра"
+nameEn: "Infernal Hydra"
+faction: dungeon
+tier: 6
+grade: 2
+upgradeOf: hydra
+image: units/dungeon/infernal_hydra.webp
+stats:
+  health: 130
+  attack: 30
+  defense: 26
+  damageMin: 30
+  damageMax: 38
+  initiative: 8
+  speed: 6
+attackType: melee
+flying: false
+growth: 26
+cost: 3038
+source: https://www.olden-era.com/ru/units/infernal_hydra

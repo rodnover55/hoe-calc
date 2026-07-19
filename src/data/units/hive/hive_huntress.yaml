@@ -1,0 +1,21 @@
+id: hive_huntress
+name: "Охотница улья"
+nameEn: "Hive Huntress"
+faction: hive
+tier: 7
+grade: 1
+upgradeOf: hive_queen
+image: units/hive/hive_huntress.webp
+stats:
+  health: 250
+  attack: 25
+  defense: 25
+  damageMin: 70
+  damageMax: 70
+  initiative: 8
+  speed: 9
+attackType: melee
+flying: false
+growth: 25
+cost: 7070
+source: https://www.olden-era.com/ru/units/hive_huntress

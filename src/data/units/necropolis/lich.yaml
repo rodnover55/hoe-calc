@@ -1,0 +1,20 @@
+id: lich
+name: "Лич"
+nameEn: "Lich"
+faction: necropolis
+tier: 5
+grade: 0
+image: units/necropolis/lich.webp
+stats:
+  health: 45
+  attack: 12
+  defense: 12
+  damageMin: 13
+  damageMax: 16
+  initiative: 4
+  speed: 2
+attackType: ranged
+flying: false
+growth: 12
+cost: 1316
+source: https://www.olden-era.com/ru/units/lich

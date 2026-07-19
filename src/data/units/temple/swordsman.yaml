@@ -1,0 +1,20 @@
+id: swordsman
+name: "Мечник храма"
+nameEn: "Swordsman"
+faction: temple
+tier: 1
+grade: 0
+image: units/temple/swordsman.webp
+stats:
+  health: 12
+  attack: 4
+  defense: 4
+  damageMin: 2
+  damageMax: 3
+  initiative: 5
+  speed: 4
+attackType: melee
+flying: false
+growth: 4
+cost: 23
+source: https://www.olden-era.com/ru/units/swordsman

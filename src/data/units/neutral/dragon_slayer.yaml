@@ -1,0 +1,20 @@
+id: dragon_slayer
+name: "Убийца драконов"
+nameEn: "Dragon Slayer"
+faction: neutral
+tier: 6
+grade: 0
+image: units/neutral/dragon_slayer.webp
+stats:
+  health: 85
+  attack: 24
+  defense: 28
+  damageMin: 27
+  damageMax: 36
+  initiative: 9
+  speed: 6
+attackType: melee
+flying: false
+growth: 28
+cost: 2736
+source: https://www.olden-era.com/ru/units/dragon_slayer

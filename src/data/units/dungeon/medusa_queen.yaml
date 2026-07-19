@@ -1,0 +1,21 @@
+id: medusa_queen
+name: "Королева медуз"
+nameEn: "Medusa Queen"
+faction: dungeon
+tier: 5
+grade: 2
+upgradeOf: medusa
+image: units/dungeon/medusa_queen.webp
+stats:
+  health: 55
+  attack: 17
+  defense: 14
+  damageMin: 11
+  damageMax: 15
+  initiative: 8
+  speed: 3
+attackType: ranged
+flying: false
+growth: 14
+cost: 1115
+source: https://www.olden-era.com/ru/units/medusa_queen

@@ -1,0 +1,21 @@
+id: menacing_reaver
+name: "Угрожающий раздиратель"
+nameEn: "Menacing Reaver"
+faction: hive
+tier: 5
+grade: 2
+upgradeOf: reaver
+image: units/hive/menacing_reaver.webp
+stats:
+  health: 45
+  attack: 18
+  defense: 18
+  damageMin: 20
+  damageMax: 30
+  initiative: 12
+  speed: 7
+attackType: melee
+flying: false
+growth: 18
+cost: 2030
+source: https://www.olden-era.com/ru/units/menacing_reaver

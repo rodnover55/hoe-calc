@@ -1,0 +1,20 @@
+id: primal_remnant
+name: "Изначальный остаток"
+nameEn: "Primal Remnant"
+faction: neutral
+tier: 4
+grade: 0
+image: units/neutral/primal_remnant.webp
+stats:
+  health: 50
+  attack: 9
+  defense: 18
+  damageMin: 13
+  damageMax: 14
+  initiative: 6
+  speed: 5
+attackType: melee
+flying: false
+growth: 18
+cost: 1314
+source: https://www.olden-era.com/ru/units/primal_remnant

@@ -1,0 +1,21 @@
+id: guardian_griffin
+name: "Грифон-страж"
+nameEn: "Guardian Griffin"
+faction: temple
+tier: 3
+grade: 2
+upgradeOf: griffin
+image: units/temple/guardian_griffin.webp
+stats:
+  health: 30
+  attack: 9
+  defense: 10
+  damageMin: 7
+  damageMax: 7
+  initiative: 10
+  speed: 6
+attackType: melee
+flying: true
+growth: 10
+cost: 77
+source: https://www.olden-era.com/ru/units/guardian_griffin

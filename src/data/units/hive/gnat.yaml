@@ -1,0 +1,20 @@
+id: gnat
+name: "Мошка"
+nameEn: "Gnat"
+faction: hive
+tier: 1
+grade: 0
+image: units/hive/gnat.webp
+stats:
+  health: 7
+  attack: 3
+  defense: 3
+  damageMin: 2
+  damageMax: 4
+  initiative: 4
+  speed: 4
+attackType: long_reach
+flying: false
+growth: 3
+cost: 24
+source: https://www.olden-era.com/ru/units/gnat

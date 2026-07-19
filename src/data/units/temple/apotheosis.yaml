@@ -1,0 +1,21 @@
+id: apotheosis
+name: "Апофеоз"
+nameEn: "Apotheosis"
+faction: temple
+tier: 7
+grade: 2
+upgradeOf: angel
+image: units/temple/apotheosis.webp
+stats:
+  health: 300
+  attack: 30
+  defense: 35
+  damageMin: 50
+  damageMax: 75
+  initiative: 10
+  speed: 10
+attackType: ranged
+flying: true
+growth: 35
+cost: 5075
+source: https://www.olden-era.com/ru/units/apotheosis

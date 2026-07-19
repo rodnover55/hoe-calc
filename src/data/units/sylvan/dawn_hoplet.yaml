@@ -1,0 +1,21 @@
+id: dawn_hoplet
+name: "Рассветный хоплит"
+nameEn: "Dawn Hoplet"
+faction: sylvan
+tier: 2
+grade: 2
+upgradeOf: hoplet
+image: units/sylvan/dawn_hoplet.webp
+stats:
+  health: 18
+  attack: 9
+  defense: 5
+  damageMin: 4
+  damageMax: 8
+  initiative: 6
+  speed: 6
+attackType: melee
+flying: true
+growth: 5
+cost: 48
+source: https://www.olden-era.com/ru/units/dawn_hoplet

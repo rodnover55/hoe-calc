@@ -1,0 +1,20 @@
+id: dread_knight
+name: "Жуткий рыцарь"
+nameEn: "Dread Knight"
+faction: necropolis
+tier: 6
+grade: 0
+image: units/necropolis/dread_knight.webp
+stats:
+  health: 80
+  attack: 19
+  defense: 18
+  damageMin: 12
+  damageMax: 14
+  initiative: 9
+  speed: 7
+attackType: melee
+flying: false
+growth: 18
+cost: 1214
+source: https://www.olden-era.com/ru/units/dread_knight

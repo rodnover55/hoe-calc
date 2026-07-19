@@ -1,0 +1,20 @@
+id: arbitrator
+name: "Арбитр"
+nameEn: "Arbitrator"
+faction: schism
+tier: 6
+grade: 0
+image: units/schism/arbitrator.webp
+stats:
+  health: 75
+  attack: 20
+  defense: 20
+  damageMin: 18
+  damageMax: 22
+  initiative: 5
+  speed: 4
+attackType: ranged
+flying: false
+growth: 20
+cost: 1822
+source: https://www.olden-era.com/ru/units/arbitrator

@@ -1,0 +1,21 @@
+id: guard_captain
+name: "Капитан стражи"
+nameEn: "Guard Captain"
+faction: temple
+tier: 1
+grade: 1
+upgradeOf: swordsman
+image: units/temple/guard_captain.webp
+stats:
+  health: 12
+  attack: 6
+  defense: 5
+  damageMin: 2
+  damageMax: 3
+  initiative: 6
+  speed: 4
+attackType: melee
+flying: false
+growth: 5
+cost: 23
+source: https://www.olden-era.com/ru/units/guard_captain

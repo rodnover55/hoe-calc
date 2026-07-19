@@ -1,0 +1,21 @@
+id: binder
+name: "Связыватель"
+nameEn: "Binder"
+faction: schism
+tier: 2
+grade: 1
+upgradeOf: cultist
+image: units/schism/binder.webp
+stats:
+  health: 15
+  attack: 5
+  defense: 7
+  damageMin: 4
+  damageMax: 6
+  initiative: 5
+  speed: 5
+attackType: long_reach
+flying: false
+growth: 7
+cost: 46
+source: https://www.olden-era.com/ru/units/binder

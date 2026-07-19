@@ -1,0 +1,21 @@
+id: temple_griffin
+name: "Храмовый грифон"
+nameEn: "Temple Griffin"
+faction: temple
+tier: 3
+grade: 1
+upgradeOf: griffin
+image: units/temple/temple_griffin.webp
+stats:
+  health: 30
+  attack: 8
+  defense: 6
+  damageMin: 5
+  damageMax: 9
+  initiative: 12
+  speed: 7
+attackType: melee
+flying: true
+growth: 6
+cost: 59
+source: https://www.olden-era.com/ru/units/temple_griffin

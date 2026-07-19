@@ -1,0 +1,20 @@
+id: crossbowman
+name: "Арбалетчик храма"
+nameEn: "Crossbowman"
+faction: temple
+tier: 2
+grade: 0
+image: units/temple/crossbowman.webp
+stats:
+  health: 10
+  attack: 5
+  defense: 3
+  damageMin: 3
+  damageMax: 4
+  initiative: 4
+  speed: 3
+attackType: ranged
+flying: false
+growth: 3
+cost: 34
+source: https://www.olden-era.com/ru/units/crossbowman

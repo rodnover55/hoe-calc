@@ -1,0 +1,20 @@
+id: reaver
+name: "Раздиратель"
+nameEn: "Reaver"
+faction: hive
+tier: 5
+grade: 0
+image: units/hive/reaver.webp
+stats:
+  health: 45
+  attack: 18
+  defense: 12
+  damageMin: 10
+  damageMax: 40
+  initiative: 11
+  speed: 6
+attackType: melee
+flying: false
+growth: 12
+cost: 1040
+source: https://www.olden-era.com/ru/units/reaver

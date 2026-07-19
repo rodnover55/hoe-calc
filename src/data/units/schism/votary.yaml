@@ -1,0 +1,21 @@
+id: votary
+name: "Приверженец"
+nameEn: "Votary"
+faction: schism
+tier: 2
+grade: 2
+upgradeOf: cultist
+image: units/schism/votary.webp
+stats:
+  health: 15
+  attack: 9
+  defense: 4
+  damageMin: 4
+  damageMax: 8
+  initiative: 4
+  speed: 4
+attackType: long_reach
+flying: false
+growth: 4
+cost: 48
+source: https://www.olden-era.com/ru/units/votary

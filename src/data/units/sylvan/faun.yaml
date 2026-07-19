@@ -1,0 +1,20 @@
+id: faun
+name: "Фавн"
+nameEn: "Faun"
+faction: sylvan
+tier: 1
+grade: 0
+image: units/sylvan/faun.webp
+stats:
+  health: 11
+  attack: 4
+  defense: 3
+  damageMin: 3
+  damageMax: 5
+  initiative: 4
+  speed: 2
+attackType: ranged
+flying: false
+growth: 3
+cost: 35
+source: https://www.olden-era.com/ru/units/faun

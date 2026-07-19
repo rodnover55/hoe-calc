@@ -1,0 +1,21 @@
+id: warden_gnat
+name: "Страж-мошка"
+nameEn: "Warden Gnat"
+faction: hive
+tier: 1
+grade: 1
+upgradeOf: gnat
+image: units/hive/warden_gnat.webp
+stats:
+  health: 9
+  attack: 3
+  defense: 6
+  damageMin: 2
+  damageMax: 4
+  initiative: 5
+  speed: 5
+attackType: long_reach
+flying: false
+growth: 6
+cost: 24
+source: https://www.olden-era.com/ru/units/warden_gnat

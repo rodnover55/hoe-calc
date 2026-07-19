@@ -1,0 +1,20 @@
+id: faerie_dragon
+name: "Феерический дракон"
+nameEn: "Faerie Dragon"
+faction: neutral
+tier: 5
+grade: 0
+image: units/neutral/faerie_dragon.webp
+stats:
+  health: 75
+  attack: 15
+  defense: 15
+  damageMin: 15
+  damageMax: 15
+  initiative: 10
+  speed: 5
+attackType: melee
+flying: false
+growth: 15
+cost: 1515
+source: https://www.olden-era.com/ru/units/faerie_dragon

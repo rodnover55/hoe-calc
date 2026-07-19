@@ -4,6 +4,11 @@
 в центре параметры самой атаки (удача, дистанция, модификаторы), справа —
 защищающегося.
 
+Характеристики можно заполнить вручную или выбрать юнита из пресетов:
+фракция (Храм, Некрополис, Сильван, Подземелье, Улей, Раскол, Нейтралы) →
+юнит → грейд (база или одно из двух альтернативных улучшений). При выборе
+подставляются статы юнита и показывается его портрет.
+
 ## Формула
 
 ```
@@ -17,6 +22,44 @@
 - Итог всегда наносит минимум 1 урона.
 
 Данные — официальная вики игры; игра в раннем доступе, цифры могут меняться.
+
+## База юнитов
+
+Каждый юнит — YAML-файл в `src/data/units/<фракция>/<slug>.yaml`:
+
+```yaml
+id: warden_gnat
+name: "Страж-мошка"
+nameEn: "Warden Gnat"
+faction: hive
+tier: 1
+grade: 1            # 0 — база, 1–2 — альтернативные улучшения
+upgradeOf: gnat     # только у улучшений
+image: units/hive/warden_gnat.webp
+stats:
+  health: 9
+  attack: 3
+  defense: 6
+  damageMin: 2
+  damageMax: 4
+  initiative: 5
+  speed: 5
+attackType: long_reach   # melee | long_reach | ranged
+flying: false
+growth: 6
+cost: 24
+source: https://www.olden-era.com/ru/units/warden_gnat
+```
+
+Портреты лежат в `public/units/<фракция>/`. Файлы загружаются в приложение
+через `import.meta.glob` в `src/units.ts`.
+
+Данные и картинки собраны с [olden-era.com](https://www.olden-era.com)
+(фанатская база по игре). Обновить базу целиком:
+
+```bash
+python3 scripts/update_units.py
+```
 
 ## Разработка
 

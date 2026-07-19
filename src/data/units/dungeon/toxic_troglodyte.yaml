@@ -1,0 +1,21 @@
+id: toxic_troglodyte
+name: "Токсичный троглодит"
+nameEn: "Toxic Troglodyte"
+faction: dungeon
+tier: 1
+grade: 2
+upgradeOf: troglodyte
+image: units/dungeon/toxic_troglodyte.webp
+stats:
+  health: 8
+  attack: 5
+  defense: 3
+  damageMin: 1
+  damageMax: 4
+  initiative: 5
+  speed: 4
+attackType: melee
+flying: false
+growth: 3
+cost: 14
+source: https://www.olden-era.com/ru/units/toxic_troglodyte

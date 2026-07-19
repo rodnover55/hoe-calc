@@ -1,0 +1,21 @@
+id: skeleton_warrior
+name: "Скелет-воин"
+nameEn: "Skeleton Warrior"
+faction: necropolis
+tier: 1
+grade: 1
+upgradeOf: skeleton
+image: units/necropolis/skeleton_warrior.webp
+stats:
+  health: 6
+  attack: 4
+  defense: 3
+  damageMin: 2
+  damageMax: 3
+  initiative: 5
+  speed: 4
+attackType: melee
+flying: false
+growth: 3
+cost: 23
+source: https://www.olden-era.com/ru/units/skeleton_warrior

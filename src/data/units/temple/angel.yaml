@@ -1,0 +1,20 @@
+id: angel
+name: "Ангел"
+nameEn: "Angel"
+faction: temple
+tier: 7
+grade: 0
+image: units/temple/angel.webp
+stats:
+  health: 225
+  attack: 30
+  defense: 30
+  damageMin: 50
+  damageMax: 75
+  initiative: 8
+  speed: 4
+attackType: ranged
+flying: true
+growth: 30
+cost: 5075
+source: https://www.olden-era.com/ru/units/angel

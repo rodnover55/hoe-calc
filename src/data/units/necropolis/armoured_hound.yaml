@@ -1,0 +1,21 @@
+id: armoured_hound
+name: "Бронированная гончая"
+nameEn: "Armoured Hound"
+faction: necropolis
+tier: 3
+grade: 2
+upgradeOf: undead_pet
+image: units/necropolis/armoured_hound.webp
+stats:
+  health: 18
+  attack: 4
+  defense: 8
+  damageMin: 3
+  damageMax: 5
+  initiative: 5
+  speed: 5
+attackType: melee
+flying: false
+growth: 8
+cost: 35
+source: https://www.olden-era.com/ru/units/armoured_hound

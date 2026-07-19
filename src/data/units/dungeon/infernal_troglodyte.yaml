@@ -1,0 +1,21 @@
+id: infernal_troglodyte
+name: "Инфернальный троглодит"
+nameEn: "Infernal Troglodyte"
+faction: dungeon
+tier: 1
+grade: 1
+upgradeOf: troglodyte
+image: units/dungeon/infernal_troglodyte.webp
+stats:
+  health: 8
+  attack: 3
+  defense: 6
+  damageMin: 1
+  damageMax: 3
+  initiative: 6
+  speed: 5
+attackType: melee
+flying: false
+growth: 6
+cost: 13
+source: https://www.olden-era.com/ru/units/infernal_troglodyte

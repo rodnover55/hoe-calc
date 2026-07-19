@@ -1,0 +1,20 @@
+id: onyx_dancer
+name: "Ониксовая танцовщица"
+nameEn: "Onyx Dancer"
+faction: dungeon
+tier: 3
+grade: 0
+image: units/dungeon/onyx_dancer.webp
+stats:
+  health: 20
+  attack: 8
+  defense: 8
+  damageMin: 5
+  damageMax: 7
+  initiative: 4
+  speed: 2
+attackType: ranged
+flying: false
+growth: 8
+cost: 57
+source: https://www.olden-era.com/ru/units/onyx_dancer

@@ -1,0 +1,20 @@
+id: undead_pet
+name: "Нежить-питомец"
+nameEn: "Undead Pet"
+faction: necropolis
+tier: 3
+grade: 0
+image: units/necropolis/undead_pet.webp
+stats:
+  health: 14
+  attack: 4
+  defense: 6
+  damageMin: 3
+  damageMax: 5
+  initiative: 5
+  speed: 5
+attackType: melee
+flying: false
+growth: 6
+cost: 35
+source: https://www.olden-era.com/ru/units/undead_pet

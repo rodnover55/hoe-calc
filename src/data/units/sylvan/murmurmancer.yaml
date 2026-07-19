@@ -1,0 +1,21 @@
+id: murmurmancer
+name: "Шептомант"
+nameEn: "Murmurmancer"
+faction: sylvan
+tier: 5
+grade: 1
+upgradeOf: herbomancer
+image: units/sylvan/murmurmancer.webp
+stats:
+  health: 60
+  attack: 12
+  defense: 14
+  damageMin: 18
+  damageMax: 18
+  initiative: 8
+  speed: 5
+attackType: long_reach
+flying: false
+growth: 14
+cost: 1818
+source: https://www.olden-era.com/ru/units/murmurmancer

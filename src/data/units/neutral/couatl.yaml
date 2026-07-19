@@ -1,0 +1,20 @@
+id: couatl
+name: "Куатль"
+nameEn: "Couatl"
+faction: neutral
+tier: 6
+grade: 0
+image: units/neutral/couatl.webp
+stats:
+  health: 95
+  attack: 26
+  defense: 19
+  damageMin: 21
+  damageMax: 28
+  initiative: 12
+  speed: 8
+attackType: melee
+flying: true
+growth: 19
+cost: 2128
+source: https://www.olden-era.com/ru/units/couatl

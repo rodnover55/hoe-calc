@@ -1,0 +1,20 @@
+id: grand_shoth
+name: "Великий Шот"
+nameEn: "Grand Shoth"
+faction: schism
+tier: 4
+grade: 0
+image: units/schism/grand_shoth.webp
+stats:
+  health: 50
+  attack: 11
+  defense: 11
+  damageMin: 10
+  damageMax: 13
+  initiative: 8
+  speed: 5
+attackType: melee
+flying: true
+growth: 11
+cost: 1013
+source: https://www.olden-era.com/ru/units/grand_shoth

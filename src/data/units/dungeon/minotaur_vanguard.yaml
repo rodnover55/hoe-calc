@@ -1,0 +1,21 @@
+id: minotaur_vanguard
+name: "Минотавр-авангард"
+nameEn: "Minotaur Vanguard"
+faction: dungeon
+tier: 4
+grade: 2
+upgradeOf: minotaur
+image: units/dungeon/minotaur_vanguard.webp
+stats:
+  health: 40
+  attack: 15
+  defense: 11
+  damageMin: 14
+  damageMax: 16
+  initiative: 5
+  speed: 6
+attackType: melee
+flying: false
+growth: 11
+cost: 1416
+source: https://www.olden-era.com/ru/units/minotaur_vanguard

@@ -1,0 +1,21 @@
+id: hollow_reaper
+name: "Полый жнец"
+nameEn: "Hollow Reaper"
+faction: necropolis
+tier: 6
+grade: 2
+upgradeOf: dread_knight
+image: units/necropolis/hollow_reaper.webp
+stats:
+  health: 80
+  attack: 25
+  defense: 18
+  damageMin: 24
+  damageMax: 26
+  initiative: 11
+  speed: 7
+attackType: melee
+flying: false
+growth: 18
+cost: 2426
+source: https://www.olden-era.com/ru/units/hollow_reaper

@@ -1,0 +1,21 @@
+id: bloated_arbitrator
+name: "Раздувшийся арбитр"
+nameEn: "Bloated Arbitrator"
+faction: schism
+tier: 6
+grade: 2
+upgradeOf: arbitrator
+image: units/schism/bloated_arbitrator.webp
+stats:
+  health: 75
+  attack: 28
+  defense: 22
+  damageMin: 22
+  damageMax: 26
+  initiative: 8
+  speed: 5
+attackType: ranged
+flying: false
+growth: 22
+cost: 2226
+source: https://www.olden-era.com/ru/units/bloated_arbitrator

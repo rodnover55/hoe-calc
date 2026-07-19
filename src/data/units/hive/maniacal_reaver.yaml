@@ -1,0 +1,21 @@
+id: maniacal_reaver
+name: "Маньяк-раздиратель"
+nameEn: "Maniacal Reaver"
+faction: hive
+tier: 5
+grade: 1
+upgradeOf: reaver
+image: units/hive/maniacal_reaver.webp
+stats:
+  health: 45
+  attack: 18
+  defense: 12
+  damageMin: 10
+  damageMax: 40
+  initiative: 12
+  speed: 6
+attackType: melee
+flying: false
+growth: 12
+cost: 1040
+source: https://www.olden-era.com/ru/units/maniacal_reaver

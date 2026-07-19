@@ -1,0 +1,21 @@
+id: arcangel
+name: "Архангел"
+nameEn: "Archangel"
+faction: temple
+tier: 7
+grade: 1
+upgradeOf: angel
+image: units/temple/arcangel.webp
+stats:
+  health: 225
+  attack: 35
+  defense: 30
+  damageMin: 50
+  damageMax: 75
+  initiative: 12
+  speed: 5
+attackType: ranged
+flying: true
+growth: 30
+cost: 5075
+source: https://www.olden-era.com/ru/units/arcangel

@@ -1,0 +1,21 @@
+id: polar_aqualotl
+name: "Полярный аквалотль"
+nameEn: "Polar Aqualotl"
+faction: sylvan
+tier: 4
+grade: 1
+upgradeOf: aqualotl
+image: units/sylvan/polar_aqualotl.webp
+stats:
+  health: 40
+  attack: 15
+  defense: 10
+  damageMin: 14
+  damageMax: 18
+  initiative: 6
+  speed: 5
+attackType: ranged
+flying: false
+growth: 10
+cost: 1418
+source: https://www.olden-era.com/ru/units/polar_aqualotl

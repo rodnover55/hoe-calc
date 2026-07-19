@@ -1,0 +1,20 @@
+id: kittenhorn
+name: "Котёнкорог"
+nameEn: "Kittenhorn"
+faction: neutral
+tier: 4
+grade: 0
+image: units/neutral/kittenhorn.webp
+stats:
+  health: 40
+  attack: 10
+  defense: 10
+  damageMin: 10
+  damageMax: 15
+  initiative: 6
+  speed: 6
+attackType: melee
+flying: true
+growth: 10
+cost: 1015
+source: https://www.olden-era.com/ru/units/kittenhorn

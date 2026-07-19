@@ -1,0 +1,21 @@
+id: skeleton_archer
+name: "Скелет-лучник"
+nameEn: "Skeleton Archer"
+faction: necropolis
+tier: 1
+grade: 2
+upgradeOf: skeleton
+image: units/necropolis/skeleton_archer.webp
+stats:
+  health: 6
+  attack: 4
+  defense: 1
+  damageMin: 1
+  damageMax: 3
+  initiative: 4
+  speed: 3
+attackType: ranged
+flying: false
+growth: 1
+cost: 13
+source: https://www.olden-era.com/ru/units/skeleton_archer

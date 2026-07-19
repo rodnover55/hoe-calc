@@ -1,0 +1,21 @@
+id: phantasm
+name: "Фантазм"
+nameEn: "Phantasm"
+faction: necropolis
+tier: 2
+grade: 2
+upgradeOf: wight
+image: units/necropolis/phantasm.webp
+stats:
+  health: 8
+  attack: 6
+  defense: 4
+  damageMin: 2
+  damageMax: 4
+  initiative: 6
+  speed: 7
+attackType: melee
+flying: true
+growth: 4
+cost: 24
+source: https://www.olden-era.com/ru/units/phantasm

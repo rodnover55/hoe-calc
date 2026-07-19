@@ -1,0 +1,20 @@
+id: qilin
+name: "Цилинь"
+nameEn: "Qilin"
+faction: sylvan
+tier: 6
+grade: 0
+image: units/sylvan/qilin.webp
+stats:
+  health: 135
+  attack: 22
+  defense: 22
+  damageMin: 24
+  damageMax: 30
+  initiative: 9
+  speed: 6
+attackType: melee
+flying: false
+growth: 22
+cost: 2430
+source: https://www.olden-era.com/ru/units/qilin

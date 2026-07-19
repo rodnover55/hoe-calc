@@ -1,0 +1,20 @@
+id: troglodyte
+name: "Троглодит"
+nameEn: "Troglodyte"
+faction: dungeon
+tier: 1
+grade: 0
+image: units/dungeon/troglodyte.webp
+stats:
+  health: 8
+  attack: 2
+  defense: 3
+  damageMin: 1
+  damageMax: 3
+  initiative: 4
+  speed: 4
+attackType: melee
+flying: false
+growth: 3
+cost: 13
+source: https://www.olden-era.com/ru/units/troglodyte

@@ -1,0 +1,20 @@
+id: abyssal_envoy
+name: "Посланник бездны"
+nameEn: "Abyssal Envoy"
+faction: schism
+tier: 7
+grade: 0
+image: units/schism/abyssal_envoy.webp
+stats:
+  health: 250
+  attack: 30
+  defense: 30
+  damageMin: 40
+  damageMax: 60
+  initiative: 8
+  speed: 5
+attackType: melee
+flying: false
+growth: 30
+cost: 4060
+source: https://www.olden-era.com/ru/units/abyssal_envoy

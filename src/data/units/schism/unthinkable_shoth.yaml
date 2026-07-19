@@ -1,0 +1,21 @@
+id: unthinkable_shoth
+name: "Немыслимый Шот"
+nameEn: "Unthinkable Shoth"
+faction: schism
+tier: 4
+grade: 2
+upgradeOf: grand_shoth
+image: units/schism/unthinkable_shoth.webp
+stats:
+  health: 50
+  attack: 11
+  defense: 11
+  damageMin: 10
+  damageMax: 13
+  initiative: 13
+  speed: 6
+attackType: melee
+flying: true
+growth: 11
+cost: 1013
+source: https://www.olden-era.com/ru/units/unthinkable_shoth

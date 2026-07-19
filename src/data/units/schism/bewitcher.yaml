@@ -1,0 +1,21 @@
+id: bewitcher
+name: "Чародейка Шот"
+nameEn: "Bewitcher Shoth"
+faction: schism
+tier: 5
+grade: 2
+upgradeOf: concubus
+image: units/schism/bewitcher.webp
+stats:
+  health: 60
+  attack: 16
+  defense: 13
+  damageMin: 20
+  damageMax: 20
+  initiative: 6
+  speed: 6
+attackType: ranged
+flying: false
+growth: 13
+cost: 2020
+source: https://www.olden-era.com/ru/units/bewitcher

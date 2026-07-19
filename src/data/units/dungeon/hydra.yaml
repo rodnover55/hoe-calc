@@ -1,0 +1,20 @@
+id: hydra
+name: "Гидра"
+nameEn: "Hydra"
+faction: dungeon
+tier: 6
+grade: 0
+image: units/dungeon/hydra.webp
+stats:
+  health: 130
+  attack: 24
+  defense: 22
+  damageMin: 25
+  damageMax: 28
+  initiative: 6
+  speed: 4
+attackType: melee
+flying: false
+growth: 22
+cost: 2528
+source: https://www.olden-era.com/ru/units/hydra

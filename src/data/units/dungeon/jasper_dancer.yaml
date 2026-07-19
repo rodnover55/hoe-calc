@@ -1,0 +1,21 @@
+id: jasper_dancer
+name: "Яшмовая танцовщица"
+nameEn: "Jasper Dancer"
+faction: dungeon
+tier: 3
+grade: 1
+upgradeOf: onyx_dancer
+image: units/dungeon/jasper_dancer.webp
+stats:
+  health: 20
+  attack: 8
+  defense: 8
+  damageMin: 5
+  damageMax: 7
+  initiative: 5
+  speed: 4
+attackType: ranged
+flying: false
+growth: 8
+cost: 57
+source: https://www.olden-era.com/ru/units/jasper_dancer

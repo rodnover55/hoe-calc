@@ -1,0 +1,20 @@
+id: inquisitor
+name: "Инквизитор"
+nameEn: "Inquisitor"
+faction: temple
+tier: 6
+grade: 0
+image: units/temple/inquisitor.webp
+stats:
+  health: 90
+  attack: 20
+  defense: 24
+  damageMin: 19
+  damageMax: 23
+  initiative: 7
+  speed: 4
+attackType: melee
+flying: false
+growth: 24
+cost: 1923
+source: https://www.olden-era.com/ru/units/inquisitor

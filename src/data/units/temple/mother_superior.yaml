@@ -1,0 +1,21 @@
+id: mother_superior
+name: "Мать-настоятельница"
+nameEn: "Mother Superior"
+faction: temple
+tier: 6
+grade: 1
+upgradeOf: inquisitor
+image: units/temple/mother_superior.webp
+stats:
+  health: 125
+  attack: 20
+  defense: 28
+  damageMin: 19
+  damageMax: 23
+  initiative: 9
+  speed: 5
+attackType: melee
+flying: false
+growth: 28
+cost: 1923
+source: https://www.olden-era.com/ru/units/mother_superior

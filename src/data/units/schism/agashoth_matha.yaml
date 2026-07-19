@@ -1,0 +1,21 @@
+id: agashoth_matha
+name: "Матка Ага&#x27;Шота"
+nameEn: "Aga&#x27;Shoth Matha"
+faction: schism
+tier: 3
+grade: 2
+upgradeOf: agashoth_rider
+image: units/schism/agashoth_matha.webp
+stats:
+  health: 25
+  attack: 7
+  defense: 7
+  damageMin: 5
+  damageMax: 7
+  initiative: 7
+  speed: 6
+attackType: melee
+flying: false
+growth: 7
+cost: 57
+source: https://www.olden-era.com/ru/units/agashoth_matha

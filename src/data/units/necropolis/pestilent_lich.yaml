@@ -1,0 +1,21 @@
+id: pestilent_lich
+name: "Чумной лич"
+nameEn: "Pestilent Lich"
+faction: necropolis
+tier: 5
+grade: 1
+upgradeOf: lich
+image: units/necropolis/pestilent_lich.webp
+stats:
+  health: 45
+  attack: 12
+  defense: 12
+  damageMin: 16
+  damageMax: 16
+  initiative: 5
+  speed: 3
+attackType: ranged
+flying: false
+growth: 12
+cost: 1616
+source: https://www.olden-era.com/ru/units/pestilent_lich

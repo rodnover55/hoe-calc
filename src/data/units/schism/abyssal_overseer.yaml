@@ -1,0 +1,21 @@
+id: abyssal_overseer
+name: "Надзиратель бездны"
+nameEn: "Abyssal Overseer"
+faction: schism
+tier: 7
+grade: 1
+upgradeOf: abyssal_envoy
+image: units/schism/abyssal_overseer.webp
+stats:
+  health: 250
+  attack: 40
+  defense: 40
+  damageMin: 40
+  damageMax: 60
+  initiative: 9
+  speed: 6
+attackType: melee
+flying: false
+growth: 40
+cost: 4060
+source: https://www.olden-era.com/ru/units/abyssal_overseer

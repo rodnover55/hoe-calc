@@ -1,0 +1,21 @@
+id: noble_cavalry
+name: "Благородная кавалерия"
+nameEn: "Noble Cavalry"
+faction: temple
+tier: 5
+grade: 1
+upgradeOf: cavalry
+image: units/temple/noble_cavalry.webp
+stats:
+  health: 85
+  attack: 12
+  defense: 17
+  damageMin: 12
+  damageMax: 16
+  initiative: 13
+  speed: 7
+attackType: melee
+flying: false
+growth: 17
+cost: 1216
+source: https://www.olden-era.com/ru/units/noble_cavalry

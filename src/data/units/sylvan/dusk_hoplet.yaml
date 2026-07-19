@@ -1,0 +1,21 @@
+id: dusk_hoplet
+name: "Сумеречный хоплит"
+nameEn: "Dusk Hoplet"
+faction: sylvan
+tier: 2
+grade: 1
+upgradeOf: hoplet
+image: units/sylvan/dusk_hoplet.webp
+stats:
+  health: 18
+  attack: 7
+  defense: 7
+  damageMin: 4
+  damageMax: 8
+  initiative: 9
+  speed: 5
+attackType: melee
+flying: true
+growth: 7
+cost: 48
+source: https://www.olden-era.com/ru/units/dusk_hoplet

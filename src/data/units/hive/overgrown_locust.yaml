@@ -1,0 +1,21 @@
+id: overgrown_locust
+name: "Разросшаяся саранча"
+nameEn: "Overgrown Locust"
+faction: hive
+tier: 2
+grade: 2
+upgradeOf: locust
+image: units/hive/overgrown_locust.webp
+stats:
+  health: 16
+  attack: 5
+  defense: 4
+  damageMin: 3
+  damageMax: 5
+  initiative: 7
+  speed: 6
+attackType: melee
+flying: false
+growth: 4
+cost: 35
+source: https://www.olden-era.com/ru/units/overgrown_locust

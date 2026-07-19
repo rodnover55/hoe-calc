@@ -1,0 +1,21 @@
+id: unspeakable_shoth
+name: "Невыразимый Шот"
+nameEn: "Unspeakable Shoth"
+faction: schism
+tier: 4
+grade: 1
+upgradeOf: grand_shoth
+image: units/schism/unspeakable_shoth.webp
+stats:
+  health: 50
+  attack: 11
+  defense: 11
+  damageMin: 10
+  damageMax: 13
+  initiative: 8
+  speed: 8
+attackType: melee
+flying: true
+growth: 11
+cost: 1013
+source: https://www.olden-era.com/ru/units/unspeakable_shoth

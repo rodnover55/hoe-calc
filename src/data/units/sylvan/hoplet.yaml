@@ -1,0 +1,20 @@
+id: hoplet
+name: "Хоплит"
+nameEn: "Hoplet"
+faction: sylvan
+tier: 2
+grade: 0
+image: units/sylvan/hoplet.webp
+stats:
+  health: 18
+  attack: 6
+  defense: 5
+  damageMin: 4
+  damageMax: 8
+  initiative: 6
+  speed: 5
+attackType: melee
+flying: true
+growth: 5
+cost: 48
+source: https://www.olden-era.com/ru/units/hoplet

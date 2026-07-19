@@ -1,0 +1,21 @@
+id: sun_herald
+name: "Вестник Солнца"
+nameEn: "Sun Herald"
+faction: temple
+tier: 4
+grade: 2
+upgradeOf: light_weaver
+image: units/temple/sun_herald.webp
+stats:
+  health: 35
+  attack: 16
+  defense: 13
+  damageMin: 11
+  damageMax: 18
+  initiative: 5
+  speed: 3
+attackType: ranged
+flying: false
+growth: 13
+cost: 1118
+source: https://www.olden-era.com/ru/units/sun_herald

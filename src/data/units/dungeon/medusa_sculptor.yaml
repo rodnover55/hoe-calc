@@ -1,0 +1,21 @@
+id: medusa_sculptor
+name: "Медуза-скульптор"
+nameEn: "Medusa Sculptor"
+faction: dungeon
+tier: 5
+grade: 1
+upgradeOf: medusa
+image: units/dungeon/medusa_sculptor.webp
+stats:
+  health: 55
+  attack: 20
+  defense: 18
+  damageMin: 15
+  damageMax: 15
+  initiative: 5
+  speed: 4
+attackType: ranged
+flying: false
+growth: 18
+cost: 1515
+source: https://www.olden-era.com/ru/units/medusa_sculptor

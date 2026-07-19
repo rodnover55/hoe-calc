@@ -1,0 +1,21 @@
+id: avatar_of_war
+name: "Аватара войны"
+nameEn: "Avatar of War"
+faction: necropolis
+tier: 6
+grade: 1
+upgradeOf: dread_knight
+image: units/necropolis/avatar_of_war.webp
+stats:
+  health: 80
+  attack: 19
+  defense: 20
+  damageMin: 18
+  damageMax: 20
+  initiative: 10
+  speed: 8
+attackType: melee
+flying: false
+growth: 20
+cost: 1820
+source: https://www.olden-era.com/ru/units/avatar_of_war

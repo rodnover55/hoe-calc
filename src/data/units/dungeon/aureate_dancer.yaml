@@ -1,0 +1,21 @@
+id: aureate_dancer
+name: "Золотая танцовщица"
+nameEn: "Aureate Dancer"
+faction: dungeon
+tier: 3
+grade: 2
+upgradeOf: onyx_dancer
+image: units/dungeon/aureate_dancer.webp
+stats:
+  health: 20
+  attack: 8
+  defense: 8
+  damageMin: 5
+  damageMax: 7
+  initiative: 7
+  speed: 3
+attackType: ranged
+flying: false
+growth: 8
+cost: 57
+source: https://www.olden-era.com/ru/units/aureate_dancer

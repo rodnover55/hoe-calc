@@ -1,0 +1,20 @@
+id: rashoth
+name: "Ра&#x27;Шот"
+nameEn: "Ra&#x27;Shoth"
+faction: schism
+tier: 1
+grade: 0
+image: units/schism/rashoth.webp
+stats:
+  health: 10
+  attack: 3
+  defense: 3
+  damageMin: 3
+  damageMax: 3
+  initiative: 4
+  speed: 4
+attackType: melee
+flying: true
+growth: 3
+cost: 33
+source: https://www.olden-era.com/ru/units/rashoth

@@ -1,0 +1,21 @@
+id: vermilion_mants
+name: "Вулканический скорпион"
+nameEn: "Volcanic Scorpion"
+faction: hive
+tier: 4
+grade: 1
+upgradeOf: mantis
+image: units/hive/vermilion_mants.webp
+stats:
+  health: 60
+  attack: 12
+  defense: 14
+  damageMin: 10
+  damageMax: 12
+  initiative: 4
+  speed: 5
+attackType: melee
+flying: false
+growth: 14
+cost: 1012
+source: https://www.olden-era.com/ru/units/vermilion_mants

@@ -1,0 +1,21 @@
+id: wraith
+name: "Призрак"
+nameEn: "Wraith"
+faction: necropolis
+tier: 2
+grade: 1
+upgradeOf: wight
+image: units/necropolis/wraith.webp
+stats:
+  health: 8
+  attack: 6
+  defense: 0
+  damageMin: 2
+  damageMax: 4
+  initiative: 7
+  speed: 7
+attackType: melee
+flying: true
+growth: 0
+cost: 24
+source: https://www.olden-era.com/ru/units/wraith

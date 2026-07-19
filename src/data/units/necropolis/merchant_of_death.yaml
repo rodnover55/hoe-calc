@@ -1,0 +1,21 @@
+id: merchant_of_death
+name: "Торговец смертью"
+nameEn: "Merchant of Death"
+faction: necropolis
+tier: 4
+grade: 1
+upgradeOf: graverobber
+image: units/necropolis/merchant_of_death.webp
+stats:
+  health: 30
+  attack: 11
+  defense: 10
+  damageMin: 7
+  damageMax: 10
+  initiative: 5
+  speed: 4
+attackType: long_reach
+flying: false
+growth: 10
+cost: 710
+source: https://www.olden-era.com/ru/units/merchant_of_death

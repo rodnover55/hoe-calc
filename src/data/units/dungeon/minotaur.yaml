@@ -1,0 +1,20 @@
+id: minotaur
+name: "Минотавр"
+nameEn: "Minotaur"
+faction: dungeon
+tier: 4
+grade: 0
+image: units/dungeon/minotaur.webp
+stats:
+  health: 40
+  attack: 11
+  defense: 11
+  damageMin: 12
+  damageMax: 14
+  initiative: 5
+  speed: 5
+attackType: melee
+flying: false
+growth: 11
+cost: 1214
+source: https://www.olden-era.com/ru/units/minotaur

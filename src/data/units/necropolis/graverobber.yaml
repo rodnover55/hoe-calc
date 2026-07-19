@@ -1,0 +1,20 @@
+id: graverobber
+name: "Грабитель могил"
+nameEn: "Graverobber"
+faction: necropolis
+tier: 4
+grade: 0
+image: units/necropolis/graverobber.webp
+stats:
+  health: 30
+  attack: 11
+  defense: 10
+  damageMin: 6
+  damageMax: 9
+  initiative: 4
+  speed: 3
+attackType: long_reach
+flying: false
+growth: 10
+cost: 69
+source: https://www.olden-era.com/ru/units/graverobber

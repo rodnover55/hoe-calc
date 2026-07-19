@@ -1,0 +1,21 @@
+id: faun_archer
+name: "Фавн-лучник"
+nameEn: "Faun Archer"
+faction: sylvan
+tier: 1
+grade: 1
+upgradeOf: faun
+image: units/sylvan/faun_archer.webp
+stats:
+  health: 11
+  attack: 4
+  defense: 3
+  damageMin: 3
+  damageMax: 5
+  initiative: 5
+  speed: 3
+attackType: ranged
+flying: false
+growth: 3
+cost: 35
+source: https://www.olden-era.com/ru/units/faun_archer

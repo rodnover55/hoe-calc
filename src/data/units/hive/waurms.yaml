@@ -1,0 +1,20 @@
+id: waurms
+name: "Ваурмы"
+nameEn: "Waurms"
+faction: hive
+tier: 6
+grade: 0
+image: units/hive/waurms.webp
+stats:
+  health: 120
+  attack: 21
+  defense: 21
+  damageMin: 21
+  damageMax: 23
+  initiative: 8
+  speed: 8
+attackType: melee
+flying: false
+growth: 21
+cost: 2123
+source: https://www.olden-era.com/ru/units/waurms

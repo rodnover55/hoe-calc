@@ -1,0 +1,21 @@
+id: energy_phoenix
+name: "Энергофеникс"
+nameEn: "Energy Phoenix"
+faction: sylvan
+tier: 7
+grade: 1
+upgradeOf: phoenix
+image: units/sylvan/energy_phoenix.webp
+stats:
+  health: 250
+  attack: 28
+  defense: 39
+  damageMin: 45
+  damageMax: 65
+  initiative: 15
+  speed: 10
+attackType: melee
+flying: true
+growth: 39
+cost: 4565
+source: https://www.olden-era.com/ru/units/energy_phoenix

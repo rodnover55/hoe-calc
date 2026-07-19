@@ -1,0 +1,21 @@
+id: thunder_qilin
+name: "Громовой цилинь"
+nameEn: "Thunder Qilin"
+faction: sylvan
+tier: 6
+grade: 1
+upgradeOf: qilin
+image: units/sylvan/thunder_qilin.webp
+stats:
+  health: 135
+  attack: 22
+  defense: 22
+  damageMin: 30
+  damageMax: 36
+  initiative: 11
+  speed: 8
+attackType: melee
+flying: false
+growth: 22
+cost: 3036
+source: https://www.olden-era.com/ru/units/thunder_qilin

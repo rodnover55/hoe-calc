@@ -1,0 +1,21 @@
+id: vampire_scholar
+name: "Вампир-учёный"
+nameEn: "Vampire Scholar"
+faction: necropolis
+tier: 7
+grade: 2
+upgradeOf: vampire
+image: units/necropolis/vampire_scholar.webp
+stats:
+  health: 150
+  attack: 27
+  defense: 20
+  damageMin: 30
+  damageMax: 30
+  initiative: 12
+  speed: 5
+attackType: long_reach
+flying: true
+growth: 20
+cost: 3030
+source: https://www.olden-era.com/ru/units/vampire_scholar

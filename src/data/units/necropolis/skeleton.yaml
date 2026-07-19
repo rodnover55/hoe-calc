@@ -1,0 +1,20 @@
+id: skeleton
+name: "Скелет"
+nameEn: "Skeleton"
+faction: necropolis
+tier: 1
+grade: 0
+image: units/necropolis/skeleton.webp
+stats:
+  health: 6
+  attack: 4
+  defense: 1
+  damageMin: 1
+  damageMax: 3
+  initiative: 4
+  speed: 3
+attackType: melee
+flying: false
+growth: 1
+cost: 13
+source: https://www.olden-era.com/ru/units/skeleton
