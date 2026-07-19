@@ -18,16 +18,24 @@ flying: false
 abilities:
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: rrr_jump
     name: "Пр‑р‑р‑рыг!"
+    nameEn: "Rrr, Jump!"
     description: "Прыгает на выбранный гекс в пределах 4 и наносит урон от обычной атаки всем отрядам противника на соседних с ним гексах."
+    descriptionEn: "Jumps to a hex within a 4‑hex radius and deals basic attack Damage to all adjacent enemies."
   - id: big_rock_rrr
     name: "Булыган! Грр!"
+    nameEn: "Big Rock, Rrr!"
     description: "Наносит выбранному отряду магический урон в размере 150% от обычной атаки ([ 8—10 × численность отряда ]) и оглушает его до начала следующего раунда. Оглушённый отряд пропускает ход."
+    descriptionEn: "Deals 150% of basic attack ([ 8–10 × amount of units ]) as Magic Damage to the target, stunning them until next round. Stunned creatures are forced to pass their turn."
 growth: 6
 cost: 57
 source: https://www.olden-era.com/ru/units/groll

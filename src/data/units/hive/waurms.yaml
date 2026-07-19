@@ -18,19 +18,29 @@ flying: false
 abilities:
   - id: hive_spawn
     name: "Порождение Роя"
+    nameEn: "Hive Spawn"
     description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+    descriptionEn: "A part of a hivemind that serves a powerful lord from beyond. Morale range: –5 to 5. Luck range: –5 to 5. Fallen Hive Spawn count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: blink
     name: "Скачок"
+    nameEn: "Blink"
     description: "Вместо обычного передвижения телепортируется, игнорируя препятствия и ловушки."
+    descriptionEn: "Teleports directly to destination hex, ignoring obstacles and traps."
   - id: corpse_eater
     name: "Пожиратель трупов"
+    nameEn: "Corpse Eater"
     description: "При перемещении на гекс с трупом пожирает его, восстанавливая 65 здоровья. Воскрешает павших существ."
+    descriptionEn: "If destination hex contains a fallen corpse, it is devoured, restoring 65 HP. This can revive fallen units."
   - id: demonic_stench_i
     name: "Демоническое зловоние"
+    nameEn: "Demonic Stench"
     description: "Отряды противника получают –1 к удаче. Эффект не суммируется: действует только самый сильный из активных."
+    descriptionEn: "Reduces enemy creatures’ Luck by 1. This effect does not stack; only the strongest one is active."
 growth: 21
 cost: 2123
 source: https://www.olden-era.com/ru/units/waurms

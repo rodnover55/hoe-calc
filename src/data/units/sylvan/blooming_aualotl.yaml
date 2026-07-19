@@ -19,19 +19,29 @@ flying: false
 abilities:
   - id: embodiment
     name: "Воплощение"
+    nameEn: "Embodiment"
     description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+    descriptionEn: "A spirit, soul, or other intangible power that has coalesced into material form. Morale range: –3 to 3. Luck range: –3 to 3. Fallen Embodiments do NOT count towards the power of Necromancy reanimation after battle."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: blink
     name: "Скачок"
+    nameEn: "Blink"
     description: "Вместо обычного передвижения телепортируется, игнорируя препятствия и ловушки."
+    descriptionEn: "Teleports directly to destination hex, ignoring obstacles and traps."
   - id: embodiment_of_water
     name: "Воплощение воды"
+    nameEn: "Embodiment of Water"
     description: "Не оставляет труп при смерти. Неуязвим для заклинаний «Ледяная стрела» и «Кольцо холода»."
+    descriptionEn: "This creature leaves no body upon death. Immune to “Ice Bolt” and “Circle of Winter.”"
   - id: awaken_water_2
     name: "Пробуждение. Вода II"
+    nameEn: "Awaken: Water II"
     description: "Это существо получает +2 к скорости и инициативе, +15 к здоровью и возможность стрелять, даже если на соседнем с ним гексе есть отряд противника. Позволяет использовать остальные способности. Применяется один раз за бой и действует до конца боя."
+    descriptionEn: "This creature gains 2 Speed and Initiative, 15 HP, and the ability to perform Ranged attacks even there is an adjacent enemy. Allows the use of other abilities. Once per battle; lasts until the end of battle."
 growth: 14
 cost: 1418
 source: https://www.olden-era.com/ru/units/blooming_aualotl

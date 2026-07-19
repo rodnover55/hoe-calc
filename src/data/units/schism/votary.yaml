@@ -19,16 +19,24 @@ flying: false
 abilities:
   - id: long_reach
     name: "Атака на расстоянии"
+    nameEn: "Long Reach"
     description: "Атакует отряд противника через один гекс. Не провоцирует контратаку и не занимает гекс рядом с целью."
+    descriptionEn: "Has an attack that targets the hex directly behind an adjacent hex. It doesn’t provoke counterattacks and doesn’t move the attacker next to their target."
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: gaze_of_the_abyss_sluggishness
     name: "Взгляд Бездны. Усталость"
+    nameEn: "Gaze of the Abyss: Sluggishness"
     description: "Наносит выбранному отряду противника и всем противникам на соседних с ним гексах чистый урон в размере 50% от обычной атаки ([ 2—4 × численность отряда ]). Их инициатива снижается на 1 до конца следующего раунда."
+    descriptionEn: "Deals 50% of a basic attack ([ 2–4 × amount of units ]) as Pure Damage to the target and all the adjacent enemies. All targets’ Initiative reduces by 1 until the end of next round."
   - id: gaze_of_the_abyss_slow
     name: "Взгляд Бездны. Замедление"
+    nameEn: "Gaze of the Abyss: Slow"
     description: "Наносит выбранному отряду противника и всем противникам на соседних с ним гексах чистый урон в размере 50% от обычной атаки ([ 2—4 × численность отряда ]). Их скорость снижается на 1 до конца следующего раунда."
+    descriptionEn: "Deals 50% of a basic attack ([ 2–4 × amount of units ]) as Pure Damage to the target and all the adjacent enemies. All targets’ Speed reduces by 1 until the end of next round."
 growth: 4
 cost: 48
 source: https://www.olden-era.com/ru/units/votary

@@ -19,19 +19,29 @@ flying: false
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: long_reach
     name: "Атака на расстоянии"
+    nameEn: "Long Reach"
     description: "Атакует отряд противника через один гекс. Не провоцирует контратаку и не занимает гекс рядом с целью."
+    descriptionEn: "Has an attack that targets the hex directly behind an adjacent hex. It doesn’t provoke counterattacks and doesn’t move the attacker next to their target."
   - id: smell_of_the_hunt
     name: "Запах охоты"
+    nameEn: "Smell of the Hunt"
     description: "Каждый раз, когда погибает дружественный отряд, это существо генерирует очки концентрации: 1."
+    descriptionEn: "Whenever a friendly creature dies, generate 1 Focus Point(s)"
   - id: fetch
     name: "Апорт!"
+    nameEn: "Fetch!"
     description: "Призывает оживших питомцев на соседний гекс: [ 1 × численность отряда ]. Призванные существа пропадают в конце боя."
+    descriptionEn: "Summons [ 1 × amount of units ] Undead Pet(s) on an adjacent hex. They disappear after the battle."
   - id: hail
     name: "Фас!"
+    nameEn: "Hail!"
     description: "Помечает отряд противника. Помеченный отряд всегда получает максимальный урон. Кол‑во раундов: 2."
+    descriptionEn: "Marks an enemy, causing them always take maximum Damage. Duration: 2 round(s)."
 growth: 10
 cost: 69
 source: https://www.olden-era.com/ru/units/kennelmaster

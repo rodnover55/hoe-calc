@@ -19,16 +19,24 @@ flying: false
 abilities:
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: thousand_cuts_2
     name: "Тысяча порезов"
+    nameEn: "A Thousand Cuts"
     description: "Каждая атака снижает защиту цели на 2 до конца боя. Эффект суммируется."
+    descriptionEn: "Each attack reduces the target’s Defense by 2 until the end of battle. This effect is stackable."
   - id: fighting_style_bouncing_glaives
     name: "Стиль боя. Проворные глефы"
+    nameEn: "Fighting Style: Bouncing Glaives"
     description: "Атакует две выбранные цели, нанося обеим –50% урона."
+    descriptionEn: "Choose two targets for this attack, dealing –50% Damage to each."
 growth: 8
 cost: 57
 source: https://www.olden-era.com/ru/units/aureate_dancer

@@ -19,19 +19,29 @@ flying: false
 abilities:
   - id: hive_spawn
     name: "Порождение Роя"
+    nameEn: "Hive Spawn"
     description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+    descriptionEn: "A part of a hivemind that serves a powerful lord from beyond. Morale range: –5 to 5. Luck range: –5 to 5. Fallen Hive Spawn count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: double_strike
     name: "Двойной удар"
+    nameEn: "Double Strike"
     description: "Атакует дважды."
+    descriptionEn: "Strikes twice when performing attacks."
   - id: harvest_ii
     name: "Жатва"
+    nameEn: "Harvest"
     description: "Прыгает на выбранный труп в пределах нескольких гексов (6) и пожирает его, получая +4 к атаке и защите, а также +1 к скорости и инициативе до конца боя."
+    descriptionEn: "Jumps onto a chosen corpse within 6 hexes and devours it, gaining 4 Attack and Defense, 1 Speed and Initiative until the end of the battle."
   - id: hivemind_vanguard
     name: "Рой. Авангард"
+    nameEn: "Hivemind: Vanguard"
     description: "В начале боя получает +1 к атаке за каждое другое уникальное существо Роя в армии. Убив отряд противника, генерирует очки концентрации: 2."
+    descriptionEn: "At the start of battle, for each other unique Hive creature in the army, this creature’s Attack increases by 1. Whenever this creature kills an enemy, it generates 2 Focus Point(s)."
 growth: 4
 cost: 45
 source: https://www.olden-era.com/ru/units/haverster_locust

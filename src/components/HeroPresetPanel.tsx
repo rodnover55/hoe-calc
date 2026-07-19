@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useI18n } from '../LangContext';
 import type { HeroPreset } from '../presets';
 
 interface HeroPresetPanelProps {
@@ -32,22 +33,23 @@ export function HeroPresetPanel({
   onRename,
   onDelete,
 }: HeroPresetPanelProps) {
+  const { t } = useI18n();
   const selected = presets.find((preset) => preset.id === selectedId) ?? null;
   const [editing, setEditing] = useState(false);
 
   const confirmDelete = () => {
     if (!selected) return;
-    if (window.confirm(`Удалить пресет «${selected.name}» и его отряды?`)) onDelete();
+    if (window.confirm(t('heroPreset.confirmDelete', { name: selected.name }))) onDelete();
   };
 
   return (
     <div className="group">
-      <div className="group-title">Пресеты</div>
+      <div className="group-title">{t('heroPreset.title')}</div>
       <div className="preset-head">
         <div className="field">
           <select
             id={`${idPrefix}-hero-preset`}
-            aria-label="Пресет героя"
+            aria-label={t('heroPreset.select')}
             value={selectedId ?? ''}
             onChange={(e) =>
               onSelect(
@@ -57,7 +59,7 @@ export function HeroPresetPanel({
               )
             }
           >
-            <option value="">— без пресета —</option>
+            <option value="">{t('heroPreset.none')}</option>
             {presets.map((preset) => (
               <option key={preset.id} value={preset.id}>
                 {preset.id === selectedId && dirty ? `${preset.name} *` : preset.name}
@@ -69,8 +71,8 @@ export function HeroPresetPanel({
           type="button"
           className={editing ? 'preset-edit-toggle preset-edit-toggle--active' : 'preset-edit-toggle'}
           aria-expanded={editing}
-          aria-label="Редактировать пресеты героя"
-          title="Редактировать пресеты героя"
+          aria-label={t('heroPreset.edit')}
+          title={t('heroPreset.edit')}
           onClick={() => setEditing(!editing)}
         >
           ✎
@@ -80,15 +82,15 @@ export function HeroPresetPanel({
         <>
           <div className="preset-actions">
             <button type="button" onClick={onCreate}>
-              Сохранить героя
+              {t('heroPreset.save')}
             </button>
             {selected && (
               <>
                 <button type="button" disabled={!dirty} onClick={onUpdate}>
-                  Обновить
+                  {t('common.update')}
                 </button>
                 <button type="button" onClick={confirmDelete}>
-                  Удалить
+                  {t('common.delete')}
                 </button>
               </>
             )}
@@ -96,7 +98,7 @@ export function HeroPresetPanel({
           {selected && (
             <div className="field">
               <label className="field-label" htmlFor={`${idPrefix}-hero-preset-name`}>
-                Название
+                {t('common.name')}
               </label>
               <input
                 id={`${idPrefix}-hero-preset-name`}

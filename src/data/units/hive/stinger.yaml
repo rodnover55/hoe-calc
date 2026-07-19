@@ -19,19 +19,29 @@ flying: true
 abilities:
   - id: hive_spawn
     name: "Порождение Роя"
+    nameEn: "Hive Spawn"
     description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+    descriptionEn: "A part of a hivemind that serves a powerful lord from beyond. Morale range: –5 to 5. Luck range: –5 to 5. Fallen Hive Spawn count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: hivemind_vanguard
     name: "Рой. Авангард"
+    nameEn: "Hivemind: Vanguard"
     description: "В начале боя получает +1 к атаке за каждое другое уникальное существо Роя в армии. Убив отряд противника, генерирует очки концентрации: 2."
+    descriptionEn: "At the start of battle, for each other unique Hive creature in the army, this creature’s Attack increases by 1. Whenever this creature kills an enemy, it generates 2 Focus Point(s)."
   - id: piercing_sting
     name: "Piercing Sting"
+    nameEn: "Piercing Sting"
     description: "Each attack also kills +1 enemy unit(s) in additional to regular Damage. Works on creatures up to tier 6."
+    descriptionEn: "Each attack also kills +1 enemy unit(s) in additional to regular Damage. Works on creatures up to tier 6."
 growth: 10
 cost: 49
 source: https://www.olden-era.com/ru/units/stinger

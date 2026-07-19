@@ -18,25 +18,39 @@ flying: true
 abilities:
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: arinas_way
     name: "Путь Арины"
+    nameEn: "Arina’s Way"
     description: "Снимает с себя все отрицательные эффекты и полностью восстанавливает здоровье. Один раз за бой."
+    descriptionEn: "Dispels all negative effects from this creature and fully restores its HP. Once per battle."
   - id: nairas_way
     name: "Путь Наиры"
+    nameEn: "Naira’s Way"
     description: "До конца раунда наносит +40% и получает –40% урона. Один раз за бой."
+    descriptionEn: "Deals +40% Damage and takes –40% Damage until the end of the round. Once per battle."
   - id: doreaths_way
     name: "Путь Дореата"
+    nameEn: "Doreath’s Way"
     description: "Переносится на любой гекс и наносит всем соседним отрядам противника чистый урон в размере урона от обычной атаки. Один раз за бой."
+    descriptionEn: "Blinks to any hex and deals its basic attack as Pure Damage to all adjacent enemies. Once per battle."
   - id: hksmillas_way
     name: "Путь Кшмильи"
+    nameEn: "Hksmilla’s Way"
     description: "Получает неуязвимость для магического урона и отрицательных эффектов до конца раунда. Один раз за бой."
+    descriptionEn: "Gains immunity to Magic Damage and negative effects until the end of the round. Once per battle."
 growth: 40
 cost: 5050
 source: https://www.olden-era.com/ru/units/sentinel_of_glory

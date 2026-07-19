@@ -18,10 +18,14 @@ flying: false
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
 growth: 1
 cost: 13
 source: https://www.olden-era.com/ru/units/skeleton

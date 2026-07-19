@@ -11,11 +11,21 @@ h1 {
 
 .page-header {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.page-header-row {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+}
+
+.page-header .swap-button {
+  align-self: flex-start;
 }
 
 .header-actions {
@@ -41,6 +51,12 @@ h1 {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.lang-select {
+  width: auto;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .share-button--copied {

@@ -19,19 +19,29 @@ flying: false
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: long_reach
     name: "Атака на расстоянии"
+    nameEn: "Long Reach"
     description: "Атакует отряд противника через один гекс. Не провоцирует контратаку и не занимает гекс рядом с целью."
+    descriptionEn: "Has an attack that targets the hex directly behind an adjacent hex. It doesn’t provoke counterattacks and doesn’t move the attacker next to their target."
   - id: dig_up_bones
     name: "Накопать костей"
+    nameEn: "Dig Up Bones"
     description: "Призывает отряд скелетов на соседний гекс: [ 2 × численность отряда ]. Призванные существа пропадают в конце боя."
+    descriptionEn: "Summons [ 2 × amount of units ] Skeleton(s) on an adjacent hex. They disappear after the battle."
   - id: blighted_corpses
     name: "Чумные останки"
+    nameEn: "Blighted Corpses"
     description: "Атаки на расстоянии этого существа отравляют противника. Отравленный отряд получает [ 16 + 3 × численность отряда ] магического урона в начале своего хода. Эффект суммируется. Кол‑во раундов: 2."
+    descriptionEn: "Long Reach attacks poison the target. Poisoned creatures take [ 16 + 3 × amount of units ] Magic Damage at the start of their turn. This effect is stackable. Duration: 2 round(s)."
   - id: ensnare_memories
     name: "Поймать воспоминания"
+    nameEn: "Ensnare Memories"
     description: "Призывает призраков на соседний гекс: [ 2 × численность отряда ]. Призванные существа пропадают в конце боя."
+    descriptionEn: "Summons [ 2 × amount of units ] Wight(s) on an adjacent hex. They disappear after the battle."
 growth: 10
 cost: 710
 source: https://www.olden-era.com/ru/units/merchant_of_death

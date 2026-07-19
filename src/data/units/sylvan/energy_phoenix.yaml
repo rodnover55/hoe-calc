@@ -19,25 +19,39 @@ flying: true
 abilities:
   - id: embodiment
     name: "Воплощение"
+    nameEn: "Embodiment"
     description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+    descriptionEn: "A spirit, soul, or other intangible power that has coalesced into material form. Morale range: –3 to 3. Luck range: –3 to 3. Fallen Embodiments do NOT count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: sweeping_strike
     name: "Размах"
+    nameEn: "Sweeping Strike"
     description: "Наносит урон цели и любым существам на гексах по сторонам от неё."
+    descriptionEn: "Deals Damage to the target and two adjacent hexes to its sides."
   - id: embodiment_of_fire
     name: "Воплощение огня"
+    nameEn: "Embodiment of Fire"
     description: "Не оставляет труп при смерти. Неуязвим для заклинаний «Шар огня», «Стена огня» и «Армагеддон»."
+    descriptionEn: "This creature leaves no body upon death. Immune to “Fireball,” “Firewall,” and “Armageddon.”"
   - id: awaken_fire_2
     name: "Пробуждение. Огонь II"
+    nameEn: "Awaken: Fire II"
     description: "Получает +2 к скорости и инициативе, +25 к здоровью и всегда наносит максимальный урон. Позволяет использовать остальные способности. Применяется один раз за бой и действует до конца боя."
+    descriptionEn: "Increase this creature’s Speed and Initiative by 2 and HP by 25 and grants it maximum Damage. Allows the use of other abilities. Once per battle; lasts until the end of battle."
   - id: supernova
     name: "Вечное пламя"
+    nameEn: "Eternal Flame"
     description: "В начале каждого своего хода это существо восстанавливает себе 25% потерянного с начала боя здоровья. Воскрешает павших существ."
+    descriptionEn: "At the start of each turn, this creature restores 25% of HP lost since the start of battle. This can revive fallen units."
 growth: 39
 cost: 4565
 source: https://www.olden-era.com/ru/units/energy_phoenix

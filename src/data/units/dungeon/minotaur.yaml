@@ -18,19 +18,29 @@ flying: false
 abilities:
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: eager_for_battle
     name: "Рвётся в бой"
+    nameEn: "Eager for Battle"
     description: "У этого существа всегда положительный боевой дух, а его максимально возможное значение повышается до 5. Шанс срабатывания боевого духа повышается на 5% за каждую единицу."
+    descriptionEn: "This creature always has positive Morale, and its maximum increases to 5. Chance of Morale triggering increases by 5% for each total point."
   - id: blood_for_blood
     name: "Око за око"
+    nameEn: "Blood for Blood"
     description: "Каждый раз, когда это существо получает урон, его боевой дух повышается на 1."
+    descriptionEn: "Whenever this creature takes Damage, its Morale increases by 1."
   - id: fighting_style_grand_slam
     name: "Стиль боя. Рассекающий удар"
+    nameEn: "Fighting Style: Grand Slam"
     description: "Атакует выбранный отряд и все отряды на двух гексах за ним, нанося им –50% урона."
+    descriptionEn: "Hits the target and all creatures within two hexes behind it, dealing –50% Damage to each."
 growth: 11
 cost: 1214
 source: https://www.olden-era.com/ru/units/minotaur

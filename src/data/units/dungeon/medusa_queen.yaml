@@ -19,25 +19,39 @@ flying: false
 abilities:
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: sharpshooter
     name: "Снайпер"
+    nameEn: "Sharpshooter"
     description: "Независимо от расстояния наносит полный урон выстрелами."
+    descriptionEn: "Ranged attacks deal full Ranged Damage at any range."
   - id: fighting_style_arrow_barrage
     name: "Стиль боя. Шквал стрел"
+    nameEn: "Fighting Style: Arrow Barrage"
     description: "Атакует выбранный отряд и все отряды противника на соседних с ним гексах, нанося им –50% урона."
+    descriptionEn: "Hits the target and all enemies adjacent to it, dealing –50% Damage."
   - id: slither_away
     name: "Ускользнуть"
+    nameEn: "Slither Away"
     description: "Перемещается на другой гекс в пределах радиуса своего перемещения."
+    descriptionEn: "Moves to another hex within its movement range."
   - id: countershot
     name: "Ответный выстрел"
+    nameEn: "Countershot"
     description: "Контратакует, получив урон от выстрела."
+    descriptionEn: "Counterattacks when struck with a Ranged attack."
   - id: marble_arrow
     name: "Мраморные стрелы"
+    nameEn: "Marble Arrows"
     description: "Выстрелы этого существа снижают инициативу цели на 2 до конца следующего раунда."
+    descriptionEn: "Ranged Attacks reduce the target’s Initiative by 2 until the end of the next round."
 growth: 14
 cost: 1115
 source: https://www.olden-era.com/ru/units/medusa_queen

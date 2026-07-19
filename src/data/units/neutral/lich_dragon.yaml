@@ -18,25 +18,39 @@ flying: true
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: cone_strike
     name: "Веерный удар"
+    nameEn: "Cone Strike"
     description: "Наносит урон цели, любым существам на двух соседних гексах по сторонам от неё, а также любым существам на гексах позади них."
+    descriptionEn: "Deals Damage to the target, the two adjacent hexes to its sides, and the hexes directly behind them."
   - id: magic_defence_3
     name: "Защита от магии III"
+    nameEn: "Magic Defense III"
     description: "Получает –60% магического урона."
+    descriptionEn: "Takes –60% Magic Damage."
   - id: bone_armageddon
     name: "Костяной армагеддон"
+    nameEn: "Bone Armageddon"
     description: "Наносит [ 0 × численность отряда ] чистого урона всем остальным существам на поле боя."
+    descriptionEn: ""
   - id: self_reconstruction
     name: "Реконструкция себя"
+    nameEn: "Bone Armageddon"
     description: "Восстанавливает себе <unic_unit_lich_dragon_passive_2>% от максимального запаса здоровья одного существа. Воскрешает павших существ сверх изначального количества. Это временные существа."
+    descriptionEn: "Deals [ 0 × amount of units ] Pure Damage to all other creatures."
 growth: 66
 cost: 9999
 source: https://www.olden-era.com/ru/units/lich_dragon

@@ -18,22 +18,34 @@ flying: false
 abilities:
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: swift_strike
     name: "Быстрый удар"
+    nameEn: "Swift Strike"
     description: "Атака не провоцирует контратаки."
+    descriptionEn: "Enemies do not counterattack."
   - id: sweeping_strike
     name: "Размах"
+    nameEn: "Sweeping Strike"
     description: "Наносит урон цели и любым существам на гексах по сторонам от неё."
+    descriptionEn: "Deals Damage to the target and two adjacent hexes to its sides."
   - id: growing_teeth_i
     name: "Отращивает зубы"
+    nameEn: "Growing Teeth"
     description: "При получении урона это существо получает +1 к атаке до конца боя."
+    descriptionEn: "Whenever this creature takes Damage, it gains 1 Attack until the end of the battle."
   - id: fighting_style_whirlwind_strike
     name: "Стиль боя. Круговой удар"
+    nameEn: "Fighting Style: Whirlwind Strike"
     description: "Атакует все отряды противника на соседних с ней гексах, нанося им –50% урона."
+    descriptionEn: "Hits all adjacent enemies, dealing –50% Damage to each."
 growth: 22
 cost: 2528
 source: https://www.olden-era.com/ru/units/hydra

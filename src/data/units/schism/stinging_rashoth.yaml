@@ -19,16 +19,24 @@ flying: true
 abilities:
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: summoning_rite_stinging_rashoth
     name: "Обряд призыва. Жалящие ра’шотхи"
+    nameEn: "Summoning Rite: Stinging Ra’Shoth"
     description: "Один раз за бой призывает отряд жалящих ра’шотхов на месте дружественного трупа. Призванный отряд получает 50% здоровья цели на начало боя, но не более [ текущая численность отряда‑призывателя ] существ(а). Эти существа остаются в армии героя после окончания боя."
+    descriptionEn: "Once per battle, summons a stack of Stinging Ra’Shoth in place of a friendly corpse. The summon has 50% HP of the corpse’s original stack and no more than [ current amount of summoners ] units. These creatures are permanent and remain after the battle."
 growth: 5
 cost: 33
 source: https://www.olden-era.com/ru/units/stinging_rashoth

@@ -19,16 +19,24 @@ flying: false
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: area_strike_ii
     name: "Удар по площади"
+    nameEn: "Area Strike"
     description: "Наносит урон цели и любым существам на гексах вокруг неё."
+    descriptionEn: "Deals Damage to the target and all hexes around it."
   - id: deaths_embrace
     name: "Объятия смерти"
+    nameEn: "Death’s Embrace"
     description: "Активирует все наложенные на цель эффекты, они мгновенно срабатывают на всю оставшуюся длительность. Затем эти эффекты пропадают."
+    descriptionEn: "Triggers all effects applied on the target, instantly using their full remaining duration. These effects are then removed."
 growth: 12
 cost: 1616
 source: https://www.olden-era.com/ru/units/pestilent_lich

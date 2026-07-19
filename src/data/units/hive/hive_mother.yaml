@@ -19,28 +19,44 @@ flying: false
 abilities:
   - id: hive_spawn
     name: "Порождение Роя"
+    nameEn: "Hive Spawn"
     description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+    descriptionEn: "A part of a hivemind that serves a powerful lord from beyond. Morale range: –5 to 5. Luck range: –5 to 5. Fallen Hive Spawn count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: soul_assimilator
     name: "Ассимилятор душ"
+    nameEn: "Soul Assimilator"
     description: "В начале боя получает бонусы за каждую фракцию в армии противника: • Храм: +25% к атаке; • Некрополь: +25% к защите; • Роща: +3 к удаче и боевому духу; • Подземелье: +10% к урону; • Раскол: +20% к здоровью; • Нейтральные: +2 к скорости."
+    descriptionEn: "At the beginning of a battle, gains bonuses for each faction represented in the enemy’s army: • Temple: +25% Attack • Necropolis: +25% Defense • Grove: +3 Luck and Morale • Dungeon: +10% Damage • Schism: +20% HP • Neutral: +2 Speed"
   - id: beelzebubs_agenda
     name: "План Вельзевула"
+    nameEn: "Beelzebub’s Agenda"
     description: "Её герой наносит +25% магического урона. Эффект не суммируется."
+    descriptionEn: "The hero deals +25% Magic Damage. This effect does not stack."
   - id: squash_the_weak
     name: "Топчет лилипутов"
+    nameEn: "Squash the Weak!"
     description: "Наносит больше урона целям более низкого ранга: +3% урона за каждый ранг разницы."
+    descriptionEn: "The lower the target’s tier, the more Damage this creature deals to it: +3% Damage per tier of difference."
   - id: blasphemous_adoration_ii
     name: "Нечистое поклонение"
+    nameEn: "Blasphemous Adoration"
     description: "Удваивает её эффект «Ассимилятора душ» до конца следующего раунда. Все дружественные существа получают такой же эффект."
+    descriptionEn: "Doubles this creature’s “Soul Assimilator” effects until the end of the next round. All friendly creatures gain the same ability."
   - id: promise_of_love
     name: "Заражающий взрыв"
+    nameEn: "Contaminating Blast"
     description: "Наносит цели и всем существам в пределах двух гексов от неё магический урон в размере 100% от обычной атаки ([ 60—60 × численность отряда ])."
+    descriptionEn: "Deals 100% of a basic attack ([ 60–60 × amount of units ]) as Magic Damage to the target and all creatures within two hexes of it."
   - id: hivemind_nest_protector
     name: "Рой. Защитник гнезда"
+    nameEn: "Hivemind: Nest Protector"
     description: "В начале боя получает +1 к защите за каждое другое уникальное существо Роя в армии. При смерти генерирует очки концентрации: 2."
+    descriptionEn: "At the start of battle, for each other unique Hive creature in the army, this creature’s Defense increases by 1. Upon death, this creature generates 2 Focus Point(s)."
 growth: 25
 cost: 6060
 source: https://www.olden-era.com/ru/units/hive_mother

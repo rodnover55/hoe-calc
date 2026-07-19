@@ -19,28 +19,42 @@ flying: true
 abilities:
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: forging_perfection
     name: "Ковка совершенства"
+    nameEn: "Forging Perfection"
     description: "Каждый раз, когда на дружественный отряд накладывают положительный эффект, он также применяется к этому существу с той же длительностью и мощью. Если положительный эффект одновременно накладывается на несколько отрядов, то это существо получает его только один раз."
+    descriptionEn: "Whenever a positive effect is applied to a friendly creature, it is also applied to this creature. The effect’s duration and power are copied. If the effect targets multiple stacks, it is applied to this creature only once."
   - id: duelist
     name: "Дуэлянт"
+    nameEn: "Duelist"
     description: "Не имеет штрафа в ближнем бою и наносит полный урон."
+    descriptionEn: "Receives no penalty in Melee range, dealing full Damage."
   - id: purity_aura
     name: "Аура чистоты"
+    nameEn: "Purity Aura"
     description: "Это существо и все дружественные отряды на соседних с ним гексах неуязвимы для всех отрицательных эффектов."
+    descriptionEn: "This creature and adjacent friendly creatures are immune to all negative effects."
   - id: refract_and_reflect
     name: "Преломление и отражение"
+    nameEn: "Refract and Reflect"
     description: "Накладывает копию всех своих положительных эффектов на выбранный дружественный отряд. Не активирует «Ковку совершенства»."
+    descriptionEn: "Applies a copy of all positive effects currently on this creature to a friendly creature. Does not trigger “Forging Perfection.”"
   - id: unbending_pride
     name: "Несгибаемая гордость"
+    nameEn: "Unbending Pride"
     description: "Накладывает на это существо барьер, который один раз поглощает любой получаемый им урон."
+    descriptionEn: "Shields this creature with a barrier that blocks the next instance of Damage."
   - id: ranged_attack
     name: "Выстрел"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
   - id: embodiment
     name: "Воплощение"
+    nameEn: "Ranged Attack"
     description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
 growth: 35
 cost: 5075
 source: https://www.olden-era.com/ru/units/apotheosis

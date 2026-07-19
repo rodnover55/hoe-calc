@@ -19,19 +19,29 @@ flying: true
 abilities:
   - id: hive_spawn
     name: "Порождение Роя"
+    nameEn: "Hive Spawn"
     description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+    descriptionEn: "A part of a hivemind that serves a powerful lord from beyond. Morale range: –5 to 5. Luck range: –5 to 5. Fallen Hive Spawn count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: hivemind_nest_protector
     name: "Рой. Защитник гнезда"
+    nameEn: "Hivemind: Nest Protector"
     description: "В начале боя получает +1 к защите за каждое другое уникальное существо Роя в армии. При смерти генерирует очки концентрации: 2."
+    descriptionEn: "At the start of battle, for each other unique Hive creature in the army, this creature’s Defense increases by 1. Upon death, this creature generates 2 Focus Point(s)."
   - id: whispers_of_doubt
     name: "Шёпот сомнений"
+    nameEn: "Whispers of Doubt"
     description: "Атаки этого существа вынуждают цель наносить минимальный урон. Кол‑во раундов: 1."
+    descriptionEn: "Attacks cause the target to always deal minimal Damage. Duration: 1 round(s)."
 growth: 10
 cost: 49
 source: https://www.olden-era.com/ru/units/chanter

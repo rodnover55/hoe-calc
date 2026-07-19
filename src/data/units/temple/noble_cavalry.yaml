@@ -19,22 +19,34 @@ flying: false
 abilities:
   - id: piercing_strike_2
     name: "Пронзающий удар II"
+    nameEn: "Piercing Strike II"
     description: "Нанося урон, игнорирует 40% защиты цели."
+    descriptionEn: "Ignores 40% of the enemy’s Defense."
   - id: inspiring_ii
     name: "Воодушевление"
+    nameEn: "Inspiring"
     description: "Повышает боевой дух дружественных существ на 1. Эффект не суммируется: действует только самый сильный из активных."
+    descriptionEn: "Increases friendly creatures’ Morale by 1. This effect does not stack; only the strongest one is active."
   - id: jousting_bonus_ii
     name: "Кавалерийский бонус"
+    nameEn: "Jousting Bonus"
     description: "Перемещение перед атакой повышает урон на 10% за каждый пройденный гекс."
+    descriptionEn: "Moving before an attack increases Damage by 10% per hex moved."
   - id: charge
     name: "В атаку!"
+    nameEn: "Charge!"
     description: "Усиливает всех дружественных существ. Они получают +1 к скорости и инициативе. Кол‑во раундов: 2."
+    descriptionEn: "Increases Speed and Initiative of all friendly creatures by 1. Duration: 2 round(s)."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
 growth: 17
 cost: 1216
 source: https://www.olden-era.com/ru/units/noble_cavalry

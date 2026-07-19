@@ -18,16 +18,24 @@ flying: false
 abilities:
   - id: hive_spawn
     name: "Порождение Роя"
+    nameEn: "Hive Spawn"
     description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+    descriptionEn: "A part of a hivemind that serves a powerful lord from beyond. Morale range: –5 to 5. Luck range: –5 to 5. Fallen Hive Spawn count towards the power of Necromancy reanimation after battle."
   - id: long_reach
     name: "Атака на расстоянии"
+    nameEn: "Long Reach"
     description: "Атакует отряд противника через один гекс. Не провоцирует контратаку и не занимает гекс рядом с целью."
+    descriptionEn: "Has an attack that targets the hex directly behind an adjacent hex. It doesn’t provoke counterattacks and doesn’t move the attacker next to their target."
   - id: hivemind_vanguard
     name: "Рой. Авангард"
+    nameEn: "Hivemind: Vanguard"
     description: "В начале боя получает +1 к атаке за каждое другое уникальное существо Роя в армии. Убив отряд противника, генерирует очки концентрации: 2."
+    descriptionEn: "At the start of battle, for each other unique Hive creature in the army, this creature’s Attack increases by 1. Whenever this creature kills an enemy, it generates 2 Focus Point(s)."
   - id: topple_the_strong
     name: "Опрокидывает великанов"
+    nameEn: "Topple the Strong!"
     description: "Наносит больше урона целям более высокого ранга: +3% урона за каждый ранг разницы."
+    descriptionEn: "The higher the target’s tier, the more Damage this creature deals to it: +3% Damage per tier of difference."
 growth: 3
 cost: 24
 source: https://www.olden-era.com/ru/units/gnat

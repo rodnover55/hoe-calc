@@ -19,16 +19,24 @@ flying: false
 abilities:
   - id: aegis
     name: "Эгида"
+    nameEn: "Aegis"
     description: "Это существо и все дружественные отряды на соседних с ним гексах получают –30% урона от выстрелов."
+    descriptionEn: "This creature and adjacent friendly creatures take –30% Ranged Damage."
   - id: anointed_for_defence
     name: "Помазан на защиту"
+    nameEn: "Anointed for Defense"
     description: "Получает +2 к защите до конца боя каждый раз, когда на него накладывают положительный эффект."
+    descriptionEn: "Whenever this creature gains a positive effect, its Defense increases by 2 until the end of the battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
 growth: 8
 cost: 23
 source: https://www.olden-era.com/ru/units/suns_aegis

@@ -18,13 +18,19 @@ flying: false
 abilities:
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: fighting_style_viscous_spit
     name: "Стиль боя. Вязкая слюна"
+    nameEn: "Fighting Style: Viscous Spit"
     description: "Проводит атаку на расстоянии, которая наносит –50% урона."
+    descriptionEn: "Performs a Long Reach attack, which deals –50% Damage."
 growth: 3
 cost: 13
 source: https://www.olden-era.com/ru/units/troglodyte

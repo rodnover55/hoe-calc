@@ -83,7 +83,9 @@ flying: false
 abilities:               # все способности юнита с olden-era.com
   - id: long_reach       # слаг — имя файла иконки на сайте
     name: "Атака на расстоянии"
+    nameEn: "Long Reach"
     description: "Атакует отряд противника через один гекс. Не провоцирует контратаку и не занимает гекс рядом с целью."
+    descriptionEn: "Has an attack that targets the hex directly behind an adjacent hex. It doesn’t provoke counterattacks and doesn’t move the attacker next to their target."
 growth: 6
 cost: 24
 source: https://www.olden-era.com/ru/units/warden_gnat
@@ -99,6 +101,31 @@ source: https://www.olden-era.com/ru/units/warden_gnat
 npm run update-units
 ```
 
+## Локализация
+
+Кнопка в шапке переключает язык интерфейса (выбор запоминается в
+localStorage; при первом заходе берётся язык браузера). Поиск юнитов
+работает по названиям на всех языках сразу.
+
+Каждый язык — отдельный YAML-файл в `src/locales/` (`ru.yaml`,
+`en.yaml`), подхватывается автоматически через `import.meta.glob`:
+
+```yaml
+code: de           # код языка
+label: DE          # подпись на кнопке переключателя
+locale: de         # BCP-47: формат чисел и множественное число
+strings:           # секции строк; ключи — как в ru.yaml
+  app:
+    title: "…"
+  …
+```
+
+Чтобы добавить язык, скопируйте `ru.yaml`, переведите строки и поправьте
+`code`/`label`/`locale`. Русская локаль — эталонная: недостающие в новом
+файле ключи берутся из неё. Названия юнитов и способностей приходят из
+базы юнитов (`name`/`nameEn`), а не из локали: не-русские языки
+показывают английские названия.
+
 ## Разработка
 
 ```bash
@@ -110,4 +137,5 @@ npm run preview  # локальный просмотр собранного пр
 
 Стек: React 19, TypeScript, Vite. Логика расчёта — в `src/formula.ts`,
 карта способностей и режимов атаки — в `src/abilityEffects.ts`,
-интерфейс — в `src/App.tsx`.
+интерфейс — в `src/App.tsx`, локализация — в `src/i18n.ts` и
+`src/locales/`.

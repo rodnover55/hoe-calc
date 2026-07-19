@@ -1,8 +1,10 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import type { AttackerStats, DamageStep, DefenderStats, Luck } from './formula';
+import type { AttackerStats, DamageStep, DefenderStats } from './formula';
 import { calculateAbilityDamage, calculateDamage } from './formula';
 import type { AttackMode } from './abilityEffects';
 import { attackModesFor, damageReduction, defaultRetaliation, doubleStrikeFor } from './abilityEffects';
+import { LANGUAGES, numberLocale, pluralWord } from './i18n';
+import { useI18n } from './LangContext';
 import { HeroPresetPanel } from './components/HeroPresetPanel';
 import { NumberField } from './components/NumberField';
 import { UnitPicker } from './components/UnitPicker';
@@ -28,34 +30,6 @@ import { UNITS_BY_ID } from './units';
 import type { AttackParams } from './urlState';
 import { SHARE_PARAM, decodeAppState, encodeAppState } from './urlState';
 import './App.css';
-
-const formatNumber = (value: number) => value.toLocaleString('ru');
-
-const formatRange = (min: number, max: number) =>
-  min === max ? formatNumber(min) : `${formatNumber(min)} – ${formatNumber(max)}`;
-
-/** Склонение слова «удар» после числительного: 1 удар, 2 удара, 5 ударов */
-const strikesWord = (n: number) => {
-  const mod100 = n % 100;
-  const mod10 = n % 10;
-  if (mod10 === 1 && mod100 !== 11) return 'удар';
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'удара';
-  return 'ударов';
-};
-
-/** «за 3 удара», «за 2–4 удара»; без верхней границы — «минимум за 3 удара» */
-const formatStrikes = (min: number, max: number | null) =>
-  max === null
-    ? `минимум за ${formatNumber(min)} ${strikesWord(min)}`
-    : min === max
-      ? `за ${formatNumber(min)} ${strikesWord(min)}`
-      : `за ${formatNumber(min)}–${formatNumber(max)} ${strikesWord(max)}`;
-
-const LUCK_LABEL: Record<Luck, string> = {
-  unlucky: 'Неудача',
-  normal: 'Обычный',
-  lucky: 'Удача',
-};
 
 function Formula({ steps }: { steps: DamageStep[] }) {
   return (
@@ -108,6 +82,25 @@ const DEFAULT_DEFENDER: DefenderStats = {
 const restored = decodeAppState(new URLSearchParams(window.location.search).get(SHARE_PARAM));
 
 export default function App() {
+  const { lang, setLang, t } = useI18n();
+
+  const formatNumber = (value: number) => value.toLocaleString(numberLocale(lang));
+
+  const formatRange = (min: number, max: number) =>
+    min === max ? formatNumber(min) : `${formatNumber(min)} – ${formatNumber(max)}`;
+
+  /** «за 3 удара», «за 2–4 удара»; без верхней границы — «минимум за 3 удара» */
+  const formatStrikes = (min: number, max: number | null) =>
+    max === null
+      ? t('strikes.atLeast', { n: formatNumber(min), word: pluralWord(lang, 'strikes.word', min) })
+      : min === max
+        ? t('strikes.exact', { n: formatNumber(min), word: pluralWord(lang, 'strikes.word', min) })
+        : t('strikes.range', {
+            min: formatNumber(min),
+            max: formatNumber(max),
+            word: pluralWord(lang, 'strikes.word', max),
+          });
+
   const [attacker, setAttacker] = useState<AttackerStats>(restored?.attacker ?? DEFAULT_ATTACKER);
   const [attack, setAttack] = useState<AttackParams>(restored?.attack ?? DEFAULT_ATTACK);
   const [modeId, setModeId] = useState(restored?.modeId ?? 'base');
@@ -188,10 +181,10 @@ export default function App() {
 
   const attackerUnit = attackerUnitId ? (UNITS_BY_ID.get(attackerUnitId) ?? null) : null;
   const defenderUnit = defenderUnitId ? (UNITS_BY_ID.get(defenderUnitId) ?? null) : null;
-  const modes = useMemo(() => attackModesFor(attackerUnit), [attackerUnit]);
+  const modes = useMemo(() => attackModesFor(attackerUnit, lang), [attackerUnit, lang]);
   const mode = modes.find((m) => m.id === modeId) ?? modes[0];
   const doubleStrike = doubleStrikeFor(attackerUnit, mode);
-  const reduction = damageReduction(defenderUnit, mode);
+  const reduction = damageReduction(defenderUnit, mode, lang);
 
   // Смена режима заново проставляет ответный удар; дальше он правится вручную.
   const selectMode = (next: AttackMode, unit: UnitPreset | null) => {
@@ -211,7 +204,7 @@ export default function App() {
   const selectAttackerUnit = (unit: UnitPreset | null) => {
     setAttackerUnitId(unit?.id ?? null);
     if (unit) patchAttacker(presetStats(unit));
-    selectMode(attackModesFor(unit)[0], unit);
+    selectMode(attackModesFor(unit, lang)[0], unit);
     // Стек больше не соответствует сохранённому отряду; пресет героя
     // остаётся выбранным — в него можно добавить новый отряд.
     setPresetSel((sel) => ({ ...sel, attackerSavedUnitId: null }));
@@ -233,7 +226,7 @@ export default function App() {
     setDefender(attacker);
     setAttackerUnitId(defenderUnitId);
     setDefenderUnitId(attackerUnitId);
-    selectMode(attackModesFor(nextAttackerUnit)[0], nextAttackerUnit);
+    selectMode(attackModesFor(nextAttackerUnit, lang)[0], nextAttackerUnit);
     setPresetSel(EMPTY_SELECTION);
   };
 
@@ -243,7 +236,7 @@ export default function App() {
     const unit = saved.unitId ? (UNITS_BY_ID.get(saved.unitId) ?? null) : null;
     setAttackerUnitId(unit?.id ?? null);
     patchAttacker(saved.stats);
-    selectMode(attackModesFor(unit)[0], unit);
+    selectMode(attackModesFor(unit, lang)[0], unit);
     setPresetSel((sel) => ({ ...sel, attackerSavedUnitId: saved.id }));
   };
 
@@ -275,7 +268,7 @@ export default function App() {
   };
 
   const createAttackerHeroPreset = () => {
-    const preset = createHeroPreset(attacker, attackerUnitId);
+    const preset = createHeroPreset(attacker, attackerUnitId, lang);
     setPresets((prev) => ({ ...prev, attacker: addHero(prev.attacker, preset) }));
     setPresetSel((sel) => ({
       ...sel,
@@ -285,7 +278,7 @@ export default function App() {
   };
 
   const createDefenderHeroPreset = () => {
-    const preset = createHeroPreset(defender, defenderUnitId);
+    const preset = createHeroPreset(defender, defenderUnitId, lang);
     setPresets((prev) => ({ ...prev, defender: addHero(prev.defender, preset) }));
     setPresetSel((sel) => ({
       ...sel,
@@ -348,7 +341,7 @@ export default function App() {
   const addAttackerSavedUnit = () => {
     const heroId = presetSel.attackerHeroId;
     if (!heroId) return;
-    const saved = createSavedUnit(attacker, attackerUnitId);
+    const saved = createSavedUnit(attacker, attackerUnitId, lang);
     setPresets((prev) => ({ ...prev, attacker: addUnit(prev.attacker, heroId, saved) }));
     setPresetSel((sel) => ({ ...sel, attackerSavedUnitId: saved.id }));
   };
@@ -356,7 +349,7 @@ export default function App() {
   const addDefenderSavedUnit = () => {
     const heroId = presetSel.defenderHeroId;
     if (!heroId) return;
-    const saved = createSavedUnit(defender, defenderUnitId);
+    const saved = createSavedUnit(defender, defenderUnitId, lang);
     setPresets((prev) => ({ ...prev, defender: addUnit(prev.defender, heroId, saved) }));
     setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: saved.id }));
   };
@@ -452,18 +445,21 @@ export default function App() {
 
   const result = useMemo(
     () =>
-      calculateDamage({
-        attacker,
-        abilities: {
-          ...attack,
-          typeModifiers: attack.typeModifiers + (mode.special ? 0 : (reduction?.percent ?? 0)),
-          rangePenalty: mode.rangePenalty,
-          modeMultiplier: mode.multiplier,
-          doubleStrike,
+      calculateDamage(
+        {
+          attacker,
+          abilities: {
+            ...attack,
+            typeModifiers: attack.typeModifiers + (mode.special ? 0 : (reduction?.percent ?? 0)),
+            rangePenalty: mode.rangePenalty,
+            modeMultiplier: mode.multiplier,
+            doubleStrike,
+          },
+          defender,
         },
-        defender,
-      }),
-    [attacker, attack, defender, mode, doubleStrike, reduction],
+        lang,
+      ),
+    [attacker, attack, defender, mode, doubleStrike, reduction, lang],
   );
 
   // Способности с собственным уроном считаются отдельной формулой.
@@ -471,48 +467,66 @@ export default function App() {
   const specialResult = useMemo(
     () =>
       special
-        ? calculateAbilityDamage({
-            count: attacker.count,
-            damageMin: attacker.damageMin,
-            damageMax: attacker.damageMax,
-            factor: special.factor,
-            attackModifier: special.ignoreDefense
-              ? (20 + Math.max(0, attacker.attack) + Math.max(0, attacker.heroAttack)) / 20
-              : 1,
-            base: special.base,
-            perUnit: special.perUnit,
-            reduction: reduction?.percent,
-            defender: {
-              count: defender.count,
-              health: defender.health,
-              topHealth: defender.topHealth,
+        ? calculateAbilityDamage(
+            {
+              count: attacker.count,
+              damageMin: attacker.damageMin,
+              damageMax: attacker.damageMax,
+              factor: special.factor,
+              attackModifier: special.ignoreDefense
+                ? (20 + Math.max(0, attacker.attack) + Math.max(0, attacker.heroAttack)) / 20
+                : 1,
+              base: special.base,
+              perUnit: special.perUnit,
+              reduction: reduction?.percent,
+              defender: {
+                count: defender.count,
+                health: defender.health,
+                topHealth: defender.topHealth,
+              },
             },
-          })
+            lang,
+          )
         : null,
-    [special, attacker, defender, reduction],
+    [special, attacker, defender, reduction, lang],
   );
 
   return (
     <main>
       <header className="page-header">
-        <h1>Калькулятор урона — Heroes of Might and Magic: Olden Era</h1>
-        <div className="header-actions">
-          <button type="button" className="swap-button" onClick={swapSides}>
-            ⇄ Поменять местами
-          </button>
-          <button
-            type="button"
-            className={copied ? 'share-button share-button--copied' : 'share-button'}
-            onClick={copyLink}
-          >
-            {copied ? 'Скопировано' : 'Скопировать ссылку'}
-          </button>
+        <div className="page-header-row">
+          <h1>{t('app.title')}</h1>
+          <div className="header-actions">
+            <select
+              className="lang-select"
+              aria-label={t('app.langSwitch')}
+              title={t('app.langSwitch')}
+              value={lang}
+              onChange={(e) => setLang(e.target.value)}
+            >
+              {LANGUAGES.map((language) => (
+                <option key={language.code} value={language.code}>
+                  {language.label}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className={copied ? 'share-button share-button--copied' : 'share-button'}
+              onClick={copyLink}
+            >
+              {copied ? t('app.copied') : t('app.copyLink')}
+            </button>
+          </div>
         </div>
+        <button type="button" className="swap-button" onClick={swapSides}>
+          ⇄ {t('app.swap')}
+        </button>
       </header>
 
       <div className="columns">
         <section className="column">
-          <h2>Атакующий</h2>
+          <h2>{t('app.attacker')}</h2>
           <HeroPresetPanel
             idPrefix="attacker"
             presets={presets.attacker}
@@ -525,31 +539,31 @@ export default function App() {
             onDelete={deleteAttackerHeroPreset}
           />
           <div className="group">
-            <div className="group-title">Герой</div>
+            <div className="group-title">{t('app.hero')}</div>
             <NumberField
               id="attacker-hero-attack"
-              label="Атака"
+              label={t('fields.heroAttack')}
               value={attacker.heroAttack}
               min={0}
               onChange={(heroAttack) => patchAttacker({ heroAttack })}
             />
             <NumberField
               id="attacker-hero-defense"
-              label="Защита"
+              label={t('fields.heroDefense')}
               value={attacker.heroDefense}
               min={0}
               onChange={(heroDefense) => patchAttacker({ heroDefense })}
             />
           </div>
           <div className="group">
-            <div className="group-title">Юнит</div>
+            <div className="group-title">{t('app.unit')}</div>
             {attackerHeroPreset && (
               <UnitPresetPanel
                 idPrefix="attacker"
                 units={attackerHeroPreset.units}
                 selectedId={presetSel.attackerSavedUnitId}
                 dirty={attackerUnitDirty}
-                currentUnitName={defaultUnitName(attackerUnitId, attacker.count)}
+                currentUnitName={defaultUnitName(attackerUnitId, attacker.count, lang)}
                 onAdd={addAttackerSavedUnit}
                 onSelect={(unit) =>
                   unit
@@ -570,21 +584,21 @@ export default function App() {
             />
             <NumberField
               id="count"
-              label="Кол-во существ"
+              label={t('fields.count')}
               value={attacker.count}
               min={1}
               onChange={(count) => patchAttacker({ count })}
             />
             <NumberField
               id="attacker-health"
-              label="Здоровье существа"
+              label={t('fields.health')}
               value={attacker.health}
               min={1}
               onChange={(health) => patchAttacker({ health })}
             />
             <NumberField
               id="attacker-top-health"
-              label="Неполное здоровье юнита"
+              label={t('fields.topHealth')}
               value={attacker.topHealth}
               min={1}
               max={attacker.health}
@@ -592,28 +606,28 @@ export default function App() {
             />
             <NumberField
               id="damage-min"
-              label="Урон мин"
+              label={t('fields.damageMin')}
               value={attacker.damageMin}
               min={0}
               onChange={(damageMin) => patchAttacker({ damageMin })}
             />
             <NumberField
               id="damage-max"
-              label="Урон макс"
+              label={t('fields.damageMax')}
               value={attacker.damageMax}
               min={0}
               onChange={(damageMax) => patchAttacker({ damageMax })}
             />
             <NumberField
               id="attack"
-              label="Атака существа"
+              label={t('fields.attack')}
               value={attacker.attack}
               min={0}
               onChange={(attack) => patchAttacker({ attack })}
             />
             <NumberField
               id="attacker-defense"
-              label="Защита существа"
+              label={t('fields.defense')}
               value={attacker.defense}
               min={0}
               onChange={(defense) => patchAttacker({ defense })}
@@ -622,9 +636,9 @@ export default function App() {
         </section>
 
         <section className="column">
-          <h2>Атака</h2>
+          <h2>{t('app.attack')}</h2>
           <div className="mode-group">
-            <div className="group-title">Режим атаки</div>
+            <div className="group-title">{t('app.attackMode')}</div>
             {modes.map((m) => (
               <label className="radio" key={m.id}>
                 <input
@@ -640,7 +654,7 @@ export default function App() {
           {mode.rangePenalty && (
             <NumberField
               id="distance"
-              label="Гексы до цели"
+              label={t('fields.distance')}
               value={attack.distance}
               min={1}
               max={20}
@@ -651,14 +665,14 @@ export default function App() {
             <>
               <NumberField
                 id="general-modifiers"
-                label="Общие модификаторы, % (сумма)"
+                label={t('fields.generalModifiers')}
                 value={attack.generalModifiers}
                 step={5}
                 onChange={(generalModifiers) => patchAttack({ generalModifiers })}
               />
               <NumberField
                 id="type-modifiers"
-                label="Типовые модификаторы, % (сумма)"
+                label={t('fields.typeModifiers')}
                 value={attack.typeModifiers}
                 step={5}
                 onChange={(typeModifiers) => patchAttack({ typeModifiers })}
@@ -669,25 +683,20 @@ export default function App() {
                   checked={attack.retaliation}
                   onChange={(e) => patchAttack({ retaliation: e.target.checked })}
                 />
-                Ответный удар
+                {t('fields.retaliation')}
               </label>
             </>
           )}
-          {mode.special && (
-            <p className="mode-note">
-              Урон способности не зависит от АТК/ЗЩТ, модификаторов, дальности и удачи и не
-              провоцирует ответный удар.
-            </p>
-          )}
+          {mode.special && <p className="mode-note">{t('modeNote.special')}</p>}
           {reduction && (
             <p className="mode-note">
-              Защита цели: {reduction.percent}% ({reduction.source}) — учтено автоматически.
+              {t('modeNote.reduction', { percent: reduction.percent, source: reduction.source })}
             </p>
           )}
         </section>
 
         <section className="column">
-          <h2>Защищающийся</h2>
+          <h2>{t('app.defender')}</h2>
           <HeroPresetPanel
             idPrefix="defender"
             presets={presets.defender}
@@ -700,31 +709,31 @@ export default function App() {
             onDelete={deleteDefenderHeroPreset}
           />
           <div className="group">
-            <div className="group-title">Герой</div>
+            <div className="group-title">{t('app.hero')}</div>
             <NumberField
               id="defender-hero-attack"
-              label="Атака"
+              label={t('fields.heroAttack')}
               value={defender.heroAttack}
               min={0}
               onChange={(heroAttack) => patchDefender({ heroAttack })}
             />
             <NumberField
               id="defender-hero-defense"
-              label="Защита"
+              label={t('fields.heroDefense')}
               value={defender.heroDefense}
               min={0}
               onChange={(heroDefense) => patchDefender({ heroDefense })}
             />
           </div>
           <div className="group">
-            <div className="group-title">Юнит</div>
+            <div className="group-title">{t('app.unit')}</div>
             {defenderHeroPreset && (
               <UnitPresetPanel
                 idPrefix="defender"
                 units={defenderHeroPreset.units}
                 selectedId={presetSel.defenderSavedUnitId}
                 dirty={defenderUnitDirty}
-                currentUnitName={defaultUnitName(defenderUnitId, defender.count)}
+                currentUnitName={defaultUnitName(defenderUnitId, defender.count, lang)}
                 onAdd={addDefenderSavedUnit}
                 onSelect={(unit) =>
                   unit
@@ -745,21 +754,21 @@ export default function App() {
             />
             <NumberField
               id="defender-count"
-              label="Кол-во существ (до удара)"
+              label={t('fields.countBefore')}
               value={defender.count}
               min={1}
               onChange={(count) => patchDefender({ count })}
             />
             <NumberField
               id="defender-health"
-              label="Здоровье существа"
+              label={t('fields.health')}
               value={defender.health}
               min={1}
               onChange={(health) => patchDefender({ health })}
             />
             <NumberField
               id="defender-top-health"
-              label="Неполное здоровье юнита"
+              label={t('fields.topHealth')}
               value={defender.topHealth}
               min={1}
               max={defender.health}
@@ -767,28 +776,28 @@ export default function App() {
             />
             <NumberField
               id="defender-damage-min"
-              label="Урон мин"
+              label={t('fields.damageMin')}
               value={defender.damageMin}
               min={0}
               onChange={(damageMin) => patchDefender({ damageMin })}
             />
             <NumberField
               id="defender-damage-max"
-              label="Урон макс"
+              label={t('fields.damageMax')}
               value={defender.damageMax}
               min={0}
               onChange={(damageMax) => patchDefender({ damageMax })}
             />
             <NumberField
               id="defender-attack"
-              label="Атака существа"
+              label={t('fields.attack')}
               value={defender.attack}
               min={0}
               onChange={(attack) => patchDefender({ attack })}
             />
             <NumberField
               id="defense"
-              label="Защита существа"
+              label={t('fields.defense')}
               value={defender.defense}
               min={0}
               onChange={(defense) => patchDefender({ defense })}
@@ -800,19 +809,19 @@ export default function App() {
       <div className="cards">
         {specialResult && (
           <div className="card">
-            <div className="label">Урон способности</div>
+            <div className="label">{t('cards.ability')}</div>
             <div className="damage-row">
               <span className="damage-luck">{mode.label}</span>
               <span className="damage-value">
                 {formatRange(specialResult.min, specialResult.max)}{' '}
                 <span className="damage-avg">({formatNumber(specialResult.average)})</span>
                 <span className="damage-sub">
-                  умрёт:{' '}
+                  {t('cards.dies')}{' '}
                   {specialResult.killsMin === specialResult.killsMax
                     ? formatNumber(specialResult.killsMin)
                     : `${formatNumber(specialResult.killsMin)}–${formatNumber(specialResult.killsMax)}`}
                   {specialResult.strikesMin !== null &&
-                    ` · весь отряд: ${formatStrikes(specialResult.strikesMin, specialResult.strikesMax)}`}
+                    ` · ${t('cards.wholeStack')} ${formatStrikes(specialResult.strikesMin, specialResult.strikesMax)}`}
                 </span>
               </span>
             </div>
@@ -821,19 +830,19 @@ export default function App() {
         )}
         {!specialResult && (
           <div className="card">
-            <div className="label">Удар атакующего (средний)</div>
+            <div className="label">{t('cards.attack')}</div>
             {result.byLuck.map((row) => (
               <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
-                <span className="damage-luck">{LUCK_LABEL[row.luck]}</span>
+                <span className="damage-luck">{t(`luck.${row.luck}`)}</span>
                 <span className="damage-value">
                   {formatRange(row.min, row.max)}{' '}
                   <span className="damage-avg">({formatNumber(row.average)})</span>
                   <span className="damage-sub">
-                    умрёт:{' '}
+                    {t('cards.dies')}{' '}
                     {row.killsMin === row.killsMax
                       ? formatNumber(row.killsMin)
                       : `${formatNumber(row.killsMin)}–${formatNumber(row.killsMax)}`}
-                    {` · весь отряд: ${formatStrikes(row.strikesMin, row.strikesMax)}`}
+                    {` · ${t('cards.wholeStack')} ${formatStrikes(row.strikesMin, row.strikesMax)}`}
                   </span>
                 </span>
               </div>
@@ -843,26 +852,26 @@ export default function App() {
         )}
         {attack.retaliation && (
           <div className="card">
-            <div className="label">Ответный удар (средний)</div>
+            <div className="label">{t('cards.retaliation')}</div>
             {result.byLuck.map((row) => {
               const retaliation = row.retaliation;
               if (!retaliation) return null;
               return (
                 <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
-                  <span className="damage-luck">{LUCK_LABEL[row.luck]}</span>
+                  <span className="damage-luck">{t(`luck.${row.luck}`)}</span>
                   {retaliation.survivorsMax > 0 ? (
                     <span className="damage-value damage-value--retaliation">
                       {formatRange(retaliation.min, retaliation.max)}{' '}
                       <span className="damage-avg">({formatNumber(retaliation.average)})</span>
                       <span className="damage-sub">
-                        умрёт:{' '}
+                        {t('cards.dies')}{' '}
                         {retaliation.killsMin === retaliation.killsMax
                           ? formatNumber(retaliation.killsMin)
                           : `${formatNumber(retaliation.killsMin)}–${formatNumber(retaliation.killsMax)}`}
                       </span>
                     </span>
                   ) : (
-                    <span className="damage-avg">отряд уничтожен</span>
+                    <span className="damage-avg">{t('cards.destroyed')}</span>
                   )}
                 </div>
               );
@@ -872,30 +881,30 @@ export default function App() {
         )}
         {doubleStrike && (
           <div className="card">
-            <div className="label">Второй удар (средний)</div>
+            <div className="label">{t('cards.second')}</div>
             {result.byLuck.map((row) => {
               const second = row.secondStrike;
               if (!second) return null;
               return (
                 <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
-                  <span className="damage-luck">{LUCK_LABEL[row.luck]}</span>
+                  <span className="damage-luck">{t(`luck.${row.luck}`)}</span>
                   {second.attackersMax > 0 ? (
                     <span className="damage-value">
                       {formatRange(second.min, second.max)}{' '}
                       <span className="damage-avg">({formatNumber(second.average)})</span>
                       <span className="damage-sub">
-                        бьют:{' '}
+                        {t('cards.striking')}{' '}
                         {second.attackersMin === second.attackersMax
                           ? formatNumber(second.attackersMin)
                           : `${formatNumber(second.attackersMin)}–${formatNumber(second.attackersMax)}`}{' '}
-                        · умрёт:{' '}
+                        · {t('cards.dies')}{' '}
                         {second.killsMin === second.killsMax
                           ? formatNumber(second.killsMin)
                           : `${formatNumber(second.killsMin)}–${formatNumber(second.killsMax)}`}
                       </span>
                     </span>
                   ) : (
-                    <span className="damage-avg">отряд уничтожен — второго удара нет</span>
+                    <span className="damage-avg">{t('cards.destroyedNoSecond')}</span>
                   )}
                 </div>
               );
@@ -905,32 +914,7 @@ export default function App() {
         )}
       </div>
 
-      <p className="note">
-        ATK — атака существа плюс атака героя, DEF — защита существа плюс защита героя.
-        Типовые бонусы и штрафы
-        сначала суммируются; после них должно остаться хотя бы 10% урона. Итог всегда наносит
-        минимум 1 урона. Режимы атаки строятся по способностям выбранного юнита: у стрелка
-        дальняя атака теряет 10% за каждый гекс сверх трёх (максимум −50%; «Снайпер» стреляет
-        без штрафа), ближняя атака идёт с половинным уроном (кроме «Дуэлянта»), боевые стойки
-        дают ×0.5. Активные способности с собственным уроном (чистым или магическим) считаются
-        по формуле из описания: АТК/ЗЩТ, модификаторы, дальность и удача на них не действуют;
-        магический урон снижает «Защита от магии» цели, чистый не снижается ничем. Постоянные
-        защитные способности цели («Защита от выстрелов», «Защита в ближнем бою», «Презрение»)
-        уменьшают урон соответствующего типа атаки автоматически.
-        Ответный удар проставляется автоматически: дальняя атака, атака через гекс и
-        «Стремительный удар» ответа не провоцируют, галочку можно переключить вручную.
-        Погибшие: первым гибнет верхний юнит с неполным здоровьем, дальше урон делится на полное
-        здоровье (округление вниз); расчётное число не ограничено размером отряда.
-        «Весь отряд: за N ударов» — сколько ударов с уроном строки нужно, чтобы выбить
-        суммарное здоровье отряда защитника (границы — по максимальному и минимальному урону). Ответный удар: по урону атаки считаются выжившие существа защитника (суммарное здоровье
-        минус урон, округление числа существ вверх), затем они бьют по обычной формуле со своим
-        уроном и модификатором (20 + ATK защитника) / (20 + DEF атакующего); удача, дальность и
-        модификаторы атаки на ответ не влияют. Второй удар («Двойной удар», при стрельбе —
-        «Двойной выстрел») наносят выжившие после ответа атакующие по остатку отряда защитника;
-        удача действует на оба удара одинаково, хотя в игре она выпадает на каждый удар отдельно.
-        Данные — официальная вики игры; игра в раннем
-        доступе, цифры могут меняться.
-      </p>
+      <p className="note">{t('note')}</p>
     </main>
   );
 }

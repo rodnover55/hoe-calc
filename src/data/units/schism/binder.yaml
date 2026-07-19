@@ -19,16 +19,24 @@ flying: false
 abilities:
   - id: long_reach
     name: "Атака на расстоянии"
+    nameEn: "Long Reach"
     description: "Атакует отряд противника через один гекс. Не провоцирует контратаку и не занимает гекс рядом с целью."
+    descriptionEn: "Has an attack that targets the hex directly behind an adjacent hex. It doesn’t provoke counterattacks and doesn’t move the attacker next to their target."
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: glance_of_the_abyss
     name: "Взор Бездны"
+    nameEn: "Glance of the Abyss"
     description: "Проклинает выбранный отряд противника. Проклятый отряд получает [ 15 + 3 × численность отряда ] чистого урона в начале своего хода. Эффект суммируется. Кол‑во раундов: 2."
+    descriptionEn: "Curses target enemy creature. Cursed creatures take [ 15 + 3 × amount of units ] Pure Damage at the start of their turn. This effect is stackable. Duration: 2 round(s)."
   - id: abyssal_tendril
     name: "Чёрное щупальце"
+    nameEn: "Abyssal Tendril"
     description: "Наносит выбранному отряду противника чистый урон в размере 50% от обычной атаки ([ 2—2 × численность отряда ]) и снимает с него заряды контратаки: 1."
+    descriptionEn: "Deals 50% of a basic attack ([ 2–2 × amount of units ]) as Pure Damage to target enemy creature and removes 1 of their counterattack charges."
 growth: 7
 cost: 46
 source: https://www.olden-era.com/ru/units/binder

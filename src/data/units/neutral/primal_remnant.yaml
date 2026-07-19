@@ -18,16 +18,24 @@ flying: false
 abilities:
   - id: embodiment
     name: "Воплощение"
+    nameEn: "Embodiment"
     description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+    descriptionEn: "A spirit, soul, or other intangible power that has coalesced into material form. Morale range: –3 to 3. Luck range: –3 to 3. Fallen Embodiments do NOT count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: emboldening_spores
     name: "Укрепляющие споры"
+    nameEn: "Emboldening Spores"
     description: "Это существо и все дружественные отряды на соседних с ним гексах получают +20% к максимальному здоровью. Кол‑во раундов: 2."
+    descriptionEn: "This creature and all adjacent friendly creatures gain +20% maximum HP. Duration: 2 round(s)."
   - id: vegetation_propagation
     name: "Разрастание"
+    nameEn: "Vegetation Propagation"
     description: "Создаёт на соседнем гексе копию своего отряда. Она погибает при получении любого урона."
+    descriptionEn: "Creates an equivalent Primal Remnant stack on an adjacent hex. It dies upon taking any Damage."
 growth: 18
 cost: 1314
 source: https://www.olden-era.com/ru/units/primal_remnant

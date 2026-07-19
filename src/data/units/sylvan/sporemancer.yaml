@@ -19,22 +19,34 @@ flying: false
 abilities:
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: long_reach
     name: "Атака на расстоянии"
+    nameEn: "Long Reach"
     description: "Атакует отряд противника через один гекс. Не провоцирует контратаку и не занимает гекс рядом с целью."
+    descriptionEn: "Has an attack that targets the hex directly behind an adjacent hex. It doesn’t provoke counterattacks and doesn’t move the attacker next to their target."
   - id: mushroom_magic_2
     name: "Грибная магия"
+    nameEn: "Mushroom Magic"
     description: "Заклинания его героя стоят –2 маны. Эффект не суммируется: действует только самый сильный из активных."
+    descriptionEn: "Reduces the mana cost of the hero’s spells by 2. This effect does not stack; only the strongest one is active."
   - id: shroomsong_ii
     name: "Грибная песнь"
+    nameEn: "Shroomsong"
     description: "Расходует все заряды концентрации и восстанавливает ману героя: 8 за каждый потраченный заряд. Один раз за бой."
+    descriptionEn: "Once per battle, spends all Focus Charges to restore the hero’s mana: 8 for each Focus Charge spent."
   - id: swarm_of_bees
     name: "Пчелиный улей"
+    nameEn: "Swarm of Bees"
     description: "Наносит [ 16 + 4 × численность отряда ] урона выбранному отряду противника. Пчёлы продолжают атаковать цель, и она получает [ 16 + 4 × численность отряда ] урона в начале каждого своего хода. Эффект суммируется. Кол‑во раундов: 3."
+    descriptionEn: "Deals [ 16 + 4 × amount of units ] Damage to target enemy creature. Bees keep attacking it, dealing [ 16 + 4 × amount of units ] Damage at the beginning of each turn. This effect is stackable. Duration: 3 round(s)."
   - id: protective_roots
     name: "Защитные корни"
+    nameEn: "Protective Roots"
     description: "Выбранный дружественный отряд становится неуязвим для магического урона. Кол‑во раундов: 1."
+    descriptionEn: "Target friendly creature becomes immune to Magic Damage. Duration: 1 round(s)."
 growth: 18
 cost: 1518
 source: https://www.olden-era.com/ru/units/sporemancer

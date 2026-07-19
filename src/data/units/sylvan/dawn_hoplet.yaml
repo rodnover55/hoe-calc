@@ -19,19 +19,29 @@ flying: true
 abilities:
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: morning_dew
     name: "Утренняя роса"
+    nameEn: "Morning Dew"
     description: "Генерирует заряды концентрации: 1. Один раз за бой."
+    descriptionEn: "Generates 1 Focus Charge(s). Once per battle."
   - id: swift_strike
     name: "Быстрый удар"
+    nameEn: "Swift Strike"
     description: "Атака не провоцирует контратаки."
+    descriptionEn: "Enemies do not counterattack."
 growth: 5
 cost: 48
 source: https://www.olden-era.com/ru/units/dawn_hoplet

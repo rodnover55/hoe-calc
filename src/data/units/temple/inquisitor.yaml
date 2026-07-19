@@ -18,19 +18,29 @@ flying: false
 abilities:
   - id: unyielding_1
     name: "Несгибаемость I"
+    nameEn: "Unyielding I"
     description: "Получая урон, игнорирует 30% атаки нападающего."
+    descriptionEn: "Ignores 30% of the enemy’s Attack when struck."
   - id: infuse_armour_1
     name: "Зачарованная броня"
+    nameEn: "Infuse Armor"
     description: "Получает +5 к защите и +1 к скорости, а также снимает с себя все отрицательные эффекты, ограничивающие передвижение. Кол‑во раундов: 2."
+    descriptionEn: "Increases this creature’s Defense by 5 and Speed by 1, and dispels any negative effects that restrict movement. Duration: 2 round(s)."
   - id: celestial_flail
     name: "Цеп небесный"
+    nameEn: "Celestial Flail"
     description: "Наносит урон цели и всем отрядам противника на соседних с ней гексах."
+    descriptionEn: "Hits the target and all adjacent enemies."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
 growth: 24
 cost: 1923
 source: https://www.olden-era.com/ru/units/inquisitor

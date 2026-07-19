@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useI18n } from '../LangContext';
 import type { SavedUnit } from '../presets';
 
 interface UnitPresetPanelProps {
@@ -36,12 +37,13 @@ export function UnitPresetPanel({
   onRename,
   onDelete,
 }: UnitPresetPanelProps) {
+  const { t } = useI18n();
   const selected = units.find((unit) => unit.id === selectedId) ?? null;
   const [editing, setEditing] = useState(false);
 
   const confirmDelete = () => {
     if (!selected) return;
-    if (window.confirm(`Удалить отряд «${selected.name}»?`)) onDelete();
+    if (window.confirm(t('unitPreset.confirmDelete', { name: selected.name }))) onDelete();
   };
 
   return (
@@ -50,7 +52,7 @@ export function UnitPresetPanel({
         <div className="field">
           <select
             id={`${idPrefix}-saved-unit`}
-            aria-label="Отряд из пресета"
+            aria-label={t('unitPreset.select')}
             value={selectedId ?? ''}
             onChange={(e) =>
               onSelect(
@@ -58,7 +60,7 @@ export function UnitPresetPanel({
               )
             }
           >
-            <option value="">— не выбран —</option>
+            <option value="">{t('unitPreset.none')}</option>
             {units.map((unit) => (
               <option key={unit.id} value={unit.id}>
                 {unit.id === selectedId && dirty ? `${unit.name} *` : unit.name}
@@ -70,8 +72,8 @@ export function UnitPresetPanel({
           type="button"
           className={editing ? 'preset-edit-toggle preset-edit-toggle--active' : 'preset-edit-toggle'}
           aria-expanded={editing}
-          aria-label="Редактировать отряды пресета"
-          title="Редактировать отряды пресета"
+          aria-label={t('unitPreset.edit')}
+          title={t('unitPreset.edit')}
           onClick={() => setEditing(!editing)}
         >
           ✎
@@ -81,15 +83,15 @@ export function UnitPresetPanel({
         <>
           <div className="preset-actions">
             <button type="button" onClick={onAdd}>
-              Добавить отряд ({currentUnitName})
+              {t('unitPreset.add', { name: currentUnitName })}
             </button>
             {selected && (
               <>
                 <button type="button" disabled={!dirty} onClick={onUpdate}>
-                  Обновить
+                  {t('common.update')}
                 </button>
                 <button type="button" onClick={confirmDelete}>
-                  Удалить
+                  {t('common.delete')}
                 </button>
               </>
             )}
@@ -97,7 +99,7 @@ export function UnitPresetPanel({
           {selected && (
             <div className="field">
               <label className="field-label" htmlFor={`${idPrefix}-saved-unit-name`}>
-                Название
+                {t('common.name')}
               </label>
               <input
                 id={`${idPrefix}-saved-unit-name`}

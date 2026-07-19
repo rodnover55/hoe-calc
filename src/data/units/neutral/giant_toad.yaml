@@ -18,19 +18,29 @@ flying: false
 abilities:
   - id: dragon
     name: "Дракон"
+    nameEn: "巨龙"
     description: "Могучее древнее существо, нередко разумное и обладающее поразительными магическими свойствами. Диапазон боевого духа: от 0 до 5. Диапазон удачи: от 0 до 3. Погибших драконов можно поднять некромантией после боя."
+    descriptionEn: "强大且古老的生物，通常具有智能，体内蕴含神奇魔法。 士气范围：0 至 5 幸运范围：0 至 3 阵亡巨龙生物会计入战斗结束后的死灵术复苏强度。"
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: leap
     name: "Прыжок"
+    nameEn: "Leap"
     description: "Прыгает через один гекс и отталкивает всех существ от точки приземления, если это возможно."
+    descriptionEn: "Leaps over one hex. On landing, pushes all adjacent creatures away, if possible."
   - id: sticky_tongue
     name: "Липкий язык"
+    nameEn: "Sticky Tongue"
     description: "Выбирает соседний гекс и притягивает на него цель, стоящую далее в выбранном направлении."
+    descriptionEn: "Targets an adjacent empty hex to grab an enemy creature immediately behind that hex, pulling them into the target hex."
   - id: magic_immunity_3
     name: "Невосприимчивость к магии III"
+    nameEn: "Magic Immunity III"
     description: "Неуязвимо для заклинаний 3‑го ранга и ниже."
+    descriptionEn: "Immune to tier‑3 and lower spells."
 growth: 22
 cost: 1818
 source: https://www.olden-era.com/ru/units/giant_toad

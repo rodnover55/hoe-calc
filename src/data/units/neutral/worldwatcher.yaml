@@ -18,22 +18,34 @@ flying: false
 abilities:
   - id: construct
     name: "Конструкт"
+    nameEn: "Construct"
     description: "Объект, одушевлённый при помощи магии или приведённый в движение иным способом. Боевой дух всегда нейтральный. Удача всегда нейтральная. Погибшие конструкты нельзя поднять некромантией после боя."
+    descriptionEn: "Inert matter that has been reanimated with magic or other means. Morale: Always neutral. Luck: Always neutral. Fallen Constructs do NOT count towards the power of Necromancy reanimation after battle."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: duelist
     name: "Дуэлянт"
+    nameEn: "Duelist"
     description: "Не имеет штрафа в ближнем бою и наносит полный урон."
+    descriptionEn: "Receives no penalty in Melee range, dealing full Damage."
   - id: sharpshooter
     name: "Снайпер"
+    nameEn: "Sharpshooter"
     description: "Независимо от расстояния наносит полный урон выстрелами."
+    descriptionEn: "Ranged attacks deal full Ranged Damage at any range."
   - id: magic_defence_4
     name: "Защита от магии IV"
+    nameEn: "Magic Defense IV"
     description: "Получает –90% магического урона."
+    descriptionEn: "Takes –90% Magic Damage."
   - id: trap_time_loop
     name: "Временная петля"
+    nameEn: "Time Loop"
     description: "Размещает на выбранном гексе невидимую ловушку. Попавший в неё пеший отряд противника переносится на гекс, с которого начал движение, и заканчивает ход. Кол‑во раундов: 2."
+    descriptionEn: "Places an invisible trap. When an enemy ground creature steps on it, the creature is transported back to its starting point and forced to end turn. Duration: 2 rounds."
 growth: 25
 cost: 2525
 source: https://www.olden-era.com/ru/units/worldwatcher

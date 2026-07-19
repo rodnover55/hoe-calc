@@ -5,8 +5,12 @@
  * оба отряда с характеристиками героев и учитываемые абилки атаки —
  * приходит одним входным объектом, результат — диапазоны урона и потерь
  * по вариантам удачи, ответный удар выживших, второй удар после ответа
- * и формула расчёта с подставленными значениями.
+ * и формула расчёта с подставленными значениями. Подписи шагов формулы
+ * берутся из локали по языку, переданному вторым аргументом.
  */
+
+import type { Lang } from './i18n';
+import { translate } from './i18n';
 
 export type Luck = 'normal' | 'lucky' | 'unlucky';
 
@@ -215,7 +219,11 @@ export interface AbilityDamageResult {
  * в `calculateDamage`. Урон способности может быть нулевым — минимум в
  * 1 урона на него не распространяется.
  */
-export function calculateAbilityDamage(input: AbilityAttackInput): AbilityDamageResult {
+export function calculateAbilityDamage(
+  input: AbilityAttackInput,
+  lang: Lang = 'ru',
+): AbilityDamageResult {
+  const L = (key: string): string => translate(lang, `formula.${key}`);
   const count = Math.max(1, input.count);
   const damageMin = Math.max(0, input.damageMin);
   const damageMax = Math.max(damageMin, input.damageMax);
@@ -234,10 +242,10 @@ export function calculateAbilityDamage(input: AbilityAttackInput): AbilityDamage
     const attackModifier = Math.max(0, input.attackModifier ?? 1);
     min = round(count * damageMin * factor * attackModifier * reductionFactor);
     max = round(count * damageMax * factor * attackModifier * reductionFactor);
-    steps.push({ label: 'отряд × урон', text: `${count} × (${damageMin}–${damageMax})` });
-    if (factor !== 1) steps.push({ label: `доля = ${factor.toFixed(2)}`, text: `${factor}` });
+    steps.push({ label: L('stackDamage'), text: `${count} × (${damageMin}–${damageMax})` });
+    if (factor !== 1) steps.push({ label: `${L('factor')} = ${factor.toFixed(2)}`, text: `${factor}` });
     if (attackModifier !== 1) {
-      steps.push({ label: `атака = ${attackModifier.toFixed(2)}`, text: `${attackModifier.toFixed(2)}` });
+      steps.push({ label: `${L('attack')} = ${attackModifier.toFixed(2)}`, text: `${attackModifier.toFixed(2)}` });
     }
   } else {
     const base = Math.max(0, input.base ?? 0);
@@ -245,12 +253,12 @@ export function calculateAbilityDamage(input: AbilityAttackInput): AbilityDamage
     min = round((base + perUnit * count) * reductionFactor);
     max = min;
     steps.push({
-      label: 'фиксированный урон',
+      label: L('fixed'),
       text: base > 0 ? `${base} + ${perUnit} × ${count}` : `${perUnit} × ${count}`,
     });
   }
   if (reduction < 0) {
-    steps.push({ label: `защита цели = ${reductionFactor.toFixed(2)}`, text: `1 − ${-reduction}/100` });
+    steps.push({ label: `${L('targetDefense')} = ${reductionFactor.toFixed(2)}`, text: `1 − ${-reduction}/100` });
   }
 
   return {
@@ -286,13 +294,15 @@ const killsFrom = (damage: number, topHealth: number, health: number): number =>
  *
  * @param input полное описание боя: атакующий и защищающийся отряды с
  *   характеристиками героев и учитываемые абилки атаки.
+ * @param lang язык подписей шагов формулы.
  * @returns диапазоны урона и погибших по вариантам удачи с ответным
  *   ударом выживших и вторым ударом после ответа, модификаторы АТК/ЗЩТ
  *   обеих сторон, признак ограничения типовых модификаторов и формула
  *   расчёта с подставленными значениями.
  */
-export function calculateDamage(input: DamageInput): DamageResult {
+export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageResult {
   const { attacker, abilities, defender } = input;
+  const L = (key: string): string => translate(lang, `formula.${key}`);
 
   const count = Math.max(1, attacker.count);
   const health = Math.max(1, attacker.health);
@@ -414,41 +424,41 @@ export function calculateDamage(input: DamageInput): DamageResult {
   }
 
   const steps: DamageStep[] = [
-    { label: 'отряд × урон', text: `${count} × (${damageMin}–${damageMax})` },
+    { label: L('stackDamage'), text: `${count} × (${damageMin}–${damageMax})` },
     {
-      label: `АТК/ЗЩТ = ${attackDefenseModifier.toFixed(2)}`,
+      label: `${L('atkDef')} = ${attackDefenseModifier.toFixed(2)}`,
       text: `(20 + ${unitAtk} + ${heroAtk}) / (20 + ${unitDef} + ${heroDef})`,
     },
     {
-      label: `общие = ${general.toFixed(2)}`,
+      label: `${L('general')} = ${general.toFixed(2)}`,
       text:
         generalRaw < 0
           ? `max(0; ${pctText(abilities.generalModifiers)})`
           : pctText(abilities.generalModifiers),
     },
     {
-      label: `типовые = ${type.toFixed(2)}${typeCapped ? ' (мин 10%)' : ''}`,
+      label: `${L('type')} = ${type.toFixed(2)}${typeCapped ? ` (${L('typeCapped')})` : ''}`,
       text: typeCapped ? `max(0.1; ${pctText(abilities.typeModifiers)})` : pctText(abilities.typeModifiers),
     },
     {
-      label: `дальность = ${range.toFixed(2)}`,
+      label: `${L('range')} = ${range.toFixed(2)}`,
       text: rangeText,
     },
   ];
-  if (mode !== 1) steps.push({ label: `режим = ${mode.toFixed(2)}`, text: `${mode}` });
-  steps.push({ label: 'удача', text: '(0.5 / 1 / 1.5)' });
+  if (mode !== 1) steps.push({ label: `${L('mode')} = ${mode.toFixed(2)}`, text: `${mode}` });
+  steps.push({ label: L('luck'), text: '(0.5 / 1 / 1.5)' });
 
   const retaliationSteps: DamageStep[] = [
-    { label: 'выжившие × урон', text: `выжившие × (${defDamageMin}–${defDamageMax})` },
+    { label: L('survivorsDamage'), text: `${L('survivors')} × (${defDamageMin}–${defDamageMax})` },
     {
-      label: `АТК/ЗЩТ = ${retaliationModifier.toFixed(2)}`,
+      label: `${L('atkDef')} = ${retaliationModifier.toFixed(2)}`,
       text: `(20 + ${defUnitAtk} + ${defHeroAtk}) / (20 + ${attUnitDef} + ${attHeroDef})`,
     },
   ];
 
   // Второй удар считается по формуле первого, но от выживших атакующих.
   const secondStrikeSteps: DamageStep[] = [
-    { label: 'выжившие × урон', text: `выжившие атакующие × (${damageMin}–${damageMax})` },
+    { label: L('survivorsDamage'), text: `${L('survivingAttackers')} × (${damageMin}–${damageMax})` },
     ...steps.slice(1),
   ];
 

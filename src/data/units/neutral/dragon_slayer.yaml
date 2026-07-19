@@ -18,19 +18,29 @@ flying: false
 abilities:
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: dissection
     name: "Рассечение"
+    nameEn: "Dissection"
     description: "Атаки этого существа ранят цель. Раненый отряд получает [ 32 + 8 × численность отряда ] урона в начале своего хода. Эффект суммируется. Кол‑во раундов: 2."
+    descriptionEn: "Attacks wound the target. Wounded creatures take [ 32 + 8 × amount of units ] Damage at the start of their turn. This effect is stackable. Duration: 2 round(s)."
   - id: dragon_hunter
     name: "Убийца драконов"
+    nameEn: "Dragon hunter"
     description: "Наносит +100% урона драконам."
+    descriptionEn: "Deals +100% Damage to Dragons."
   - id: dragons_blood
     name: "Драконья кровь"
+    nameEn: "Dragon’s Blood"
     description: "Становится неуязвим для заклинаний до конца следующего раунда."
+    descriptionEn: "Becomes fully immune to spells until the end of the next round."
 growth: 28
 cost: 2736
 source: https://www.olden-era.com/ru/units/dragon_slayer

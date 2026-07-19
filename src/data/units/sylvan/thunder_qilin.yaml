@@ -19,28 +19,44 @@ flying: false
 abilities:
   - id: embodiment
     name: "Воплощение"
+    nameEn: "Embodiment"
     description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+    descriptionEn: "A spirit, soul, or other intangible power that has coalesced into material form. Morale range: –3 to 3. Luck range: –3 to 3. Fallen Embodiments do NOT count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: embodiment_of_air
     name: "Воплощение воздуха"
+    nameEn: "Embodiment of Air"
     description: "Не оставляет труп при смерти. Неуязвим для заклинаний «Молния» и «Цепная молния»."
+    descriptionEn: "This creature leaves no body upon death. Immune to “Lightning Bolt” and “Chain Lightning.”"
   - id: lightning_fast
     name: "Молниеносный"
+    nameEn: "Lightning Fast"
     description: "Неуязвим для эффектов, ограничивающих передвижение."
+    descriptionEn: "This creature is immune to all effects that restrict movement."
   - id: awaken_air_2
     name: "Пробуждение. Воздух II"
+    nameEn: "Awaken: Air II"
     description: "Это существо получает +2 к скорости и инициативе, +20 к здоровью и «Быстрый удар». Позволяет использовать остальные способности. Применяется один раз за бой и действует до конца боя."
+    descriptionEn: "Increases this creature’s Speed and Initiative by 2, HP by 20 and grants it “Swift Strike.” Allows the use of other abilities. Once per battle; lasts until the end of battle."
   - id: cloud_nine
     name: "Седьмое небо"
+    nameEn: "Cloud Nine"
     description: "В начале каждого раунда генерирует очки концентрации: 2."
+    descriptionEn: "At the beginning of each round, generates 2 Focus Point(s)."
   - id: ball_lightning
     name: "Шаровая молния"
+    nameEn: "球形闪电"
     description: "Переносится на любой свободный гекс в радиусе передвижения. Затем наносит всем отрядам на соседних гексах магический урон в размере 100% от обычной атаки ([ 27—36 × численность отряда ])."
+    descriptionEn: "闪现至其移动范围内的任意空格。对与目标格相邻的所有生物造成基础攻击 100%（[ 27–36 × 单位数量 ]）的魔法伤害。"
   - id: thunderstrike
     name: "Раскат грома"
+    nameEn: "Thunderstrike"
     description: "Превращает защиту этого существа в дополнительную атаку до конца раунда."
+    descriptionEn: "Converts this creature’s Defense into additional Attack until the end of the round."
 growth: 22
 cost: 3036
 source: https://www.olden-era.com/ru/units/thunder_qilin

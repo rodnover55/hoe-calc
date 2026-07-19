@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useI18n } from '../LangContext';
 import type { UnitPreset } from '../units';
-import { FACTION_LABEL, GRADE_LABEL } from '../units';
+import { gradeLabel, unitName } from '../units';
 import { searchUnits } from '../unitSearch';
 
 interface UnitSearchProps {
@@ -11,6 +12,7 @@ interface UnitSearchProps {
 
 /** Поле поиска юнита по названию с выпадающим списком подсказок */
 export function UnitSearch({ idPrefix, onPick, onClose }: UnitSearchProps) {
+  const { lang, t } = useI18n();
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
   const results = searchUnits(query);
@@ -48,7 +50,7 @@ export function UnitSearch({ idPrefix, onPick, onClose }: UnitSearchProps) {
   return (
     <div className="unit-search field">
       <label className="field-label" htmlFor={`${idPrefix}-unit-search`}>
-        Поиск юнита
+        {t('search.label')}
       </label>
       <input
         id={`${idPrefix}-unit-search`}
@@ -58,7 +60,7 @@ export function UnitSearch({ idPrefix, onPick, onClose }: UnitSearchProps) {
         aria-controls={`${idPrefix}-unit-search-list`}
         aria-activedescendant={activeOptionId}
         autoComplete="off"
-        placeholder="Название юнита…"
+        placeholder={t('search.placeholder')}
         autoFocus
         value={query}
         onChange={(e) => {
@@ -94,16 +96,16 @@ export function UnitSearch({ idPrefix, onPick, onClose }: UnitSearchProps) {
                 loading="lazy"
               />
               <span>
-                <span className="unit-search-option-name">{unit.name}</span>
+                <span className="unit-search-option-name">{unitName(unit, lang)}</span>
                 <span className="unit-search-option-sub">
-                  {FACTION_LABEL[unit.faction]} · Тир {unit.tier}
-                  {unit.grade > 0 ? ` · ${GRADE_LABEL[unit.grade]}` : ''}
+                  {t(`faction.${unit.faction}`)} · {t('picker.tier')} {unit.tier}
+                  {unit.grade > 0 ? ` · ${gradeLabel(unit.grade, lang)}` : ''}
                 </span>
               </span>
             </li>
           ))}
           {results.length === 0 && (
-            <li className="unit-search-empty">Ничего не найдено</li>
+            <li className="unit-search-empty">{t('search.empty')}</li>
           )}
         </ul>
       )}

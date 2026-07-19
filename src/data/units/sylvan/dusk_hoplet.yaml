@@ -19,22 +19,34 @@ flying: true
 abilities:
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: leeching_hop
     name: "Аромат хмеля"
+    nameEn: "Leeching Hop"
     description: "Забирает [ 5 ] маны у героя‑противника и передаёт её своему герою (если есть)."
+    descriptionEn: "Takes [ 5 ] mana from enemy hero. The mana is transferred to this creature’s hero (if present)."
   - id: magic_core
     name: "Магическое ядро"
+    nameEn: "Magic Core"
     description: "При смерти это существо до конца боя повышает силу магии своего героя на 1."
+    descriptionEn: "Upon death, this creature increases the hero’s Spell Power by 1 until the end of the battle."
   - id: bloom
     name: "Цветение"
+    nameEn: "Bloom"
     description: "Повышает силу магии своего героя на 3 до конца раунда."
+    descriptionEn: "Increases the hero’s Spell Power by 3 until the end of round."
 growth: 7
 cost: 48
 source: https://www.olden-era.com/ru/units/dusk_hoplet

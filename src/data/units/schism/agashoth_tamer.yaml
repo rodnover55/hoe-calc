@@ -19,22 +19,34 @@ flying: false
 abilities:
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: plows_through
     name: "Сквозь торосы"
+    nameEn: "Plow Through"
     description: "Снижает штраф при передвижении по пересечённой местности для своего героя на 50%."
+    descriptionEn: "Reduces terrain penalties by 50% for the hero."
   - id: piercing_cold_i
     name: "Пробирает до костей"
+    nameEn: "Piercing Cold"
     description: "При каждой обычной атаке или контратаке накладывает отрицательный эффект, на 50% повышающий весь получаемый целью магический урон. Кол‑во раундов: 2."
+    descriptionEn: "Each attack or counterattack applies a negative effect that makes the target take +50% Magic Damage. Duration: 2 rounds."
   - id: icy_spikes
     name: "Ледяные шипы"
+    nameEn: "Icy Spikes"
     description: "Проводит дополнительную атаку, нанося выбранному противнику и всем противникам на соседних с ним гексах чистый урон в размере 50% от обычной атаки ([ 2—4 × численность отряда ]) ."
+    descriptionEn: "Makes an additional attack, dealing 50% of a basic attack ([ 2–4 × amount of units ]) as Pure Damage to the target enemy and all adjacent enemies."
   - id: agashoths_help
     name: "Помощь ага’шотха"
+    nameEn: "Aga’Shoth’s Help"
     description: "Каждая атака и контратака наносит +20 чистого урона."
+    descriptionEn: "Each attack and counterattack deals +20 Pure Damage."
 growth: 8
 cost: 57
 source: https://www.olden-era.com/ru/units/agashoth_tamer

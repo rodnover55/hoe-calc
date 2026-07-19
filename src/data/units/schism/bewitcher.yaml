@@ -19,22 +19,34 @@ flying: false
 abilities:
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: nimbleness
     name: "Проворство"
+    nameEn: "Nimbleness"
     description: "Может стрелять, даже если на соседнем гексе есть отряд противника."
+    descriptionEn: "Can perform Ranged attacks even while adjacent to an enemy."
   - id: earn_your_magic_dear_ii
     name: "Магию надо заслужить"
+    nameEn: "Earn Your Magic, Dear"
     description: "Заклинания героя противника стоят +2 маны. Эффект не суммируется: действует только самый сильный из активных."
+    descriptionEn: "Enemy hero’s spells cost +2 mana. This effect does not stack; only the strongest one is active."
   - id: duelist
     name: "Дуэлянт"
+    nameEn: "Duelist"
     description: "Не имеет штрафа в ближнем бою и наносит полный урон."
+    descriptionEn: "Receives no penalty in Melee range, dealing full Damage."
   - id: flog_idle_mind
     name: "Наказание праздного ума"
+    nameEn: "Flog Idle Mind"
     description: "Наносит цели 66 чистого урона за каждый заряд концентрации своей армии."
+    descriptionEn: "Deals 66 Pure Damage per Focus Charge to target enemy creature."
 growth: 13
 cost: 2020
 source: https://www.olden-era.com/ru/units/bewitcher

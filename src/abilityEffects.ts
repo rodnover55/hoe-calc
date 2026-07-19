@@ -9,7 +9,10 @@
  * здесь, на расчёт не влияют и только отображаются в карточке юнита.
  */
 
+import type { Lang } from './i18n';
+import { translate } from './i18n';
 import type { AttackType, UnitAbility, UnitPreset } from './units';
+import { abilityName } from './units';
 
 /** Тип удара режима: ближний, через гекс или выстрел */
 export type Reach = 'melee' | 'long' | 'ranged';
@@ -32,7 +35,7 @@ export interface SpecialAttack {
 export interface AttackMode {
   /** 'base' | 'ranged' | 'melee' | 'half' | слаг способности */
   id: string;
-  /** Русская подпись кнопки */
+  /** Подпись кнопки на языке, переданном в attackModesFor */
   label: string;
   /** Множитель урона режима */
   multiplier: number;
@@ -134,7 +137,8 @@ const attackKindOf = (unit: UnitPreset): AttackType => {
  * Формула урона активной способности из её русского описания: либо доля
  * урона обычной атаки («в размере 50% от обычной атаки»), либо
  * фиксированная формула («[ 15 + 3 × численность отряда ]»).
- * Возвращает null, если описание не распознано.
+ * Возвращает null, если описание не распознано. Русский текст здесь —
+ * формат данных, а не UI: разбор не зависит от языка интерфейса.
  */
 const parseSpecial = (ability: UnitAbility, effect: { damage: 'pure' | 'magic'; ignoreDefense?: boolean }): SpecialAttack | null => {
   const d = ability.description;
@@ -168,14 +172,15 @@ const parseSpecial = (ability: UnitAbility, effect: { damage: 'pure' | 'magic'; 
  * калькулятора.
  *
  * @param unit выбранный юнит или null при ручном вводе характеристик.
+ * @param lang язык подписей режимов.
  * @returns непустой список режимов; первый — режим по умолчанию.
  */
-export function attackModesFor(unit: UnitPreset | null): AttackMode[] {
+export function attackModesFor(unit: UnitPreset | null, lang: Lang = 'ru'): AttackMode[] {
   if (!unit) {
     return [
       {
         id: 'base',
-        label: 'Базовая атака',
+        label: translate(lang, 'modes.base'),
         multiplier: 1,
         rangePenalty: true,
         reach: 'melee',
@@ -183,7 +188,7 @@ export function attackModesFor(unit: UnitPreset | null): AttackMode[] {
       },
       {
         id: 'half',
-        label: 'Половинный урон (×0.5)',
+        label: translate(lang, 'modes.half'),
         multiplier: 0.5,
         rangePenalty: true,
         reach: 'melee',
@@ -205,7 +210,7 @@ export function attackModesFor(unit: UnitPreset | null): AttackMode[] {
     const duel = hasAbility(unit, 'duelist');
     modes.push({
       id: 'ranged',
-      label: 'Дальняя атака',
+      label: translate(lang, 'modes.ranged'),
       multiplier: 1,
       rangePenalty: !sharp,
       reach: 'ranged',
@@ -214,7 +219,7 @@ export function attackModesFor(unit: UnitPreset | null): AttackMode[] {
     const meleeBase = duel ? 1 : 0.5;
     modes.push({
       id: 'melee',
-      label: `Ближняя атака${meleeBase * meleeMultiplier !== 1 ? ` (×${meleeBase * meleeMultiplier})` : ''}`,
+      label: `${translate(lang, 'modes.melee')}${meleeBase * meleeMultiplier !== 1 ? ` (×${meleeBase * meleeMultiplier})` : ''}`,
       multiplier: meleeBase * meleeMultiplier,
       rangePenalty: false,
       reach: 'melee',
@@ -225,7 +230,7 @@ export function attackModesFor(unit: UnitPreset | null): AttackMode[] {
     const reach: Reach = kind === 'long_reach' ? 'long' : 'melee';
     modes.push({
       id: 'base',
-      label: `Базовая атака${reach === 'melee' ? meleeSuffix : ''}`,
+      label: `${translate(lang, 'modes.base')}${reach === 'melee' ? meleeSuffix : ''}`,
       multiplier: reach === 'melee' ? meleeMultiplier : 1,
       rangePenalty: false,
       reach,
@@ -238,7 +243,7 @@ export function attackModesFor(unit: UnitPreset | null): AttackMode[] {
     if (effect?.kind === 'style') {
       modes.push({
         id: ability.id,
-        label: `${ability.name} (×${effect.multiplier})`,
+        label: `${abilityName(ability, lang)} (×${effect.multiplier})`,
         multiplier: effect.multiplier,
         rangePenalty: effect.reach === 'ranged' && !sharp,
         reach: effect.reach,
@@ -249,7 +254,7 @@ export function attackModesFor(unit: UnitPreset | null): AttackMode[] {
       if (!special) continue;
       modes.push({
         id: ability.id,
-        label: ability.name,
+        label: abilityName(ability, lang),
         multiplier: 1,
         rangePenalty: false,
         reach: 'ranged',
@@ -293,19 +298,20 @@ export function doubleStrikeFor(unit: UnitPreset | null, mode: AttackMode): bool
 export function damageReduction(
   defender: UnitPreset | null,
   mode: AttackMode,
+  lang: Lang = 'ru',
 ): { percent: number; source: string } | null {
   if (!defender?.abilities) return null;
   if (mode.special) {
     if (mode.special.kind !== 'magic') return null;
     for (const ability of defender.abilities) {
       const percent = MAGIC_REDUCTION[ability.id];
-      if (percent !== undefined) return { percent, source: ability.name };
+      if (percent !== undefined) return { percent, source: abilityName(ability, lang) };
     }
     return null;
   }
   for (const ability of defender.abilities) {
     const percent = DAMAGE_REDUCTION[ability.id]?.[mode.reach];
-    if (percent !== undefined) return { percent, source: ability.name };
+    if (percent !== undefined) return { percent, source: abilityName(ability, lang) };
   }
   return null;
 }

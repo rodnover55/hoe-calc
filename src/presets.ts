@@ -10,7 +10,9 @@
  */
 
 import type { AttackerStats } from './formula';
-import { UNITS_BY_ID } from './units';
+import type { Lang } from './i18n';
+import { translate } from './i18n';
+import { UNITS_BY_ID, unitName } from './units';
 
 /** Порядок статов отряда: общий для снапшота и wire-формата ссылки */
 export const UNIT_SNAPSHOT_KEYS = [
@@ -78,8 +80,10 @@ export const newId = (): string =>
     : Date.now().toString(36) + Math.random().toString(36).slice(2);
 
 /** Автоимя пресета: «Стрелок храма ×10», при ручном вводе — «Отряд ×10» */
-export const defaultUnitName = (unitId: string | null, count: number): string =>
-  `${(unitId ? UNITS_BY_ID.get(unitId)?.name : undefined) ?? 'Отряд'} ×${count}`;
+export const defaultUnitName = (unitId: string | null, count: number, lang: Lang = 'ru'): string => {
+  const unit = unitId ? UNITS_BY_ID.get(unitId) : undefined;
+  return `${unit ? unitName(unit, lang) : translate(lang, 'presets.stackFallback')} ×${count}`;
+};
 
 /** Срез статов отряда без героя из полного стека */
 export const snapshotOf = (stats: AttackerStats): UnitSnapshot => {
@@ -92,21 +96,29 @@ export const snapshotOf = (stats: AttackerStats): UnitSnapshot => {
 export const sameSnapshot = (a: UnitSnapshot, b: UnitSnapshot): boolean =>
   UNIT_SNAPSHOT_KEYS.every((key) => a[key] === b[key]);
 
-/** Сохранённый отряд из текущего стека */
-export const createSavedUnit = (stats: AttackerStats, unitId: string | null): SavedUnit => ({
+/** Сохранённый отряд из текущего стека; автоимя — на языке интерфейса */
+export const createSavedUnit = (
+  stats: AttackerStats,
+  unitId: string | null,
+  lang: Lang = 'ru',
+): SavedUnit => ({
   id: newId(),
-  name: defaultUnitName(unitId, stats.count),
+  name: defaultUnitName(unitId, stats.count, lang),
   unitId,
   stats: snapshotOf(stats),
 });
 
 /** Пресет героя из текущего состояния; текущий отряд становится первым */
-export const createHeroPreset = (stats: AttackerStats, unitId: string | null): HeroPreset => ({
+export const createHeroPreset = (
+  stats: AttackerStats,
+  unitId: string | null,
+  lang: Lang = 'ru',
+): HeroPreset => ({
   id: newId(),
-  name: defaultUnitName(unitId, stats.count),
+  name: defaultUnitName(unitId, stats.count, lang),
   heroAttack: stats.heroAttack,
   heroDefense: stats.heroDefense,
-  units: [createSavedUnit(stats, unitId)],
+  units: [createSavedUnit(stats, unitId, lang)],
 });
 
 export const addHero = (list: HeroPreset[], preset: HeroPreset): HeroPreset[] => [...list, preset];

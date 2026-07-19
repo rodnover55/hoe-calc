@@ -19,22 +19,34 @@ flying: false
 abilities:
   - id: view_from_heavens
     name: "Взгляд с небес"
+    nameEn: "View from the Heavens"
     description: "Находясь в армии героя, повышает радиус его обзора на 1. Эффект не суммируется."
+    descriptionEn: "Increases the hero’s sight radius by 1 while this creature is in their army. This effect does not stack."
   - id: sharpshooter
     name: "Снайпер"
+    nameEn: "Sharpshooter"
     description: "Независимо от расстояния наносит полный урон выстрелами."
+    descriptionEn: "Ranged attacks deal full Ranged Damage at any range."
   - id: fine_bolts_ii
     name: "Усиленные болты"
+    nameEn: "Fine Bolts"
     description: "Наносит +40% урона выстрелами. Кол‑во раундов: 2."
+    descriptionEn: "Deals +40% Ranged Damage. Duration: 2 round(s)."
   - id: piercing_shot
     name: "Пронзающий выстрел"
+    nameEn: "Piercing Shot"
     description: "Наносит 50% урона от обычной атаки ([ 2—2 × численность отряда ]). До конца раунда цель получает +25% урона."
+    descriptionEn: "Deals 50% basic attack Damage ([ 2–2 × amount of units ]). The target takes +25% Damage until the end of the round."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
 growth: 3
 cost: 34
 source: https://www.olden-era.com/ru/units/marksman

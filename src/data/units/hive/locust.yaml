@@ -18,16 +18,24 @@ flying: false
 abilities:
   - id: hive_spawn
     name: "Порождение Роя"
+    nameEn: "Hive Spawn"
     description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+    descriptionEn: "A part of a hivemind that serves a powerful lord from beyond. Morale range: –5 to 5. Luck range: –5 to 5. Fallen Hive Spawn count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: double_strike
     name: "Двойной удар"
+    nameEn: "Double Strike"
     description: "Атакует дважды."
+    descriptionEn: "Strikes twice when performing attacks."
   - id: harvest_i
     name: "Жатва"
+    nameEn: "Harvest"
     description: "Прыгает на выбранный труп в пределах нескольких гексов (3) и пожирает его, получая +2 к атаке и защите, а также +1 к скорости и инициативе до конца боя."
+    descriptionEn: "Jumps onto a chosen corpse within 3 hexes and devours it, gaining 2 Attack and Defense, 1 Speed and Initiative until the end of the battle."
 growth: 4
 cost: 35
 source: https://www.olden-era.com/ru/units/locust

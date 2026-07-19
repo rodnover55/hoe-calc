@@ -2,8 +2,8 @@
  * Обновление базы юнитов с olden-era.com.
  *
  * Скачивает список юнитов (RU-имена и фракции), статы с английских
- * страниц, способности с русских страниц и портреты, затем перезаписывает
- * src/data/units/ и public/units/.
+ * страниц, способности с русских и английских страниц и портреты, затем
+ * перезаписывает src/data/units/ и public/units/.
  *
  * Запуск из корня проекта: npm run update-units
  */
@@ -28,11 +28,14 @@ export interface ListItem {
   img: string;
 }
 
-/** Способность юнита: слаг иконки, русские название и описание */
+/** Способность юнита: слаг иконки, русские и английские тексты */
 export interface Ability {
   id: string;
   name: string;
   description: string;
+  /** Английские название и описание; нет — способность не найдена на EN-странице */
+  nameEn?: string;
+  descriptionEn?: string;
 }
 
 /** Статы со страницы юнита; null — значение не найдено в разметке */
@@ -319,11 +322,12 @@ export function emit(unit: Unit): string {
   if (unit.abilities.length > 0) {
     lines.push('abilities:');
     for (const a of unit.abilities) {
-      lines.push(
-        `  - id: ${a.id}`,
-        `    name: ${q(a.name)}`,
-        `    description: ${q(a.description)}`,
-      );
+      lines.push(`  - id: ${a.id}`, `    name: ${q(a.name)}`);
+      if (a.nameEn !== undefined) lines.push(`    nameEn: ${q(a.nameEn)}`);
+      lines.push(`    description: ${q(a.description)}`);
+      if (a.descriptionEn !== undefined) {
+        lines.push(`    descriptionEn: ${q(a.descriptionEn)}`);
+      }
     }
   }
   if (unit.growth !== null) lines.push(`growth: ${unit.growth}`);
@@ -367,9 +371,16 @@ async function main(): Promise<number> {
   for (const [i, u] of ruList.entries()) {
     const { slug } = u;
     console.log(`[${i + 1}/${ruList.length}] ${slug}`);
-    const stats = parseUnit(await fetchText(`${BASE}/en/units/${slug}`));
+    const enHtml = await fetchText(`${BASE}/en/units/${slug}`);
+    const stats = parseUnit(enHtml);
     const ruHtml = await fetchText(`${BASE}/ru/units/${slug}`);
-    const abilities = parseAbilities(decodeFlight(ruHtml));
+    const enAbilities = new Map(
+      parseAbilities(decodeFlight(enHtml)).map((a) => [a.id, a]),
+    );
+    const abilities = parseAbilities(decodeFlight(ruHtml)).map((a) => {
+      const en = enAbilities.get(a.id);
+      return en ? { ...a, nameEn: en.name, descriptionEn: en.description } : a;
+    });
     const abilityIds = new Set(abilities.map((a) => a.id));
     const expected: Partial<Record<Unit['attackType'], string>> = {
       ranged: 'ranged_attack',

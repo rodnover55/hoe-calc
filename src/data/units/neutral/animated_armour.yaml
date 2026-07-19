@@ -18,19 +18,29 @@ flying: false
 abilities:
   - id: embodiment
     name: "Воплощение"
+    nameEn: "Embodiment"
     description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+    descriptionEn: "A spirit, soul, or other intangible power that has coalesced into material form. Morale range: –3 to 3. Luck range: –3 to 3. Fallen Embodiments do NOT count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: melee_defence_3
     name: "Защита в ближнем бою III"
+    nameEn: "Melee Defense III"
     description: "Получает –60% урона в ближнем бою."
+    descriptionEn: "Takes –60% Melee Damage."
   - id: magic_defence_3
     name: "Защита от магии III"
+    nameEn: "Magic Defense III"
     description: "Получает –60% магического урона."
+    descriptionEn: "Takes –60% Magic Damage."
   - id: ranged_defence_3
     name: "Защита от выстрелов III"
+    nameEn: "Ranged Defense III"
     description: "Получает –60% урона от выстрелов."
+    descriptionEn: "Takes –60% Ranged Damage."
 growth: 8
 cost: 412
 source: https://www.olden-era.com/ru/units/animated_armour

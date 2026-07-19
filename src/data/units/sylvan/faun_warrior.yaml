@@ -19,16 +19,24 @@ flying: false
 abilities:
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: parry
     name: "Парирование"
+    nameEn: "Parry"
     description: "Контратакует до атаки противника."
+    descriptionEn: "When attacked, this creature’s counterattack strikes first."
   - id: natures_fury
     name: "Гнев природы"
+    nameEn: "Nature’s Fury"
     description: "Наносит +2 урона и получает +2 к скорости до конца раунда."
+    descriptionEn: "Deals +2 Damage and increases Speed by 2 until the end of the round."
 growth: 6
 cost: 46
 source: https://www.olden-era.com/ru/units/faun_warrior

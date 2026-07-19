@@ -19,19 +19,29 @@ flying: false
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: rewind_death_ii
     name: "Перемотка смерти"
+    nameEn: "Rewind Death"
     description: "Восстанавливает [ 60 + 15 × численность отряда ] здоровья выбранного дружественного отряда. Воскрешает павших существ. Можно использовать дважды за бой."
+    descriptionEn: "Restores [ 60 + 15 × amount of units ] HP to a friendly creature. This can revive fallen units. Usable twice per battle."
   - id: unlife_undeath
     name: "Смерть есть жизнь"
+    nameEn: "Unlife, Undeath"
     description: "Каждая атака восстанавливает здоровье всех дружественных существ: 20% от наносимого урона."
+    descriptionEn: "Each attack restores 20% Damage dealt as HP to all friendly creatures."
   - id: knowledge_of_death
     name: "Знания о смерти"
+    nameEn: "Knowledge of Death"
     description: "Повышает количество опыта, получаемого его героем, на 10%. Эффект не суммируется."
+    descriptionEn: "Increases the amount of XP gained by the hero by 10%. This effect does not stack."
 growth: 16
 cost: 1316
 source: https://www.olden-era.com/ru/units/sanguine_lich

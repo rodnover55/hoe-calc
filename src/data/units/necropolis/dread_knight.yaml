@@ -18,16 +18,24 @@ flying: false
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: double_strike
     name: "Двойной удар"
+    nameEn: "Double Strike"
     description: "Атакует дважды."
+    descriptionEn: "Strikes twice when performing attacks."
   - id: dreadful_presence_1
     name: "Ужасающее присутствие"
+    nameEn: "Dreadful Presence"
     description: "Снижает боевой дух всех существ противника на 1. Эффект не суммируется: действует только самый сильный из активных."
+    descriptionEn: "Reduces all enemies’ Morale by 1. This effect does not stack; only the strongest one is active."
 growth: 18
 cost: 1214
 source: https://www.olden-era.com/ru/units/dread_knight

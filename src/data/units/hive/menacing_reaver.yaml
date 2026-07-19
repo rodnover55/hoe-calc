@@ -19,25 +19,39 @@ flying: false
 abilities:
   - id: hive_spawn
     name: "Порождение Роя"
+    nameEn: "Hive Spawn"
     description: "Часть Роя, объединённого общим разумом и служащего могучему повелителю из‑за пределов постижимого. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –5 до 5. Погибшие порождения Роя можно поднять некромантией после боя."
+    descriptionEn: "A part of a hivemind that serves a powerful lord from beyond. Morale range: –5 to 5. Luck range: –5 to 5. Fallen Hive Spawn count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: apex_predator_ii
     name: "Высший хищник"
+    nameEn: "Apex Predator"
     description: "Наносит +50% урона целям того же и более высокого ранга."
+    descriptionEn: "Deals +50% Damage to targets of the same tier or higher."
   - id: rapid_assault
     name: "Стремительное нападение"
+    nameEn: "Rapid Assault"
     description: "Проводит атаку в ближнем бою, не провоцирующую контратаку."
+    descriptionEn: "Performs a Melee attack that does not provoke a counterattack."
   - id: hivemind_nest_protector
     name: "Рой. Защитник гнезда"
+    nameEn: "Hivemind: Nest Protector"
     description: "В начале боя получает +1 к защите за каждое другое уникальное существо Роя в армии. При смерти генерирует очки концентрации: 2."
+    descriptionEn: "At the start of battle, for each other unique Hive creature in the army, this creature’s Defense increases by 1. Upon death, this creature generates 2 Focus Point(s)."
   - id: unholy_resillience
     name: "Нечестивое упорство"
+    nameEn: "Unholy Resilience"
     description: "Один раз за бой это существо попросту отказывается умирать. В отряде остается столько же существ, сколько было до смертельного удара."
+    descriptionEn: "Once per battle, this creature plainly refuses to die. Instead, the number of units in the stack of this creature remains the same as it was before the fatal attack."
   - id: terror
     name: "Ужас"
+    nameEn: "Terror"
     description: "Противники более низкого ранга не могут атаковать его до конца раунда."
+    descriptionEn: "Prevents lower‑tier enemies from attacking this creature until the end of the round."
 growth: 18
 cost: 2030
 source: https://www.olden-era.com/ru/units/menacing_reaver

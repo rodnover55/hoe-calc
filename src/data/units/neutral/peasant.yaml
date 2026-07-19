@@ -18,16 +18,24 @@ flying: false
 abilities:
   - id: living
     name: "Живое существо"
+    nameEn: "Living"
     description: "Разумный обитатель Джадама. Диапазон боевого духа: от –5 до 5. Диапазон удачи: от –3 до 3. Погибших живых существ можно поднять некромантией после боя."
+    descriptionEn: "A fully sentient inhabitant of Jadame. Morale range: –5 to 5. Luck range: –3 to 3. Fallen Living creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: taxpayer
     name: "Налогоплательщик"
+    nameEn: "Taxpayer"
     description: "В начале каждого дня приносит 10 золота за каждое существо в своём отряде."
+    descriptionEn: "At the beginning of the day, grants 10 Gold per unit in this creature’s stack."
   - id: beloved_piglet
     name: "Любимая свинка"
+    nameEn: "Beloved Piglet"
     description: "Ну очень сильно любит своего питомца и не может без него нормально жить."
+    descriptionEn: "Loves his pet so much that he can’t live without it… normally."
 growth: 1
 cost: 11
 source: https://www.olden-era.com/ru/units/peasant

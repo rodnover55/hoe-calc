@@ -1,13 +1,15 @@
 import { useState } from 'react';
+import { useI18n } from '../LangContext';
 import type { Faction, UnitPreset } from '../units';
 import {
-  ATTACK_TYPE_LABEL,
-  FACTION_LABEL,
   FACTION_ORDER,
-  GRADE_LABEL,
   UNITS_BY_ID,
+  abilityDescription,
+  abilityName,
   baseUnits,
+  gradeLabel,
   gradesOf,
+  unitName,
 } from '../units';
 import { UnitSearch } from './UnitSearch';
 
@@ -19,6 +21,7 @@ interface UnitPickerProps {
 }
 
 export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) {
+  const { lang, t } = useI18n();
   const selected = selectedId ? UNITS_BY_ID.get(selectedId) : undefined;
   // Фракция выводится из выбранного юнита (в том числе восстановленного из
   // ссылки); своё состояние нужно только режиму ручного ввода.
@@ -62,17 +65,17 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
           <div className="unit-picker-row">
             <div className="field">
               <label className="field-label" htmlFor={`${idPrefix}-faction`}>
-                Фракция
+                {t('picker.faction')}
               </label>
               <select
                 id={`${idPrefix}-faction`}
                 value={faction}
                 onChange={(e) => pickFaction(e.target.value)}
               >
-                <option value="">— вручную —</option>
+                <option value="">{t('picker.manual')}</option>
                 {FACTION_ORDER.map((f) => (
                   <option key={f} value={f}>
-                    {FACTION_LABEL[f]}
+                    {t(`faction.${f}`)}
                   </option>
                 ))}
               </select>
@@ -80,7 +83,7 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
             {faction && (
               <div className="field">
                 <label className="field-label" htmlFor={`${idPrefix}-unit`}>
-                  Юнит
+                  {t('picker.unit')}
                 </label>
                 <select
                   id={`${idPrefix}-unit`}
@@ -89,7 +92,7 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
                 >
                   {units.map((unit) => (
                     <option key={unit.id} value={unit.id}>
-                      {unit.name}
+                      {unitName(unit, lang)}
                     </option>
                   ))}
                 </select>
@@ -99,8 +102,8 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
           <button
             type="button"
             className="unit-search-toggle"
-            aria-label="Найти юнита по названию"
-            title="Найти юнита по названию"
+            aria-label={t('picker.search')}
+            title={t('picker.search')}
             onClick={() => setSearching(true)}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -118,7 +121,7 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
       {selected && grades.length > 1 && (
         <div className="field">
           <label className="field-label" htmlFor={`${idPrefix}-grade`}>
-            Грейд
+            {t('picker.grade')}
           </label>
           <select
             id={`${idPrefix}-grade`}
@@ -127,7 +130,7 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
           >
             {grades.map((unit) => (
               <option key={unit.id} value={unit.id}>
-                {GRADE_LABEL[unit.grade] ?? `Улучшение ${unit.grade}`} — {unit.name}
+                {gradeLabel(unit.grade, lang)} — {unitName(unit, lang)}
               </option>
             ))}
           </select>
@@ -137,30 +140,37 @@ export function UnitPicker({ idPrefix, selectedId, onSelect }: UnitPickerProps) 
         <div className="unit-preview">
           <img
             src={`${import.meta.env.BASE_URL}${selected.image}`}
-            alt={selected.name}
+            alt={unitName(selected, lang)}
             loading="lazy"
           />
           <div className="unit-preview-info">
-            <div className="unit-preview-name">{selected.name}</div>
-            <div className="unit-preview-sub">{selected.nameEn}</div>
+            <div className="unit-preview-name">{unitName(selected, lang)}</div>
             <div className="unit-preview-sub">
-              Тир {selected.tier} · {ATTACK_TYPE_LABEL[selected.attackType]}
-              {selected.flying ? ' · летает' : ''}
+              {lang === 'ru' ? selected.nameEn : selected.name}
             </div>
             <div className="unit-preview-sub">
-              Инициатива {selected.stats.initiative} · Скорость {selected.stats.speed}
+              {t('picker.tier')} {selected.tier} · {t(`attackType.${selected.attackType}`)}
+              {selected.flying ? ` · ${t('picker.flies')}` : ''}
+            </div>
+            <div className="unit-preview-sub">
+              {t('picker.initiative')} {selected.stats.initiative} · {t('picker.speed')}{' '}
+              {selected.stats.speed}
             </div>
           </div>
         </div>
       )}
       {selected && (selected.abilities?.length ?? 0) > 0 && (
         <details className="unit-abilities">
-          <summary>Способности ({selected.abilities?.length})</summary>
+          <summary>
+            {t('picker.abilities')} ({selected.abilities?.length})
+          </summary>
           <ul>
             {selected.abilities?.map((ability) => (
               <li key={ability.id}>
-                <strong>{ability.name}</strong>
-                {ability.description ? ` — ${ability.description}` : ''}
+                <strong>{abilityName(ability, lang)}</strong>
+                {abilityDescription(ability, lang)
+                  ? ` — ${abilityDescription(ability, lang)}`
+                  : ''}
               </li>
             ))}
           </ul>

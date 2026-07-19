@@ -18,25 +18,39 @@ flying: true
 abilities:
   - id: dragon
     name: "Дракон"
+    nameEn: "巨龙"
     description: "Могучее древнее существо, нередко разумное и обладающее поразительными магическими свойствами. Диапазон боевого духа: от 0 до 5. Диапазон удачи: от 0 до 3. Погибших драконов можно поднять некромантией после боя."
+    descriptionEn: "强大且古老的生物，通常具有智能，体内蕴含神奇魔法。 士气范围：0 至 5 幸运范围：0 至 3 阵亡巨龙生物会计入战斗结束后的死灵术复苏强度。"
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: dragonbreath_strike
     name: "Дыхание дракона"
+    nameEn: "Dragonbreath Strike"
     description: "Наносит урон цели и любому существу на гексе за ней."
+    descriptionEn: "Deals Damage to the target and any creature on the hex directly behind it."
   - id: swift_strike
     name: "Быстрый удар"
+    nameEn: "Swift Strike"
     description: "Атака не провоцирует контратаки."
+    descriptionEn: "Enemies do not counterattack."
   - id: magic_immunity_4
     name: "Невосприимчивость к магии IV"
+    nameEn: "Magic Immunity IV"
     description: "Неуязвимо для заклинаний 4‑го ранга и ниже."
+    descriptionEn: "Immune to tier‑4 and lower spells."
   - id: disdain
     name: "Презрение"
+    nameEn: "Disdain"
     description: "Получает –25% урона от атак в ближнем бою, –50% от атак на расстоянии, и –75% от выстрелов."
+    descriptionEn: "Takes –25% Melee Damage, –50% Long Reach Damage, and –75% Ranged Damage."
 growth: 32
 cost: 6070
 source: https://www.olden-era.com/ru/units/red_dragon

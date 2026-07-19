@@ -18,19 +18,29 @@ flying: false
 abilities:
   - id: embodiment
     name: "Воплощение"
+    nameEn: "Embodiment"
     description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+    descriptionEn: "A spirit, soul, or other intangible power that has coalesced into material form. Morale range: –3 to 3. Luck range: –3 to 3. Fallen Embodiments do NOT count towards the power of Necromancy reanimation after battle."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: blink
     name: "Скачок"
+    nameEn: "Blink"
     description: "Вместо обычного передвижения телепортируется, игнорируя препятствия и ловушки."
+    descriptionEn: "Teleports directly to destination hex, ignoring obstacles and traps."
   - id: area_strike_ii
     name: "Удар по площади"
+    nameEn: "Area Strike"
     description: "Наносит урон цели и любым существам на гексах вокруг неё."
+    descriptionEn: "Deals Damage to the target and all hexes around it."
   - id: starfall
     name: "Звездопад"
+    nameEn: "Starfall"
     description: "Выбирает несколько гексов: 3. На каждый падает звезда, нанося [ 6 × численность отряда ] магического урона отряду на гексе-цели и всем соседним с ней существам."
+    descriptionEn: "Select 3 hexes. A star falls to each of them, dealing [ 6 × amount of units ] Magic Damage to target hex and all adjacent creatures."
 growth: 9
 cost: 1218
 source: https://www.olden-era.com/ru/units/starchild

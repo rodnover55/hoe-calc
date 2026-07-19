@@ -1,4 +1,6 @@
 import { parse } from 'yaml';
+import type { Lang } from './i18n';
+import { translate } from './i18n';
 
 export type Faction =
   | 'temple'
@@ -29,6 +31,10 @@ export interface UnitAbility {
   name: string;
   /** Русское описание */
   description: string;
+  /** Английское название; нет — способность не найдена на EN-странице */
+  nameEn?: string;
+  /** Английское описание */
+  descriptionEn?: string;
 }
 
 export interface UnitPreset {
@@ -55,16 +61,6 @@ export interface UnitPreset {
   source?: string;
 }
 
-export const FACTION_LABEL: Record<Faction, string> = {
-  temple: 'Храм',
-  necropolis: 'Некрополис',
-  sylvan: 'Сильван',
-  dungeon: 'Подземелье',
-  hive: 'Улей',
-  schism: 'Раскол',
-  neutral: 'Нейтралы',
-};
-
 export const FACTION_ORDER: Faction[] = [
   'temple',
   'necropolis',
@@ -75,14 +71,23 @@ export const FACTION_ORDER: Faction[] = [
   'neutral',
 ];
 
-/** Подписи грейдов юнита по значению поля grade */
-export const GRADE_LABEL = ['База', 'Улучшение I', 'Улучшение II'];
+/** Подпись грейда юнита по значению поля grade: 0–2 из локали */
+export const gradeLabel = (grade: number, lang: Lang): string =>
+  grade >= 0 && grade <= 2
+    ? translate(lang, `grade.g${grade}`)
+    : translate(lang, 'grade.other', { n: grade });
 
-export const ATTACK_TYPE_LABEL: Record<AttackType, string> = {
-  melee: 'ближний бой',
-  long_reach: 'удар через гекс',
-  ranged: 'стрелок',
-};
+/** Название юнита на языке интерфейса; вне русского — английское */
+export const unitName = (unit: UnitPreset, lang: Lang): string =>
+  lang === 'ru' ? unit.name : unit.nameEn || unit.name;
+
+/** Название способности на языке интерфейса; вне русского — английское */
+export const abilityName = (ability: UnitAbility, lang: Lang): string =>
+  lang === 'ru' ? ability.name : ability.nameEn || ability.name;
+
+/** Описание способности на языке интерфейса; вне русского — английское */
+export const abilityDescription = (ability: UnitAbility, lang: Lang): string =>
+  lang === 'ru' ? ability.description : ability.descriptionEn || ability.description;
 
 const files = import.meta.glob('./data/units/**/*.yaml', {
   query: '?raw',

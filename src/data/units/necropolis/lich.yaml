@@ -18,13 +18,19 @@ flying: false
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: ranged_attack
     name: "Выстрел"
+    nameEn: "Ranged Attack"
     description: "Атакует отряд противника на любом расстоянии. Если на соседнем гексе находится отряд противника, вместо выстрела атакует в ближнем бою, нанося –50% урона. Если до цели более 3 гексов, наносит –10% урона за каждый лишний гекс (максимальный штраф: –50%)."
+    descriptionEn: "Can attack enemies at any range. Replaced with a weaker Melee attack if an enemy is adjacent. –50% Melee Damage. Targets 3 or more hexes away take –10% Damage per hex (up to –50%)."
   - id: rewind_death_i
     name: "Перемотка смерти"
+    nameEn: "Rewind Death"
     description: "Восстанавливает [ 40 + 10 × численность отряда ] здоровья выбранного дружественного отряда. Воскрешает павших существ. Можно использовать дважды за бой."
+    descriptionEn: "Restores [ 40 + 10 × amount of units ] HP to a friendly creature. This can revive fallen units. Usable twice per battle."
 growth: 12
 cost: 1316
 source: https://www.olden-era.com/ru/units/lich

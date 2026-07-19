@@ -18,19 +18,29 @@ flying: true
 abilities:
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: alert_1
     name: "Бдительность I"
+    nameEn: "Alert I"
     description: "Может контратаковать дважды за раунд."
+    descriptionEn: "Can counterattack up to twice per round."
   - id: valiant_cry_1
     name: "Яростный клёкот"
+    nameEn: "Valiant Cry"
     description: "Получает +5 к атаке и +1 к инициативе. Кол‑во раундов: 2."
+    descriptionEn: "This creature’s Attack increases by 5 and Initiative by 1. Caw! Duration: 2 round(s)."
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
 growth: 6
 cost: 59
 source: https://www.olden-era.com/ru/units/griffin

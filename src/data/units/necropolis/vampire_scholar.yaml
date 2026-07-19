@@ -19,19 +19,29 @@ flying: true
 abilities:
   - id: undead
     name: "Нежить"
+    nameEn: "Undead"
     description: "Существо или личность, жизнь которой была продлена нечестивыми методами. Боевой дух всегда нейтральный. Диапазон удачи: от –5 до 5. Погибшую нежить нельзя поднять некромантией после боя."
+    descriptionEn: "A creature or person whose life has been prolonged by unnatural means. Morale: Always neutral. Luck range: –5 to 5. Fallen Undead do NOT count towards the power of Necromancy reanimation after battle."
   - id: long_reach
     name: "Атака на расстоянии"
+    nameEn: "Long Reach"
     description: "Атакует отряд противника через один гекс. Не провоцирует контратаку и не занимает гекс рядом с целью."
+    descriptionEn: "Has an attack that targets the hex directly behind an adjacent hex. It doesn’t provoke counterattacks and doesn’t move the attacker next to their target."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: vampirism
     name: "Вампиризм"
+    nameEn: "Vampirism"
     description: "Каждая атака восстанавливает здоровье этого существа: 40% от наносимого урона. Воскрешает павших существ."
+    descriptionEn: "Each attack restores 40% of Damage dealt as HP to this creature. This can revive fallen units."
   - id: blood_transfusion
     name: "Переливание крови"
+    nameEn: "Blood Transfusion"
     description: "Связывает отряд противника с выбранным дружественным отрядом. Противник получает [ 30 × численность отряда ] магического урона, а дружественный отряд восстанавливает здоровье: [ 30 × численность отряда ]% от нанесённого урона. Воскрешает павших существ."
+    descriptionEn: "Connects an enemy to target friendly creature. The enemy takes [ 30 × amount of units ] Magic Damage. The friendly creature restores [ 30 × amount of units ]% of the Damage dealt as HP. This can revive fallen units."
 growth: 20
 cost: 3030
 source: https://www.olden-era.com/ru/units/vampire_scholar

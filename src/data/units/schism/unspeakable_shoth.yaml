@@ -19,22 +19,34 @@ flying: true
 abilities:
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: magic_creature
     name: "Магическое существо"
+    nameEn: "Magic Creature"
     description: "Звероподобное создание. В Джадаме такие нередко обладают особыми силами, а прибывшие из других измерений — тем более. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –5 до 5. Погибших магических существ можно поднять некромантией после боя."
+    descriptionEn: "A beast or beast‑like creature. Jadame’s beasts often have fantastical powers; denizens of other planes, even more so. Morale range: –3 to 3. Luck range: –5 to 5. Fallen Magic Creatures count towards the power of Necromancy reanimation after battle."
   - id: flying
     name: "Полёт"
+    nameEn: "Flying"
     description: "Передвигаясь, игнорирует препятствия и ловушки."
+    descriptionEn: "Movement ignores obstacles and traps."
   - id: frost
     name: "Обморожение"
+    nameEn: "Frost"
     description: "Когда это существо атакует, его цель не генерирует концентрацию."
+    descriptionEn: "When this creature attacks, the target doesn’t generate Focus."
   - id: summoning_rite_unspeakable_shoth
     name: "Обряд призыва. Невыразимые шотхи"
+    nameEn: "Summoning Rite: Unspeakable Shoth"
     description: "Один раз за бой призывает отряд невыразимых шотхов на месте дружественного трупа. Призванный отряд получает 50% здоровья цели на начало боя, но не более [ текущая численность отряда‑призывателя ] существ(а). Эти существа остаются в армии героя после окончания боя."
+    descriptionEn: "Once per battle, summons a stack of Unspeakable Shoth in place of a friendly corpse. The summon has 50% HP of the corpse’s original stack and can’t have more than [ current amount of summoners ] units. These creatures are permanent and remain after the battle."
   - id: double_strike
     name: "Двойной удар"
+    nameEn: "Double Strike"
     description: "Атакует дважды."
+    descriptionEn: "Strikes twice when performing attacks."
 growth: 11
 cost: 1013
 source: https://www.olden-era.com/ru/units/unspeakable_shoth

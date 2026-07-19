@@ -19,25 +19,39 @@ flying: false
 abilities:
   - id: embodiment
     name: "Воплощение"
+    nameEn: "Embodiment"
     description: "Дух, душа или иная сила, воплотившаяся в материальном облике. Диапазон боевого духа: от –3 до 3. Диапазон удачи: от –3 до 3. Погибшие воплощения нельзя поднять некромантией после боя."
+    descriptionEn: "A spirit, soul, or other intangible power that has coalesced into material form. Morale range: –3 to 3. Luck range: –3 to 3. Fallen Embodiments do NOT count towards the power of Necromancy reanimation after battle."
   - id: melee_attack
     name: "Ближний бой"
+    nameEn: "Melee Attack"
     description: "Может атаковать только отряды противника на соседних гексах. Провоцирует контратаку."
+    descriptionEn: "Can only attack adjacent enemies. Provokes counterattacks."
   - id: area_strike_i
     name: "Удар по площади"
+    nameEn: "Area Strike"
     description: "Наносит урон цели и любым существам на гексах вокруг неё. Дополнительные цели получают –50% урона."
+    descriptionEn: "Deals Damage to the target and all hexes around it. Additional targets take –50% Damage."
   - id: embodiment_of_earth
     name: "Воплощение земли"
+    nameEn: "Embodiment of Earth"
     description: "Не оставляет труп при смерти. Неуязвим для заклинаний «Завал» и «Каменные клыки»."
+    descriptionEn: "This creature leaves no body upon death. Immune to “Cave In” and “Stone Fangs” spells."
   - id: awaken_earth_2
     name: "Пробуждение. Земля II"
+    nameEn: "Awaken: Earth II"
     description: "Это существо получает +2 к скорости и инициативе, +10 к здоровью и неограниченные контратаки. Позволяет использовать остальные способности. Применяется один раз за бой и действует до конца боя."
+    descriptionEn: "This creature gains 2 Speed and Initiative, 10 HP, and unlimited counterattacks. Allows the use of other abilities. Once per battle; lasts until the end of battle."
   - id: crystal_thorns
     name: "Острые осколки"
+    nameEn: "Crystal Thorns"
     description: "Каждый раз, когда противник атакует это существо в ближнем бою, часть существ в отряде атакующего погибает: 1. Действует на существ не выше 5‑го ранга."
+    descriptionEn: "Whenever an enemy attacks this creature in Melee, 1 unit(s) from the attacking stack die. Works on creatures up to tier 5."
   - id: earthshatter
     name: "Рёв земли"
+    nameEn: "Earthshatter"
     description: "До конца раунда все отряды противника в пределах 2 гексов могут выбирать целью только этот отряд."
+    descriptionEn: "All enemies within a 2‑hex radius can target only this creature until the end of the round."
 growth: 11
 cost: 57
 source: https://www.olden-era.com/ru/units/crystal_iriyad
