@@ -1,0 +1,30 @@
+id: mag
+name: "Маг"
+nameEn: "Mag"
+faction: necropolis
+class: "Некромант"
+classEn: "Necromancer"
+image: heroes/necropolis/mag.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 2
+  knowledge: 4
+specialization:
+  id: arcane_magic
+  name: "Тайная магия"
+  nameEn: "Arcane Magic"
+  description: "Владычество тайной магии — Получает +1 уровень ко всем заклинаниям тайной магии, плюс 1 за каждые 10 уровней героя, и может использовать их в бою без ограничений. Вражеский герой не может произносить заклинания тайной магии."
+  descriptionEn: "Arcane Dominion - Receives +1 level to all Arcane spells, plus 1 more for every 10 hero levels and can use it in battle without limits. Enemy hero cannot cast Arcane spells."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_arcane_magic
+    name: "Основы арканной магии"
+    nameEn: "Basic Arcane Magic"
+    description: "Герой может изучать арканные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Arcane spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/mag

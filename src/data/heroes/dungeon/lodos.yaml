@@ -1,0 +1,30 @@
+id: lodos
+name: "Лодос"
+nameEn: "Lodos"
+faction: dungeon
+class: "Чернокнижник"
+classEn: "Warlock"
+image: heroes/dungeon/lodos.webp
+stats:
+  attack: 0
+  defense: 2
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: nightshade_magic
+  name: "Магия ночной тени"
+  nameEn: "Nightshade Magic"
+  description: "Мастерство теней — Получает +1 уровень ко всем заклинаниям ночной тени, плюс 1 за каждые 10 уровней героя, и может использовать их в бою без ограничений. Вражеский герой не может произносить заклинания ночной тени."
+  descriptionEn: "Shadowmastery - Receives +1 level to all Nightshade spells, plus 1 more for every 10 hero levels and can use it in battle without limits. Enemy hero cannot cast Nightshade spells."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_nightshade_magic
+    name: "Основы магии ночи"
+    nameEn: "Basic Nightshade Magic"
+    description: "Герой может изучать заклинания ночи 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Nightshade spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/lodos

@@ -1,0 +1,30 @@
+id: lo
+name: "Ло"
+nameEn: "Lo"
+faction: hive
+class: "Enforcer"
+classEn: "Enforcer"
+image: heroes/hive/lo.webp
+stats:
+  attack: 4
+  defense: 0
+  spellPower: 2
+  knowledge: 1
+specialization:
+  id: scavenger
+  name: "Падальщица"
+  nameEn: "Scavenger"
+  description: "Повышает прирост саранчи в ваших городах на 1. В её армии она получает +1 к скорости и инициативе, +20% к здоровью. Также она получает +1 к атаке и защите за уровни героя: каждые 3. Саранча противника теряет такое же количество атаки и защиты."
+  descriptionEn: "Locust growth in your cities increases by 1. Under her command, Locusts gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defense increase by 1 for every 3 hero levels, and enemy Locusts lose an equal amount of Attack and Defense."
+skills:
+  - id: basic_summon_avatar
+    name: "Основы призыва аватара"
+    nameEn: "Basic Summon Avatar"
+    description: "Новое боевое заклинание: призывает на поле боя аватара, способного пережить любой урон три раза. Он не получает бонусов от атаки и защиты героя, но получает +1 к атаке и +6 к урону за каждую единицу силы магии героя."
+    descriptionEn: "Grants a new battle spell. It summons an Avatar that is destroyed upon taking three hits from any source. While it does not gain any bonuses from the hero’s Attack and Defense, it gains +1 Attack and deals +6 Damage for each point of the hero’s Spell Power."
+  - id: basic_recruitment
+    name: "Основы вербовки"
+    nameEn: "Basic Recruitment"
+    description: "+4 к приросту существ 1‑го ранга во всех ваших городах."
+    descriptionEn: "+4 to tier‑1 creature growth in all your cities."
+source: https://www.olden-era.com/ru/heroes/lo

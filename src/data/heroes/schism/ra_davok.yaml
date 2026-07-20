@@ -1,0 +1,30 @@
+id: ra_davok
+name: "Ра'Давок"
+nameEn: "Ra'Davok"
+faction: schism
+class: "Говорящий с разломами"
+classEn: "Riftspeaker"
+image: heroes/schism/ra_davok.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 3
+  knowledge: 2
+specialization:
+  id: carapace
+  name: "Панцирь"
+  nameEn: "Carapace"
+  description: "Магическая крепость — Начинает с заклинания «Мастерский панцирь». Существа с этой версией панциря невосприимчивы к отрицательным и рассеивающим эффектам. При произнесении заклинания эффективная сила магии увеличивается на 1 за каждые 2 уровня героя."
+  descriptionEn: "Magic Fortress - Starts with the “Masterful Carapace” spell. Creatures with this version of Carapace are immune to negative and dispel effect. While casting this spell, effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_arcane_magic
+    name: "Основы арканной магии"
+    nameEn: "Basic Arcane Magic"
+    description: "Герой может изучать арканные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Arcane spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/ra_davok

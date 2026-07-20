@@ -1,0 +1,30 @@
+id: tolketh
+name: "Тёлкет"
+nameEn: "Tölketh"
+faction: schism
+class: "Говорящий с разломами"
+classEn: "Riftspeaker"
+image: heroes/schism/tolketh.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 3
+  knowledge: 2
+specialization:
+  id: heroic_strike
+  name: "Героический удар"
+  nameEn: "Heroic Strike"
+  description: "Звёздная чистка — Его героический удар наносит +40 урона, плюс 3 за каждые 5 уровней героя. Кроме того, рассеивает все положительные эффекты с цели."
+  descriptionEn: "Stellar Purge - His Heroic Strike deals +40 Damage, plus 3 more for every 5 hero levels. Additionally, it dispels all positive effects from the target."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_logistics
+    name: "Основы логистики"
+    nameEn: "Basic Logistics"
+    description: "+10% очков движения по карте приключений."
+    descriptionEn: "+10% Movement points on the global map."
+source: https://www.olden-era.com/ru/heroes/tolketh

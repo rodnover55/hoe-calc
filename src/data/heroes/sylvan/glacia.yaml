@@ -1,0 +1,30 @@
+id: glacia
+name: "Гласия"
+nameEn: "Glacia"
+faction: sylvan
+class: "Druid"
+classEn: "Druid"
+image: heroes/sylvan/glacia.webp
+stats:
+  attack: 1
+  defense: 2
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: ice_bolt
+  name: "Ледяная стрела"
+  nameEn: "Ice Bolt"
+  description: "Владеет заклинанием «Искусная ледяная стрела». Эта версия заклинания в два раза сильнее снижает инициативу цели. На время использования этого заклинания герой получает +1 к силе магии за уровни героя: каждые 2."
+  descriptionEn: "She starts with the \"Masterful Ice Bolt\" spell. The Initiative penalty of this version of the spell is twice as strong. While casting this spell, effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_primal_magic
+    name: "Основы первородной магии"
+    nameEn: "Basic Primal Magic"
+    description: "Герой может изучать первородные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Primal spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/glacia

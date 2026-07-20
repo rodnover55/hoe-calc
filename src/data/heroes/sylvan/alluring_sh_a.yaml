@@ -1,0 +1,30 @@
+id: alluring_sh_a
+name: "Манящая Ш’а"
+nameEn: "Alluring Sh'a"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/alluring_sh_a.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: charismatic
+  name: "Харизма"
+  nameEn: "Charismatic"
+  description: "Полностью сохраняет армию, сбегая из боя с нейтральной армией. Получает +10% к силе убеждения при использовании дипломатии и ещё +1% за уровни героя: каждые 3."
+  descriptionEn: "Retains the army when fleeing from battle against neutral squads. +10% Persuasion Power when using Diplomacy, plus an additional +1% for every 3 hero levels."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_diplomacy
+    name: "Основы дипломатии"
+    nameEn: "Basic Diplomacy"
+    description: "Герой получает шанс убедить нейтральную армию присоединиться к нему за золото (не сражаясь с ней)."
+    descriptionEn: "Provides a chance of neutral squads offering to join the hero’s army for Gold instead of fighting them."
+source: https://www.olden-era.com/ru/heroes/alluring_sh_a

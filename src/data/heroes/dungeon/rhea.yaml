@@ -1,0 +1,30 @@
+id: rhea
+name: "Рея"
+nameEn: "Rhea"
+faction: dungeon
+class: "Владыка"
+classEn: "Overlord"
+image: heroes/dungeon/rhea.webp
+stats:
+  attack: 2
+  defense: 2
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: luck
+  name: "Удача"
+  nameEn: "Luck"
+  description: "Четырёхлистная подкова — +1 к удаче. За каждый пункт удачи существа получают +3% шанс нанести критический удар. За каждые 4 уровня +1% к этому бонусу."
+  descriptionEn: "Four-Leaf Horseshoe - +1 Luck. For each point of Luck, creatures have +3% chance to deal a critical strike. For every 4 levels, +1% to this bonus."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_luck
+    name: "Основы удачи"
+    nameEn: "Basic Luck"
+    description: "Герой получает +1 к удаче."
+    descriptionEn: "The hero gains 1 Luck."
+source: https://www.olden-era.com/ru/heroes/rhea

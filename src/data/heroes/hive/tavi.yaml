@@ -1,0 +1,25 @@
+id: tavi
+name: "Тави"
+nameEn: "Tavi"
+faction: hive
+class: "Herald"
+classEn: "Herald"
+image: heroes/hive/tavi.webp
+stats:
+  attack: 4
+  defense: 0
+  spellPower: 2
+  knowledge: 1
+specialization:
+  id: proliferation
+  name: "Размножение"
+  nameEn: "Proliferation"
+  description: "Призванные ею огненные личинки получают +4% здоровья и ещё +2% за уровни героя: каждые 2."
+  descriptionEn: "Her summoned Fire Larva stacks have +4% health, plus another 2% for every 2 hero level(s)."
+skills:
+  - id: advanced_summon_swarm
+    name: "Продвинутый призыв роя"
+    nameEn: "Advanced Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 12% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 12% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+source: https://www.olden-era.com/ru/heroes/tavi

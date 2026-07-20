@@ -1,0 +1,30 @@
+id: oriax
+name: "Ориакс"
+nameEn: "Oriax"
+faction: hive
+class: "Herald"
+classEn: "Herald"
+image: heroes/hive/oriax.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 4
+  knowledge: 2
+specialization:
+  id: here_and_there
+  name: "И тут, и там"
+  nameEn: "Here and There"
+  description: "Владеет заклинанием «Искусный скачок». Эту версию заклинания можно применять на существ противника. Стоимость использования этого заклинания снижена на 1 маны за уровни героя: каждые 3."
+  descriptionEn: "She starts with the “Masterful Blink” spell. This version of the spell can target enemy creatures. The cost of this spell is reduced by 1 mana for every 3 hero level(s)."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_battle_magic
+    name: "Основы боевой магии"
+    nameEn: "Basic Battle Magic"
+    description: "Атака и защита дружественных существ повышаются на 15% от силы магии и знаний героя соответственно."
+    descriptionEn: "Friendly creatures’ Attack and Defense increase by 15% of the hero’s Spell Power and Knowledge respectively."
+source: https://www.olden-era.com/ru/heroes/oriax

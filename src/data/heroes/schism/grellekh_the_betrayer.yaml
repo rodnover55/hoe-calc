@@ -1,0 +1,30 @@
+id: grellekh_the_betrayer
+name: "Греллек Предатель"
+nameEn: "Grellekh the Betrayer"
+faction: schism
+class: "Говорящий с разломами"
+classEn: "Riftspeaker"
+image: heroes/schism/grellekh_the_betrayer.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 3
+  knowledge: 2
+specialization:
+  id: offence
+  name: "Атака"
+  nameEn: "Offence"
+  description: "Боец — Существа в его армии наносят +10% урона обычными атаками, плюс 1% за каждые 4 уровня героя. Кроме того, они наносят +1% урона в ближнем бою за каждые 4 уровня (ур.2 / 4 / 6 / 8 / 10 / 12 / 14)."
+  descriptionEn: "Fighter - Creatures in his army deal +10% basic attack Damage, plus 1% more for every 4 hero levels. Additionally, they deal +1% Melee Damage for every 4 hero levels (Lv.2 / 4 / 6 / 8 / 10 / 12 / 14)."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_offence
+    name: "Основы нападения"
+    nameEn: "Basic Offense"
+    description: "Дружественные существа наносят +10% урона обычными атаками."
+    descriptionEn: "Friendly creatures’ basic attacks deal +10% Damage."
+source: https://www.olden-era.com/ru/heroes/grellekh_the_betrayer

@@ -1,0 +1,30 @@
+id: leon_sticky_fingers
+name: "Леон Липкие Пальцы"
+nameEn: "Leon Sticky-Fingers"
+faction: temple
+class: "Рыцарь"
+classEn: "Knight"
+image: heroes/temple/leon_sticky_fingers.webp
+stats:
+  attack: 2
+  defense: 3
+  spellPower: 1
+  knowledge: 1
+specialization:
+  id: scouting
+  name: "Разведка"
+  nameEn: "Scouting"
+  description: "Следопыт — Не имеет штрафов за местность. Также имеет +1 к радиусу обзора, плюс 1 за каждые 5 уровней героя."
+  descriptionEn: "Pathfinder - Has no terrain penalties. Also has +1 Sight Radius, plus 1 more for every 5 hero levels."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_scouting
+    name: "Основы разведки"
+    nameEn: "Basic Scouting"
+    description: "Герой получает +1 к радиусу обзора."
+    descriptionEn: "The hero gains 1 sight radius."
+source: https://www.olden-era.com/ru/heroes/leon_sticky_fingers

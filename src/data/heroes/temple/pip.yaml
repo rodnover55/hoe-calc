@@ -1,0 +1,30 @@
+id: pip
+name: "Пип"
+nameEn: "Pip"
+faction: temple
+class: "Клирик"
+classEn: "Cleric"
+image: heroes/temple/pip.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: experience
+  name: "Опыт"
+  nameEn: "Experience"
+  description: "Жажда знаний — Получает +25% опыта, плюс 5% за каждые 2 уровня героя. При получении уровня получает 2 дополнительных пункта атрибутов за каждые 2 уровня героя."
+  descriptionEn: "Wish to Learn - Gains 25% XP, plus 5% for every 2 hero levels. When leveling up, gains 2 additional attribute point(s) for every 2 hero levels."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_insight
+    name: "Основы проницательности"
+    nameEn: "Basic Insight"
+    description: "Герой получает +20% опыта."
+    descriptionEn: "The hero gains +20% more XP."
+source: https://www.olden-era.com/ru/heroes/pip

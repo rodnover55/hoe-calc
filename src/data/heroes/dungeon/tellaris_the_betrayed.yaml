@@ -1,0 +1,30 @@
+id: tellaris_the_betrayed
+name: "Телларис Предатель"
+nameEn: "Tellaris the Betrayed"
+faction: dungeon
+class: "Владыка"
+classEn: "Overlord"
+image: heroes/dungeon/tellaris_the_betrayed.webp
+stats:
+  attack: 2
+  defense: 2
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: early_start
+  name: "Ранний старт"
+  nameEn: "Early Start"
+  description: "Владеет заклинанием «Искусный ранний старт». Эта версия заклинания действует на всех дружественных существ. На время использования этого заклинания герой получает +1 к силе магии за уровни героя: каждые 2."
+  descriptionEn: "He starts with the “Masterful Early Start” spell. This version of the spell affects all friendly creatures. While casting this spell, effective Spell Power is increased by 1 for every 2 hero level(s)."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_battlecraft
+    name: "Основы боевого порядка"
+    nameEn: "Basic Battlecraft"
+    description: "Ожидая в бою, дружественные существа получают +20% к атаке до конца раунда, а пропуская ход — +20% к защите."
+    descriptionEn: "When a friendly creature waits on their turn, they gain +20% Attack until the end of the round. When they skip turn, they gain +20% Defense until the end of the round."
+source: https://www.olden-era.com/ru/heroes/tellaris_the_betrayed

@@ -1,0 +1,30 @@
+id: marl
+name: "Марл"
+nameEn: "Marl"
+faction: necropolis
+class: "Рыцарь смерти"
+classEn: "Death Knight"
+image: heroes/necropolis/marl.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: web
+  name: "Паутина"
+  nameEn: "Web"
+  description: "Вялая почва — Начинает с заклинания «Мастерская паутина». Эта версия заклинания поражает всех врагов. При произнесении заклинания эффективная сила магии увеличивается на 1 за каждые 2 уровня героя."
+  descriptionEn: "Languid Soil - Starts with the “Masterful Web” spell. This version of the spell affects all enemies. While casting this spell, effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_logistics
+    name: "Основы логистики"
+    nameEn: "Basic Logistics"
+    description: "+10% очков движения по карте приключений."
+    descriptionEn: "+10% Movement points on the global map."
+source: https://www.olden-era.com/ru/heroes/marl

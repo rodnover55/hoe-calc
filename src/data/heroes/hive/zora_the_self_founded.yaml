@@ -1,0 +1,30 @@
+id: zora_the_self_founded
+name: "Зоран Самосотворённый"
+nameEn: "Zoran, the Self‑Founded"
+faction: hive
+class: "Enforcer"
+classEn: "Enforcer"
+image: heroes/hive/zora_the_self_founded.webp
+stats:
+  attack: 4
+  defense: 0
+  spellPower: 2
+  knowledge: 1
+specialization:
+  id: waurmification
+  name: "Чревнефикация"
+  nameEn: "Waurmification"
+  description: "Повышает прирост чревней в ваших городах на 1. В его армии они получают +1 к скорости и инициативе, +20% к здоровью. Также они получают +1 к атаке и защите за уровни героя: каждые 3. Чревни противника теряют такое же количество атаки и защиты."
+  descriptionEn: "Waurms growth in your cities increases by 1. Under his command, Waurmos gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defense increase by 1 for every 3 hero levels, and enemy Waurmos lose an equal amount of Attack and Defense."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_defence
+    name: "Основы обороны"
+    nameEn: "Basic Defense"
+    description: "Дружественные существа получают –10% урона от обычных атак."
+    descriptionEn: "Friendly creatures take –10% Damage from basic attacks."
+source: https://www.olden-era.com/ru/heroes/zora_the_self_founded

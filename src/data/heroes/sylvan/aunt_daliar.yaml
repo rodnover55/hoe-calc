@@ -1,0 +1,30 @@
+id: aunt_daliar
+name: "Тётушка Далиар"
+nameEn: "Autn Daliar"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/aunt_daliar.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: wish_to_learn
+  name: "Тяга к знаниям"
+  nameEn: "Wish to Learn"
+  description: "При повышении уровня получает дополнительные очки характеристик (+1) за уровни: каждые 2. Получает +5% опыта за уровни героя: каждые 2."
+  descriptionEn: "When leveling up, she gains 1 additional attribute point for every 2 hero levels. She gains +5% XP for every 2 hero levels."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_insight
+    name: "Основы проницательности"
+    nameEn: "Basic Insight"
+    description: "Герой получает +20% опыта."
+    descriptionEn: "The hero gains +20% more XP."
+source: https://www.olden-era.com/ru/heroes/aunt_daliar

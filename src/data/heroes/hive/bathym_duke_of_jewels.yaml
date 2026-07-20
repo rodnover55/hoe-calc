@@ -1,0 +1,30 @@
+id: bathym_duke_of_jewels
+name: "Базим, герцог рубинов"
+nameEn: "Bathym, Duke of Jewels"
+faction: hive
+class: "Herald"
+classEn: "Herald"
+image: heroes/hive/bathym_duke_of_jewels.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 4
+  knowledge: 2
+specialization:
+  id: charming_shine
+  name: "Блеск кристаллов"
+  nameEn: "Charming Shine"
+  description: "Ежедневно приносит +1 кристаллов и ещё +1 за уровни героя: каждые 5. Повышает количество кристаллов, найденных на карте, на 100%."
+  descriptionEn: "He produces +1 Crystals per day, plus another +1 for every 5 hero level(s). Increases the amount of Crystals found on the map by 100%."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_economy
+    name: "Основы экономики"
+    nameEn: "Basic Economy"
+    description: "Ежедневно приносит +500 золота."
+    descriptionEn: "+500 Gold daily."
+source: https://www.olden-era.com/ru/heroes/bathym_duke_of_jewels

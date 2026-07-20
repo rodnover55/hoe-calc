@@ -1,0 +1,25 @@
+id: mara_matha
+name: "Мара Мата"
+nameEn: "Mara Matha"
+faction: schism
+class: "Хранитель клятв"
+classEn: "Oathkeeper"
+image: heroes/schism/mara_matha.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: aga_shoth_riders
+  name: "Наездники Ага'Шот"
+  nameEn: "Aga'Shoth Riders"
+  description: "Хладнокровные братья — Прирост наездников Ага'Шот в ваших городах увеличивается на 1. Под его командованием наездники Ага'Шот получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские теряют столько же."
+  descriptionEn: "Coldblood Siblings - Aga’Shoth Riders growth in your cities increases by 1. Under his command, Aga’Shoth Riders gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Aga’Shoth Riders lose an equal amount of Attack and Defence."
+skills:
+  - id: advanced_abyssal_communion
+    name: "Продвинутое Причастие к Бездне"
+    nameEn: "Advanced Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 4). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 4). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+source: https://www.olden-era.com/ru/heroes/mara_matha

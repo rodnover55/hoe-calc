@@ -1,0 +1,30 @@
+id: king_of_kings
+name: "Царь царей"
+nameEn: "King-of-Kings"
+faction: necropolis
+class: "Рыцарь смерти"
+classEn: "Death Knight"
+image: heroes/necropolis/king_of_kings.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: diplomacy
+  name: "Дипломатия"
+  nameEn: "Diplomacy"
+  description: "Харизматичный — Сохраняет армию при бегстве от нейтральных отрядов. +10% к силе убеждения при использовании дипломатии, плюс 1% за каждые 3 уровня героя."
+  descriptionEn: "Charismatic - Keeps its army when fleeing from battle with neutral squads. +10% Persuasion Power when using Diplomacy, plus 1% more for every 3 hero levels."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_diplomacy
+    name: "Основы дипломатии"
+    nameEn: "Basic Diplomacy"
+    description: "Герой получает шанс убедить нейтральную армию присоединиться к нему за золото (не сражаясь с ней)."
+    descriptionEn: "Provides a chance of neutral squads offering to join the hero’s army for Gold instead of fighting them."
+source: https://www.olden-era.com/ru/heroes/king_of_kings

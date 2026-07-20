@@ -1,0 +1,30 @@
+id: gorel_spearhead
+name: "Горрел Копьеносец"
+nameEn: "Gorel Spearhead"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/gorel_spearhead.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: shooter
+  name: "Стрелок"
+  nameEn: "Shooter"
+  description: "Существа в его армии наносят +10% урона обычными атаками и ещё +1% за уровни героя: каждые 4. Кроме того, они наносят +1% урона в дальнем бою и на расстоянии за уровни героя: каждые 4."
+  descriptionEn: "Creatures in his army deal +10% basic attack damage, plus an additional +1% for every 4 hero levels. Additionally, they deal +1% Ranged and Long Reach damage for every 4 hero levels."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_offence
+    name: "Основы нападения"
+    nameEn: "Basic Offense"
+    description: "Дружественные существа наносят +10% урона обычными атаками."
+    descriptionEn: "Friendly creatures’ basic attacks deal +10% Damage."
+source: https://www.olden-era.com/ru/heroes/gorel_spearhead

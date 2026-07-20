@@ -5,8 +5,8 @@
  * оба отряда с характеристиками героев и учитываемые абилки атаки —
  * приходит одним входным объектом, результат — диапазоны урона и потерь
  * по вариантам удачи, ответный удар выживших, второй удар после ответа
- * и формула расчёта с подставленными значениями. Подписи шагов формулы
- * берутся из локали по языку, переданному вторым аргументом.
+ * и формула расчёта с подставленными значениями. Названия параметров
+ * формулы берутся из локали по языку, переданному вторым аргументом.
  */
 
 import type { Lang } from './i18n';
@@ -129,12 +129,85 @@ export interface LuckDamage {
   secondStrike: SecondStrikeDamage | null;
 }
 
-export interface DamageStep {
-  /** Подпись под множителем; для вычисляемых множителей включает значение */
-  label: string;
-  /** Множитель с подставленными значениями */
+/** Фрагмент числовой формулы бакета */
+export interface FormulaToken {
+  /** Отображаемый текст: число либо знаки и скобки между числами */
   text: string;
+  /** Название параметра-источника числа — подсказка при наведении */
+  param?: string;
 }
+
+/**
+ * Бакет формулы — множитель или слагаемое расчёта. Числовая форма
+ * (tokens) и строка легенды (formula) повторяют одно выражение: на месте
+ * каждого числа-параметра из tokens в легенде стоит его название, а
+ * константы формулы записаны числами и там и там.
+ */
+export interface DamageStep {
+  /** Короткая подпись бакета: за что он отвечает в расчёте */
+  label: string;
+  /** Строка легенды: формула бакета из названий параметров */
+  formula: string;
+  /** Формула бакета с подставленными числами */
+  tokens: FormulaToken[];
+  /** Знак перед бакетом; по умолчанию «×» (слагаемое удара героя — «+») */
+  op?: '×' | '+';
+}
+
+/** Числовой токен формулы: значение с названием параметра-источника */
+export const num = (value: number, param: string): FormulaToken => ({
+  text: `${value}`,
+  param,
+});
+
+/** Сборка бакета из токенов: строки — знаки и скобки без параметра */
+export const tokens = (...parts: (string | FormulaToken)[]): FormulaToken[] =>
+  parts.map((part) => (typeof part === 'string' ? { text: part } : part));
+
+/** Перевод названия параметра формулы по ключу */
+type ParamName = (key: string) => string;
+
+/** Бакет «отряд × урон»: количество существ и диапазон урона одного */
+const stackStep = (
+  P: ParamName,
+  label: string,
+  count: number,
+  damageMin: number,
+  damageMax: number,
+): DamageStep => ({
+  label,
+  formula: `${P('count')} × (${P('damageMin')} – ${P('damageMax')})`,
+  tokens: tokens(
+    num(count, P('count')),
+    ' × (',
+    num(damageMin, P('damageMin')),
+    '–',
+    num(damageMax, P('damageMax')),
+    ')',
+  ),
+});
+
+/** Бакет АТК/ЗЩТ: (20 + атака юнита и героя) / (20 + защита юнита и героя) */
+const atkDefStep = (
+  P: ParamName,
+  label: string,
+  attack: { unit: number; hero: number },
+  defense: { unit: number; hero: number },
+): DamageStep => ({
+  label,
+  formula: `(20 + ${P('unitAttack')} + ${P('heroAttack')}) / (20 + ${P('unitDefense')} + ${P('heroDefense')})`,
+  tokens: tokens(
+    '(20 + ',
+    num(attack.unit, P('unitAttack')),
+    ' + ',
+    num(attack.hero, P('heroAttack')),
+    ') / (20 + ',
+    num(defense.unit, P('unitDefense')),
+    ' + ',
+    num(defense.hero, P('heroDefense')),
+    ')',
+  ),
+});
 
 export interface DamageResult {
   /** Диапазоны урона по вариантам удачи: неудача, обычный, удача */
@@ -145,11 +218,11 @@ export interface DamageResult {
   retaliationModifier: number;
   /** Сработало ли ограничение типовых модификаторов в 10% */
   typeCapped: boolean;
-  /** Полная формула урона с подставленными значениями, по множителям */
+  /** Полная формула урона по бакетам с подставленными значениями */
   steps: DamageStep[];
-  /** Формула ответного удара с подставленными значениями */
+  /** Формула ответного удара по бакетам */
   retaliationSteps: DamageStep[];
-  /** Формула второго удара с подставленными значениями */
+  /** Формула второго удара по бакетам */
   secondStrikeSteps: DamageStep[];
 }
 
@@ -182,8 +255,11 @@ export interface AbilityAttackInput {
   damageMax: number;
   /** Доля урона обычной атаки; если не задана, действует base/perUnit */
   factor?: number;
-  /** Модификатор атаки для способностей, игнорирующих защиту; иначе 1 */
-  attackModifier?: number;
+  /**
+   * Атака юнита и героя — для способностей, игнорирующих защиту: даёт
+   * множитель (20 + АТК) / 20; если не задана, множителя нет
+   */
+  attack?: { unit: number; hero: number };
   /** Слагаемое фиксированной формулы */
   base?: number;
   /** Множитель количества в фиксированной формуле */
@@ -223,7 +299,8 @@ export function calculateAbilityDamage(
   input: AbilityAttackInput,
   lang: Lang = 'ru',
 ): AbilityDamageResult {
-  const L = (key: string): string => translate(lang, `formula.${key}`);
+  const P: ParamName = (key) => translate(lang, `formula.params.${key}`);
+  const B: ParamName = (key) => translate(lang, `formula.labels.${key}`);
   const count = Math.max(1, input.count);
   const damageMin = Math.max(0, input.damageMin);
   const damageMax = Math.max(damageMin, input.damageMax);
@@ -239,26 +316,54 @@ export function calculateAbilityDamage(
   const steps: DamageStep[] = [];
   if (input.factor !== undefined) {
     const factor = Math.max(0, input.factor);
-    const attackModifier = Math.max(0, input.attackModifier ?? 1);
+    const unitAtk = Math.max(0, input.attack?.unit ?? 0);
+    const heroAtk = Math.max(0, input.attack?.hero ?? 0);
+    const attackModifier = input.attack ? (20 + unitAtk + heroAtk) / 20 : 1;
     min = round(count * damageMin * factor * attackModifier * reductionFactor);
     max = round(count * damageMax * factor * attackModifier * reductionFactor);
-    steps.push({ label: L('stackDamage'), text: `${count} × (${damageMin}–${damageMax})` });
-    if (factor !== 1) steps.push({ label: `${L('factor')} = ${factor.toFixed(2)}`, text: `${factor}` });
-    if (attackModifier !== 1) {
-      steps.push({ label: `${L('attack')} = ${attackModifier.toFixed(2)}`, text: `${attackModifier.toFixed(2)}` });
+    steps.push(stackStep(P, B('stackDamage'), count, damageMin, damageMax));
+    if (factor !== 1) {
+      steps.push({ label: B('factor'), formula: P('factor'), tokens: tokens(num(factor, P('factor'))) });
+    }
+    if (input.attack) {
+      steps.push({
+        label: B('attack'),
+        formula: `(20 + ${P('unitAttack')} + ${P('heroAttack')}) / 20`,
+        tokens: tokens(
+          '(20 + ',
+          num(unitAtk, P('unitAttack')),
+          ' + ',
+          num(heroAtk, P('heroAttack')),
+          ') / 20',
+        ),
+      });
     }
   } else {
     const base = Math.max(0, input.base ?? 0);
     const perUnit = Math.max(0, input.perUnit ?? 0);
     min = round((base + perUnit * count) * reductionFactor);
     max = min;
-    steps.push({
-      label: L('fixed'),
-      text: base > 0 ? `${base} + ${perUnit} × ${count}` : `${perUnit} × ${count}`,
-    });
+    steps.push(
+      perUnit > 0
+        ? {
+            label: B('fixed'),
+            formula: `${base > 0 ? `${P('abilityBase')} + ` : ''}${P('perUnit')} × ${P('count')}`,
+            tokens: tokens(
+              ...(base > 0 ? [num(base, P('abilityBase')), ' + '] : []),
+              num(perUnit, P('perUnit')),
+              ' × ',
+              num(count, P('count')),
+            ),
+          }
+        : { label: B('fixed'), formula: P('abilityBase'), tokens: tokens(num(base, P('abilityBase'))) },
+    );
   }
   if (reduction < 0) {
-    steps.push({ label: `${L('targetDefense')} = ${reductionFactor.toFixed(2)}`, text: `1 − ${-reduction}/100` });
+    steps.push({
+      label: B('targetDefense'),
+      formula: `1 − ${P('reduction')}/100`,
+      tokens: tokens('1 − ', num(-reduction, P('reduction')), '/100'),
+    });
   }
 
   return {
@@ -303,6 +408,8 @@ const killsFrom = (damage: number, topHealth: number, health: number): number =>
 export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageResult {
   const { attacker, abilities, defender } = input;
   const L = (key: string): string => translate(lang, `formula.${key}`);
+  const P: ParamName = (key) => translate(lang, `formula.params.${key}`);
+  const B: ParamName = (key) => translate(lang, `formula.labels.${key}`);
 
   const count = Math.max(1, attacker.count);
   const health = Math.max(1, attacker.health);
@@ -326,8 +433,9 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
 
   const attackDefenseModifier = (20 + unitAtk + heroAtk) / (20 + unitDef + heroDef);
   const retaliationModifier = (20 + defUnitAtk + defHeroAtk) / (20 + attUnitDef + attHeroDef);
-  const generalRaw = 1 + abilities.generalModifiers / 100;
-  const general = Math.max(0, generalRaw);
+  // Общие модификаторы, в отличие от типовых, нижнего порога не имеют:
+  // от ухода множителя в минус спасает только минимум в 1 урона.
+  const general = 1 + abilities.generalModifiers / 100;
   const typeRaw = 1 + abilities.typeModifiers / 100;
   const type = Math.max(0.1, typeRaw);
   const typeCapped = typeRaw < 0.1;
@@ -413,52 +521,71 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     };
   });
 
-  /** Подставленная форма процентного модификатора: «1 + 25/100» */
-  const pctText = (percent: number) => `1 ${percent >= 0 ? '+' : '−'} ${Math.abs(percent)}/100`;
-
-  let rangeText = '1';
-  if (abilities.rangePenalty && distance > 3) {
-    const rangeRaw = 1 - 0.1 * (distance - 3);
-    const penalty = `1 − 0.1×(${distance}−3)`;
-    rangeText = rangeRaw < 0.5 ? `max(0.5; ${penalty})` : penalty;
-  }
+  /** Бакет процентного модификатора: «1 + 25/100», при поле — max(порог; …) */
+  const pctStep = (percent: number, label: string, param: string, floor: number | null): DamageStep => {
+    const open = floor === null ? '' : `max(${floor}; `;
+    const close = floor === null ? '' : ')';
+    return {
+      label,
+      formula: `${open}1 + ${param}/100${close}`,
+      tokens: tokens(`${open}1 ${percent >= 0 ? '+' : '−'} `, num(Math.abs(percent), param), `/100${close}`),
+    };
+  };
 
   const steps: DamageStep[] = [
-    { label: L('stackDamage'), text: `${count} × (${damageMin}–${damageMax})` },
-    {
-      label: `${L('atkDef')} = ${attackDefenseModifier.toFixed(2)}`,
-      text: `(20 + ${unitAtk} + ${heroAtk}) / (20 + ${unitDef} + ${heroDef})`,
-    },
-    {
-      label: `${L('general')} = ${general.toFixed(2)}`,
-      text:
-        generalRaw < 0
-          ? `max(0; ${pctText(abilities.generalModifiers)})`
-          : pctText(abilities.generalModifiers),
-    },
-    {
-      label: `${L('type')} = ${type.toFixed(2)}${typeCapped ? ` (${L('typeCapped')})` : ''}`,
-      text: typeCapped ? `max(0.1; ${pctText(abilities.typeModifiers)})` : pctText(abilities.typeModifiers),
-    },
-    {
-      label: `${L('range')} = ${range.toFixed(2)}`,
-      text: rangeText,
-    },
+    stackStep(P, B('stackDamage'), count, damageMin, damageMax),
+    atkDefStep(P, B('atkDef'), { unit: unitAtk, hero: heroAtk }, { unit: unitDef, hero: heroDef }),
+    pctStep(abilities.generalModifiers, B('general'), P('general'), null),
+    pctStep(abilities.typeModifiers, B('type'), P('type'), typeCapped ? 0.1 : null),
   ];
-  if (mode !== 1) steps.push({ label: `${L('mode')} = ${mode.toFixed(2)}`, text: `${mode}` });
-  steps.push({ label: L('luck'), text: '(0.5 / 1 / 1.5)' });
+  // Дальность попадает в формулу, только когда штраф действует.
+  if (abilities.rangePenalty && distance > 3) {
+    const capped = 1 - 0.1 * (distance - 3) < 0.5;
+    const open = capped ? 'max(0.5; ' : '';
+    const close = capped ? ')' : '';
+    steps.push({
+      label: B('range'),
+      formula: `${open}1 − 0.1×(${P('distance')} − 3)${close}`,
+      tokens: tokens(`${open}1 − 0.1×(`, num(distance, P('distance')), `−3)${close}`),
+    });
+  }
+  if (mode !== 1) {
+    steps.push({ label: B('mode'), formula: P('mode'), tokens: tokens(num(mode, P('mode'))) });
+  }
+  steps.push({
+    label: B('luck'),
+    formula: `${P('unlucky')} / ${P('normalLuck')} / ${P('lucky')}`,
+    tokens: tokens(`(${LUCK_FACTOR.unlucky} / ${LUCK_FACTOR.normal} / ${LUCK_FACTOR.lucky})`),
+  });
 
   const retaliationSteps: DamageStep[] = [
-    { label: L('survivorsDamage'), text: `${L('survivors')} × (${defDamageMin}–${defDamageMax})` },
     {
-      label: `${L('atkDef')} = ${retaliationModifier.toFixed(2)}`,
-      text: `(20 + ${defUnitAtk} + ${defHeroAtk}) / (20 + ${attUnitDef} + ${attHeroDef})`,
+      label: B('survivorsDamage'),
+      formula: `${L('survivors')} × (${P('damageMin')} – ${P('damageMax')})`,
+      tokens: tokens(
+        `${L('survivors')} × (`,
+        num(defDamageMin, P('damageMin')),
+        '–',
+        num(defDamageMax, P('damageMax')),
+        ')',
+      ),
     },
+    atkDefStep(P, B('atkDef'), { unit: defUnitAtk, hero: defHeroAtk }, { unit: attUnitDef, hero: attHeroDef }),
   ];
 
   // Второй удар считается по формуле первого, но от выживших атакующих.
   const secondStrikeSteps: DamageStep[] = [
-    { label: L('survivorsDamage'), text: `${L('survivingAttackers')} × (${damageMin}–${damageMax})` },
+    {
+      label: B('survivorsDamage'),
+      formula: `${L('survivingAttackers')} × (${P('damageMin')} – ${P('damageMax')})`,
+      tokens: tokens(
+        `${L('survivingAttackers')} × (`,
+        num(damageMin, P('damageMin')),
+        '–',
+        num(damageMax, P('damageMax')),
+        ')',
+      ),
+    },
     ...steps.slice(1),
   ];
 

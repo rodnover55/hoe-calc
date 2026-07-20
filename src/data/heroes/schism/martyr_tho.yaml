@@ -1,0 +1,30 @@
+id: martyr_tho
+name: "Мученик То"
+nameEn: "Martyr Tho"
+faction: schism
+class: "Хранитель клятв"
+classEn: "Oathkeeper"
+image: heroes/schism/martyr_tho.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: mercury
+  name: "Ртуть"
+  nameEn: "Mercury"
+  description: "Алхимик — Производит 1 ртуть в день, +1 за каждые 5 уровней героя. Увеличивает количество ртути, найденной на карте, на 1."
+  descriptionEn: "Alchemist - Produces 1 Mercury per day, +1 more for every 5 hero levels. Increases the amount of Mercury found on the map by 1."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_arcane_magic
+    name: "Основы арканной магии"
+    nameEn: "Basic Arcane Magic"
+    description: "Герой может изучать арканные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Arcane spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/martyr_tho

@@ -1,0 +1,30 @@
+id: niev
+name: "Нив"
+nameEn: "Niev"
+faction: hive
+class: "Enforcer"
+classEn: "Enforcer"
+image: heroes/hive/niev.webp
+stats:
+  attack: 4
+  defense: 0
+  spellPower: 2
+  knowledge: 1
+specialization:
+  id: shooter
+  name: "Стрелок"
+  nameEn: "Shooter"
+  description: "Существа в её армии наносят +10% урона обычными атаками и ещё +1% за уровни героя: каждые 4. Кроме того, они наносят +1% урона в дальнем бою и на расстоянии за уровни героя: каждые 4."
+  descriptionEn: "Creatures in her army deal +10% basic attack Damage, plus an additional 1% for every 4 hero level(s). Additionally, they deal +1% Ranged and Long Reach Damage for every 4 hero level(s)."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_offence
+    name: "Основы нападения"
+    nameEn: "Basic Offense"
+    description: "Дружественные существа наносят +10% урона обычными атаками."
+    descriptionEn: "Friendly creatures’ basic attacks deal +10% Damage."
+source: https://www.olden-era.com/ru/heroes/niev

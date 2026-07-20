@@ -3,8 +3,20 @@ import type { AttackerStats, DamageStep, DefenderStats } from './formula';
 import { calculateAbilityDamage, calculateDamage } from './formula';
 import type { AttackMode } from './abilityEffects';
 import { attackModesFor, damageReduction, defaultRetaliation, doubleStrikeFor } from './abilityEffects';
+import type { HeroPick } from './heroEffects';
+import {
+  EMPTY_HERO_PICK,
+  HERO_STRIKE_MODE_ID,
+  heroBonuses,
+  heroStrikeMode,
+  heroStrikeSteps,
+  sameHeroPick,
+} from './heroEffects';
+import type { GameHero } from './heroes';
+import { HEROES_BY_ID } from './heroes';
 import { LANGUAGES, numberLocale, pluralWord } from './i18n';
 import { useI18n } from './LangContext';
+import { HeroPicker } from './components/HeroPicker';
 import { HeroPresetPanel } from './components/HeroPresetPanel';
 import { NumberField } from './components/NumberField';
 import { UnitPicker } from './components/UnitPicker';
@@ -32,17 +44,37 @@ import { SHARE_PARAM, decodeAppState, encodeAppState } from './urlState';
 import './App.css';
 
 function Formula({ steps }: { steps: DamageStep[] }) {
+  // Цвет связывает бакет числовой строки со строкой легенды под ней.
+  const bucket = (index: number) => `formula-bucket-${index % 7}`;
   return (
     <div className="formula">
-      {steps.map((step, index) => (
-        <Fragment key={step.label}>
-          {index > 0 && <span className="formula-op">×</span>}
-          <span className="formula-part">
-            <span className="formula-value">{step.text}</span>
-            <span className="formula-label">{step.label}</span>
-          </span>
-        </Fragment>
-      ))}
+      <div className="formula-row">
+        {steps.map((step, index) => (
+          <Fragment key={index}>
+            {index > 0 && <span className="formula-op">{step.op ?? '×'}</span>}
+            {/* Подпись рисуется псевдоэлементом из data-label, чтобы не
+                попадать в выделение при копировании формулы. */}
+            <span className={`formula-part ${bucket(index)}`} data-label={step.label}>
+              {step.tokens.map((token, i) =>
+                token.param ? (
+                  <span className="formula-num" key={i} title={token.param}>
+                    {token.text}
+                  </span>
+                ) : (
+                  <Fragment key={i}>{token.text}</Fragment>
+                ),
+              )}
+            </span>
+          </Fragment>
+        ))}
+      </div>
+      <div className="formula-legend">
+        {steps.map((step, index) => (
+          <div className={bucket(index)} key={index}>
+            {step.formula}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -113,6 +145,13 @@ export default function App() {
     restored?.defenderUnitId ?? null,
   );
 
+  const [attackerHero, setAttackerHero] = useState<HeroPick>(
+    restored?.attackerHero ?? EMPTY_HERO_PICK,
+  );
+  const [defenderHero, setDefenderHero] = useState<HeroPick>(
+    restored?.defenderHero ?? EMPTY_HERO_PICK,
+  );
+
   const [presets, setPresets] = useState<PresetStore>(restored?.presets ?? EMPTY_STORE);
   const [presetSel, setPresetSel] = useState<PresetSelection>(
     restored?.presetSelection ?? EMPTY_SELECTION,
@@ -134,10 +173,23 @@ export default function App() {
         defender,
         attackerUnitId,
         defenderUnitId,
+        attackerHero,
+        defenderHero,
         presets,
         presetSelection: presetSel,
       }),
-    [attacker, attack, modeId, defender, attackerUnitId, defenderUnitId, presets, presetSel],
+    [
+      attacker,
+      attack,
+      modeId,
+      defender,
+      attackerUnitId,
+      defenderUnitId,
+      attackerHero,
+      defenderHero,
+      presets,
+      presetSel,
+    ],
   );
 
   // Адресная строка всегда отражает текущее состояние; дебаунс укладывает
@@ -181,7 +233,19 @@ export default function App() {
 
   const attackerUnit = attackerUnitId ? (UNITS_BY_ID.get(attackerUnitId) ?? null) : null;
   const defenderUnit = defenderUnitId ? (UNITS_BY_ID.get(defenderUnitId) ?? null) : null;
-  const modes = useMemo(() => attackModesFor(attackerUnit, lang), [attackerUnit, lang]);
+  const attackerGameHero = attackerHero.heroId
+    ? (HEROES_BY_ID.get(attackerHero.heroId) ?? null)
+    : null;
+  const defenderGameHero = defenderHero.heroId
+    ? (HEROES_BY_ID.get(defenderHero.heroId) ?? null)
+    : null;
+  // «Удар героя» — дополнительный режим атаки при выбранном герое; при
+  // сбросе героя выбор режима сам падает на первый из списка юнита.
+  const modes = useMemo(() => {
+    const list = attackModesFor(attackerUnit, lang);
+    if (attackerGameHero) list.push(heroStrikeMode(attackerGameHero, attackerHero.level, lang));
+    return list;
+  }, [attackerUnit, attackerGameHero, attackerHero.level, lang]);
   const mode = modes.find((m) => m.id === modeId) ?? modes[0];
   const doubleStrike = doubleStrikeFor(attackerUnit, mode);
   const reduction = damageReduction(defenderUnit, mode, lang);
@@ -216,6 +280,26 @@ export default function App() {
     setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: null }));
   };
 
+  // Выбор игрового героя один раз заполняет атаку/защиту его стартовыми
+  // статами; дальше они правятся вручную, как статы юнита.
+  const selectAttackerGameHero = (hero: GameHero | null) => {
+    setAttackerHero((prev) => ({ heroId: hero?.id ?? null, level: prev.level }));
+    if (hero) patchAttacker({ heroAttack: hero.stats.attack, heroDefense: hero.stats.defense });
+  };
+
+  const selectDefenderGameHero = (hero: GameHero | null) => {
+    setDefenderHero((prev) => ({ heroId: hero?.id ?? null, level: prev.level }));
+    if (hero) patchDefender({ heroAttack: hero.stats.attack, heroDefense: hero.stats.defense });
+  };
+
+  const setAttackerHeroLevel = (level: number) => {
+    setAttackerHero((prev) => ({ ...prev, level }));
+  };
+
+  const setDefenderHeroLevel = (level: number) => {
+    setDefenderHero((prev) => ({ ...prev, level }));
+  };
+
   // Режим атаки принадлежит атакующему, поэтому после обмена он строится
   // заново по способностям нового атакующего, как при выборе юнита.
   // Списки пресетов к сторонам привязаны и не переезжают, поэтому выбор
@@ -226,6 +310,8 @@ export default function App() {
     setDefender(attacker);
     setAttackerUnitId(defenderUnitId);
     setDefenderUnitId(attackerUnitId);
+    setAttackerHero(defenderHero);
+    setDefenderHero(attackerHero);
     selectMode(attackModesFor(nextAttackerUnit, lang)[0], nextAttackerUnit);
     setPresetSel(EMPTY_SELECTION);
   };
@@ -247,10 +333,13 @@ export default function App() {
     setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: saved.id }));
   };
 
-  // Выбор пресета героя применяет только его статы; первый отряд
-  // автоматически не применяется — это отдельный клик по списку.
+  // Выбор пресета героя применяет его статы и игрового героя; первый
+  // отряд автоматически не применяется — это отдельный клик по списку.
   const selectAttackerHeroPreset = (preset: HeroPreset | null) => {
-    if (preset) patchAttacker({ heroAttack: preset.heroAttack, heroDefense: preset.heroDefense });
+    if (preset) {
+      patchAttacker({ heroAttack: preset.heroAttack, heroDefense: preset.heroDefense });
+      setAttackerHero(preset.hero);
+    }
     setPresetSel((sel) => ({
       ...sel,
       attackerHeroId: preset?.id ?? null,
@@ -259,7 +348,10 @@ export default function App() {
   };
 
   const selectDefenderHeroPreset = (preset: HeroPreset | null) => {
-    if (preset) patchDefender({ heroAttack: preset.heroAttack, heroDefense: preset.heroDefense });
+    if (preset) {
+      patchDefender({ heroAttack: preset.heroAttack, heroDefense: preset.heroDefense });
+      setDefenderHero(preset.hero);
+    }
     setPresetSel((sel) => ({
       ...sel,
       defenderHeroId: preset?.id ?? null,
@@ -268,7 +360,7 @@ export default function App() {
   };
 
   const createAttackerHeroPreset = () => {
-    const preset = createHeroPreset(attacker, attackerUnitId, lang);
+    const preset = createHeroPreset(attacker, attackerUnitId, lang, attackerHero);
     setPresets((prev) => ({ ...prev, attacker: addHero(prev.attacker, preset) }));
     setPresetSel((sel) => ({
       ...sel,
@@ -278,7 +370,7 @@ export default function App() {
   };
 
   const createDefenderHeroPreset = () => {
-    const preset = createHeroPreset(defender, defenderUnitId, lang);
+    const preset = createHeroPreset(defender, defenderUnitId, lang, defenderHero);
     setPresets((prev) => ({ ...prev, defender: addHero(prev.defender, preset) }));
     setPresetSel((sel) => ({
       ...sel,
@@ -295,6 +387,7 @@ export default function App() {
       attacker: patchHero(prev.attacker, heroId, {
         heroAttack: attacker.heroAttack,
         heroDefense: attacker.heroDefense,
+        hero: attackerHero,
       }),
     }));
   };
@@ -307,6 +400,7 @@ export default function App() {
       defender: patchHero(prev.defender, heroId, {
         heroAttack: defender.heroAttack,
         heroDefense: defender.heroDefense,
+        hero: defenderHero,
       }),
     }));
   };
@@ -429,11 +523,13 @@ export default function App() {
   const attackerHeroDirty =
     attackerHeroPreset !== null &&
     (attackerHeroPreset.heroAttack !== attacker.heroAttack ||
-      attackerHeroPreset.heroDefense !== attacker.heroDefense);
+      attackerHeroPreset.heroDefense !== attacker.heroDefense ||
+      !sameHeroPick(attackerHeroPreset.hero, attackerHero));
   const defenderHeroDirty =
     defenderHeroPreset !== null &&
     (defenderHeroPreset.heroAttack !== defender.heroAttack ||
-      defenderHeroPreset.heroDefense !== defender.heroDefense);
+      defenderHeroPreset.heroDefense !== defender.heroDefense ||
+      !sameHeroPick(defenderHeroPreset.hero, defenderHero));
   const attackerUnitDirty =
     attackerSavedUnit !== null &&
     (attackerSavedUnit.unitId !== attackerUnitId ||
@@ -443,53 +539,133 @@ export default function App() {
     (defenderSavedUnit.unitId !== defenderUnitId ||
       !sameSnapshot(defenderSavedUnit.stats, snapshotOf(defender)));
 
+  const attBonus = useMemo(
+    () =>
+      heroBonuses(
+        {
+          hero: attackerGameHero,
+          level: attackerHero.level,
+          unit: attackerUnit,
+          enemyUnit: defenderUnit,
+          heroAttack: attacker.heroAttack,
+          heroDefense: attacker.heroDefense,
+          mode,
+          side: 'attacker',
+        },
+        lang,
+      ),
+    [attackerGameHero, attackerHero.level, attackerUnit, defenderUnit, attacker, mode, lang],
+  );
+  const defBonus = useMemo(
+    () =>
+      heroBonuses(
+        {
+          hero: defenderGameHero,
+          level: defenderHero.level,
+          unit: defenderUnit,
+          enemyUnit: attackerUnit,
+          heroAttack: defender.heroAttack,
+          heroDefense: defender.heroDefense,
+          mode,
+          side: 'defender',
+        },
+        lang,
+      ),
+    [defenderGameHero, defenderHero.level, defenderUnit, attackerUnit, defender, mode, lang],
+  );
+
+  // Бонусы героев складываются с полями формы в момент расчёта и не
+  // перезаписывают введённые вручную значения: свои — в атаку/защиту
+  // героя, штрафы специализаций противника — в статы юнита (формула сама
+  // ограничивает их нулём снизу).
+  const effectiveAttacker = useMemo(
+    () => ({
+      ...attacker,
+      attack: attacker.attack + defBonus.enemyAttack,
+      defense: attacker.defense + defBonus.enemyDefense,
+      heroAttack: attacker.heroAttack + attBonus.attack,
+      heroDefense: attacker.heroDefense + attBonus.defense,
+    }),
+    [attacker, attBonus, defBonus],
+  );
+  const effectiveDefender = useMemo(
+    () => ({
+      ...defender,
+      attack: defender.attack + attBonus.enemyAttack,
+      defense: defender.defense + attBonus.enemyDefense,
+      heroAttack: defender.heroAttack + defBonus.attack,
+      heroDefense: defender.heroDefense + defBonus.defense,
+    }),
+    [defender, attBonus, defBonus],
+  );
+
   const result = useMemo(
     () =>
       calculateDamage(
         {
-          attacker,
+          attacker: effectiveAttacker,
           abilities: {
             ...attack,
-            typeModifiers: attack.typeModifiers + (mode.special ? 0 : (reduction?.percent ?? 0)),
+            // Процентные бонусы героев уже занулены внутри heroBonuses
+            // для способностей с собственным уроном.
+            typeModifiers:
+              attack.typeModifiers +
+              (mode.special ? 0 : (reduction?.percent ?? 0)) +
+              attBonus.typeModifiers +
+              defBonus.typeModifiers,
             rangePenalty: mode.rangePenalty,
             modeMultiplier: mode.multiplier,
             doubleStrike,
           },
-          defender,
+          defender: effectiveDefender,
         },
         lang,
       ),
-    [attacker, attack, defender, mode, doubleStrike, reduction, lang],
+    [effectiveAttacker, attack, effectiveDefender, mode, doubleStrike, reduction, attBonus, defBonus, lang],
   );
 
   // Способности с собственным уроном считаются отдельной формулой.
   const special = mode.special;
-  const specialResult = useMemo(
-    () =>
-      special
-        ? calculateAbilityDamage(
-            {
-              count: attacker.count,
-              damageMin: attacker.damageMin,
-              damageMax: attacker.damageMax,
-              factor: special.factor,
-              attackModifier: special.ignoreDefense
-                ? (20 + Math.max(0, attacker.attack) + Math.max(0, attacker.heroAttack)) / 20
-                : 1,
-              base: special.base,
-              perUnit: special.perUnit,
-              reduction: reduction?.percent,
-              defender: {
-                count: defender.count,
-                health: defender.health,
-                topHealth: defender.topHealth,
-              },
-            },
-            lang,
-          )
-        : null,
-    [special, attacker, defender, reduction, lang],
-  );
+  const specialResult = useMemo(() => {
+    if (!special) return null;
+    const result = calculateAbilityDamage(
+      {
+        count: effectiveAttacker.count,
+        damageMin: effectiveAttacker.damageMin,
+        damageMax: effectiveAttacker.damageMax,
+        factor: special.factor,
+        attack: special.ignoreDefense
+          ? { unit: effectiveAttacker.attack, hero: effectiveAttacker.heroAttack }
+          : undefined,
+        base: special.base,
+        perUnit: special.perUnit,
+        // «Сопротивление» героя защитника складывается с защитой
+        // цели от магии; на чистый урон оба не действуют.
+        reduction: (reduction?.percent ?? 0) + defBonus.magicReduction || undefined,
+        defender: {
+          count: defender.count,
+          health: defender.health,
+          topHealth: defender.topHealth,
+        },
+      },
+      lang,
+    );
+    // У удара героя вместо «фиксированного урона» — его собственная
+    // формула с подставленными уровнем и бонусом специализации.
+    return mode.id === HERO_STRIKE_MODE_ID && attackerGameHero
+      ? { ...result, steps: heroStrikeSteps(attackerGameHero, attackerHero.level, lang) }
+      : result;
+  }, [
+    special,
+    mode.id,
+    attackerGameHero,
+    attackerHero.level,
+    effectiveAttacker,
+    defender,
+    reduction,
+    defBonus,
+    lang,
+  ]);
 
   return (
     <main>
@@ -540,6 +716,14 @@ export default function App() {
           />
           <div className="group">
             <div className="group-title">{t('app.hero')}</div>
+            <HeroPicker
+              idPrefix="attacker"
+              selectedId={attackerHero.heroId}
+              level={attackerHero.level}
+              notes={attBonus.notes}
+              onSelect={selectAttackerGameHero}
+              onLevelChange={setAttackerHeroLevel}
+            />
             <NumberField
               id="attacker-hero-attack"
               label={t('fields.heroAttack')}
@@ -710,6 +894,14 @@ export default function App() {
           />
           <div className="group">
             <div className="group-title">{t('app.hero')}</div>
+            <HeroPicker
+              idPrefix="defender"
+              selectedId={defenderHero.heroId}
+              level={defenderHero.level}
+              notes={defBonus.notes}
+              onSelect={selectDefenderGameHero}
+              onLevelChange={setDefenderHeroLevel}
+            />
             <NumberField
               id="defender-hero-attack"
               label={t('fields.heroAttack')}

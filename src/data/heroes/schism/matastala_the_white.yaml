@@ -1,0 +1,30 @@
+id: matastala_the_white
+name: "Матастала Белая"
+nameEn: "Matastala the White"
+faction: schism
+class: "Хранитель клятв"
+classEn: "Oathkeeper"
+image: heroes/schism/matastala_the_white.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: tactics
+  name: "Тактика"
+  nameEn: "Tactics"
+  description: "Шахматист — На фазе тактики имеет +1 гекс к радиусу и видит позиции нейтральных армий. Существа в её армии получают +1 к инициативе за каждые 6 уровней героя."
+  descriptionEn: "Chessmaster - In the Tactical Phase, has +1 hex to the radius and can see the positions of neutral armies. Creatures in her army gain 1 Initiative for every 6 hero levels."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_tactics
+    name: "Основы тактики"
+    nameEn: "Basic Tactics"
+    description: "Увеличивает область расстановки в тактической фазе до 3 рядов. Если противник тоже владеет «Тактикой», его область снижается на 1 ряд(а)."
+    descriptionEn: "In the Tactics Phase, creatures can be placed within a 3‑line area. If the enemy also knows “Tactics”, their area of placement reduces by 1 line(s)."
+source: https://www.olden-era.com/ru/heroes/matastala_the_white

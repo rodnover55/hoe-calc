@@ -1,0 +1,30 @@
+id: milossa_the_golden
+name: "Милосса Золотая"
+nameEn: "Milossa The Golden"
+faction: necropolis
+class: "Некромант"
+classEn: "Necromancer"
+image: heroes/necropolis/milossa_the_golden.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 2
+  knowledge: 4
+specialization:
+  id: gold
+  name: "Золото"
+  nameEn: "Gold"
+  description: "Богатство — Производит 500 золота в день, +100 за каждый уровень героя. Увеличивает количество золота, найденного на карте, на 50%."
+  descriptionEn: "Wealthy - Produces 500 Gold per day, +100 more for every 1 hero levels. Increases the amount of Gold found on the map by 50%."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_battle_magic
+    name: "Основы боевой магии"
+    nameEn: "Basic Battle Magic"
+    description: "Атака и защита дружественных существ повышаются на 15% от силы магии и знаний героя соответственно."
+    descriptionEn: "Friendly creatures’ Attack and Defense increase by 15% of the hero’s Spell Power and Knowledge respectively."
+source: https://www.olden-era.com/ru/heroes/milossa_the_golden

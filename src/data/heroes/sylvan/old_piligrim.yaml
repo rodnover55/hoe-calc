@@ -1,0 +1,30 @@
+id: old_piligrim
+name: "Старый пилигрим"
+nameEn: "Old Piligrim"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/old_piligrim.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: natural_selection
+  name: "Естественный отбор"
+  nameEn: "Natural Selection"
+  description: "Владеет заклинанием «Искусная гильотина». Эта версия заклинания вдвое быстрее повышает урон, когда бьёт в одну цель. На время использования этого заклинания герой получает +1 к силе магии за уровни героя: каждые 2."
+  descriptionEn: "He starts with the \"Masterful Guillotine\" spell. This version of the spell deals damage that increases twice as fast when cast on the same target. While casting this spell, effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_battle_magic
+    name: "Основы боевой магии"
+    nameEn: "Basic Battle Magic"
+    description: "Атака и защита дружественных существ повышаются на 15% от силы магии и знаний героя соответственно."
+    descriptionEn: "Friendly creatures’ Attack and Defense increase by 15% of the hero’s Spell Power and Knowledge respectively."
+source: https://www.olden-era.com/ru/heroes/old_piligrim

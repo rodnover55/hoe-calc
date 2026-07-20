@@ -1,0 +1,30 @@
+id: khariseth
+name: "Харисет"
+nameEn: "Khariseth"
+faction: hive
+class: "Herald"
+classEn: "Herald"
+image: heroes/hive/khariseth.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 4
+  knowledge: 2
+specialization:
+  id: primal_weaving
+  name: "Первородная материя"
+  nameEn: "Primal Weaving"
+  description: "Получает дополнительные уровни ко всем первородным заклинаниям: +1 и ещё +1 за уровни героя: каждые 10. Использование первородных заклинаний не блокирует другие заклинания этой школы. Герой противника не может применять первородные заклинания."
+  descriptionEn: "They receive +1 level to all Primal spells, plus another +1 for every 10 hero levels. Casting Primal spells does not prevent them from using other spells of the same Magic School. Enemy hero cannot cast Primal spells."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_primal_magic
+    name: "Основы первородной магии"
+    nameEn: "Basic Primal Magic"
+    description: "Герой может изучать первородные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Primal spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/khariseth

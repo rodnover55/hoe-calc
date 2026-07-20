@@ -1,0 +1,30 @@
+id: laura
+name: "Лаура"
+nameEn: "Laura"
+faction: necropolis
+class: "Некромант"
+classEn: "Necromancer"
+image: heroes/necropolis/laura.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 2
+  knowledge: 4
+specialization:
+  id: despair
+  name: "Отчаяние"
+  nameEn: "Despair"
+  description: "Плесневеющий — Начинает с заклинания «Мастерское отчаяние». Эта версия заклинания наносит +100% урона. При произнесении заклинания эффективная сила магии увеличивается на 1 за каждые 2 уровня героя."
+  descriptionEn: "Mouldering - Starts with the “Masterful Despair” spell. This version of the spell deals +100% Damage. While casting this spell, effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_sorcery
+    name: "Основы волшебства"
+    nameEn: "Basic Sorcery"
+    description: "+10% магического урона."
+    descriptionEn: "+10% Magic Damage dealt."
+source: https://www.olden-era.com/ru/heroes/laura

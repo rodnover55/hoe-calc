@@ -1,0 +1,25 @@
+id: tarius
+name: "Тариус"
+nameEn: "Tarius"
+faction: necropolis
+class: "Рыцарь смерти"
+classEn: "Death Knight"
+image: heroes/necropolis/tarius.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: necromancy
+  name: "Некромантия"
+  nameEn: "Necromancy"
+  description: "Легион нежити — Имеет +5% к силе некромантии, плюс 2% за каждые 4 уровня героя."
+  descriptionEn: "Undead Legion - Has +5% Necromancy Power, plus 2% more for every 4 hero levels."
+skills:
+  - id: advanced_necromancy
+    name: "Продвинутая некромантия"
+    nameEn: "Advanced Necromancy"
+    description: "После победы в бою обращает 15% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 4000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 15% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 4000 and refills each week."
+source: https://www.olden-era.com/ru/heroes/tarius

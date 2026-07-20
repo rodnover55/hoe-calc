@@ -1,0 +1,30 @@
+id: the_minstrel
+name: "Менестрель"
+nameEn: "The Minstrel"
+faction: sylvan
+class: "Druid"
+classEn: "Druid"
+image: heroes/sylvan/the_minstrel.webp
+stats:
+  attack: 1
+  defense: 2
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: wandering_musician
+  name: "Бродячий музыкант"
+  nameEn: "Wandering Musician"
+  description: "В начале каждого раунда в бою генерирует дополнительные очки концентрации (+2) и ещё +1 за уровни героя: каждые 3. Противник теряет столько же очков концентрации."
+  descriptionEn: "At the beginning of each round, he generates +2 Focus Points, plus an additional +1 for every 3 hero levels. The enemy loses the same amount of Focus Points."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_sorcery
+    name: "Основы волшебства"
+    nameEn: "Basic Sorcery"
+    description: "+10% магического урона."
+    descriptionEn: "+10% Magic Damage dealt."
+source: https://www.olden-era.com/ru/heroes/the_minstrel

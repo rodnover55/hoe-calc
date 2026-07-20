@@ -1,0 +1,30 @@
+id: adahn
+name: "Адан"
+nameEn: "Adahn"
+faction: necropolis
+class: "Некромант"
+classEn: "Necromancer"
+image: heroes/necropolis/adahn.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 2
+  knowledge: 4
+specialization:
+  id: wight
+  name: "Вайт"
+  nameEn: "Wight"
+  description: "Амнезия — Прирост вайтов в ваших городах увеличивается на 2. Под его командованием вайты получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские теряют столько же."
+  descriptionEn: "Amnesiac - Wights growth in your cities increases by 2. Under his command, Wights gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Wights lose an equal amount of Attack and Defence."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_battlecraft
+    name: "Основы боевого порядка"
+    nameEn: "Basic Battlecraft"
+    description: "Ожидая в бою, дружественные существа получают +20% к атаке до конца раунда, а пропуская ход — +20% к защите."
+    descriptionEn: "When a friendly creature waits on their turn, they gain +20% Attack until the end of the round. When they skip turn, they gain +20% Defense until the end of the round."
+source: https://www.olden-era.com/ru/heroes/adahn

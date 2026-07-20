@@ -10,6 +10,9 @@
  */
 
 import type { AttackerStats } from './formula';
+import type { HeroPick } from './heroEffects';
+import { EMPTY_HERO_PICK } from './heroEffects';
+import { HEROES_BY_ID, heroName } from './heroes';
 import type { Lang } from './i18n';
 import { translate } from './i18n';
 import { UNITS_BY_ID, unitName } from './units';
@@ -43,10 +46,12 @@ export interface SavedUnit {
 export interface HeroPreset {
   /** Runtime-id: React-ключ и адрес CRUD; в ссылку не пишется */
   id: string;
-  /** Автоимя по первому отряду; пользователь может переименовать */
+  /** Автоимя по игровому герою или первому отряду; переименовывается */
   name: string;
   heroAttack: number;
   heroDefense: number;
+  /** Выбранный игровой герой с уровнем и уроном удара */
+  hero: HeroPick;
   units: SavedUnit[];
 }
 
@@ -108,16 +113,29 @@ export const createSavedUnit = (
   stats: snapshotOf(stats),
 });
 
+/** Имя пресета: имя игрового героя, без него — автоимя по отряду */
+const defaultHeroPresetName = (
+  hero: HeroPick,
+  unitId: string | null,
+  count: number,
+  lang: Lang,
+): string => {
+  const gameHero = hero.heroId ? HEROES_BY_ID.get(hero.heroId) : undefined;
+  return gameHero ? heroName(gameHero, lang) : defaultUnitName(unitId, count, lang);
+};
+
 /** Пресет героя из текущего состояния; текущий отряд становится первым */
 export const createHeroPreset = (
   stats: AttackerStats,
   unitId: string | null,
   lang: Lang = 'ru',
+  hero: HeroPick = EMPTY_HERO_PICK,
 ): HeroPreset => ({
   id: newId(),
-  name: defaultUnitName(unitId, stats.count, lang),
+  name: defaultHeroPresetName(hero, unitId, stats.count, lang),
   heroAttack: stats.heroAttack,
   heroDefense: stats.heroDefense,
+  hero,
   units: [createSavedUnit(stats, unitId, lang)],
 });
 

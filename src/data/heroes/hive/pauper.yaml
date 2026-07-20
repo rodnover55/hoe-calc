@@ -1,0 +1,30 @@
+id: pauper
+name: "Нищенка"
+nameEn: "Pauper"
+faction: hive
+class: "Enforcer"
+classEn: "Enforcer"
+image: heroes/hive/pauper.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 4
+  knowledge: 2
+specialization:
+  id: flea_bites
+  name: "Кусачие блохи"
+  nameEn: "Flea Bites"
+  description: "Даёт +1 к скорости всех дружественных существ и ещё +1 за уровни героя: каждые 8."
+  descriptionEn: "Friendly creatures have +1 Speed, plus an additional 1 for every 8 hero level(s)."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_battlecraft
+    name: "Основы боевого порядка"
+    nameEn: "Basic Battlecraft"
+    description: "Ожидая в бою, дружественные существа получают +20% к атаке до конца раунда, а пропуская ход — +20% к защите."
+    descriptionEn: "When a friendly creature waits on their turn, they gain +20% Attack until the end of the round. When they skip turn, they gain +20% Defense until the end of the round."
+source: https://www.olden-era.com/ru/heroes/pauper

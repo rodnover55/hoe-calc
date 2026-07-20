@@ -1,0 +1,30 @@
+id: vesper
+name: "Веспер"
+nameEn: "Vesper"
+faction: temple
+class: "Клирик"
+classEn: "Cleric"
+image: heroes/temple/vesper.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: blessing
+  name: "Благословение"
+  nameEn: "Blessing"
+  description: "Благословение — Начинает с заклинания «Мастерское благословение». Эта версия заклинания заставляет цель всегда наносить максимальный урон. При произнесении заклинания эффективная сила магии увеличивается на 1 за каждые 2 уровня героя."
+  descriptionEn: "Blessing - Starts with the “Masterful Blessing” spell. This version of the spell makes the target always deal maximum Damage. While casting this spell, effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_daylight_magic
+    name: "Basic Daylight Magic"
+    nameEn: "Basic Daylight Magic"
+    description: "The hero can learn Daylight spells up to tier 5."
+    descriptionEn: "The hero can learn Daylight spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/vesper

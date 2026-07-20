@@ -1,0 +1,30 @@
+id: ulkuth
+name: "Улкут"
+nameEn: "Ulkuth"
+faction: schism
+class: "Говорящий с разломами"
+classEn: "Riftspeaker"
+image: heroes/schism/ulkuth.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 3
+  knowledge: 2
+specialization:
+  id: scouting
+  name: "Разведка"
+  nameEn: "Scouting"
+  description: "Следопыт — Не имеет штрафов за местность. Также имеет +1 к радиусу обзора, плюс 1 за каждые 5 уровней героя."
+  descriptionEn: "Pathfinder - Has no terrain penalties. Also has +1 Sight Radius, plus 1 more for every 5 hero levels."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_scouting
+    name: "Основы разведки"
+    nameEn: "Basic Scouting"
+    description: "Герой получает +1 к радиусу обзора."
+    descriptionEn: "The hero gains 1 sight radius."
+source: https://www.olden-era.com/ru/heroes/ulkuth

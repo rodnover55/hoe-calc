@@ -1,0 +1,30 @@
+id: blackhorn
+name: "Блэкхорн"
+nameEn: "Blackhorn"
+faction: schism
+class: "Хранитель клятв"
+classEn: "Oathkeeper"
+image: heroes/schism/blackhorn.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: sorcery
+  name: "Колдовство"
+  nameEn: "Sorcery"
+  description: "Ткач заклинаний — Наносит +15% урона заклинаниями, плюс 5% за каждые 3 уровня героя. Урон от заклинаний вражеского героя уменьшается на ту же величину."
+  descriptionEn: "Spellweaver - Deals +15% Damage with spells, plus 5% more for every 3 hero levels. The Damage from the enemy hero’s spells is reduced by the same value."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_sorcery
+    name: "Основы волшебства"
+    nameEn: "Basic Sorcery"
+    description: "+10% магического урона."
+    descriptionEn: "+10% Magic Damage dealt."
+source: https://www.olden-era.com/ru/heroes/blackhorn

@@ -1,0 +1,30 @@
+id: zenith
+name: "Зенит"
+nameEn: "Zenith"
+faction: temple
+class: "Клирик"
+classEn: "Cleric"
+image: heroes/temple/zenith.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: lightweavers
+  name: "Ткачи света"
+  nameEn: "Lightweavers"
+  description: "Плетение света — Прирост ткачей света в ваших городах увеличивается на 1. Под её командованием ткачи света получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские теряют столько же."
+  descriptionEn: "Weaving the Light - Lightweavers growth in your cities increases by 1. Under her command, Lightweavers gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Lightweavers lose an equal amount of Attack and Defence."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_summon_avatar
+    name: "Основы призыва аватара"
+    nameEn: "Basic Summon Avatar"
+    description: "Новое боевое заклинание: призывает на поле боя аватара, способного пережить любой урон три раза. Он не получает бонусов от атаки и защиты героя, но получает +1 к атаке и +6 к урону за каждую единицу силы магии героя."
+    descriptionEn: "Grants a new battle spell. It summons an Avatar that is destroyed upon taking three hits from any source. While it does not gain any bonuses from the hero’s Attack and Defense, it gains +1 Attack and deals +6 Damage for each point of the hero’s Spell Power."
+source: https://www.olden-era.com/ru/heroes/zenith

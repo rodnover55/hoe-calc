@@ -9,6 +9,13 @@
   --danger: #a04545;
   --success: #3f7d46;
   --radius: 8px;
+  --formula-1: #185fa5;
+  --formula-2: #3f7d46;
+  --formula-3: #a04545;
+  --formula-4: #7a4a9e;
+  --formula-5: #0f766e;
+  --formula-6: #8a5a12;
+  --formula-7: #a03e7c;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +29,13 @@
     --accent: #85b7eb;
     --danger: #d99090;
     --success: #96c49b;
+    --formula-1: #85b7eb;
+    --formula-2: #96c49b;
+    --formula-3: #d99090;
+    --formula-4: #c5a3e8;
+    --formula-5: #7ecec6;
+    --formula-6: #d9b36a;
+    --formula-7: #e39fc9;
   }
 }
 

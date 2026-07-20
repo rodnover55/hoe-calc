@@ -1,0 +1,30 @@
+id: kel_ghul
+name: "Кел'Гул"
+nameEn: "Kel'Ghul"
+faction: necropolis
+class: "Рыцарь смерти"
+classEn: "Death Knight"
+image: heroes/necropolis/kel_ghul.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: dread_knights
+  name: "Рыцари ужаса"
+  nameEn: "Dread Knights"
+  description: "Ужасная война — Прирост рыцарей ужаса в ваших городах увеличивается на 2. Под его командованием рыцари ужаса получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские теряют столько же."
+  descriptionEn: "Dreadful War - Dread Knights growth in your cities increases by 2. Under his command, Dread Knights gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Dread Knights lose an equal amount of Attack and Defence."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_tactics
+    name: "Основы тактики"
+    nameEn: "Basic Tactics"
+    description: "Увеличивает область расстановки в тактической фазе до 3 рядов. Если противник тоже владеет «Тактикой», его область снижается на 1 ряд(а)."
+    descriptionEn: "In the Tactics Phase, creatures can be placed within a 3‑line area. If the enemy also knows “Tactics”, their area of placement reduces by 1 line(s)."
+source: https://www.olden-era.com/ru/heroes/kel_ghul

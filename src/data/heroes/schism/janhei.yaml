@@ -1,0 +1,30 @@
+id: janhei
+name: "Янхей"
+nameEn: "Jänhei"
+faction: schism
+class: "Хранитель клятв"
+classEn: "Oathkeeper"
+image: heroes/schism/janhei.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: cultists
+  name: "Культисты"
+  nameEn: "Cultists"
+  description: "Разбойничий — Прирост культистов в ваших городах увеличивается на 1. Под его командованием культисты получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские теряют столько же."
+  descriptionEn: "Rogueish - Cultists growth in your cities increases by 1. Under his command, Cultists gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Cultists lose an equal amount of Attack and Defence."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_battlecraft
+    name: "Основы боевого порядка"
+    nameEn: "Basic Battlecraft"
+    description: "Ожидая в бою, дружественные существа получают +20% к атаке до конца раунда, а пропуская ход — +20% к защите."
+    descriptionEn: "When a friendly creature waits on their turn, they gain +20% Attack until the end of the round. When they skip turn, they gain +20% Defense until the end of the round."
+source: https://www.olden-era.com/ru/heroes/janhei

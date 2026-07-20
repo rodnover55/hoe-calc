@@ -1,0 +1,25 @@
+id: faleor
+name: "Фалеор"
+nameEn: "Faleor"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/faleor.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: hksmilla_s_step
+  name: "След Кшмильи"
+  nameEn: "Hksmilla’s Step"
+  description: "Владеет заклинанием «Искусный огненный шар». Эта версия заклинания поражает большую площадь. На время использования этого заклинания герой получает +1 к силе магии за уровни героя: каждые 2."
+  descriptionEn: "He starts with the \"Masterful Fireball\" spell. This version of the spell hits a larger area. While casting this spell, effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: advanced_murmuring
+    name: "Продвинутый шёпот стихий"
+    nameEn: "Advanced Murmuring"
+    description: "Генерирует заряды концентрации в начале боя: 2."
+    descriptionEn: "Generates 2 Focus Charge(s) at the start of every battle."
+source: https://www.olden-era.com/ru/heroes/faleor

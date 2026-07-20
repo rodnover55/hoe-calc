@@ -1,0 +1,30 @@
+id: walkha
+name: "Валкха"
+nameEn: "Walkha"
+faction: schism
+class: "Хранитель клятв"
+classEn: "Oathkeeper"
+image: heroes/schism/walkha.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: primal_magic
+  name: "Изначальная магия"
+  nameEn: "Primal Magic"
+  description: "Изначальное плетение — Получает +1 уровень ко всем изначальным заклинаниям, плюс 1 за каждые 10 уровней героя, и может использовать их в бою без ограничений. Вражеский герой не может произносить изначальные заклинания."
+  descriptionEn: "Primal Weaving - Receives +1 level to all Primal spells, plus 1 more for every 10 hero levels and can use it in battle without limits. Enemy hero cannot cast Primal spells."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_primal_magic
+    name: "Основы первородной магии"
+    nameEn: "Basic Primal Magic"
+    description: "Герой может изучать первородные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Primal spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/walkha

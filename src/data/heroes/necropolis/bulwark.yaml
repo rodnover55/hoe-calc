@@ -1,0 +1,30 @@
+id: bulwark
+name: "Бульварк"
+nameEn: "Bulwark"
+faction: necropolis
+class: "Рыцарь смерти"
+classEn: "Death Knight"
+image: heroes/necropolis/bulwark.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: defence
+  name: "Защита"
+  nameEn: "Defence"
+  description: "Сотворён иначе — Существа в его армии получают –10% урона от обычных атак, и –1% дополнительно за каждые 4 уровня героя. Кроме того, за каждые 2 уровня существа в армии получают –1% урона от дальних и дальнобойных атак."
+  descriptionEn: "Built Different - Creatures in his army take –10% basic attack Damage, and –1% additionally for every 2 hero levels. Additionally, for every 4 hero levels, creatures in the army take –1% Damage from Ranged and Long Reach attacks."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_defence
+    name: "Основы обороны"
+    nameEn: "Basic Defense"
+    description: "Дружественные существа получают –10% урона от обычных атак."
+    descriptionEn: "Friendly creatures take –10% Damage from basic attacks."
+source: https://www.olden-era.com/ru/heroes/bulwark

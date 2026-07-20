@@ -1,0 +1,30 @@
+id: nadir
+name: "Надир"
+nameEn: "Nadir"
+faction: temple
+class: "Клирик"
+classEn: "Cleric"
+image: heroes/temple/nadir.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: vulnerability
+  name: "Уязвимость"
+  nameEn: "Vulnerability"
+  description: "Владеет заклинанием «Искусная уязвимость». Эффект этой версии заклинания может суммироваться. На время использования этого заклинания герой получает +1 к силе магии за уровни героя: каждые 2."
+  descriptionEn: "He starts with the “Masterful Vulnerability” spell. The effect of this version of the spell is stackable. While casting this spell, effective Spell Power is increased by 1 for every 2 hero level(s)."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_nightshade_magic
+    name: "Основы магии ночи"
+    nameEn: "Basic Nightshade Magic"
+    description: "Герой может изучать заклинания ночи 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Nightshade spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/nadir

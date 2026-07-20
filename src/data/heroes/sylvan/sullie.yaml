@@ -1,0 +1,30 @@
+id: sullie
+name: "Сулли"
+nameEn: "Sullie"
+faction: sylvan
+class: "Druid"
+classEn: "Druid"
+image: heroes/sylvan/sullie.webp
+stats:
+  attack: 1
+  defense: 2
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: murmurwood_native
+  name: "Рождённая среди шёпотов"
+  nameEn: "Murmurwood Native"
+  description: "Призываемый ею аватар неуязвим для магического урона. При расчёте его характеристик учитывается +1 силы магии героя за уровни героя: каждые 2."
+  descriptionEn: "Her summoned Avatar is immune to Magic Damage. When casting Summon Avatar, its effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_summon_avatar
+    name: "Основы призыва аватара"
+    nameEn: "Basic Summon Avatar"
+    description: "Новое боевое заклинание: призывает на поле боя аватара, способного пережить любой урон три раза. Он не получает бонусов от атаки и защиты героя, но получает +1 к атаке и +6 к урону за каждую единицу силы магии героя."
+    descriptionEn: "Grants a new battle spell. It summons an Avatar that is destroyed upon taking three hits from any source. While it does not gain any bonuses from the hero’s Attack and Defense, it gains +1 Attack and deals +6 Damage for each point of the hero’s Spell Power."
+source: https://www.olden-era.com/ru/heroes/sullie

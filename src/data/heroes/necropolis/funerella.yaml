@@ -1,0 +1,30 @@
+id: funerella
+name: "Фунерелла"
+nameEn: "Funerella"
+faction: necropolis
+class: "Некромант"
+classEn: "Necromancer"
+image: heroes/necropolis/funerella.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 2
+  knowledge: 4
+specialization:
+  id: necromancy
+  name: "Некромантия"
+  nameEn: "Necromancy"
+  description: "Легион нежити — Имеет +5% к силе некромантии, плюс 2% за каждые 4 уровня героя."
+  descriptionEn: "Undead Legion - Has +5% Necromancy Power, plus 2% more for every 4 hero levels."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_summon_avatar
+    name: "Основы призыва аватара"
+    nameEn: "Basic Summon Avatar"
+    description: "Новое боевое заклинание: призывает на поле боя аватара, способного пережить любой урон три раза. Он не получает бонусов от атаки и защиты героя, но получает +1 к атаке и +6 к урону за каждую единицу силы магии героя."
+    descriptionEn: "Grants a new battle spell. It summons an Avatar that is destroyed upon taking three hits from any source. While it does not gain any bonuses from the hero’s Attack and Defense, it gains +1 Attack and deals +6 Damage for each point of the hero’s Spell Power."
+source: https://www.olden-era.com/ru/heroes/funerella

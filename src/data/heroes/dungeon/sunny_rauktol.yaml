@@ -1,0 +1,30 @@
+id: sunny_rauktol
+name: "Санни Рауктол"
+nameEn: "Sunny Rauktol"
+faction: dungeon
+class: "Чернокнижник"
+classEn: "Warlock"
+image: heroes/dungeon/sunny_rauktol.webp
+stats:
+  attack: 0
+  defense: 2
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: daylight_magic
+  name: "Магия дневного света"
+  nameEn: "Daylight Magic"
+  description: "Излучающие знания — Получает +1 уровень ко всем заклинаниям дневного света, плюс 1 за каждые 10 уровней героя, и может использовать их в бою без ограничений. Вражеский герой не может произносить заклинания дневного света."
+  descriptionEn: "Radiating Knowledge - Receives +1 level to all Daylight spells, plus 1 more for every 10 hero levels, and can use them in battle without limits. Enemy hero cannot cast Daylight spells."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_daylight_magic
+    name: "Basic Daylight Magic"
+    nameEn: "Basic Daylight Magic"
+    description: "The hero can learn Daylight spells up to tier 5."
+    descriptionEn: "The hero can learn Daylight spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/sunny_rauktol

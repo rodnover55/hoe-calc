@@ -1,0 +1,30 @@
+id: octavia
+name: "Октавия"
+nameEn: "Octavia"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/octavia.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: four_leaf_horseshoe
+  name: "Четырёхлистная подкова"
+  nameEn: "Four‑Leaf Horseshoe"
+  description: "Получает +1 к удаче и +3% к вероятности удачного удара за каждую единицу удачи. Этот бонус повышается на 1% за уровни героя: каждые 4."
+  descriptionEn: "She has +1 Luck. Creatures under her command have an increased chance of triggering a Lucky Strike: +3% chance per Luck point. For every 4 hero levels, this bonus increases by an additional 1%."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_luck
+    name: "Основы удачи"
+    nameEn: "Basic Luck"
+    description: "Герой получает +1 к удаче."
+    descriptionEn: "The hero gains 1 Luck."
+source: https://www.olden-era.com/ru/heroes/octavia

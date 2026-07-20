@@ -1,0 +1,30 @@
+id: icequeen_hel_ghat
+name: "Ледяная королева Хел'Гат"
+nameEn: "Icequeen Hel'Ghat"
+faction: schism
+class: "Говорящий с разломами"
+classEn: "Riftspeaker"
+image: heroes/schism/icequeen_hel_ghat.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 3
+  knowledge: 2
+specialization:
+  id: defence
+  name: "Защита"
+  nameEn: "Defence"
+  description: "Сердце льда — Существа в её армии получают –10% урона от обычных атак, и –1% меньше за каждые 4 уровня героя. Кроме того, за каждые 4 уровня существа в армии получают –1% урона от атак в ближнем бою (ур.2 / 4 / 6 / 8 / 10 / 12 / 14)."
+  descriptionEn: "Heart of Ice - Creatures in her army take ­–10% basic attack Damage, and ­–1% less for every 4 hero levels. Additionally, for every 4 hero levels, creatures in the army take ­–1% Damage from Melee attacks (Lv.2 / 4 / 6 / 8 / 10 / 12 / 14)."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_defence
+    name: "Основы обороны"
+    nameEn: "Basic Defense"
+    description: "Дружественные существа получают –10% урона от обычных атак."
+    descriptionEn: "Friendly creatures take –10% Damage from basic attacks."
+source: https://www.olden-era.com/ru/heroes/icequeen_hel_ghat

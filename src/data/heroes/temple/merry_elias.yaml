@@ -1,0 +1,30 @@
+id: merry_elias
+name: "Весёлый Элиас"
+nameEn: "Merry Elias"
+faction: temple
+class: "Клирик"
+classEn: "Cleric"
+image: heroes/temple/merry_elias.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: global_map_spells
+  name: "Заклинания глобальной карты"
+  nameEn: "Global Map Spells"
+  description: "Духовная бодрость — +1 к лимиту заклинаний для каждого заклинания глобальной карты. Кроме того, его максимальная мана увеличивается на 20%, плюс 4% за каждые 5 уровней героя."
+  descriptionEn: "Spiritual Vigor - +1 spell cap for each Global Map spell. Additionally, his maximum mana increases by 20%, plus 5% more for every 4 hero levels."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_diplomacy
+    name: "Основы дипломатии"
+    nameEn: "Basic Diplomacy"
+    description: "Герой получает шанс убедить нейтральную армию присоединиться к нему за золото (не сражаясь с ней)."
+    descriptionEn: "Provides a chance of neutral squads offering to join the hero’s army for Gold instead of fighting them."
+source: https://www.olden-era.com/ru/heroes/merry_elias

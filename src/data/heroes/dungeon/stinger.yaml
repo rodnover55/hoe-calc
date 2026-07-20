@@ -1,0 +1,25 @@
+id: stinger
+name: "Стингер"
+nameEn: "Stinger"
+faction: dungeon
+class: "Владыка"
+classEn: "Overlord"
+image: heroes/dungeon/stinger.webp
+stats:
+  attack: 2
+  defense: 2
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: heroic_strike
+  name: "Героический удар"
+  nameEn: "Heroic Strike"
+  description: "Ядовитый удар — Её героический удар наносит +40 урона, плюс 5 за каждые 3 уровня героя. Кроме того, отравляет цель до конца следующего раунда, нанося [25 × (1 + уровень героя × 0.1)] магического урона."
+  descriptionEn: "Venomous Strike - Her Heroic Strike deals +40 Damage, plus 5 more for every 3 hero levels. Additionally, poisons the target until the end of the next round, dealing [25 × (1 ＋ hero's Level × 0.1)] Magic Damage."
+skills:
+  - id: advanced_triumvirates_strength
+    name: "Продвинутая сила Триумвирата"
+    nameEn: "Advanced Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +4 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +4 to the Stance’s corresponding attribute."
+source: https://www.olden-era.com/ru/heroes/stinger

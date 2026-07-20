@@ -1,0 +1,30 @@
+id: sister_deira
+name: "Сестра Дейра"
+nameEn: "Sister Deira"
+faction: dungeon
+class: "Чернокнижник"
+classEn: "Warlock"
+image: heroes/dungeon/sister_deira.webp
+stats:
+  attack: 0
+  defense: 2
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: arina_s_chosen
+  name: "Избранница Арины"
+  nameEn: "Arina's Chosen"
+  description: "Маска солнца — Начинает с заклинания «Мастерский избранник Арины». Эта версия заклинания даёт цели +1 очко действия. При произнесении заклинания эффективная сила магии увеличивается на 1 за каждые 2 уровня героя."
+  descriptionEn: "Mask of the Sun - Starts with the “Masterful Arina's Chosen” spell. This version of the spell gives the target +1 action point(s). While casting this spell, effective Spell Power is increased by 1 for every 2 hero levels."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_thaumaturgy
+    name: "Основы чародейства"
+    nameEn: "Basic Thaumaturgy"
+    description: "Герой может использовать книгу магии в бою ещё один раз, применяя при этом заклинание ещё неиспользованной школы магии. При каждом использовании стоимость заклинания повышается на 100%."
+    descriptionEn: "The hero can use the Spellbook one more time per battle round, but only to cast a spell of a Magic School that hasn’t been used this round. Spells cost +100% mana for each use after the first."
+source: https://www.olden-era.com/ru/heroes/sister_deira

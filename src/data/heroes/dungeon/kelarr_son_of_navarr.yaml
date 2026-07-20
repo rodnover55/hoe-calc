@@ -1,0 +1,30 @@
+id: kelarr_son_of_navarr
+name: "Келарр, сын Наварра"
+nameEn: "Kelarr, son of Navarr"
+faction: dungeon
+class: "Чернокнижник"
+classEn: "Warlock"
+image: heroes/dungeon/kelarr_son_of_navarr.webp
+stats:
+  attack: 0
+  defense: 2
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: experience
+  name: "Опыт"
+  nameEn: "Experience"
+  description: "Жажда знаний — Получает +25% опыта, плюс 5% за каждые 2 уровня героя. При получении уровня получает 1 дополнительный пункт атрибута за каждые 2 уровня героя."
+  descriptionEn: "Wish to Learn - Gains 25% XP, plus 5% for every 2 hero levels. When leveling up, gains 1 additional attribute point(s) for every 2 hero levels."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_insight
+    name: "Основы проницательности"
+    nameEn: "Basic Insight"
+    description: "Герой получает +20% опыта."
+    descriptionEn: "The hero gains +20% more XP."
+source: https://www.olden-era.com/ru/heroes/kelarr_son_of_navarr

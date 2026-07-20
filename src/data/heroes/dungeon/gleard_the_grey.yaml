@@ -1,0 +1,30 @@
+id: gleard_the_grey
+name: "Глеард Серый"
+nameEn: "Gleard the Grey"
+faction: dungeon
+class: "Владыка"
+classEn: "Overlord"
+image: heroes/dungeon/gleard_the_grey.webp
+stats:
+  attack: 2
+  defense: 2
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: arcane_magic
+  name: "Тайная магия"
+  nameEn: "Arcane Magic"
+  description: "Владычество тайной магии — Получает +1 уровень ко всем заклинаниям тайной магии, плюс 1 за каждые 10 уровней героя, и может использовать их в бою без ограничений. Вражеский герой не может произносить заклинания тайной магии."
+  descriptionEn: "Arcane Dominion - Receives +1 level to all Arcane spells, plus 1 more for every 10 hero levels and can use it in battle without limits. Enemy hero cannot cast Arcane spells."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_arcane_magic
+    name: "Основы арканной магии"
+    nameEn: "Basic Arcane Magic"
+    description: "Герой может изучать арканные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Arcane spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/gleard_the_grey

@@ -1,0 +1,30 @@
+id: mreowa
+name: "Мрява"
+nameEn: "Mreowa"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/mreowa.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: charming_shine
+  name: "Блеск кристаллов"
+  nameEn: "Charming Shine"
+  description: "Ежедневно приносит +1 кристаллов и ещё +1 за уровни героя: каждые 5. Повышает количество кристаллов, найденных на карте, на 100%."
+  descriptionEn: "She produces +1 Crystal per day, plus an additional +1 for every 5 hero levels. Increases the amount of Crystals found on the map by 100%."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_combat
+    name: "Basic Combat"
+    nameEn: "Basic Combat"
+    description: "Heroic Strike deals +10 base Damage."
+    descriptionEn: "Heroic Strike deals +10 base Damage."
+source: https://www.olden-era.com/ru/heroes/mreowa

@@ -1,0 +1,30 @@
+id: clarissa
+name: "Кларисса"
+nameEn: "Clarissa"
+faction: temple
+class: "Клирик"
+classEn: "Cleric"
+image: heroes/temple/clarissa.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: gold
+  name: "Золото"
+  nameEn: "Gold"
+  description: "Богатство — Производит 500 золота в день, +100 за каждые 2 уровня героя. Увеличивает количество золота, найденного на карте, на 50%."
+  descriptionEn: "Wealthy - Produces 500 Gold per day, +100 more for every 2 hero levels. Increases the amount of Gold found on the map by 50%."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_economy
+    name: "Основы экономики"
+    nameEn: "Basic Economy"
+    description: "Ежедневно приносит +500 золота."
+    descriptionEn: "+500 Gold daily."
+source: https://www.olden-era.com/ru/heroes/clarissa

@@ -1,0 +1,30 @@
+id: creta_daughter_of_navarr
+name: "Крета, дочь Наварра"
+nameEn: "Creta, daughter of Navarr"
+faction: dungeon
+class: "Владыка"
+classEn: "Overlord"
+image: heroes/dungeon/creta_daughter_of_navarr.webp
+stats:
+  attack: 2
+  defense: 2
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: gem
+  name: "Самоцветы"
+  nameEn: "Gem"
+  description: "Искательница самоцветов — Производит 1 самоцвет в день, +1 за каждые 5 уровней героя. Увеличивает количество самоцветов, найденных на карте, на 100%."
+  descriptionEn: "Creta, daughter of NavarrGem Seeker - Produces 1 Gem per day, +1 more for every 5 hero levels. Increases the amount of Gems found on the map by 100%."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_economy
+    name: "Основы экономики"
+    nameEn: "Basic Economy"
+    description: "Ежедневно приносит +500 золота."
+    descriptionEn: "+500 Gold daily."
+source: https://www.olden-era.com/ru/heroes/creta_daughter_of_navarr

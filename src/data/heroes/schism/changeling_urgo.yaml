@@ -1,0 +1,30 @@
+id: changeling_urgo
+name: "Перевертыш Урго"
+nameEn: "Changeling Urgo"
+faction: schism
+class: "Хранитель клятв"
+classEn: "Oathkeeper"
+image: heroes/schism/changeling_urgo.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: summon_avatar
+  name: "Призыв аватара"
+  nameEn: "Summon Avatar"
+  description: "Чистая сущность — Призванный аватар наносит чистый урон. Имеет +1 к силе магии за каждые 2 уровня героя для целей призыва аватара."
+  descriptionEn: "Pure Essence - The summoned Avatar deals Pure Damage. Has +1 Spell Power per 2 hero levels for the purpose of summoning an Avatar."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_summon_avatar
+    name: "Основы призыва аватара"
+    nameEn: "Basic Summon Avatar"
+    description: "Новое боевое заклинание: призывает на поле боя аватара, способного пережить любой урон три раза. Он не получает бонусов от атаки и защиты героя, но получает +1 к атаке и +6 к урону за каждую единицу силы магии героя."
+    descriptionEn: "Grants a new battle spell. It summons an Avatar that is destroyed upon taking three hits from any source. While it does not gain any bonuses from the hero’s Attack and Defense, it gains +1 Attack and deals +6 Damage for each point of the hero’s Spell Power."
+source: https://www.olden-era.com/ru/heroes/changeling_urgo

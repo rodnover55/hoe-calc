@@ -1,0 +1,30 @@
+id: vatawna
+name: "Ватавна"
+nameEn: "Vatawna"
+faction: sylvan
+class: "Druid"
+classEn: "Druid"
+image: heroes/sylvan/vatawna.webp
+stats:
+  attack: 1
+  defense: 2
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: spiritual_vigor
+  name: "Духовная мощь"
+  nameEn: "Spiritual Vigor"
+  description: "Может использовать походные заклинания на 1 раз(а) в день больше. Получает +20% к максимальному запасу маны и ещё +5% за уровни героя: каждые 4."
+  descriptionEn: "+1 spell slot for each Global Map spell. Her maximum mana increases by 20%, plus an additional 5% for every 5 hero levels."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_intelligence
+    name: "Основы мудрости"
+    nameEn: "Basic Wisdom"
+    description: "Герой может изучать заклинания до 3‑го ранга, даже не владея навыком соответствующей школы магии."
+    descriptionEn: "The hero can learn up to tier‑3 spells without knowing the corresponding Magic School skill."
+source: https://www.olden-era.com/ru/heroes/vatawna

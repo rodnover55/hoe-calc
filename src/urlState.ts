@@ -14,6 +14,9 @@
 
 import type { AttackAbilities, AttackerStats, DefenderStats } from './formula';
 import { attackModesFor } from './abilityEffects';
+import type { HeroPick } from './heroEffects';
+import { EMPTY_HERO_PICK, HERO_STRIKE_MODE_ID, clampLevel } from './heroEffects';
+import { HEROES_BY_ID } from './heroes';
 import type { HeroPreset, PresetSelection, PresetStore, SavedUnit, UnitSnapshot } from './presets';
 import { EMPTY_SELECTION, UNIT_SNAPSHOT_KEYS, newId } from './presets';
 import { UNITS_BY_ID } from './units';
@@ -29,6 +32,8 @@ export interface AppUrlState {
   modeId: string;
   attackerUnitId: string | null;
   defenderUnitId: string | null;
+  attackerHero: HeroPick;
+  defenderHero: HeroPick;
   presets: PresetStore;
   presetSelection: PresetSelection;
 }
@@ -57,18 +62,24 @@ interface WireUnit {
   s: number[];
 }
 
-/** Пресет героя: имя, [атака, защита] героя, отряды */
+/** Игровой герой в ссылке: [id, уровень] */
+type WireHeroPick = [string, number];
+
+/** Пресет героя: имя, [атака, защита] героя, игровой герой, отряды */
 interface WireHero {
   n: string;
   h: [number, number];
+  /** Выбранный игровой герой; нет — пресет без героя */
+  g?: WireHeroPick;
   u: WireUnit[];
 }
 
 /**
  * Wire-формат. Версия 1 не содержала пресетов; версия 2 добавила поля
- * pa/pd/ps, остальные поля совпадают, поэтому декодер принимает обе
- * версии, а кодер всегда пишет вторую. При изменении существующих
- * полей заводится версия 3.
+ * pa/pd/ps, затем — необязательные ah/dh и g в пресетах (старые ссылки
+ * декодируются без них); остальные поля совпадают, поэтому декодер
+ * принимает обе версии, а кодер всегда пишет вторую. При изменении
+ * существующих полей заводится версия 3.
  */
 interface ShareV2 {
   v: 1 | 2;
@@ -84,6 +95,10 @@ interface ShareV2 {
   au?: string;
   /** id юнита защитника; нет — ручной ввод */
   du?: string;
+  /** Игровой герой атакующего; нет — не выбран */
+  ah?: WireHeroPick;
+  /** Игровой герой защитника; нет — не выбран */
+  dh?: WireHeroPick;
   /** Пресеты героев атакующего; нет — пусто */
   pa?: WireHero[];
   /** Пресеты героев защитника; нет — пусто */
@@ -137,11 +152,34 @@ const toWireUnit = (unit: SavedUnit): WireUnit => {
   return wire;
 };
 
-const toWireHero = (hero: HeroPreset): WireHero => ({
-  n: hero.name,
-  h: [hero.heroAttack, hero.heroDefense],
-  u: hero.units.map(toWireUnit),
-});
+const toWireHeroPick = (pick: HeroPick): WireHeroPick | null =>
+  pick.heroId === null ? null : [pick.heroId, pick.level];
+
+/**
+ * Игровой герой из ссылки. Неизвестный или нестроковый id даёт пустой
+ * выбор (числовые статы формы при этом сохраняются); уровень зажимается
+ * в допустимый диапазон.
+ */
+const toHeroPick = (value: unknown): HeroPick => {
+  if (!Array.isArray(value) || value.length !== 2) return EMPTY_HERO_PICK;
+  const [id, level] = value as unknown[];
+  if (typeof id !== 'string' || !HEROES_BY_ID.has(id)) return EMPTY_HERO_PICK;
+  return {
+    heroId: id,
+    level: clampLevel(typeof level === 'number' && Number.isFinite(level) ? level : 1),
+  };
+};
+
+const toWireHero = (hero: HeroPreset): WireHero => {
+  const wire: WireHero = {
+    n: hero.name,
+    h: [hero.heroAttack, hero.heroDefense],
+    u: hero.units.map(toWireUnit),
+  };
+  const pick = toWireHeroPick(hero.hero);
+  if (pick) wire.g = pick;
+  return wire;
+};
 
 /**
  * Выбор пресетов в индексы wire-формата. Runtime-id в ссылку не пишутся,
@@ -205,6 +243,7 @@ const toHeroPreset = (value: unknown): HeroPreset | null => {
     name: wire.n,
     heroAttack: hero[0],
     heroDefense: hero[1],
+    hero: toHeroPick(wire.g),
     units: wire.u.map(toSavedUnit).filter((unit): unit is SavedUnit => unit !== null),
   };
 };
@@ -252,6 +291,10 @@ export function encodeAppState(state: AppUrlState): string {
   };
   if (state.attackerUnitId) payload.au = state.attackerUnitId;
   if (state.defenderUnitId) payload.du = state.defenderUnitId;
+  const attackerHero = toWireHeroPick(state.attackerHero);
+  if (attackerHero) payload.ah = attackerHero;
+  const defenderHero = toWireHeroPick(state.defenderHero);
+  if (defenderHero) payload.dh = defenderHero;
   if (state.presets.attacker.length > 0) payload.pa = state.presets.attacker.map(toWireHero);
   if (state.presets.defender.length > 0) payload.pd = state.presets.defender.map(toWireHero);
   const selection = toWireSelection(state.presets, state.presetSelection);
@@ -292,8 +335,14 @@ export function decodeAppState(raw: string | null | undefined): AppUrlState | nu
     const attackerUnitId = toUnitId(share.au);
     const defenderUnitId = toUnitId(share.du);
     const attackerUnit = attackerUnitId ? (UNITS_BY_ID.get(attackerUnitId) ?? null) : null;
+    const attackerHero = toHeroPick(share.ah);
     const modes = attackModesFor(attackerUnit);
     const requestedMode = share.m;
+    // «Удар героя» — допустимый режим, только если герой атакующего
+    // восстановился из ссылки.
+    const validMode =
+      modes.some((mode) => mode.id === requestedMode) ||
+      (requestedMode === HERO_STRIKE_MODE_ID && attackerHero.heroId !== null);
     // В v1 полей пресетов нет: обе стороны декодируются в пустые списки.
     const presets: PresetStore = {
       attacker: toHeroList(share.pa),
@@ -309,9 +358,11 @@ export function decodeAppState(raw: string | null | undefined): AppUrlState | nu
         typeModifiers: x[2] as number,
         retaliation: x[3] === 1,
       },
-      modeId: modes.some((mode) => mode.id === requestedMode) ? requestedMode : modes[0].id,
+      modeId: validMode ? requestedMode : modes[0].id,
       attackerUnitId,
       defenderUnitId,
+      attackerHero,
+      defenderHero: toHeroPick(share.dh),
       presets,
       presetSelection: share.ps === undefined ? EMPTY_SELECTION : toSelection(share.ps, presets),
     };

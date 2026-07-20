@@ -1,0 +1,30 @@
+id: john_johnson
+name: "Джон Джонсон"
+nameEn: "John Johnson"
+faction: temple
+class: "Рыцарь"
+classEn: "Knight"
+image: heroes/temple/john_johnson.webp
+stats:
+  attack: 2
+  defense: 3
+  spellPower: 1
+  knowledge: 1
+specialization:
+  id: swordsmen
+  name: "Мечники"
+  nameEn: "Swordsmen"
+  description: "Соль земли — Прирост мечников в ваших городах увеличивается на 1. Под его командованием мечники получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские теряют столько же."
+  descriptionEn: "Salt of the Earth - Swordsmen growth in your cities increases by 1. Under his command, Swordsmen gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Swordsmen lose an equal amount of Attack and Defence."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_defence
+    name: "Основы обороны"
+    nameEn: "Basic Defense"
+    description: "Дружественные существа получают –10% урона от обычных атак."
+    descriptionEn: "Friendly creatures take –10% Damage from basic attacks."
+source: https://www.olden-era.com/ru/heroes/john_johnson

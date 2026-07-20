@@ -1,0 +1,30 @@
+id: shadespinner_oona
+name: "Тенепряха Уна"
+nameEn: "Shadespinner Oona"
+faction: necropolis
+class: "Некромант"
+classEn: "Necromancer"
+image: heroes/necropolis/shadespinner_oona.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 2
+  knowledge: 4
+specialization:
+  id: nightshade_magic
+  name: "Магия ночной тени"
+  nameEn: "Nightshade Magic"
+  description: "Мастерство теней — Получает +1 уровень ко всем заклинаниям ночной тени, плюс 1 за каждые 10 уровней героя, и может использовать их в бою без ограничений. Вражеский герой не может произносить заклинания ночной тени."
+  descriptionEn: "Shadowmastery - Receives +1 level to all Nightshade spells, plus 1 more for every 10 hero levels and can use it in battle without limits. Enemy hero cannot cast Nightshade spells."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_nightshade_magic
+    name: "Основы магии ночи"
+    nameEn: "Basic Nightshade Magic"
+    description: "Герой может изучать заклинания ночи 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Nightshade spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/shadespinner_oona

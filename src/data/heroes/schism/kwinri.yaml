@@ -1,0 +1,30 @@
+id: kwinri
+name: "Квинри"
+nameEn: "Kwinri"
+faction: schism
+class: "Говорящий с разломами"
+classEn: "Riftspeaker"
+image: heroes/schism/kwinri.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 3
+  knowledge: 2
+specialization:
+  id: ra_shothes
+  name: "Ра'Шоты"
+  nameEn: "Ra'Shothes"
+  description: "Низкий призыв — Прирост Ра'Шотов в ваших городах увеличивается на 1. Под её командованием Ра'Шоты получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские теряют столько же."
+  descriptionEn: "Low Summoning - Ra’Shothes growth in your cities increases by 1. Under her command, Ra’Shothes gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Ra’Shothes lose an equal amount of Attack and Defence."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_leadership
+    name: "Основы лидерства"
+    nameEn: "Basic Leadership"
+    description: "Герой получает +1 к боевому духу."
+    descriptionEn: "The hero gains 1 Morale."
+source: https://www.olden-era.com/ru/heroes/kwinri

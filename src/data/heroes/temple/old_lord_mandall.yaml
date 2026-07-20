@@ -1,0 +1,30 @@
+id: old_lord_mandall
+name: "Старый лорд Мандалл"
+nameEn: "Old Lord Mandall"
+faction: temple
+class: "Рыцарь"
+classEn: "Knight"
+image: heroes/temple/old_lord_mandall.webp
+stats:
+  attack: 2
+  defense: 3
+  spellPower: 1
+  knowledge: 1
+specialization:
+  id: heroic_strike
+  name: "Героический удар"
+  nameEn: "Heroic Strike"
+  description: "Героический удар — Его героический удар наносит +40 урона, плюс 5 за каждые 3 уровня героя. Кроме того, увеличивает весь получаемый целью урон на 20% до конца следующего раунда."
+  descriptionEn: "Heroic Smite - His Heroic Strike deals +40 Damage, plus 5 more for every 3 hero levels. Additionally, it increases all Damage taken by the target by 20% until the end of the next round."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_resistance
+    name: "Основы сопротивления"
+    nameEn: "Basic Resistance"
+    description: "Дружественные существа получают –15% магического урона."
+    descriptionEn: "Friendly creatures take –15% Magic Damage."
+source: https://www.olden-era.com/ru/heroes/old_lord_mandall

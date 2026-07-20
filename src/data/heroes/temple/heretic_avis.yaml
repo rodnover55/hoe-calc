@@ -1,0 +1,30 @@
+id: heretic_avis
+name: "Еретик Авис"
+nameEn: "Heretic Avis"
+faction: temple
+class: "Рыцарь"
+classEn: "Knight"
+image: heroes/temple/heretic_avis.webp
+stats:
+  attack: 2
+  defense: 3
+  spellPower: 1
+  knowledge: 1
+specialization:
+  id: gem
+  name: "Самоцветы"
+  nameEn: "Gem"
+  description: "Искательница самоцветов — Производит 1 самоцвет в день, +1 за каждые 5 уровней героя. Увеличивает количество самоцветов, найденных на карте, на 100%."
+  descriptionEn: "Gem Seeker - Produces 1 Gem per day, +1 more for every 5 hero levels. Increases the amount of Gems found on the map by 100%."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_recruitment
+    name: "Основы вербовки"
+    nameEn: "Basic Recruitment"
+    description: "+4 к приросту существ 1‑го ранга во всех ваших городах."
+    descriptionEn: "+4 to tier‑1 creature growth in all your cities."
+source: https://www.olden-era.com/ru/heroes/heretic_avis

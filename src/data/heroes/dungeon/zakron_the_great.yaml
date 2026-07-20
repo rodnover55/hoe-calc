@@ -1,0 +1,30 @@
+id: zakron_the_great
+name: "Закрон Великий"
+nameEn: "Zakron the Great"
+faction: dungeon
+class: "Чернокнижник"
+classEn: "Warlock"
+image: heroes/dungeon/zakron_the_great.webp
+stats:
+  attack: 0
+  defense: 2
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: sorcery
+  name: "Колдовство"
+  nameEn: "Sorcery"
+  description: "Ткач заклинаний — Наносит +15% урона заклинаниями, плюс 5% за каждые 3 уровня героя. Урон от заклинаний вражеского героя уменьшается на ту же величину."
+  descriptionEn: "Spellweaver - Deals +15% Damage with spells, plus 5% more for every 3 hero levels. The Damage from the enemy hero's spells is reduced by the same value."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_sorcery
+    name: "Основы волшебства"
+    nameEn: "Basic Sorcery"
+    description: "+10% магического урона."
+    descriptionEn: "+10% Magic Damage dealt."
+source: https://www.olden-era.com/ru/heroes/zakron_the_great

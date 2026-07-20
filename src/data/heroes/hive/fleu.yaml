@@ -1,0 +1,30 @@
+id: fleu
+name: "Флё"
+nameEn: "Fleu"
+faction: hive
+class: "Herald"
+classEn: "Herald"
+image: heroes/hive/fleu.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 4
+  knowledge: 2
+specialization:
+  id: wayfarer
+  name: "Путник"
+  nameEn: "Wayfarer"
+  description: "Значительно эффективнее передвигается по дорогам. Получает +5% очков движения за уровни героя: каждые 8."
+  descriptionEn: "She has +5% Movement points for every 8 hero level(s). Moves significantly more efficiently on roads."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_logistics
+    name: "Основы логистики"
+    nameEn: "Basic Logistics"
+    description: "+10% очков движения по карте приключений."
+    descriptionEn: "+10% Movement points on the global map."
+source: https://www.olden-era.com/ru/heroes/fleu

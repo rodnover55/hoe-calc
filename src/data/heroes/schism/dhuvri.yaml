@@ -1,0 +1,25 @@
+id: dhuvri
+name: "Дюври"
+nameEn: "Dhüvri"
+faction: schism
+class: "Говорящий с разломами"
+classEn: "Riftspeaker"
+image: heroes/schism/dhuvri.webp
+stats:
+  attack: 1
+  defense: 1
+  spellPower: 3
+  knowledge: 2
+specialization:
+  id: abyssal_communion
+  name: "Причастие Бездны"
+  nameEn: "Abyssal Communion"
+  description: "Истинно верующий — +1 уровень причастия после победы. +1 к максимальному уровню причастия за каждые 8 уровней героя."
+  descriptionEn: "True Believer - +1 Communion level after a victory. +1 maximum Communion level for every 8 hero levels."
+skills:
+  - id: advanced_abyssal_communion
+    name: "Продвинутое Причастие к Бездне"
+    nameEn: "Advanced Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 4). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 4). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+source: https://www.olden-era.com/ru/heroes/dhuvri

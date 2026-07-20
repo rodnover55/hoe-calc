@@ -1,0 +1,30 @@
+id: elder_tss_kish
+name: "Старейшина Тсс’киш"
+nameEn: "Elder Tss'kish"
+faction: sylvan
+class: "Druid"
+classEn: "Druid"
+image: heroes/sylvan/elder_tss_kish.webp
+stats:
+  attack: 1
+  defense: 2
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: oldest_known_tree
+  name: "Старейшее дерево"
+  nameEn: "Oldest Known Tree"
+  description: "Повышает прирост заклинателей трав в ваших городах на 1. В его армии они получают +1 к скорости и инициативе, +20% к здоровью. Также они получают +1 к атаке и защите за уровни героя: каждые 3. Заклинатели трав противника теряют такое же количество атаки и защиты."
+  descriptionEn: "Herbomancer growth in your cities increases by 1. Under his command, Herbomancers gain +1 Speed, +1 Initiative, and +20% HP. Their Attack and Defense increase by 1 for every 3 hero levels, and enemy Herbomancers lose an equal amount of Attack and Defense."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_thaumaturgy
+    name: "Основы чародейства"
+    nameEn: "Basic Thaumaturgy"
+    description: "Герой может использовать книгу магии в бою ещё один раз, применяя при этом заклинание ещё неиспользованной школы магии. При каждом использовании стоимость заклинания повышается на 100%."
+    descriptionEn: "The hero can use the Spellbook one more time per battle round, but only to cast a spell of a Magic School that hasn’t been used this round. Spells cost +100% mana for each use after the first."
+source: https://www.olden-era.com/ru/heroes/elder_tss_kish

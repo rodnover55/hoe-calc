@@ -1,0 +1,30 @@
+id: gingertail
+name: "Рыжехвостка"
+nameEn: "Gingertail"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/gingertail.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: faunsong
+  name: "Песнь фавнов"
+  nameEn: "Faunsong"
+  description: "Повышает прирост фавнов в ваших городах на 1. В её армии они получают +1 к скорости и инициативе, +20% к здоровью. Также они получают +1 к атаке и защите за уровни героя: каждые 3. Фавны противника теряют такое же количество атаки и защиты."
+  descriptionEn: "Faun growth in your cities increases by 1. Under her command, Fauns gain +1 Speed, +1 Initiative, and +20% HP. Their Attack and Defense increase by 1 for every 3 hero levels, and enemy Fauns lose an equal amount of Attack and Defense."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_leadership
+    name: "Основы лидерства"
+    nameEn: "Basic Leadership"
+    description: "Герой получает +1 к боевому духу."
+    descriptionEn: "The hero gains 1 Morale."
+source: https://www.olden-era.com/ru/heroes/gingertail

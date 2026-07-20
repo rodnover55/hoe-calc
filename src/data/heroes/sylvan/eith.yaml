@@ -1,0 +1,30 @@
+id: eith
+name: "Эйф"
+nameEn: "Eith"
+faction: sylvan
+class: "Warden"
+classEn: "Warden"
+image: heroes/sylvan/eith.webp
+stats:
+  attack: 2
+  defense: 1
+  spellPower: 2
+  knowledge: 2
+specialization:
+  id: pathfinder
+  name: "Следопыт"
+  nameEn: "Pathfinder"
+  description: "Всегда передвигается по пересечённой местности без штрафа. Повышает радиус обзора на 1 и ещё на 1 за уровни героя: каждые 5."
+  descriptionEn: "His movement takes no terrain penalties. He also has +1 Sight Radius, plus an additional +1 for every 5 hero levels."
+skills:
+  - id: basic_murmuring
+    name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: basic_scouting
+    name: "Основы разведки"
+    nameEn: "Basic Scouting"
+    description: "Герой получает +1 к радиусу обзора."
+    descriptionEn: "The hero gains 1 sight radius."
+source: https://www.olden-era.com/ru/heroes/eith

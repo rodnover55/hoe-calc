@@ -1,0 +1,30 @@
+id: mila
+name: "Мила"
+nameEn: "Mila"
+faction: hive
+class: "Herald"
+classEn: "Herald"
+image: heroes/hive/mila.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 4
+  knowledge: 2
+specialization:
+  id: wingflap
+  name: "Взмах крыла"
+  nameEn: "Wingflap"
+  description: "Владеет заклинанием «Искусное ускорение». Эта версия заклинания действует на всех дружественных существ. На время использования этого заклинания герой получает +1 к силе магии за уровни героя: каждые 2."
+  descriptionEn: "She starts with the “Masterful Haste” spell. This version of the spell affects all friendly creatures. While casting this spell, effective Spell Power is increased by 1 for every 2 hero level(s)."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_daylight_magic
+    name: "Basic Daylight Magic"
+    nameEn: "Basic Daylight Magic"
+    description: "The hero can learn Daylight spells up to tier 5."
+    descriptionEn: "The hero can learn Daylight spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/mila

@@ -1,0 +1,30 @@
+id: glastor
+name: "Гластор"
+nameEn: "Glastor"
+faction: dungeon
+class: "Чернокнижник"
+classEn: "Warlock"
+image: heroes/dungeon/glastor.webp
+stats:
+  attack: 0
+  defense: 2
+  spellPower: 2
+  knowledge: 3
+specialization:
+  id: gold
+  name: "Золото"
+  nameEn: "Gold"
+  description: "Богатство — Производит 500 золота в день, +100 за каждый уровень героя. Увеличивает количество золота, найденного на карте, на 50%."
+  descriptionEn: "Wealthy - Produces 500 Gold per day, +100 more for every 1 hero levels. Increases the amount of Gold found on the map by 50%."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_economy
+    name: "Основы экономики"
+    nameEn: "Basic Economy"
+    description: "Ежедневно приносит +500 золота."
+    descriptionEn: "+500 Gold daily."
+source: https://www.olden-era.com/ru/heroes/glastor

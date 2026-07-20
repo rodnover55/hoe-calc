@@ -1,0 +1,30 @@
+id: enatee
+name: "Энати"
+nameEn: "Enatee"
+faction: dungeon
+class: "Владыка"
+classEn: "Overlord"
+image: heroes/dungeon/enatee.webp
+stats:
+  attack: 2
+  defense: 2
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: medusae
+  name: "Медузы"
+  nameEn: "Medusae"
+  description: "Змеиная угроза — Прирост медуз в ваших городах увеличивается на 1. Под её командованием медузы получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские медузы теряют столько же атаки и защиты."
+  descriptionEn: "Slitering Menace - Medusae growth in your cities increases by 1. Under her command, Medusae gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Medusae lose an equal amount of Attack and Defence."
+skills:
+  - id: basic_triumvirates_strength
+    name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - id: basic_defence
+    name: "Основы обороны"
+    nameEn: "Basic Defense"
+    description: "Дружественные существа получают –10% урона от обычных атак."
+    descriptionEn: "Friendly creatures take –10% Damage from basic attacks."
+source: https://www.olden-era.com/ru/heroes/enatee

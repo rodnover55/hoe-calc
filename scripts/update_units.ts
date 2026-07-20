@@ -11,11 +11,8 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
+import { BASE, fetchText, fetchUrl, q, unescapeHtml } from './scrape_common.ts';
 
-const BASE = 'https://www.olden-era.com';
-const UA =
-  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 ' +
-  '(KHTML, like Gecko) Chrome/126.0 Safari/537.36';
 const PROJECT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const DATA_DIR = path.join(PROJECT, 'src', 'data', 'units');
 const IMG_DIR = path.join(PROJECT, 'public', 'units');
@@ -63,54 +60,6 @@ export interface Unit extends ParsedStats {
   abilities: Ability[];
   grade: number;
   upgradeOf?: string;
-}
-
-async function fetchUrl(url: string): Promise<ArrayBuffer> {
-  for (let attempt = 0; ; attempt++) {
-    try {
-      const resp = await fetch(url, {
-        headers: { 'User-Agent': UA },
-        signal: AbortSignal.timeout(30_000),
-      });
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      return await resp.arrayBuffer();
-    } catch (e) {
-      if (attempt === 2) throw e;
-      console.log(`  повтор ${url}: ${e}`);
-      await sleep(2000);
-    }
-  }
-}
-
-const fetchText = async (url: string): Promise<string> =>
-  new TextDecoder().decode(await fetchUrl(url));
-
-/** Именованные HTML-сущности, встречающиеся в текстах сайта */
-const NAMED_ENTITIES: Record<string, string> = {
-  amp: '&',
-  lt: '<',
-  gt: '>',
-  quot: '"',
-  apos: "'",
-  nbsp: ' ',
-  shy: '­',
-  ndash: '–',
-  mdash: '—',
-  hellip: '…',
-  laquo: '«',
-  raquo: '»',
-};
-
-/** Числовые ссылки и сущности из NAMED_ENTITIES; прочие остаются как есть */
-export function unescapeHtml(s: string): string {
-  return s.replace(/&(#[xX]?[0-9a-fA-F]+|[a-zA-Z]+);/g, (whole, entity: string) => {
-    if (entity.startsWith('#')) {
-      const hex = entity[1] === 'x' || entity[1] === 'X';
-      const code = parseInt(entity.slice(hex ? 2 : 1), hex ? 16 : 10);
-      return Number.isNaN(code) ? whole : String.fromCodePoint(code);
-    }
-    return NAMED_ENTITIES[entity] ?? whole;
-  });
 }
 
 function stripText(html: string): string {
@@ -293,8 +242,6 @@ export function parseAbilities(flight: string): Ability[] {
   }
   return abilities;
 }
-
-const q = (s: string): string => JSON.stringify(s);
 
 export function emit(unit: Unit): string {
   const lines = [

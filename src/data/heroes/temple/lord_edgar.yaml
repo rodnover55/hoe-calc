@@ -1,0 +1,30 @@
+id: lord_edgar
+name: "Лорд Эдгар"
+nameEn: "Lord Edgar"
+faction: temple
+class: "Рыцарь"
+classEn: "Knight"
+image: heroes/temple/lord_edgar.webp
+stats:
+  attack: 2
+  defense: 3
+  spellPower: 1
+  knowledge: 1
+specialization:
+  id: ascension
+  name: "Вознесение"
+  nameEn: "Ascension"
+  description: "Истинный лорд — Увеличивает атаку и защиту дружественных существ на 10% от своей атаки и защиты, плюс 5% за каждые 6 уровней героя."
+  descriptionEn: "True Lord - Increases Attack and Defence of friendly creatures by 10% of his Attack and Defence, plus 5% more for every 6 hero levels."
+skills:
+  - id: basic_ascension
+    name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - id: basic_battlecraft
+    name: "Основы боевого порядка"
+    nameEn: "Basic Battlecraft"
+    description: "Ожидая в бою, дружественные существа получают +20% к атаке до конца раунда, а пропуская ход — +20% к защите."
+    descriptionEn: "When a friendly creature waits on their turn, they gain +20% Attack until the end of the round. When they skip turn, they gain +20% Defense until the end of the round."
+source: https://www.olden-era.com/ru/heroes/lord_edgar

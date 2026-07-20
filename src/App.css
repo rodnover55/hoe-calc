@@ -345,38 +345,59 @@ select:focus {
 }
 
 .formula {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 6px 12px;
   margin-top: 12px;
   padding-top: 10px;
   border-top: 1px solid var(--border);
 }
 
-.formula-part {
+.formula-row {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.formula-value {
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px 12px;
   font-size: 15px;
   font-weight: 500;
-  white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
 
-.formula-label {
-  font-size: 11px;
-  color: var(--text-muted);
+.formula-part {
   white-space: nowrap;
+}
+
+/* Подпись бакета — псевдоэлемент: не попадает в выделение и копию */
+.formula-part::after {
+  content: attr(data-label);
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.formula-num {
+  cursor: help;
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .formula-op {
   font-size: 15px;
   color: var(--text-muted);
 }
+
+.formula-legend {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.formula-bucket-0 { color: var(--formula-1); }
+.formula-bucket-1 { color: var(--formula-2); }
+.formula-bucket-2 { color: var(--formula-3); }
+.formula-bucket-3 { color: var(--formula-4); }
+.formula-bucket-4 { color: var(--formula-5); }
+.formula-bucket-5 { color: var(--formula-6); }
+.formula-bucket-6 { color: var(--formula-7); }
 
 .card {
   background: var(--card);

@@ -1,0 +1,30 @@
+id: iron_master
+name: "Железный Мастер"
+nameEn: "Iron Master"
+faction: schism
+class: "Хранитель клятв"
+classEn: "Oathkeeper"
+image: heroes/schism/iron_master.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: concubi
+  name: "Конкубины"
+  nameEn: "Concubi"
+  description: "Поводок из цепей — Прирост конкубин в ваших городах увеличивается на 1. Под его командованием конкубины получают +1 к скорости, +1 к инициативе и +20% ОЗ. Их атака и защита увеличиваются на 1 за каждые 3 уровня героя, а вражеские теряют столько же."
+  descriptionEn: "Leash of Chains - Concubi growth in your cities increases by 1. Under his command, Concubi gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defence increase by 1 for every 3 hero levels, and enemy Concubi lose an equal amount of Attack and Defence."
+skills:
+  - id: basic_abyssal_communion
+    name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - id: basic_intelligence
+    name: "Основы мудрости"
+    nameEn: "Basic Wisdom"
+    description: "Герой может изучать заклинания до 3‑го ранга, даже не владея навыком соответствующей школы магии."
+    descriptionEn: "The hero can learn up to tier‑3 spells without knowing the corresponding Magic School skill."
+source: https://www.olden-era.com/ru/heroes/iron_master

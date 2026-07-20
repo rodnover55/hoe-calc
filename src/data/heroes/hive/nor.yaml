@@ -1,0 +1,30 @@
+id: nor
+name: "Нор"
+nameEn: "Nor"
+faction: hive
+class: "Enforcer"
+classEn: "Enforcer"
+image: heroes/hive/nor.webp
+stats:
+  attack: 4
+  defense: 0
+  spellPower: 2
+  knowledge: 1
+specialization:
+  id: wish_to_learn
+  name: "Тяга к знаниям"
+  nameEn: "Wish to Learn"
+  description: "При повышении уровня получает дополнительные очки характеристик (+1) за уровни: каждые 2. Получает +5% опыта за уровни героя: каждые 2."
+  descriptionEn: "When leveling up, he gains 1 additional attribute point(s) for every 2 hero level(s). He gains +5% XP for every 2 hero level(s)."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_insight
+    name: "Основы проницательности"
+    nameEn: "Basic Insight"
+    description: "Герой получает +20% опыта."
+    descriptionEn: "The hero gains +20% more XP."
+source: https://www.olden-era.com/ru/heroes/nor

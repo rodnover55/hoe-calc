@@ -9,6 +9,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
+import { EMPTY_HERO_PICK } from './heroEffects';
 import type { PresetStore } from './presets';
 import { EMPTY_SELECTION, EMPTY_STORE, createHeroPreset, createSavedUnit } from './presets';
 import type { AppUrlState } from './urlState';
@@ -36,6 +37,8 @@ const manualState = (over: Partial<AppUrlState> = {}): AppUrlState => ({
   modeId: 'base',
   attackerUnitId: null,
   defenderUnitId: null,
+  attackerHero: EMPTY_HERO_PICK,
+  defenderHero: EMPTY_HERO_PICK,
   presets: EMPTY_STORE,
   presetSelection: EMPTY_SELECTION,
   ...over,
@@ -119,6 +122,28 @@ describe('round-trip', () => {
       defenderHeroId: decoded!.presets.defender[0].id,
       defenderSavedUnitId: null,
     });
+  });
+
+  /**
+   * Игровые герои обеих сторон — id и уровень — переживают round-trip,
+   * в том числе внутри пресета героя; режим «Удар героя» сохраняется.
+   */
+  it('игровые герои сторон и пресетов восстанавливаются', () => {
+    const store: PresetStore = {
+      attacker: [createHeroPreset(stats(), null, 'ru', { heroId: 'niev', level: 12 })],
+      defender: [],
+    };
+    const state = manualState({
+      attackerHero: { heroId: 'ister', level: 7 },
+      defenderHero: { heroId: 'bulwark', level: 3 },
+      modeId: 'hero_strike',
+      presets: store,
+    });
+    const decoded = decodeAppState(encodeAppState(state));
+    expect(decoded?.attackerHero).toEqual({ heroId: 'ister', level: 7 });
+    expect(decoded?.defenderHero).toEqual({ heroId: 'bulwark', level: 3 });
+    expect(decoded?.modeId).toBe('hero_strike');
+    expect(decoded?.presets.attacker[0].hero).toEqual({ heroId: 'niev', level: 12 });
   });
 
   /** Строка пригодна для query-параметра: только A-Za-z0-9-_ */
@@ -223,6 +248,35 @@ describe('мягкая деградация', () => {
   /** Список пресетов стороны, не являющийся массивом, даёт пустой список */
   it('pa не-массив даёт пустой список пресетов', () => {
     expect(decodeAppState(tamper({ pa: 'junk' }))?.presets.attacker).toEqual([]);
+  });
+
+  /** Герой, пропавший из базы, и битые кортежи дают пустой выбор героя */
+  it.each([
+    ['неизвестный герой', ['deleted_hero', 5]],
+    ['id не строка', [7, 5]],
+    ['не кортеж', 'junk'],
+    ['короткий кортеж', ['ister']],
+  ])('%s → пустой выбор героя', (_name, ah) => {
+    expect(decodeAppState(tamper({ ah }))?.attackerHero).toEqual(EMPTY_HERO_PICK);
+  });
+
+  /** Уровень вне диапазона зажимается в допустимый, NaN становится 1 */
+  it('уровень героя зажимается в допустимый диапазон', () => {
+    expect(decodeAppState(tamper({ ah: ['ister', 99] }))?.attackerHero.level).toBe(30);
+    expect(decodeAppState(tamper({ ah: ['ister', Number.NaN] }))?.attackerHero.level).toBe(1);
+  });
+
+  /** «Удар героя» без героя в ссылке откатывается на первый режим */
+  it('режим удара героя без героя заменяется базовым', () => {
+    expect(decodeAppState(tamper({ m: 'hero_strike' }))?.modeId).toBe('base');
+  });
+
+  /** Ссылка без полей героев (старый формат) даёт пустой выбор */
+  it('старая ссылка без героев декодируется в пустой выбор', () => {
+    const decoded = decodeAppState(tamper({ v: 1 }));
+    expect(decoded?.attackerHero).toEqual(EMPTY_HERO_PICK);
+    expect(decoded?.defenderHero).toEqual(EMPTY_HERO_PICK);
+    expect(decoded?.presets.attacker).toEqual([]);
   });
 
   /** Индексы выбора вне диапазона сбрасываются, валидные выживают */

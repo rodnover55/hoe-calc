@@ -1,0 +1,30 @@
+id: artorius_veritas
+name: "Арториус Веритас"
+nameEn: "Artorius Veritas"
+faction: necropolis
+class: "Рыцарь смерти"
+classEn: "Death Knight"
+image: heroes/necropolis/artorius_veritas.webp
+stats:
+  attack: 3
+  defense: 1
+  spellPower: 1
+  knowledge: 2
+specialization:
+  id: berserk
+  name: "Берсерк"
+  nameEn: "Berserk"
+  description: "Своди их с ума — Начинает с заклинания «Мастерский берсерк». Эта версия заклинания поражает всех существ, соседних с целью. Стоимость заклинания уменьшается на 1 ману за каждые 3 уровня героя."
+  descriptionEn: "Drive 'em Crazy - Starts with the “Masterful Berserk” spell. This version of the spell affects all creatures adjacent to the target. The cost of this spell is reduced by 1 mana for every 3 hero levels."
+skills:
+  - id: basic_necromancy
+    name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - id: basic_resistance
+    name: "Основы сопротивления"
+    nameEn: "Basic Resistance"
+    description: "Дружественные существа получают –15% магического урона."
+    descriptionEn: "Friendly creatures take –15% Magic Damage."
+source: https://www.olden-era.com/ru/heroes/artorius_veritas

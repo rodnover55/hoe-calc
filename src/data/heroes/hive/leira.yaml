@@ -1,0 +1,30 @@
+id: leira
+name: "Лейра"
+nameEn: "Leira"
+faction: hive
+class: "Herald"
+classEn: "Herald"
+image: heroes/hive/leira.webp
+stats:
+  attack: 1
+  defense: 0
+  spellPower: 4
+  knowledge: 2
+specialization:
+  id: stinging
+  name: "Жало"
+  nameEn: "Stinging"
+  description: "Повышает прирост шершней в ваших городах на 1. В её армии они получают +1 к скорости и инициативе, +20% к здоровью. Также они получают +1 к атаке и защите за уровни героя: каждые 3. Шершни противника теряют такое же количество атаки и защиты."
+  descriptionEn: "Hornet growth in your cities increases by 1. Under her command, Hornets gain 1 Speed, 1 Initiative, and 20% HP. Their Attack and Defense increase by 1 for every 3 hero levels, and enemy Hornets lose an equal amount of Attack and Defense."
+skills:
+  - id: basic_summon_swarm
+    name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - id: basic_nightshade_magic
+    name: "Основы магии ночи"
+    nameEn: "Basic Nightshade Magic"
+    description: "Герой может изучать заклинания ночи 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Nightshade spells up to tier 5."
+source: https://www.olden-era.com/ru/heroes/leira
