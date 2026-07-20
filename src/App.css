@@ -574,12 +574,6 @@ select:focus {
   }
 }
 
-.note {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 1.5rem;
-}
-
 .preset-head {
   display: flex;
   align-items: flex-end;

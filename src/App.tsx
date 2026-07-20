@@ -1236,8 +1236,6 @@ export default function App() {
         {result.retaliation && strikeCard(t('cards.retaliation'), result.retaliation)}
         {result.secondStrike && strikeCard(t('cards.second'), result.secondStrike)}
       </div>
-
-      <p className="note">{t('note')}</p>
     </main>
   );
 }
