@@ -175,16 +175,16 @@ describe('«Уязвимость» (vulnerability)', () => {
 describe('статы и здоровье', () => {
   it('«Удлинить/Укоротить тень» дают ±3 к атаке и защите на любом уровне', () => {
     const enlarge = spellBonuses(input({ effects: [effect('enlarge_shadow', 4)] }));
-    expect(enlarge.attack).toBe(3);
-    expect(enlarge.defense).toBe(3);
+    expect(enlarge.attack).toEqual([contrib('enlarge_shadow', 3)]);
+    expect(enlarge.defense).toEqual([contrib('enlarge_shadow', 3)]);
     const shorten = spellBonuses(input({ effects: [effect('shorten_shadow', 1)], side: 'defender' }));
-    expect(shorten.attack).toBe(-3);
-    expect(shorten.defense).toBe(-3);
+    expect(shorten.attack).toEqual([contrib('shorten_shadow', -3)]);
+    expect(shorten.defense).toEqual([contrib('shorten_shadow', -3)]);
   });
 
   it('статы действуют и на способностях с собственным уроном', () => {
     const result = spellBonuses(input({ effects: [effect('enlarge_shadow')], mode: specialMode }));
-    expect(result.attack).toBe(3);
+    expect(result.attack).toEqual([contrib('enlarge_shadow', 3)]);
   });
 
   it('«Смертельный распад» снижает здоровье с 2-го уровня, дробная часть отбрасывается', () => {

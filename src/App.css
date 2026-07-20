@@ -469,6 +469,22 @@ select:focus {
   color: var(--text-muted);
 }
 
+.validation-card {
+  border-left: 3px solid var(--danger);
+  margin-bottom: 12px;
+}
+
+.validation-card .label {
+  color: var(--danger);
+}
+
+.validation-list {
+  margin: 8px 0 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 4px;
+}
+
 .card .value {
   font-size: 24px;
   font-weight: 500;

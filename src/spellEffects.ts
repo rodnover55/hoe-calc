@@ -113,10 +113,10 @@ export interface SpellContribution {
 
 /** Слагаемые эффектов отряда-носителя; списки — по заклинаниям */
 export interface SpellBonuses {
-  /** Прибавка к атаке юнита-носителя */
-  attack: number;
-  /** Прибавка к защите юнита-носителя */
-  defense: number;
+  /** Вклады в атаку юнита-носителя */
+  attack: SpellContribution[];
+  /** Вклады в защиту юнита-носителя */
+  defense: SpellContribution[];
   /** Вклады в типовые модификаторы основного удара, % */
   typeModifiers: SpellContribution[];
   /** Чистый урон к каждому удару носителя-атакующего */
@@ -130,8 +130,8 @@ export interface SpellBonuses {
 }
 
 export const EMPTY_SPELL_BONUSES: SpellBonuses = {
-  attack: 0,
-  defense: 0,
+  attack: [],
+  defense: [],
   typeModifiers: [],
   flatDamage: [],
   health: 0,
@@ -158,9 +158,10 @@ export interface SpellBonusInput {
  * действует, когда носитель атакует, снижение входящего урона — когда
  * защищается. Статовые эффекты и здоровье действуют всегда; процентные
  * и чистый урон — только на обычные атаки (не на способности с
- * собственным уроном), как и у бонусов героя. Вклад эффектов виден в
- * формуле: проценты — отдельным слагаемым типового бакета, чистый урон
- * и модификатор ответа — своими бакетами.
+ * собственным уроном), как и у бонусов героя. Каждый вклад именован
+ * заклинанием-источником и виден в формуле своим слагаемым: статы — в
+ * бакете АТК/ЗЩТ, проценты — в типовом бакете, чистый урон и модификатор
+ * ответа — своими бакетами.
  *
  * @param input эффекты отряда, здоровье существа, режим атаки и сторона.
  * @returns аддитивные слагаемые к статам и модификаторам.
@@ -169,6 +170,8 @@ export function spellBonuses(input: SpellBonusInput): SpellBonuses {
   const { mode, side } = input;
   const result: SpellBonuses = {
     ...EMPTY_SPELL_BONUSES,
+    attack: [],
+    defense: [],
     typeModifiers: [],
     flatDamage: [],
     retaliationPercent: [],
@@ -203,16 +206,15 @@ export function spellBonuses(input: SpellBonusInput): SpellBonuses {
         break;
       }
       case 'stats': {
-        result.attack += kind.attack;
-        result.defense += kind.defense;
+        contribute(result.attack, kind.attack);
+        contribute(result.defense, kind.defense);
         break;
       }
       case 'flat_pure': {
         if (side !== 'attacker' || !regular) break;
-        contribute(
-          result.flatDamage,
-          Math.max(0, resolveAmount(kind.amounts[index], pick.spellPower)),
-        );
+        // Отрицательный чистый урон — битые данные каталога: формула
+        // уронит расчёт, здесь значение не подменяется.
+        contribute(result.flatDamage, resolveAmount(kind.amounts[index], pick.spellPower));
         break;
       }
       case 'max_health_percent': {

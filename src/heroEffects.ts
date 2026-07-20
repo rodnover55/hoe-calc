@@ -18,7 +18,7 @@
  */
 
 import type { AttackMode, Reach } from './abilityEffects';
-import type { DamageStep } from './formula';
+import type { DamageStep, EffectContribution } from './formula';
 import { num, tokens } from './formula';
 import type { GameHero } from './heroes';
 import { heroTextName } from './heroes';
@@ -326,42 +326,48 @@ export interface HeroBonusNote {
   applied: boolean;
 }
 
-/** Бонусы героя стороны к текущему расчёту; все слагаемые аддитивны */
+/**
+ * Бонусы героя стороны к текущему расчёту; все слагаемые аддитивны.
+ * Вклады, попадающие в формулу, именованы источником — специализацией,
+ * уровнем навыка или поднавыком — и показываются в ней отдельными
+ * слагаемыми; числами остаются только здоровье и штраф здоровью
+ * противника, которых в формуле нет.
+ */
 export interface HeroBonuses {
-  /** Прибавка к атаке героя (бонус своему отряду) */
-  attack: number;
-  /** Прибавка к защите героя */
-  defense: number;
-  /** Слагаемое типовых модификаторов, % */
-  typeModifiers: number;
-  /** Прибавка к урону каждого своего существа */
-  damage: number;
+  /** Вклады в атаку героя (бонус своему отряду) */
+  attack: EffectContribution[];
+  /** Вклады в защиту героя */
+  defense: EffectContribution[];
+  /** Вклады в типовые модификаторы, % */
+  typeModifiers: EffectContribution[];
+  /** Вклады в урон каждого своего существа */
+  damage: EffectContribution[];
   /** Прибавка к здоровью своих существ */
   health: number;
-  /** Штраф атаке юнита противника (отрицательный) */
-  enemyAttack: number;
-  /** Штраф защите юнита противника (отрицательный) */
-  enemyDefense: number;
-  /** Штраф урону существ противника (отрицательный) */
-  enemyDamage: number;
+  /** Штрафы атаке юнита противника (отрицательные) */
+  enemyAttack: EffectContribution[];
+  /** Штрафы защите юнита противника (отрицательные) */
+  enemyDefense: EffectContribution[];
+  /** Штрафы урону существ противника (отрицательные) */
+  enemyDamage: EffectContribution[];
   /** Штраф здоровью существ противника (отрицательный) */
   enemyHealth: number;
-  /** Снижение входящего магического урона способностей, % (отрицательное) */
-  magicReduction: number;
+  /** Вклады снижения входящего магического урона способностей, % (отрицательные) */
+  magicReduction: EffectContribution[];
   notes: HeroBonusNote[];
 }
 
 export const EMPTY_BONUSES: HeroBonuses = {
-  attack: 0,
-  defense: 0,
-  typeModifiers: 0,
-  damage: 0,
+  attack: [],
+  defense: [],
+  typeModifiers: [],
+  damage: [],
   health: 0,
-  enemyAttack: 0,
-  enemyDefense: 0,
-  enemyDamage: 0,
+  enemyAttack: [],
+  enemyDefense: [],
+  enemyDamage: [],
   enemyHealth: 0,
-  magicReduction: 0,
+  magicReduction: [],
   notes: [],
 };
 
@@ -414,17 +420,36 @@ const matchesUnit = (unit: UnitPreset | null, slugs: string[]): boolean =>
  */
 export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonuses {
   const { hero, unit, enemyUnit, mode, side } = input;
-  if (!hero) return EMPTY_BONUSES;
+  const fresh = (): HeroBonuses => ({
+    ...EMPTY_BONUSES,
+    attack: [],
+    defense: [],
+    typeModifiers: [],
+    damage: [],
+    enemyAttack: [],
+    enemyDefense: [],
+    enemyDamage: [],
+    magicReduction: [],
+    notes: [],
+  });
+  if (!hero) return fresh();
   const level = clampLevel(input.level);
   const L = (key: string, params?: Record<string, string | number>): string =>
     translate(lang, `heroBonus.${key}`, params);
+  /** Именованное слагаемое формулы; нулевые вклады не добавляются */
+  const contribute = (list: EffectContribution[], label: string, value: number): void => {
+    if (value !== 0) list.push({ label, value });
+  };
 
-  const result: HeroBonuses = { ...EMPTY_BONUSES, notes: [] };
+  const result = fresh();
   const regular = !mode.special;
 
   const spec = hero.specialization;
   const specKind = SPEC_KINDS[spec.id];
-  const specSource = L('specSource', { name: heroTextName(spec, lang) });
+  // Подпись слагаемых в формуле — голое имя источника, как у заклинаний;
+  // шаблон «Специализация „X“» остаётся только в заметках карточки.
+  const specName = heroTextName(spec, lang);
+  const specSource = L('specSource', { name: specName });
   const specTexts: string[] = [];
 
   if (specKind?.kind === 'creature') {
@@ -432,13 +457,13 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
     if (parsed) {
       const amount = perLevels(level, parsed.levels, parsed.amount);
       if (amount > 0 && matchesUnit(unit, specKind.units)) {
-        result.attack += amount;
-        result.defense += amount;
+        contribute(result.attack, specName, amount);
+        contribute(result.defense, specName, amount);
         specTexts.push(L('ownCreature', { n: amount }));
       }
       if (amount > 0 && parsed.enemyLoss && matchesUnit(enemyUnit, specKind.units)) {
-        result.enemyAttack -= amount;
-        result.enemyDefense -= amount;
+        contribute(result.enemyAttack, specName, -amount);
+        contribute(result.enemyDefense, specName, -amount);
         specTexts.push(L('enemyCreature', { n: amount }));
       }
     }
@@ -451,7 +476,7 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         percent += perLevels(level, parsed.extra.levels, parsed.extra.percent);
       }
       if (percent > 0) {
-        result.typeModifiers += percent;
+        contribute(result.typeModifiers, specName, percent);
         specTexts.push(L('typePercent', { n: `+${percent}` }));
       }
     }
@@ -464,7 +489,7 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         percent += perLevels(level, parsed.extra.levels, parsed.extra.percent);
       }
       if (percent > 0) {
-        result.typeModifiers -= percent;
+        contribute(result.typeModifiers, specName, -percent);
         specTexts.push(L('typePercent', { n: `−${percent}` }));
       }
     }
@@ -475,8 +500,8 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
       const attack = Math.floor((Math.max(0, input.heroAttack) * percent) / 100);
       const defense = Math.floor((Math.max(0, input.heroDefense) * percent) / 100);
       if (attack > 0 || defense > 0) {
-        result.attack += attack;
-        result.defense += defense;
+        contribute(result.attack, specName, attack);
+        contribute(result.defense, specName, defense);
         specTexts.push(L('ownStats', { a: attack, d: defense }));
       }
     }
@@ -520,13 +545,14 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
     if (!kind) return null;
     const d = sub.description;
     const factor = doublingFactor(d);
+    const label = heroTextName(sub, lang);
     switch (kind) {
       case 'reach_damage': {
         if (side !== 'attacker' || !regular) return null;
         const m = /наносят \+(\d+)% урона/.exec(d);
         if (!m || !reachOf(d)?.includes(mode.reach)) return null;
         const percent = Number(m[1]) * factor;
-        result.typeModifiers += percent;
+        contribute(result.typeModifiers, label, percent);
         return L('typePercent', { n: `+${percent}` });
       }
       case 'reach_incoming': {
@@ -534,7 +560,7 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         const m = new RegExp(`${DASH}(\\d+)% урона от`).exec(d);
         if (!m || !reachOf(d)?.includes(mode.reach)) return null;
         const percent = Number(m[1]) * factor;
-        result.typeModifiers -= percent;
+        contribute(result.typeModifiers, label, -percent);
         return L('typePercent', { n: `−${percent}` });
       }
       case 'reach_mastery': {
@@ -542,21 +568,21 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         const m = new RegExp(`наносят \\+(\\d+)% и получают ${DASH}(\\d+)% урона`).exec(d);
         if (!m || !reachOf(d)?.includes(mode.reach)) return null;
         const percent = Number(m[side === 'attacker' ? 1 : 2]) * factor;
-        result.typeModifiers += side === 'attacker' ? percent : -percent;
+        contribute(result.typeModifiers, label, side === 'attacker' ? percent : -percent);
         return L('typePercent', { n: side === 'attacker' ? `+${percent}` : `−${percent}` });
       }
       case 'own_damage': {
         const m = /наносят \+(\d+) урона/.exec(d);
         if (!m) return null;
         const amount = Number(m[1]) * factor;
-        result.damage += amount;
+        contribute(result.damage, label, amount);
         return L('ownDamage', { n: amount });
       }
       case 'enemy_damage': {
         const m = new RegExp(`наносят ${DASH}(\\d+) урона`).exec(d);
         if (!m) return null;
         const amount = Number(m[1]) * factor;
-        result.enemyDamage -= amount;
+        contribute(result.enemyDamage, label, -amount);
         return L('enemyDamage', { n: amount });
       }
       case 'enemy_attack_percent': {
@@ -566,7 +592,7 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
           (Math.max(0, input.enemyUnitAttack) * Number(m[1]) * factor) / 100,
         );
         if (amount <= 0) return null;
-        result.enemyAttack -= amount;
+        contribute(result.enemyAttack, label, -amount);
         return L('enemyAttack', { n: amount });
       }
       case 'enemy_defense_percent': {
@@ -576,7 +602,7 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
           (Math.max(0, input.enemyUnitDefense) * Number(m[1]) * factor) / 100,
         );
         if (amount <= 0) return null;
-        result.enemyDefense -= amount;
+        contribute(result.enemyDefense, label, -amount);
         return L('enemyDefense', { n: amount });
       }
       case 'enemy_stats_percent': {
@@ -586,8 +612,8 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         const attack = Math.floor((Math.max(0, input.enemyUnitAttack) * percent) / 100);
         const defense = Math.floor((Math.max(0, input.enemyUnitDefense) * percent) / 100);
         if (attack <= 0 && defense <= 0) return null;
-        result.enemyAttack -= attack;
-        result.enemyDefense -= defense;
+        contribute(result.enemyAttack, label, -attack);
+        contribute(result.enemyDefense, label, -defense);
         return L('enemyStats', { a: attack, d: defense });
       }
       case 'magic_reduction': {
@@ -595,7 +621,7 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         const m = new RegExp(`${DASH}(\\d+)% магического урона`).exec(d);
         if (!m) return null;
         const percent = Number(m[1]) * factor;
-        result.magicReduction -= percent;
+        contribute(result.magicReduction, label, -percent);
         return L('magic', { n: `−${percent}` });
       }
       case 'enemy_health': {
@@ -609,8 +635,8 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         const m = /\+(\d+) к атаке(?: и|,) защите/.exec(d);
         if (!m) return null;
         const amount = Number(m[1]) * factor;
-        result.attack += amount;
-        result.defense += amount;
+        contribute(result.attack, label, amount);
+        contribute(result.defense, label, amount);
         return L('ownCreature', { n: amount });
       }
       case 'spell_attack': {
@@ -618,7 +644,7 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         if (!m) return null;
         const amount = Math.floor((Math.max(0, input.spellPower) * Number(m[1]) * factor) / 100);
         if (amount <= 0) return null;
-        result.attack += amount;
+        contribute(result.attack, label, amount);
         return L('attackBonus', { n: amount });
       }
       case 'knowledge_defense': {
@@ -626,7 +652,7 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         if (!m) return null;
         const amount = Math.floor((Math.max(0, input.knowledge) * Number(m[1]) * factor) / 100);
         if (amount <= 0) return null;
-        result.defense += amount;
+        contribute(result.defense, label, amount);
         return L('defenseBonus', { n: amount });
       }
       case 'hero_stats_tiers': {
@@ -634,8 +660,8 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         if (!m || !unit || unit.tier < Number(m[1]) || unit.tier > Number(m[2])) return null;
         const share = heroStatsShare(Number(m[3]) * factor);
         if (share.attack <= 0 && share.defense <= 0) return null;
-        result.attack += share.attack;
-        result.defense += share.defense;
+        contribute(result.attack, label, share.attack);
+        contribute(result.defense, label, share.defense);
         return L('ownStats', { a: share.attack, d: share.defense });
       }
       case 'hero_stats_neutral': {
@@ -643,8 +669,8 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         if (!m || unit?.faction !== 'neutral') return null;
         const share = heroStatsShare(Number(m[1]) * factor);
         if (share.attack <= 0 && share.defense <= 0) return null;
-        result.attack += share.attack;
-        result.defense += share.defense;
+        contribute(result.attack, label, share.attack);
+        contribute(result.defense, label, share.defense);
         return L('ownStats', { a: share.attack, d: share.defense });
       }
       case 'own_health': {
@@ -666,7 +692,8 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
     const skill = SKILLS_BY_ID.get(pick.id);
     const levelText = skill?.levels[pick.level - 1];
     if (!skill || !levelText) continue;
-    const source = L('skillSource', { name: heroTextName(levelText, lang) });
+    const skillName = heroTextName(levelText, lang);
+    const source = L('skillSource', { name: skillName });
     const texts: string[] = [];
 
     const kind = SKILL_KINDS[pick.id];
@@ -677,8 +704,8 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
         const attack = Math.floor((Math.max(0, input.spellPower) * percent) / 100);
         const defense = Math.floor((Math.max(0, input.knowledge) * percent) / 100);
         if (attack > 0 || defense > 0) {
-          result.attack += attack;
-          result.defense += defense;
+          contribute(result.attack, skillName, attack);
+          contribute(result.defense, skillName, defense);
           texts.push(L('ownStats', { a: attack, d: defense }));
         }
       }
@@ -691,17 +718,17 @@ export function heroBonuses(input: HeroBonusInput, lang: Lang = 'ru'): HeroBonus
       const percent = parseSkillPercent(kind, levelText.description);
       if (percent !== null) {
         if (kind === 'damage_percent' && side === 'attacker' && regular) {
-          result.typeModifiers += percent;
+          contribute(result.typeModifiers, skillName, percent);
           texts.push(L('typePercent', { n: `+${percent}` }));
         } else if (kind === 'incoming_percent' && side === 'defender' && regular) {
-          result.typeModifiers -= percent;
+          contribute(result.typeModifiers, skillName, -percent);
           texts.push(L('typePercent', { n: `−${percent}` }));
         } else if (
           kind === 'magic_reduction' &&
           side === 'defender' &&
           mode.special?.kind === 'magic'
         ) {
-          result.magicReduction -= percent;
+          contribute(result.magicReduction, skillName, -percent);
           texts.push(L('magic', { n: `−${percent}` }));
         }
       }

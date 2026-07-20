@@ -42,7 +42,7 @@ const noAbilities = (over: Partial<AttackAbilities> = {}): AttackAbilities => ({
   modeMultiplier: 1,
   generalModifiers: 0,
   typeModifiers: 0,
-  effectModifiers: [],
+  typeContributions: [],
   retaliation: false,
   doubleStrike: false,
   maxDamage: false,
@@ -51,7 +51,7 @@ const noAbilities = (over: Partial<AttackAbilities> = {}): AttackAbilities => ({
   ...over,
 });
 
-/** Именованное слагаемое эффекта: подпись числа — название заклинания */
+/** Именованное слагаемое: подпись числа — название источника */
 const eff = (label: string, value: number) => ({ label, value });
 
 interface CalcOverrides {
@@ -772,40 +772,39 @@ describe('второй удар', () => {
   });
 });
 
-describe('приведение некорректного входа', () => {
+describe('данные каталога способностей роняют расчёт', () => {
   /**
-   * Некорректные значения не ломают расчёт, а приводятся к допустимым.
+   * Невозможные значения из встроенного каталога — баг в коде, а не
+   * ошибка пользователя: вместо молчаливой подмены расчёт бросает
+   * исключение. Пользовательский вход проверяется отдельно
+   * (`validateBattle`) и до формулы не доходит.
    *
-   * Условия: отряд из 0 существ с отрицательной атакой и максимальным
-   * уроном меньше минимального (10–5) против защиты 10.
+   * Условия: отрицательный множитель режима, отрицательная доля урона
+   * способности и положительное «снижение» урона.
    *
-   * Ожидание: считается 1 существо с уроном 10–10 и атакой 0 — урон
-   * 10 × 20/30 ≈ 6.7, после округления 7 и для минимума, и для
-   * максимума.
+   * Ожидание: каждое значение приводит к исключению.
    */
-  it('количество, атака и диапазон урона приводятся к допустимым', () => {
-    const result = calc({
-      attacker: { count: 0, attack: -5, damageMin: 10, damageMax: 5 },
-    });
-    expect(normal(result).min).toBe(7);
-    expect(normal(result).max).toBe(7);
-  });
-
-  /**
-   * Неполное здоровье верхнего юнита не может превышать полное здоровье
-   * существа.
-   *
-   * Условия: у защитника существа по 10 здоровья, а неполное здоровье
-   * указано как 50. Удар на 10 урона.
-   *
-   * Ожидание: верхний юнит считается со здоровьем 10 и погибает.
-   */
-  it('неполное здоровье ограничивается полным', () => {
-    const result = calc({
-      attacker: { count: 1 },
-      defender: { count: 5, health: 10, topHealth: 50 },
-    });
-    expect(normal(result).killsMax).toBe(1);
+  it('отрицательные множители и положительное снижение — исключение', () => {
+    expect(() => calc({ abilities: { modeMultiplier: -1 } })).toThrow(/множитель режима/);
+    expect(() =>
+      calculateAbilityDamage({
+        count: 10,
+        damageMin: 10,
+        damageMax: 10,
+        factor: -1,
+        defender: { count: 10, health: 10, topHealth: 10 },
+      }),
+    ).toThrow(/доля урона/);
+    expect(() =>
+      calculateAbilityDamage({
+        count: 10,
+        damageMin: 0,
+        damageMax: 0,
+        base: 10,
+        reductions: [eff('Защита от магии', 30)],
+        defender: { count: 10, health: 10, topHealth: 10 },
+      }),
+    ).toThrow(/снижение урона/);
   });
 });
 
@@ -910,7 +909,7 @@ describe('урон способности', () => {
    *
    * Условия: формула 6 × 10 = 60 магического урона, защита от магии −60%.
    *
-   * Ожидание: урон 24.
+   * Ожидание: урон 24, в бакете снижения число подписано способностью.
    */
   it('защита цели снижает урон способности', () => {
     const result = calculateAbilityDamage({
@@ -919,10 +918,42 @@ describe('урон способности', () => {
       damageMax: 0,
       base: 0,
       perUnit: 6,
-      reduction: -60,
+      reductions: [eff('Защита от магии', -60)],
       defender,
     });
     expect(result.min).toBe(24);
+    const step = result.steps[result.steps.length - 1];
+    expect(stepText(step)).toBe('1 − 60/100');
+    expect(step.tokens[1].param).toBe('Защита от магии');
+  });
+
+  /**
+   * Несколько источников снижения складываются, каждое число подписано
+   * своим источником.
+   *
+   * Условия: формула 6 × 10 = 60, защита от магии −60% и «Сопротивление»
+   * героя −15%.
+   *
+   * Ожидание: урон 60 × 0.25 = 15, бакет «1 − (60 + 15)/100» с метками
+   * обоих источников.
+   */
+  it('источники снижения урона способности складываются слагаемыми', () => {
+    const result = calculateAbilityDamage({
+      count: 10,
+      damageMin: 0,
+      damageMax: 0,
+      base: 0,
+      perUnit: 6,
+      reductions: [eff('Защита от магии', -60), eff('Продвинутое сопротивление', -15)],
+      defender,
+    });
+    expect(result.min).toBe(15);
+    const step = result.steps[result.steps.length - 1];
+    expect(stepText(step)).toBe('1 − (60 + 15)/100');
+    expect(step.tokens.map((token) => token.param).filter(Boolean)).toEqual([
+      'Защита от магии',
+      'Продвинутое сопротивление',
+    ]);
   });
 
   /**
@@ -1353,7 +1384,7 @@ describe('эффекты заклинаний', () => {
     const result = calc({
       abilities: {
         typeModifiers: -25,
-        effectModifiers: [eff('Благословение', 15), eff('Сумерки', -5)],
+        typeContributions: [eff('Благословение', 15), eff('Сумерки', -5)],
       },
     });
     expect(normal(result).min).toBe(85);
@@ -1378,7 +1409,7 @@ describe('эффекты заклинаний', () => {
    * заклинания.
    */
   it('нулевой процент поля не показывается рядом с эффектами', () => {
-    const result = calc({ abilities: { effectModifiers: [eff('Благословение', 15)] } });
+    const result = calc({ abilities: { typeContributions: [eff('Благословение', 15)] } });
     const step = result.attack.steps.find((s) => s.label === 'типовые модификаторы');
     expect(stepText(step)).toBe('1 + 15/100');
     expect(step?.tokens.map((token) => token.param).filter(Boolean)).toEqual(['Благословение']);
@@ -1395,7 +1426,7 @@ describe('эффекты заклинаний', () => {
    */
   it('погасившие друг друга слагаемые убирают бакет из формулы', () => {
     const result = calc({
-      abilities: { typeModifiers: -15, effectModifiers: [eff('Благословение', 15)] },
+      abilities: { typeModifiers: -15, typeContributions: [eff('Благословение', 15)] },
     });
     expect(normal(result).min).toBe(100);
     expect(result.attack.steps.find((s) => s.label === 'типовые модификаторы')).toBeUndefined();
@@ -1411,7 +1442,7 @@ describe('эффекты заклинаний', () => {
    */
   it('порог 10% действует на сумму типовых модификаторов и эффектов', () => {
     const result = calc({
-      abilities: { typeModifiers: -80, effectModifiers: [eff('Уязвимость', -40)] },
+      abilities: { typeModifiers: -80, typeContributions: [eff('Уязвимость', -40)] },
     });
     expect(result.typeCapped).toBe(true);
     expect(normal(result).min).toBe(10);
@@ -1473,5 +1504,223 @@ describe('эффекты заклинаний', () => {
     });
     expect(normal(result.retaliation).min).toBe(1);
     expect(stepText(result.retaliation?.steps[2])).toBe('max(0; 1 − 150/100)');
+  });
+});
+
+describe('именованные слагаемые статов и урона', () => {
+  /**
+   * Статовый вклад эффекта показывается в бакете АТК/ЗЩТ отдельным
+   * слагаемым с названием источника и даёт тот же урон, что и сложенное
+   * заранее значение.
+   *
+   * Условия: атака существа 10 со вкладом «Удлинить тень» +3.
+   *
+   * Ожидание: бакет «(20 + 10 + 3 + 0) / (20 + 10 + 0)», у числа 3
+   * подсказка с названием заклинания; строки удачи совпадают с расчётом
+   * от атаки 13.
+   */
+  it('статовый вклад эффекта — слагаемое бакета АТК/ЗЩТ', () => {
+    const result = calc({ attacker: { attackContributions: [eff('Удлинить тень', 3)] } });
+    const step = result.attack.steps.find((s) => s.label === 'соотношение атаки и защиты');
+    expect(stepText(step)).toBe('(20 + 10 + 3 + 0) / (20 + 10 + 0)');
+    expect(step?.tokens.find((token) => token.text === '3')?.param).toBe('Удлинить тень');
+    const merged = calc({ attacker: { attack: 13 } });
+    expect(result.attack.byLuck).toEqual(merged.attack.byLuck);
+  });
+
+  /**
+   * Вклад в статы героя попадает в половину героя своей стороны бакета.
+   *
+   * Условия: атака героя 0 со вкладом «Боевая магия» +2.
+   *
+   * Ожидание: бакет «(20 + 10 + 0 + 2) / (20 + 10 + 0)»; строки удачи
+   * совпадают с расчётом от атаки героя 2.
+   */
+  it('вклад в статы героя — слагаемое половины героя', () => {
+    const result = calc({ attacker: { heroAttackContributions: [eff('Боевая магия', 2)] } });
+    const step = result.attack.steps.find((s) => s.label === 'соотношение атаки и защиты');
+    expect(stepText(step)).toBe('(20 + 10 + 0 + 2) / (20 + 10 + 0)');
+    expect(result.attack.byLuck).toEqual(calc({ attacker: { heroAttack: 2 } }).attack.byLuck);
+  });
+
+  /**
+   * Отрицательный вклад (штраф вражеского героя) показывается со знаком
+   * минус и уменьшает модификатор.
+   *
+   * Условия: атака существа 10 со вкладом «Неостановимая сила» −4.
+   *
+   * Ожидание: бакет «(20 + 10 − 4 + 0) / (20 + 10 + 0)», модификатор
+   * 26/30, обычный урон 87.
+   */
+  it('штраф вражеского героя — отрицательное слагаемое', () => {
+    const result = calc({ attacker: { attackContributions: [eff('Неостановимая сила', -4)] } });
+    const step = result.attack.steps.find((s) => s.label === 'соотношение атаки и защиты');
+    expect(stepText(step)).toBe('(20 + 10 − 4 + 0) / (20 + 10 + 0)');
+    expect(result.attackDefenseModifier).toBeCloseTo(26 / 30);
+    expect(normal(result).min).toBe(87);
+  });
+
+  /**
+   * Штрафы не уводят характеристику ниже нуля: порог применяется к сумме
+   * группы и виден в формуле обёрткой max(0; …) — молчаливой подмены нет.
+   *
+   * Условия: атака существа 10 со вкладом −15.
+   *
+   * Ожидание: бакет «(20 + max(0; 10 − 15) + 0) / (20 + 10 + 0)», в
+   * расчёте атака 0 — модификатор 20/30, урон 67.
+   */
+  it('порог нуля характеристики виден в формуле', () => {
+    const result = calc({ attacker: { attackContributions: [eff('Укоротить тень', -15)] } });
+    const step = result.attack.steps.find((s) => s.label === 'соотношение атаки и защиты');
+    expect(stepText(step)).toBe('(20 + max(0; 10 − 15) + 0) / (20 + 10 + 0)');
+    expect(result.attackDefenseModifier).toBeCloseTo(20 / 30);
+    expect(normal(result).min).toBe(67);
+  });
+
+  /**
+   * Вклад в урон существа показывается слагаемым в бакете отряда и
+   * прибавляется к обеим границам диапазона.
+   *
+   * Условия: урон существа 10–10 и 10–20, вклад «Теневые клинки» +1.
+   *
+   * Ожидание: бакеты «10 × (10 + 1)» и «10 × ((10..20) + 1)», обычные
+   * строки 110 и 110–210; подсказка числа 1 — название источника.
+   */
+  it('вклад в урон — слагаемое бакета отряда', () => {
+    const flat = calc({ attacker: { damageContributions: [eff('Теневые клинки', 1)] } });
+    const step = flat.attack.steps[0];
+    expect(stepText(step)).toBe('10 × (10 + 1)');
+    expect(step?.tokens.find((token) => token.text === '1')?.param).toBe('Теневые клинки');
+    expect(normal(flat).min).toBe(110);
+
+    const ranged = calc({
+      attacker: { damageMax: 20, damageContributions: [eff('Теневые клинки', 1)] },
+    });
+    expect(stepText(ranged.attack.steps[0])).toBe('10 × ((10..20) + 1)');
+    expect(normal(ranged).min).toBe(110);
+    expect(normal(ranged).max).toBe(210);
+  });
+
+  /**
+   * Штраф урону не уводит границы ниже нуля: порог виден обёрткой
+   * max(0; …), а минимум в 1 урона по-прежнему действует.
+   *
+   * Условия: урон существа 10–10 со вкладом −12.
+   *
+   * Ожидание: бакет «10 × max(0; 10 − 12)», обычный удар равен 1.
+   */
+  it('порог нуля урона виден в формуле, минимум в 1 урона действует', () => {
+    const result = calc({ attacker: { damageContributions: [eff('Проклятие', -12)] } });
+    expect(stepText(result.attack.steps[0])).toBe('10 × max(0; 10 − 12)');
+    expect(normal(result).min).toBe(1);
+  });
+
+  /**
+   * «Всегда максимальный урон» схлопывает базовый диапазон до вкладов:
+   * прибавка действует уже к максимуму.
+   *
+   * Условия: урон существа 5–10, maxDamage, вклад +1.
+   *
+   * Ожидание: бакет «10 × (10 + 1)», все строки удачи от 110.
+   */
+  it('maxDamage схлопывает базу до прибавления вкладов', () => {
+    const result = calc({
+      attacker: { damageMin: 5, damageContributions: [eff('Теневые клинки', 1)] },
+      abilities: { maxDamage: true },
+    });
+    expect(stepText(result.attack.steps[0])).toBe('10 × (10 + 1)');
+    expect(normal(result).min).toBe(110);
+    expect(normal(result).max).toBe(110);
+  });
+
+  /**
+   * Снижение постоянной защитной способностью цели — такое же именованное
+   * слагаемое типового бакета, подписанное названием способности.
+   *
+   * Условия: типовые модификаторы −25 и вклад «Защита от выстрелов» −30;
+   * второй расчёт — только вклад.
+   *
+   * Ожидание: бакеты «1 + (−25 − 30)/100» и «1 − 30/100», подсказка —
+   * название способности.
+   */
+  it('снижение способностью цели подписано в типовом бакете', () => {
+    const both = calc({
+      abilities: { typeModifiers: -25, typeContributions: [eff('Защита от выстрелов', -30)] },
+    });
+    expect(stepText(both.attack.steps.find((s) => s.label === 'типовые модификаторы'))).toBe(
+      '1 + (−25 − 30)/100',
+    );
+    const single = calc({
+      abilities: { typeContributions: [eff('Защита от выстрелов', -30)] },
+    });
+    const step = single.attack.steps.find((s) => s.label === 'типовые модификаторы');
+    expect(stepText(step)).toBe('1 − 30/100');
+    expect(step?.tokens.map((token) => token.param).filter(Boolean)).toEqual([
+      'Защита от выстрелов',
+    ]);
+  });
+
+  /**
+   * Вклады защитника показываются в блоке ответного удара — в его бакете
+   * АТК/ЗЩТ и уроне выживших — и не трогают блок атаки.
+   *
+   * Условия: у защитника вклад +3 к атаке и +1 к урону, ответ включён.
+   *
+   * Ожидание: в ответе бакеты «(20 + 10 + 3 + 0) / (20 + 10 + 0)» и
+   * «(0..5) × (10 + 1)»; в атаке — прежние «(20 + 10 + 0) / (20 + 10 + 0)»
+   * и «10 × 10».
+   */
+  it('вклады защитника видны в блоке ответного удара', () => {
+    const result = calc({
+      defender: {
+        attackContributions: [eff('Удлинить тень', 3)],
+        damageContributions: [eff('Теневые клинки', 1)],
+      },
+      abilities: { retaliation: true },
+    });
+    expect(stepText(result.attack.steps[0])).toBe('10 × 10');
+    expect(stepText(result.attack.steps[1])).toBe('(20 + 10 + 0) / (20 + 10 + 0)');
+    expect(stepText(result.retaliation?.steps[0])).toBe('(0..5) × (10 + 1)');
+    expect(stepText(result.retaliation?.steps[1])).toBe('(20 + 10 + 3 + 0) / (20 + 10 + 0)');
+  });
+
+  /**
+   * Нулевые вклады не показываются: формула выглядит как без вкладов.
+   *
+   * Условия: вклады 0 к атаке и урону.
+   *
+   * Ожидание: бакеты «(20 + 10 + 0) / (20 + 10 + 0)» и «10 × 10» — байт в
+   * байт как в базовом расчёте.
+   */
+  it('нулевые вклады не показываются в формуле', () => {
+    const result = calc({
+      attacker: {
+        attackContributions: [eff('Удлинить тень', 0)],
+        damageContributions: [eff('Теневые клинки', 0)],
+      },
+    });
+    expect(result.attack.steps).toEqual(calc().attack.steps);
+  });
+
+  /**
+   * Второй удар с вкладами остаётся однотипным блоком: его множители
+   * совпадают с множителями атаки, а бакет отряда несёт те же слагаемые
+   * урона.
+   *
+   * Условия: двойной удар без ответа, вклады +3 к атаке и +1 к урону.
+   *
+   * Ожидание: steps.slice(1) второго удара равны атаке, первый бакет —
+   * «10 × (10 + 1)».
+   */
+  it('второй удар повторяет слагаемые атаки', () => {
+    const result = calc({
+      attacker: {
+        attackContributions: [eff('Удлинить тень', 3)],
+        damageContributions: [eff('Теневые клинки', 1)],
+      },
+      abilities: { doubleStrike: true },
+    });
+    expect(stepText(result.secondStrike?.steps[0])).toBe('10 × (10 + 1)');
+    expect(result.secondStrike?.steps.slice(1)).toEqual(result.attack.steps.slice(1));
   });
 });

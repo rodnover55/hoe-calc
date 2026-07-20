@@ -53,6 +53,7 @@ import { spellBonuses } from './spellEffects';
 import { SPELLS_BY_ID } from './spells';
 import type { UnitPreset } from './units';
 import { UNITS_BY_ID } from './units';
+import { validateBattle } from './validation';
 import type { AttackParams } from './urlState';
 import { SHARE_PARAM, decodeAppState, encodeAppState } from './urlState';
 import './App.css';
@@ -700,75 +701,100 @@ export default function App() {
     [defenderEffects, defender.health, mode],
   );
 
-  // Бонусы героев складываются с полями формы в момент расчёта и не
-  // перезаписывают введённые вручную значения: свои — в атаку/защиту
-  // героя, урон и здоровье отряда, штрафы противника — в статы юнита
-  // (формула сама ограничивает их снизу). Эффекты заклинаний прибавляются
-  // к статам и здоровью юнита-носителя тем же способом.
-  const effectiveAttacker = useMemo(
-    () => ({
+  // Бонусы героев и эффекты заклинаний не вливаются в поля формы, а
+  // передаются формуле именованными слагаемыми — в бакетах каждое число
+  // подписано источником. Свёрнутым остаётся только здоровье: его в
+  // формуле нет, и итог не опускается ниже 1 — игровое правило для суммы
+  // корректного поля и игровых штрафов (штраф героя может увести
+  // здоровье 1 в минус).
+  const effectiveAttacker = useMemo(() => {
+    const healthBonus = attBonus.health + defBonus.enemyHealth + attSpell.health;
+    const health = Math.max(1, attacker.health + healthBonus);
+    return {
       ...attacker,
-      health: attacker.health + attBonus.health + defBonus.enemyHealth + attSpell.health,
-      topHealth: attacker.topHealth + attBonus.health + defBonus.enemyHealth + attSpell.health,
-      damageMin: attacker.damageMin + attBonus.damage + defBonus.enemyDamage,
-      damageMax: attacker.damageMax + attBonus.damage + defBonus.enemyDamage,
-      attack: attacker.attack + defBonus.enemyAttack + attSpell.attack,
-      defense: attacker.defense + defBonus.enemyDefense + attSpell.defense,
-      heroAttack: attacker.heroAttack + attBonus.attack,
-      heroDefense: attacker.heroDefense + attBonus.defense,
-    }),
-    [attacker, attBonus, defBonus, attSpell],
-  );
-  const effectiveDefender = useMemo(
-    () => ({
+      health,
+      topHealth: Math.min(health, Math.max(1, attacker.topHealth + healthBonus)),
+      attackContributions: [
+        ...attSpell.attack.map((item) => namedContribution(item, lang)),
+        ...defBonus.enemyAttack,
+      ],
+      defenseContributions: [
+        ...attSpell.defense.map((item) => namedContribution(item, lang)),
+        ...defBonus.enemyDefense,
+      ],
+      heroAttackContributions: attBonus.attack,
+      heroDefenseContributions: attBonus.defense,
+      damageContributions: [...attBonus.damage, ...defBonus.enemyDamage],
+    };
+  }, [attacker, attBonus, defBonus, attSpell, lang]);
+  const effectiveDefender = useMemo(() => {
+    const healthBonus = defBonus.health + attBonus.enemyHealth + defSpell.health;
+    const health = Math.max(1, defender.health + healthBonus);
+    return {
       ...defender,
-      health: defender.health + defBonus.health + attBonus.enemyHealth + defSpell.health,
-      topHealth: defender.topHealth + defBonus.health + attBonus.enemyHealth + defSpell.health,
-      damageMin: defender.damageMin + defBonus.damage + attBonus.enemyDamage,
-      damageMax: defender.damageMax + defBonus.damage + attBonus.enemyDamage,
-      attack: defender.attack + attBonus.enemyAttack + defSpell.attack,
-      defense: defender.defense + attBonus.enemyDefense + defSpell.defense,
-      heroAttack: defender.heroAttack + defBonus.attack,
-      heroDefense: defender.heroDefense + defBonus.defense,
-    }),
-    [defender, attBonus, defBonus, defSpell],
+      health,
+      topHealth: Math.min(health, Math.max(1, defender.topHealth + healthBonus)),
+      attackContributions: [
+        ...defSpell.attack.map((item) => namedContribution(item, lang)),
+        ...attBonus.enemyAttack,
+      ],
+      defenseContributions: [
+        ...defSpell.defense.map((item) => namedContribution(item, lang)),
+        ...attBonus.enemyDefense,
+      ],
+      heroAttackContributions: defBonus.attack,
+      heroDefenseContributions: defBonus.defense,
+      damageContributions: [...defBonus.damage, ...attBonus.enemyDamage],
+    };
+  }, [defender, attBonus, defBonus, defSpell, lang]);
+
+  // Невозможные в игре значения формы не подменяются: вместо расчёта
+  // выводится список ошибок, пока пользователь их не исправит.
+  const validationErrors = useMemo(
+    () => validateBattle(attacker, defender, attack.distance, lang),
+    [attacker, defender, attack.distance, lang],
   );
 
   const result = useMemo(
     () =>
-      calculateDamage(
-        {
-          attacker: effectiveAttacker,
-          abilities: {
-            ...attack,
-            // Процентные бонусы героев уже занулены внутри heroBonuses
-            // для способностей с собственным уроном.
-            typeModifiers:
-              attack.typeModifiers +
-              (mode.special ? 0 : (reduction?.percent ?? 0)) +
-              attBonus.typeModifiers +
-              defBonus.typeModifiers,
-            // Вклады эффектов заклинаний идут отдельными полями, чтобы в
-            // формуле каждое число было подписано своим заклинанием.
-            effectModifiers: [...attSpell.typeModifiers, ...defSpell.typeModifiers].map((item) =>
-              namedContribution(item, lang),
-            ),
-            rangePenalty: mode.rangePenalty,
-            modeMultiplier: mode.multiplier,
-            doubleStrike,
-            // «Всегда максимум» даёт и бафф носителя-атакующего, и
-            // «Уязвимость» на защитнике.
-            maxDamage: attSpell.maxDamage || defSpell.maxDamage,
-            flatDamage: attSpell.flatDamage.map((item) => namedContribution(item, lang)),
-            retaliationModifiers: defSpell.retaliationPercent.map((item) =>
-              namedContribution(item, lang),
-            ),
-          },
-          defender: effectiveDefender,
-        },
-        lang,
-      ),
+      validationErrors.length > 0
+        ? null
+        : calculateDamage(
+            {
+              attacker: effectiveAttacker,
+              abilities: {
+                ...attack,
+                // Каждое слагаемое типового бакета именовано источником:
+                // снижение постоянной защитной способностью цели,
+                // процентные бонусы героев (занулены внутри heroBonuses
+                // для способностей с собственным уроном), эффекты
+                // заклинаний.
+                typeContributions: [
+                  ...(mode.special || !reduction
+                    ? []
+                    : [{ label: reduction.source, value: reduction.percent }]),
+                  ...attBonus.typeModifiers,
+                  ...defBonus.typeModifiers,
+                  ...attSpell.typeModifiers.map((item) => namedContribution(item, lang)),
+                  ...defSpell.typeModifiers.map((item) => namedContribution(item, lang)),
+                ],
+                rangePenalty: mode.rangePenalty,
+                modeMultiplier: mode.multiplier,
+                doubleStrike,
+                // «Всегда максимум» даёт и бафф носителя-атакующего, и
+                // «Уязвимость» на защитнике.
+                maxDamage: attSpell.maxDamage || defSpell.maxDamage,
+                flatDamage: attSpell.flatDamage.map((item) => namedContribution(item, lang)),
+                retaliationModifiers: defSpell.retaliationPercent.map((item) =>
+                  namedContribution(item, lang),
+                ),
+              },
+              defender: effectiveDefender,
+            },
+            lang,
+          ),
     [
+      validationErrors,
       effectiveAttacker,
       attack,
       effectiveDefender,
@@ -786,21 +812,31 @@ export default function App() {
   // Способности с собственным уроном считаются отдельной формулой.
   const special = mode.special;
   const specialResult = useMemo(() => {
-    if (!special) return null;
+    if (!special || validationErrors.length > 0) return null;
     const result = calculateAbilityDamage(
       {
         count: effectiveAttacker.count,
         damageMin: effectiveAttacker.damageMin,
         damageMax: effectiveAttacker.damageMax,
+        damageContributions: effectiveAttacker.damageContributions,
         factor: special.factor,
         attack: special.ignoreDefense
-          ? { unit: effectiveAttacker.attack, hero: effectiveAttacker.heroAttack }
+          ? {
+              unit: effectiveAttacker.attack,
+              hero: effectiveAttacker.heroAttack,
+              unitContributions: effectiveAttacker.attackContributions,
+              heroContributions: effectiveAttacker.heroAttackContributions,
+            }
           : undefined,
         base: special.base,
         perUnit: special.perUnit,
-        // «Сопротивление» героя защитника складывается с защитой
-        // цели от магии; на чистый урон оба не действуют.
-        reduction: (reduction?.percent ?? 0) + defBonus.magicReduction || undefined,
+        // «Сопротивление» героя защитника складывается с защитой цели от
+        // магии; на чистый урон оба не действуют, каждое слагаемое
+        // именовано источником.
+        reductions: [
+          ...(reduction ? [{ label: reduction.source, value: reduction.percent }] : []),
+          ...defBonus.magicReduction,
+        ],
         // Цель — эффективные статы: прибавки и штрафы здоровью от
         // навыков влияют на счёт погибших и от способностей.
         defender: {
@@ -829,6 +865,7 @@ export default function App() {
     effectiveDefender,
     reduction,
     defBonus,
+    validationErrors,
     lang,
   ]);
 
@@ -1213,29 +1250,43 @@ export default function App() {
         </section>
       </div>
 
-      <div className="cards">
-        {specialResult && (
-          <div className="card">
-            <div className="label">{t('cards.ability')}</div>
-            <DamageGrid
-              columns={[{ key: 'ability', luck: null, label: mode.label, data: specialResult }]}
-              rows={[
-                { label: t('cards.damage'), render: damageCell },
-                { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
-                {
-                  label: t('cards.wholeStack'),
-                  render: (row: AbilityDamageResult) =>
-                    row.strikesMin === null ? '—' : formatStrikes(row.strikesMin, row.strikesMax),
-                },
-              ]}
-            />
-            <Formula steps={specialResult.steps} />
-          </div>
-        )}
-        {!specialResult && strikeCard(t('cards.attack'), result.attack)}
-        {result.retaliation && strikeCard(t('cards.retaliation'), result.retaliation)}
-        {result.secondStrike && strikeCard(t('cards.second'), result.secondStrike)}
-      </div>
+      {result === null ? (
+        <div className="card validation-card">
+          <div className="label">{t('validation.title')}</div>
+          <ul className="validation-list">
+            {validationErrors.map((error, index) => (
+              <li key={`${error.side ?? 'attack'}-${error.field}-${index}`}>{error.message}</li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="cards">
+          {specialResult && (
+            <div className="card">
+              <div className="label">{t('cards.ability')}</div>
+              <DamageGrid
+                columns={[{ key: 'ability', luck: null, label: mode.label, data: specialResult }]}
+                rows={[
+                  { label: t('cards.damage'), render: damageCell },
+                  {
+                    label: t('cards.dies'),
+                    render: (row) => formatCount(row.killsMin, row.killsMax),
+                  },
+                  {
+                    label: t('cards.wholeStack'),
+                    render: (row: AbilityDamageResult) =>
+                      row.strikesMin === null ? '—' : formatStrikes(row.strikesMin, row.strikesMax),
+                  },
+                ]}
+              />
+              <Formula steps={specialResult.steps} />
+            </div>
+          )}
+          {!specialResult && strikeCard(t('cards.attack'), result.attack)}
+          {result.retaliation && strikeCard(t('cards.retaliation'), result.retaliation)}
+          {result.secondStrike && strikeCard(t('cards.second'), result.secondStrike)}
+        </div>
+      )}
     </main>
   );
 }

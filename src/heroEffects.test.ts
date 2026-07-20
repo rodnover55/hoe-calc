@@ -14,7 +14,14 @@ import {
   sameHeroPick,
 } from './heroEffects';
 import type { HeroBonusInput, HeroPick, SkillPick } from './heroEffects';
+import type { EffectContribution } from './formula';
+import { heroTextName } from './heroes';
+import { SKILLS_BY_ID } from './skills';
 import { UNITS, UNITS_BY_ID } from './units';
+
+/** Сумма именованных вкладов — для проверок итоговых величин */
+const sum = (list: EffectContribution[]): number =>
+  list.reduce((total, item) => total + item.value, 0);
 
 const meleeMode: AttackMode = {
   id: 'base',
@@ -167,7 +174,7 @@ describe('heroStrikeDamage', () => {
 describe('heroBonuses: специализации', () => {
   it('без героя бонусов нет', () => {
     const bonuses = heroBonuses(input({}));
-    expect(bonuses.typeModifiers).toBe(0);
+    expect(bonuses.typeModifiers).toEqual([]);
     expect(bonuses.notes).toEqual([]);
   });
 
@@ -176,16 +183,19 @@ describe('heroBonuses: специализации', () => {
     // дальнем бою и на расстоянии. Навыки заданы пустым списком и не
     // участвуют: heroBonuses не читает hero.skills.
     const melee = heroBonuses(input({ hero: hero('niev'), level: 8 }));
-    expect(melee.typeModifiers).toBe(12);
+    // Вклад в формулу подписан голым именем специализации.
+    expect(melee.typeModifiers).toEqual([
+      { label: heroTextName(hero('niev').specialization, 'ru'), value: 12 },
+    ]);
     const ranged = heroBonuses(input({ hero: hero('niev'), level: 8, mode: rangedMode }));
-    expect(ranged.typeModifiers).toBe(14);
+    expect(sum(ranged.typeModifiers)).toBe(14);
   });
 
   it('процентные бонусы не действуют на способности и чужую сторону', () => {
     const special = heroBonuses(input({ hero: hero('niev'), level: 8, mode: specialMode('pure') }));
-    expect(special.typeModifiers).toBe(0);
+    expect(special.typeModifiers).toEqual([]);
     const defender = heroBonuses(input({ hero: hero('niev'), level: 8, side: 'defender' }));
-    expect(defender.typeModifiers).toBe(0);
+    expect(defender.typeModifiers).toEqual([]);
     expect(defender.notes[0].applied).toBe(false);
   });
 
@@ -193,11 +203,11 @@ describe('heroBonuses: специализации', () => {
     // Бастион: −10% от обычных атак, −1% за каждые 4 уровня; ещё −1% за
     // каждые 2 уровня от дальних и дальнобойных атак.
     const melee = heroBonuses(input({ hero: hero('bulwark'), level: 8, side: 'defender' }));
-    expect(melee.typeModifiers).toBe(-12);
+    expect(sum(melee.typeModifiers)).toBe(-12);
     const ranged = heroBonuses(
       input({ hero: hero('bulwark'), level: 8, side: 'defender', mode: rangedMode }),
     );
-    expect(ranged.typeModifiers).toBe(-16);
+    expect(sum(ranged.typeModifiers)).toBe(-16);
   });
 
   it('специализация по существу усиливает свой отряд и ослабляет вражеский', () => {
@@ -207,16 +217,17 @@ describe('heroBonuses: специализации', () => {
     expect(upgrade).not.toBeNull();
     // Джон Джонсон: атака и защита мечников +1 за каждые 3 уровня.
     const own = heroBonuses(input({ hero: hero('john_johnson'), level: 7, unit: upgrade }));
-    expect(own.attack).toBe(2);
-    expect(own.defense).toBe(2);
+    const specName = heroTextName(hero('john_johnson').specialization, 'ru');
+    expect(own.attack).toEqual([{ label: specName, value: 2 }]);
+    expect(own.defense).toEqual([{ label: specName, value: 2 }]);
     expect(own.notes[0].applied).toBe(true);
     const enemy = heroBonuses(input({ hero: hero('john_johnson'), level: 7, enemyUnit: swordsman }));
-    expect(enemy.enemyAttack).toBe(-2);
-    expect(enemy.enemyDefense).toBe(-2);
+    expect(enemy.enemyAttack).toEqual([{ label: specName, value: -2 }]);
+    expect(enemy.enemyDefense).toEqual([{ label: specName, value: -2 }]);
     const other = heroBonuses(
       input({ hero: hero('john_johnson'), level: 7, unit: UNITS_BY_ID.get('angel') ?? null }),
     );
-    expect(other.attack).toBe(0);
+    expect(other.attack).toEqual([]);
     expect(other.notes[0].applied).toBe(false);
   });
 
@@ -225,61 +236,65 @@ describe('heroBonuses: специализации', () => {
     const bonuses = heroBonuses(
       input({ hero: hero('lord_edgar'), level: 6, heroAttack: 10, heroDefense: 20 }),
     );
-    expect(bonuses.attack).toBe(1);
-    expect(bonuses.defense).toBe(3);
+    expect(sum(bonuses.attack)).toBe(1);
+    expect(sum(bonuses.defense)).toBe(3);
   });
 
   it('специализация на удар героя отмечается в заметках атакующего', () => {
     const bonuses = heroBonuses(input({ hero: hero('stinger'), level: 6 }));
     expect(bonuses.notes[0].applied).toBe(true);
     expect(bonuses.notes[0].text).toContain('50');
-    expect(bonuses.typeModifiers).toBe(0);
+    expect(bonuses.typeModifiers).toEqual([]);
   });
 
   it('неизвестная специализация даёт только справочную заметку', () => {
     const bonuses = heroBonuses(input({ hero: hero('ister'), level: 20 }));
-    expect(bonuses.attack).toBe(0);
-    expect(bonuses.typeModifiers).toBe(0);
+    expect(bonuses.attack).toEqual([]);
+    expect(bonuses.typeModifiers).toEqual([]);
     expect(bonuses.notes[0].applied).toBe(false);
   });
 });
 
 describe('heroBonuses: навыки из списка', () => {
   it('«Нападение» действует у атакующего на обычные атаки по уровням', () => {
-    expect(heroBonuses(input({ hero: plainHero, skills: [pick('offence')] })).typeModifiers).toBe(10);
     expect(
-      heroBonuses(input({ hero: plainHero, skills: [pick('offence', 2)] })).typeModifiers,
+      sum(heroBonuses(input({ hero: plainHero, skills: [pick('offence')] })).typeModifiers),
+    ).toBe(10);
+    expect(
+      sum(heroBonuses(input({ hero: plainHero, skills: [pick('offence', 2)] })).typeModifiers),
     ).toBe(15);
     expect(
-      heroBonuses(input({ hero: plainHero, skills: [pick('offence', 3)] })).typeModifiers,
+      sum(heroBonuses(input({ hero: plainHero, skills: [pick('offence', 3)] })).typeModifiers),
     ).toBe(20);
     expect(
       heroBonuses(input({ hero: plainHero, skills: [pick('offence')], side: 'defender' }))
         .typeModifiers,
-    ).toBe(0);
+    ).toEqual([]);
     expect(
       heroBonuses(input({ hero: plainHero, skills: [pick('offence')], mode: specialMode('pure') }))
         .typeModifiers,
-    ).toBe(0);
+    ).toEqual([]);
   });
 
   it('«Защита» действует у защитника со знаком минус по уровням', () => {
     const defender = (level: 1 | 2 | 3) =>
       heroBonuses(input({ hero: plainHero, skills: [pick('defence', level)], side: 'defender' }));
-    expect(defender(1).typeModifiers).toBe(-10);
-    expect(defender(2).typeModifiers).toBe(-15);
-    expect(defender(3).typeModifiers).toBe(-20);
+    expect(sum(defender(1).typeModifiers)).toBe(-10);
+    expect(sum(defender(2).typeModifiers)).toBe(-15);
+    expect(sum(defender(3).typeModifiers)).toBe(-20);
     expect(
       heroBonuses(input({ hero: plainHero, skills: [pick('defence')] })).typeModifiers,
-    ).toBe(0);
+    ).toEqual([]);
   });
 
   it('«Сопротивление» снижает только магический урон способностей', () => {
     const at = (mode: AttackMode) =>
       heroBonuses(input({ hero: plainHero, skills: [pick('resistance', 2)], side: 'defender', mode }));
-    expect(at(specialMode('magic')).magicReduction).toBe(-25);
-    expect(at(specialMode('pure')).magicReduction).toBe(0);
-    expect(at(meleeMode).magicReduction).toBe(0);
+    // Вклад подписан именем уровня навыка из каталога.
+    const levelName = heroTextName(SKILLS_BY_ID.get('resistance')!.levels[1], 'ru');
+    expect(at(specialMode('magic')).magicReduction).toEqual([{ label: levelName, value: -25 }]);
+    expect(at(specialMode('pure')).magicReduction).toEqual([]);
+    expect(at(meleeMode).magicReduction).toEqual([]);
   });
 
   it('«Боевая магия» даёт атаку и защиту от силы магии и знаний с floor', () => {
@@ -287,17 +302,17 @@ describe('heroBonuses: навыки из списка', () => {
       input({ hero: plainHero, skills: [pick('battle_magic')], spellPower: 7, knowledge: 13 }),
     );
     // Базовый уровень: 15% от 7 → 1, 15% от 13 → 1.
-    expect(bonuses.attack).toBe(1);
-    expect(bonuses.defense).toBe(1);
+    expect(sum(bonuses.attack)).toBe(1);
+    expect(sum(bonuses.defense)).toBe(1);
     const expert = heroBonuses(
       input({ hero: plainHero, skills: [pick('battle_magic', 3)], spellPower: 8, knowledge: 4 }),
     );
     // Экспертный уровень: 25% от 8 → 2, 25% от 4 → 1.
-    expect(expert.attack).toBe(2);
-    expect(expert.defense).toBe(1);
+    expect(sum(expert.attack)).toBe(2);
+    expect(sum(expert.defense)).toBe(1);
     // Без силы магии и знаний — справочная заметка.
     const empty = heroBonuses(input({ hero: plainHero, skills: [pick('battle_magic')] }));
-    expect(empty.attack).toBe(0);
+    expect(empty.attack).toEqual([]);
     expect(empty.notes[1].applied).toBe(false);
   });
 
@@ -305,7 +320,7 @@ describe('heroBonuses: навыки из списка', () => {
     const bonuses = heroBonuses(input({ hero: plainHero, skills: [pick('combat', 2)] }));
     expect(bonuses.notes[1].applied).toBe(true);
     expect(bonuses.notes[1].text).toContain('15');
-    expect(bonuses.typeModifiers).toBe(0);
+    expect(bonuses.typeModifiers).toEqual([]);
     const defender = heroBonuses(
       input({ hero: plainHero, skills: [pick('combat', 2)], side: 'defender' }),
     );
@@ -315,9 +330,14 @@ describe('heroBonuses: навыки из списка', () => {
   it('«Стрельба» усиливает только дальние атаки атакующего', () => {
     const archer = pick('offence', 2, ['archery']);
     const ranged = heroBonuses(input({ hero: plainHero, skills: [archer], mode: rangedMode }));
-    expect(ranged.typeModifiers).toBe(15 + 15);
+    // Два вклада — уровень навыка и поднавык, каждый со своим именем.
+    const offence = SKILLS_BY_ID.get('offence')!;
+    expect(ranged.typeModifiers).toEqual([
+      { label: heroTextName(offence.levels[1], 'ru'), value: 15 },
+      { label: heroTextName(offence.subskills.find((sub) => sub.id === 'archery')!, 'ru'), value: 15 },
+    ]);
     const melee = heroBonuses(input({ hero: plainHero, skills: [archer] }));
-    expect(melee.typeModifiers).toBe(15);
+    expect(sum(melee.typeModifiers)).toBe(15);
   });
 
   it('«Укрытие» снижает только дальний урон защитника', () => {
@@ -325,19 +345,19 @@ describe('heroBonuses: навыки из списка', () => {
     const ranged = heroBonuses(
       input({ hero: plainHero, skills: [covered], side: 'defender', mode: rangedMode }),
     );
-    expect(ranged.typeModifiers).toBe(-15 - 20);
+    expect(sum(ranged.typeModifiers)).toBe(-15 - 20);
     const melee = heroBonuses(input({ hero: plainHero, skills: [covered], side: 'defender' }));
-    expect(melee.typeModifiers).toBe(-15);
+    expect(sum(melee.typeModifiers)).toBe(-15);
   });
 
   it('«Мастерство боя» действует на обе стороны по типу удара', () => {
     const mastery = pick('battlecraft', 2, ['melee_mastery']);
     const attacker = heroBonuses(input({ hero: plainHero, skills: [mastery] }));
-    expect(attacker.typeModifiers).toBe(10);
+    expect(sum(attacker.typeModifiers)).toBe(10);
     const defender = heroBonuses(input({ hero: plainHero, skills: [mastery], side: 'defender' }));
-    expect(defender.typeModifiers).toBe(-10);
+    expect(sum(defender.typeModifiers)).toBe(-10);
     const ranged = heroBonuses(input({ hero: plainHero, skills: [mastery], mode: rangedMode }));
-    expect(ranged.typeModifiers).toBe(0);
+    expect(ranged.typeModifiers).toEqual([]);
   });
 
   it('плоские прибавки к урону и здоровью попадают в свои бакеты', () => {
@@ -351,8 +371,8 @@ describe('heroBonuses: навыки из списка', () => {
         ],
       }),
     );
-    expect(bonuses.damage).toBe(1);
-    expect(bonuses.enemyDamage).toBe(-1);
+    expect(sum(bonuses.damage)).toBe(1);
+    expect(sum(bonuses.enemyDamage)).toBe(-1);
     expect(bonuses.health).toBe(2);
   });
 
@@ -366,13 +386,13 @@ describe('heroBonuses: навыки из списка', () => {
       }),
     );
     // «Непоколебимость»: 15% от 21 → 3; «Неостановимая сила»: 15% от 30 → 4.
-    expect(bonuses.enemyDefense).toBe(-3);
-    expect(bonuses.enemyAttack).toBe(-4);
+    expect(sum(bonuses.enemyDefense)).toBe(-3);
+    expect(sum(bonuses.enemyAttack)).toBe(-4);
     // При нулевых статах противника вкладов и заметок эффекта нет.
     const zero = heroBonuses(
       input({ hero: plainHero, skills: [pick('offence', 3, ['firmness'])] }),
     );
-    expect(zero.enemyDefense).toBe(0);
+    expect(zero.enemyDefense).toEqual([]);
   });
 
   it('«Час волка» штрафует атаку и защиту противника разом', () => {
@@ -384,8 +404,8 @@ describe('heroBonuses: навыки из списка', () => {
         enemyUnitDefense: 14,
       }),
     );
-    expect(bonuses.enemyAttack).toBe(-2);
-    expect(bonuses.enemyDefense).toBe(-1);
+    expect(sum(bonuses.enemyAttack)).toBe(-2);
+    expect(sum(bonuses.enemyDefense)).toBe(-1);
   });
 
   it('«Договор с волшебниками» удваивается «Дипломатией»', () => {
@@ -395,8 +415,12 @@ describe('heroBonuses: навыки из списка', () => {
     const single = heroBonuses(
       input({ hero: plainHero, skills: [contract], side: 'defender', mode: specialMode('magic') }),
     );
-    expect(single.magicReduction).toBe(-10);
-    expect(single.typeModifiers).toBe(0);
+    // Вклад поднавыка подписан его именем из каталога.
+    const contractSub = SKILLS_BY_ID.get('defence')!.subskills.find(
+      (sub) => sub.id === 'wizard_contract',
+    )!;
+    expect(single.magicReduction).toEqual([{ label: heroTextName(contractSub, 'ru'), value: -10 }]);
+    expect(single.typeModifiers).toEqual([]);
     const doubled = heroBonuses(
       input({
         hero: plainHero,
@@ -405,7 +429,7 @@ describe('heroBonuses: навыки из списка', () => {
         mode: specialMode('magic'),
       }),
     );
-    expect(doubled.magicReduction).toBe(-20);
+    expect(sum(doubled.magicReduction)).toBe(-20);
   });
 
   it('«Хроническая слабость» снижает здоровье противника и удваивается', () => {
@@ -427,8 +451,8 @@ describe('heroBonuses: навыки из списка', () => {
     );
     // Уровень: 25% от 10 → 2 и 25% от 20 → 5; поднавыки: 15% от 10 → 1
     // и 15% от 20 → 3.
-    expect(bonuses.attack).toBe(2 + 1);
-    expect(bonuses.defense).toBe(5 + 3);
+    expect(bonuses.attack.map((item) => item.value)).toEqual([2, 1]);
+    expect(bonuses.defense.map((item) => item.value)).toEqual([5, 3]);
   });
 
   it('«Элитные стражи» действуют только на существ младших рангов', () => {
@@ -443,8 +467,8 @@ describe('heroBonuses: навыки из списка', () => {
       }),
     );
     // 25% от 8 → 2, 25% от 12 → 3.
-    expect(lowTier.attack).toBe(2);
-    expect(lowTier.defense).toBe(3);
+    expect(sum(lowTier.attack)).toBe(2);
+    expect(sum(lowTier.defense)).toBe(3);
     const highTier = heroBonuses(
       input({
         hero: plainHero,
@@ -454,15 +478,15 @@ describe('heroBonuses: навыки из списка', () => {
         heroDefense: 12,
       }),
     );
-    expect(highTier.attack).toBe(0);
+    expect(highTier.attack).toEqual([]);
   });
 
   it('«Владение мечом» даёт плоские атаку и защиту', () => {
     const bonuses = heroBonuses(
       input({ hero: plainHero, skills: [pick('combat', 2, ['swordcraft'])] }),
     );
-    expect(bonuses.attack).toBe(2);
-    expect(bonuses.defense).toBe(2);
+    expect(sum(bonuses.attack)).toBe(2);
+    expect(sum(bonuses.defense)).toBe(2);
   });
 
   it('«Бродячая армия» усиливает только нейтральных существ', () => {
@@ -473,8 +497,8 @@ describe('heroBonuses: навыки из списка', () => {
       input({ hero: plainHero, skills: [vagrant], unit: neutral, heroAttack: 5, heroDefense: 3 }),
     );
     // 100% от атаки и защиты героя.
-    expect(bonuses.attack).toBe(5);
-    expect(bonuses.defense).toBe(3);
+    expect(sum(bonuses.attack)).toBe(5);
+    expect(sum(bonuses.defense)).toBe(3);
     const temple = heroBonuses(
       input({
         hero: plainHero,
@@ -484,7 +508,7 @@ describe('heroBonuses: навыки из списка', () => {
         heroDefense: 3,
       }),
     );
-    expect(temple.attack).toBe(0);
+    expect(temple.attack).toEqual([]);
   });
 
   it('поднавыки недоступного уровня и неизвестные навыки игнорируются', () => {
@@ -492,7 +516,7 @@ describe('heroBonuses: навыки из списка', () => {
     const early = heroBonuses(
       input({ hero: plainHero, skills: [pick('offence', 2, ['shadow_blades'])] }),
     );
-    expect(early.damage).toBe(0);
+    expect(early.damage).toEqual([]);
     const unknown = heroBonuses(
       input({ hero: plainHero, skills: [pick('no_such_skill', 2)] }),
     );
@@ -501,7 +525,7 @@ describe('heroBonuses: навыки из списка', () => {
 
   it('не влияющий на расчёт навык получает справочную заметку', () => {
     const bonuses = heroBonuses(input({ hero: plainHero, skills: [pick('logistics', 2)] }));
-    expect(bonuses.typeModifiers).toBe(0);
+    expect(bonuses.typeModifiers).toEqual([]);
     expect(bonuses.notes).toHaveLength(2);
     expect(bonuses.notes[1].applied).toBe(false);
     expect(bonuses.notes[1].source).toContain('Продвинутая логистика');
@@ -542,7 +566,7 @@ describe('каталог покрывает курируемые специал�
       }
       const unit = UNITS_BY_ID.get(units[0]) ?? null;
       const bonuses = heroBonuses(input({ hero: h, level: 30, unit }));
-      expect(bonuses.attack, `${h.id}: описание не распознано`).toBeGreaterThan(0);
+      expect(sum(bonuses.attack), `${h.id}: описание не распознано`).toBeGreaterThan(0);
     }
   });
 });

@@ -39,7 +39,7 @@ export type AttackParams = Omit<
   | 'maxDamage'
   | 'flatDamage'
   | 'retaliationModifiers'
-  | 'effectModifiers'
+  | 'typeContributions'
 >;
 
 /** Всё состояние калькулятора, попадающее в ссылку */

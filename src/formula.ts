@@ -9,6 +9,11 @@
  * удачи и формулой расчёта с подставленными значениями — блоки
  * отличаются только входными данными. Названия параметров формулы
  * берутся из локали по языку, переданному вторым аргументом.
+ *
+ * Каждая модификация числа формулы — отдельное именованное слагаемое с
+ * названием источника; ничего не вливается в базовые значения молча.
+ * Пользовательский вход обязан быть провалидирован (`validateBattle`),
+ * битые данные встроенного каталога способностей роняют расчёт.
  */
 
 import type { Lang } from './i18n';
@@ -35,6 +40,16 @@ export interface AttackerStats {
   heroAttack: number;
   /** Защита героя; прибавляется к защите существа */
   heroDefense: number;
+  /** Именованные слагаемые к атаке существа: эффекты заклинаний и штрафы от героя противника */
+  attackContributions?: EffectContribution[];
+  /** Именованные слагаемые к защите существа */
+  defenseContributions?: EffectContribution[];
+  /** Именованные слагаемые к атаке героя: специализация и навыки своего героя */
+  heroAttackContributions?: EffectContribution[];
+  /** Именованные слагаемые к защите героя */
+  heroDefenseContributions?: EffectContribution[];
+  /** Именованные слагаемые к урону существа; прибавляются к обеим границам */
+  damageContributions?: EffectContribution[];
 }
 
 export interface DefenderStats {
@@ -56,14 +71,25 @@ export interface DefenderStats {
   heroAttack: number;
   /** Защита героя; прибавляется к защите существа */
   heroDefense: number;
+  /** Именованные слагаемые к атаке существа: эффекты заклинаний и штрафы от героя противника */
+  attackContributions?: EffectContribution[];
+  /** Именованные слагаемые к защите существа */
+  defenseContributions?: EffectContribution[];
+  /** Именованные слагаемые к атаке героя: специализация и навыки своего героя */
+  heroAttackContributions?: EffectContribution[];
+  /** Именованные слагаемые к защите героя */
+  heroDefenseContributions?: EffectContribution[];
+  /** Именованные слагаемые к урону существа; прибавляются к обеим границам */
+  damageContributions?: EffectContribution[];
 }
 
 /**
- * Именованное слагаемое от эффекта заклинания: в числовой строке формулы
- * подпись числа — название заклинания-источника
+ * Именованное слагаемое модификатора: в числовой строке формулы подпись
+ * числа — название источника (заклинания, специализации или навыка героя,
+ * защитной способности цели, поля формы)
  */
 export interface EffectContribution {
-  /** Название заклинания для подсказки у числа */
+  /** Название источника для подсказки у числа */
   label: string;
   /** Величина слагаемого */
   value: number;
@@ -72,6 +98,73 @@ export interface EffectContribution {
 /** Сумма именованных слагаемых */
 const contributionSum = (list: EffectContribution[]): number =>
   list.reduce((total, item) => total + item.value, 0);
+
+/**
+ * Битые данные встроенного каталога способностей — баг в коде, а не
+ * ошибка пользователя: расчёт падает вместо молчаливой подмены значения.
+ */
+const assertCatalog = (condition: boolean, message: string): void => {
+  if (!condition) throw new Error(`Каталог способностей: ${message}`);
+};
+
+/**
+ * Группа слагаемых одной характеристики: значение поля формы первым
+ * термом и именованные вклады эффектов. Итог группы не опускается ниже
+ * нуля — эффекты в игре не уводят характеристику в минус; срабатывание
+ * порога отмечается флагом и показывается в формуле обёрткой `max(0; …)`.
+ */
+interface StatGroup {
+  /** Слагаемые: первым — значение поля с названием параметра, дальше вклады */
+  terms: EffectContribution[];
+  /** Итог группы: сумма слагаемых, не ниже нуля */
+  value: number;
+  /** Сработал ли нижний порог — сумма слагаемых ушла в минус */
+  capped: boolean;
+}
+
+/** Сборка группы характеристики; нулевые вклады не показываются */
+const statGroup = (base: number, param: string, extra: EffectContribution[] = []): StatGroup => {
+  const terms = extra.filter((item) => item.value !== 0);
+  const raw = base + contributionSum(terms);
+  return {
+    terms: [{ label: param, value: base }, ...terms],
+    value: Math.max(0, raw),
+    capped: raw < 0,
+  };
+};
+
+/**
+ * Диапазон урона существа с именованными вкладами: вклады прибавляются к
+ * обеим границам, границы не опускаются ниже нуля; срабатывание порога
+ * показывается в формуле обёрткой `max(0; …)`.
+ */
+interface DamageGroup {
+  /** Базовые границы урона из поля формы (после схлопывания `maxDamage`) */
+  min: number;
+  max: number;
+  /** Именованные вклады без нулевых */
+  terms: EffectContribution[];
+  /** Эффективные границы с вкладами, не ниже нуля */
+  effMin: number;
+  effMax: number;
+  /** Сработал ли нижний порог хотя бы у одной границы */
+  capped: boolean;
+}
+
+/** Сборка диапазона урона с вкладами */
+const damageGroup = (min: number, max: number, extra: EffectContribution[] = []): DamageGroup => {
+  const terms = extra.filter((item) => item.value !== 0);
+  const sum = contributionSum(terms);
+  const effMin = Math.max(0, min + sum);
+  return {
+    min,
+    max,
+    terms,
+    effMin,
+    effMax: Math.max(effMin, max + sum),
+    capped: min + sum < 0,
+  };
+};
 
 /** Учитываемые абилки и условия атаки */
 export interface AttackAbilities {
@@ -86,11 +179,12 @@ export interface AttackAbilities {
   /** Сумма типовых модификаторов, % */
   typeModifiers: number;
   /**
-   * Слагаемые типовых модификаторов от эффектов заклинаний, %; в бакете
-   * формулы каждое показывается своим числом с названием заклинания, а
-   * порог в 10% действует на общую сумму
+   * Именованные слагаемые типовых модификаторов, %: эффекты заклинаний,
+   * процентные бонусы героев и снижение постоянной защитной способностью
+   * цели; в бакете формулы каждое показывается своим числом с названием
+   * источника, а порог в 10% действует на общую сумму вместе с полем
    */
-  effectModifiers: EffectContribution[];
+  typeContributions: EffectContribution[];
   /** Будет ли ответный удар */
   retaliation: boolean;
   /** Второй удар после ответа: двойной удар или двойной выстрел */
@@ -192,6 +286,30 @@ export const tokens = (...parts: (string | FormulaToken)[]): FormulaToken[] =>
 type ParamName = (key: string) => string;
 
 /**
+ * Последовательность слагаемых с подписями: первое со своим знаком,
+ * остальные — через « + » и « − »; каждое число несёт название своего
+ * источника в подсказке.
+ */
+const contributionTokens = (list: EffectContribution[]): (string | FormulaToken)[] =>
+  list.flatMap((item, index) =>
+    index === 0
+      ? item.value < 0
+        ? ['−', num(-item.value, item.label)]
+        : [num(item.value, item.label)]
+      : [item.value >= 0 ? ' + ' : ' − ', num(Math.abs(item.value), item.label)],
+  );
+
+/**
+ * Токены группы характеристики: слагаемые группы подряд, при сработавшем
+ * пороге — в обёртке `max(0; …)`; группа из одного поля выглядит как
+ * прежнее одиночное число.
+ */
+const groupTokens = (group: StatGroup): (string | FormulaToken)[] =>
+  group.capped
+    ? ['max(0; ', ...contributionTokens(group.terms), ')']
+    : contributionTokens(group.terms);
+
+/**
  * Бакет «отряд × урон»: количество существ и диапазон урона одного.
  *
  * Количество задаётся числом либо диапазоном — у ответного и второго удара
@@ -199,16 +317,33 @@ type ParamName = (key: string) => string;
  * удара. В легенде и то и другое — одно название параметра; границы
  * диапазона различают минимум и максимум только в подсказках у чисел.
  * Выродившийся диапазон (минимум равен максимуму) сворачивается в одно
- * число — и у количества, и у урона.
+ * число — и у количества, и у урона. Именованные вклады к урону
+ * показываются слагаемыми после базовых границ: `30 × ((12..15) + 2)`;
+ * при сработавшем пороге скобки заменяются обёрткой `max(0; …)`.
  */
 const stackStep = (
   P: ParamName,
   label: string,
   count: number | { min: number; max: number },
-  damageMin: number,
-  damageMax: number,
+  damage: DamageGroup,
 ): DamageStep => {
   const ranged = typeof count !== 'number' && count.min !== count.max;
+  const baseTokens =
+    damage.min === damage.max
+      ? [num(damage.min, P('damage'))]
+      : ['(', num(damage.min, P('damageMin')), '..', num(damage.max, P('damageMax')), ')'];
+  const damageTokens =
+    damage.terms.length === 0
+      ? [' × ', ...baseTokens]
+      : [
+          damage.capped ? ' × max(0; ' : ' × (',
+          ...baseTokens,
+          ...damage.terms.flatMap((item) => [
+            item.value >= 0 ? ' + ' : ' − ',
+            num(Math.abs(item.value), item.label),
+          ]),
+          ')',
+        ];
   return {
     label,
     formula: `${P('count')} × ${P('damage')}`,
@@ -218,31 +353,32 @@ const stackStep = (
         : ranged
           ? ['(', num(count.min, P('countMin')), '..', num(count.max, P('countMax')), ')']
           : [num(count.min, P('count'))]),
-      ...(damageMin === damageMax
-        ? [' × ', num(damageMin, P('damage'))]
-        : [' × (', num(damageMin, P('damageMin')), '..', num(damageMax, P('damageMax')), ')']),
+      ...damageTokens,
     ),
   };
 };
 
-/** Бакет АТК/ЗЩТ: (20 + атака юнита и героя) / (20 + защита юнита и героя) */
+/**
+ * Бакет АТК/ЗЩТ: (20 + атака юнита и героя) / (20 + защита юнита и героя);
+ * именованные вклады эффектов — слагаемые своей половины.
+ */
 const atkDefStep = (
   P: ParamName,
   label: string,
-  attack: { unit: number; hero: number },
-  defense: { unit: number; hero: number },
+  attack: { unit: StatGroup; hero: StatGroup },
+  defense: { unit: StatGroup; hero: StatGroup },
 ): DamageStep => ({
   label,
   formula: `(20 + ${P('unitAttack')} + ${P('heroAttack')}) / (20 + ${P('unitDefense')} + ${P('heroDefense')})`,
   tokens: tokens(
     '(20 + ',
-    num(attack.unit, P('unitAttack')),
+    ...groupTokens(attack.unit),
     ' + ',
-    num(attack.hero, P('heroAttack')),
+    ...groupTokens(attack.hero),
     ') / (20 + ',
-    num(defense.unit, P('unitDefense')),
+    ...groupTokens(defense.unit),
     ' + ',
-    num(defense.hero, P('heroDefense')),
+    ...groupTokens(defense.hero),
     ')',
   ),
 });
@@ -289,19 +425,30 @@ export interface AbilityAttackInput {
   damageMin: number;
   /** Максимальный урон одного существа */
   damageMax: number;
+  /** Именованные слагаемые к урону существа; прибавляются к обеим границам */
+  damageContributions?: EffectContribution[];
   /** Доля урона обычной атаки; если не задана, действует base/perUnit */
   factor?: number;
   /**
    * Атака юнита и героя — для способностей, игнорирующих защиту: даёт
-   * множитель (20 + АТК) / 20; если не задана, множителя нет
+   * множитель (20 + АТК) / 20; если не задана, множителя нет. Вклады —
+   * именованные слагаемые эффектов к соответствующей половине.
    */
-  attack?: { unit: number; hero: number };
+  attack?: {
+    unit: number;
+    hero: number;
+    unitContributions?: EffectContribution[];
+    heroContributions?: EffectContribution[];
+  };
   /** Слагаемое фиксированной формулы */
   base?: number;
   /** Множитель количества в фиксированной формуле */
   perUnit?: number;
-  /** Снижение урона защитой цели, % (отрицательное значение) */
-  reduction?: number;
+  /**
+   * Именованные слагаемые снижения урона защитой цели, % (отрицательные
+   * значения: защитная способность цели, «Сопротивление» героя)
+   */
+  reductions?: EffectContribution[];
   /** Отряд защитника для подсчёта погибших и ударов до его гибели */
   defender: {
     count: number;
@@ -327,9 +474,11 @@ export interface AbilityDamageResult {
 /**
  * Считает урон атакующей способности по её собственной формуле.
  *
- * Чистая функция; некорректный вход приводится к допустимому так же, как
- * в `calculateDamage`. Урон способности может быть нулевым — минимум в
- * 1 урона на него не распространяется.
+ * Чистая функция; вход обязан быть провалидирован (`validateBattle`) —
+ * значения не подменяются, на непровалидированном входе результат не
+ * определён. Битые данные каталога способностей роняют расчёт
+ * исключением. Урон способности может быть нулевым — минимум в 1 урона
+ * на него не распространяется.
  */
 export function calculateAbilityDamage(
   input: AbilityAttackInput,
@@ -337,27 +486,32 @@ export function calculateAbilityDamage(
 ): AbilityDamageResult {
   const P: ParamName = (key) => translate(lang, `formula.params.${key}`);
   const B: ParamName = (key) => translate(lang, `formula.labels.${key}`);
-  const count = Math.max(1, input.count);
-  const damageMin = Math.max(0, input.damageMin);
-  const damageMax = Math.max(damageMin, input.damageMax);
-  const defCount = Math.max(1, input.defender.count);
-  const defHealth = Math.max(1, input.defender.health);
-  const defTopHealth = Math.min(defHealth, Math.max(1, input.defender.topHealth));
+  const count = input.count;
+  const damage = damageGroup(input.damageMin, input.damageMax, input.damageContributions);
+  const defCount = input.defender.count;
+  const defHealth = input.defender.health;
+  const defTopHealth = input.defender.topHealth;
   const defTotalHealth = (defCount - 1) * defHealth + defTopHealth;
-  const reduction = Math.min(0, input.reduction ?? 0);
+  const reductions = (input.reductions ?? []).filter((item) => item.value !== 0);
+  for (const item of reductions) {
+    assertCatalog(item.value < 0, `снижение урона «${item.label}» должно быть отрицательным, получено ${item.value}`);
+  }
+  const reduction = contributionSum(reductions);
+  // Снижение сильнее −100% не лечит цель: множитель не опускается ниже нуля.
   const reductionFactor = Math.max(0, 1 + reduction / 100);
 
   let min: number;
   let max: number;
   const steps: DamageStep[] = [];
   if (input.factor !== undefined) {
-    const factor = Math.max(0, input.factor);
-    const unitAtk = Math.max(0, input.attack?.unit ?? 0);
-    const heroAtk = Math.max(0, input.attack?.hero ?? 0);
-    const attackModifier = input.attack ? (20 + unitAtk + heroAtk) / 20 : 1;
-    min = round(count * damageMin * factor * attackModifier * reductionFactor);
-    max = round(count * damageMax * factor * attackModifier * reductionFactor);
-    steps.push(stackStep(P, B('stackDamage'), count, damageMin, damageMax));
+    const factor = input.factor;
+    assertCatalog(factor >= 0, `доля урона способности должна быть неотрицательной, получено ${factor}`);
+    const unitAttack = statGroup(input.attack?.unit ?? 0, P('unitAttack'), input.attack?.unitContributions);
+    const heroAttack = statGroup(input.attack?.hero ?? 0, P('heroAttack'), input.attack?.heroContributions);
+    const attackModifier = input.attack ? (20 + unitAttack.value + heroAttack.value) / 20 : 1;
+    min = round(count * damage.effMin * factor * attackModifier * reductionFactor);
+    max = round(count * damage.effMax * factor * attackModifier * reductionFactor);
+    steps.push(stackStep(P, B('stackDamage'), count, damage));
     if (factor !== 1) {
       steps.push({ label: B('factor'), formula: P('factor'), tokens: tokens(num(factor, P('factor'))) });
     }
@@ -367,16 +521,18 @@ export function calculateAbilityDamage(
         formula: `(20 + ${P('unitAttack')} + ${P('heroAttack')}) / 20`,
         tokens: tokens(
           '(20 + ',
-          num(unitAtk, P('unitAttack')),
+          ...groupTokens(unitAttack),
           ' + ',
-          num(heroAtk, P('heroAttack')),
+          ...groupTokens(heroAttack),
           ') / 20',
         ),
       });
     }
   } else {
-    const base = Math.max(0, input.base ?? 0);
-    const perUnit = Math.max(0, input.perUnit ?? 0);
+    const base = input.base ?? 0;
+    const perUnit = input.perUnit ?? 0;
+    assertCatalog(base >= 0, `слагаемое фиксированной формулы должно быть неотрицательным, получено ${base}`);
+    assertCatalog(perUnit >= 0, `множитель количества должен быть неотрицательным, получено ${perUnit}`);
     min = round((base + perUnit * count) * reductionFactor);
     max = min;
     steps.push(
@@ -395,10 +551,19 @@ export function calculateAbilityDamage(
     );
   }
   if (reduction < 0) {
+    // В числовой строке каждая величина подписана своим источником:
+    // защитной способностью цели или навыком героя.
+    const magnitudes = reductions.map((item) => ({ label: item.label, value: -item.value }));
     steps.push({
       label: B('targetDefense'),
       formula: `1 − ${P('reduction')}/100`,
-      tokens: tokens('1 − ', num(-reduction, P('reduction')), '/100'),
+      tokens: tokens(
+        '1 − ',
+        ...(magnitudes.length === 1
+          ? [num(magnitudes[0].value, magnitudes[0].label)]
+          : ['(', ...contributionTokens(magnitudes), ')']),
+        '/100',
+      ),
     });
   }
 
@@ -437,11 +602,11 @@ const killsFrom = (damage: number, topHealth: number, health: number): number =>
  * удачи предыдущего удара, а погибшие и удары до полной гибели каждого
  * блока считаются по его отряду-цели.
  *
- * Чистая функция: результат определяется только входным объектом.
- * Некорректный вход приводится к допустимому вместо ошибки: количество
- * существ и здоровье — минимум 1, урон и характеристики — минимум 0,
- * максимальный урон — не меньше минимального, неполное здоровье верхнего
- * юнита — не больше полного, дистанция — минимум 1 гекс.
+ * Чистая функция: результат определяется только входным объектом. Вход
+ * обязан быть провалидирован (`validateBattle`) — значения не
+ * подменяются молча, на непровалидированном входе результат не
+ * определён. Битые данные каталога способностей (отрицательный множитель
+ * режима, чистый урон и т. п.) роняют расчёт исключением.
  *
  * @param input полное описание боя: атакующий и защищающийся отряды с
  *   характеристиками героев и учитываемые абилки атаки.
@@ -455,46 +620,54 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
   const P: ParamName = (key) => translate(lang, `formula.params.${key}`);
   const B: ParamName = (key) => translate(lang, `formula.labels.${key}`);
 
-  const count = Math.max(1, attacker.count);
-  const health = Math.max(1, attacker.health);
-  const topHealth = Math.min(health, Math.max(1, attacker.topHealth));
-  const damageMinInput = Math.max(0, attacker.damageMin);
-  const damageMax = Math.max(damageMinInput, attacker.damageMax);
-  // «Всегда максимальный урон» схлопывает диапазон урона атакующего.
-  const damageMin = abilities.maxDamage ? damageMax : damageMinInput;
-  const flatContributions = abilities.flatDamage.filter((item) => item.value > 0);
+  const count = attacker.count;
+  const health = attacker.health;
+  const topHealth = attacker.topHealth;
+  // «Всегда максимальный урон» схлопывает базовый диапазон урона
+  // атакующего до прибавления именованных вкладов.
+  const attackDamage = damageGroup(
+    abilities.maxDamage ? attacker.damageMax : attacker.damageMin,
+    attacker.damageMax,
+    attacker.damageContributions,
+  );
+  const flatContributions = abilities.flatDamage.filter((item) => item.value !== 0);
+  for (const item of flatContributions) {
+    assertCatalog(item.value > 0, `чистый урон «${item.label}» должен быть положительным, получено ${item.value}`);
+  }
   const flatDamage = contributionSum(flatContributions);
-  const effectContributions = abilities.effectModifiers.filter((item) => item.value !== 0);
+  const typeContributions = abilities.typeContributions.filter((item) => item.value !== 0);
   const retContributions = abilities.retaliationModifiers.filter((item) => item.value !== 0);
-  const unitAtk = Math.max(0, attacker.attack);
-  const heroAtk = Math.max(0, attacker.heroAttack);
-  const unitDef = Math.max(0, defender.defense);
-  const heroDef = Math.max(0, defender.heroDefense);
+  const unitAttack = statGroup(attacker.attack, P('unitAttack'), attacker.attackContributions);
+  const heroAttack = statGroup(attacker.heroAttack, P('heroAttack'), attacker.heroAttackContributions);
+  const unitDefense = statGroup(defender.defense, P('unitDefense'), defender.defenseContributions);
+  const heroDefense = statGroup(defender.heroDefense, P('heroDefense'), defender.heroDefenseContributions);
 
-  const defCount = Math.max(1, defender.count);
-  const defHealth = Math.max(1, defender.health);
-  const defTopHealth = Math.min(defHealth, Math.max(1, defender.topHealth));
-  const defDamageMin = Math.max(0, defender.damageMin);
-  const defDamageMax = Math.max(defDamageMin, defender.damageMax);
-  const defUnitAtk = Math.max(0, defender.attack);
-  const defHeroAtk = Math.max(0, defender.heroAttack);
-  const attUnitDef = Math.max(0, attacker.defense);
-  const attHeroDef = Math.max(0, attacker.heroDefense);
+  const defCount = defender.count;
+  const defHealth = defender.health;
+  const defTopHealth = defender.topHealth;
+  const retaliationDamage = damageGroup(defender.damageMin, defender.damageMax, defender.damageContributions);
+  const defUnitAttack = statGroup(defender.attack, P('unitAttack'), defender.attackContributions);
+  const defHeroAttack = statGroup(defender.heroAttack, P('heroAttack'), defender.heroAttackContributions);
+  const attUnitDefense = statGroup(attacker.defense, P('unitDefense'), attacker.defenseContributions);
+  const attHeroDefense = statGroup(attacker.heroDefense, P('heroDefense'), attacker.heroDefenseContributions);
 
-  const attackDefenseModifier = (20 + unitAtk + heroAtk) / (20 + unitDef + heroDef);
-  const retaliationModifier = (20 + defUnitAtk + defHeroAtk) / (20 + attUnitDef + attHeroDef);
+  const attackDefenseModifier =
+    (20 + unitAttack.value + heroAttack.value) / (20 + unitDefense.value + heroDefense.value);
+  const retaliationModifier =
+    (20 + defUnitAttack.value + defHeroAttack.value) / (20 + attUnitDefense.value + attHeroDefense.value);
   // Модификаторы ответного удара, как и общие, ниже нуля не опускают урон.
   const retaliationRaw = 1 + contributionSum(retContributions) / 100;
   const retaliationFactor = Math.max(0, retaliationRaw);
   // Общие модификаторы, в отличие от типовых, нижнего порога не имеют:
   // от ухода множителя в минус спасает только минимум в 1 урона.
   const general = 1 + abilities.generalModifiers / 100;
-  const typeRaw = 1 + (abilities.typeModifiers + contributionSum(effectContributions)) / 100;
+  const typeRaw = 1 + (abilities.typeModifiers + contributionSum(typeContributions)) / 100;
   const type = Math.max(0.1, typeRaw);
   const typeCapped = typeRaw < 0.1;
-  const distance = Math.max(1, abilities.distance);
+  const distance = abilities.distance;
   const range = abilities.rangePenalty ? rangeFactor(distance) : 1;
-  const mode = Math.max(0, abilities.modeMultiplier);
+  const mode = abilities.modeMultiplier;
+  assertCatalog(mode >= 0, `множитель режима атаки должен быть неотрицательным, получено ${mode}`);
 
   const defTotalHealth = (defCount - 1) * defHealth + defTopHealth;
   const attTotalHealth = (count - 1) * health + topHealth;
@@ -517,31 +690,18 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
   };
 
   /**
-   * Последовательность слагаемых с подписями: первое со своим знаком,
-   * остальные — через « + » и « − »; каждое число несёт название своего
-   * источника в подсказке.
-   */
-  const contributionTokens = (list: EffectContribution[]): (string | FormulaToken)[] =>
-    list.flatMap((item, index) =>
-      index === 0
-        ? item.value < 0
-          ? ['−', num(-item.value, item.label)]
-          : [num(item.value, item.label)]
-        : [item.value >= 0 ? ' + ' : ' − ', num(Math.abs(item.value), item.label)],
-    );
-
-  /**
-   * Бакет типовых модификаторов: сумма процента поля и слагаемых эффектов
-   * под общим порогом, где каждое число подписано названием источника —
-   * поля или заклинания. Легенда при этом остаётся короткой. Нулевые
-   * слагаемые не показываются, а при множителе 1 (сумма слагаемых равна
-   * нулю) бакет не выводится вовсе — он не влияет на урон.
+   * Бакет типовых модификаторов: сумма процента поля и именованных
+   * слагаемых под общим порогом, где каждое число подписано названием
+   * источника — поля, заклинания, бонуса героя или защитной способности
+   * цели. Легенда при этом остаётся короткой. Нулевые слагаемые не
+   * показываются, а при множителе 1 (сумма слагаемых равна нулю) бакет
+   * не выводится вовсе — он не влияет на урон.
    */
   const typeStep = (): DamageStep | null => {
     if (typeRaw === 1) return null;
     const terms = [
       { label: P('type'), value: abilities.typeModifiers },
-      ...effectContributions,
+      ...typeContributions,
     ].filter((item) => item.value !== 0);
     const open = typeCapped ? 'max(0.1; ' : '';
     const close = typeCapped ? ')' : '';
@@ -560,7 +720,7 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
   };
 
   const modifierSteps: DamageStep[] = [
-    atkDefStep(P, B('atkDef'), { unit: unitAtk, hero: heroAtk }, { unit: unitDef, hero: heroDef }),
+    atkDefStep(P, B('atkDef'), { unit: unitAttack, hero: heroAttack }, { unit: unitDefense, hero: heroDefense }),
   ];
   // Единичный множитель не влияет на урон, и его бакет в формулу не попадает.
   if (abilities.generalModifiers !== 0) {
@@ -614,8 +774,8 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     label: string;
     /** Бьющие существа; диапазон — выжившие после предыдущего удара */
     strikers: { min: number; max: number };
-    damageMin: number;
-    damageMax: number;
+    /** Диапазон урона существа с именованными вкладами */
+    damage: DamageGroup;
     /** Произведение множителей блока без удачи */
     modifier: number;
     /** Чистый урон, прибавляемый после удачи и минимума в 1 */
@@ -634,8 +794,8 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     return {
       strikers: spec.strikers,
       byLuck: LUCK_ORDER.map((luck) => {
-        const min = bound(spec.strikers.min, spec.damageMin, LUCK_FACTOR[luck]);
-        const max = bound(spec.strikers.max, spec.damageMax, LUCK_FACTOR[luck]);
+        const min = bound(spec.strikers.min, spec.damage.effMin, LUCK_FACTOR[luck]);
+        const max = bound(spec.strikers.max, spec.damage.effMax, LUCK_FACTOR[luck]);
         return {
           luck,
           min,
@@ -648,7 +808,7 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
         };
       }),
       steps: [
-        stackStep(P, spec.label, spec.strikers, spec.damageMin, spec.damageMax),
+        stackStep(P, spec.label, spec.strikers, spec.damage),
         ...spec.modifierSteps,
         luckStep,
         ...(spec.flatStep ? [spec.flatStep] : []),
@@ -662,8 +822,7 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
   const attack = strike({
     label: B('stackDamage'),
     strikers: { min: count, max: count },
-    damageMin,
-    damageMax,
+    damage: attackDamage,
     modifier: base,
     flat: flatDamage,
     modifierSteps,
@@ -680,7 +839,12 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
   };
 
   const retaliationModifierSteps: DamageStep[] = [
-    atkDefStep(P, B('atkDef'), { unit: defUnitAtk, hero: defHeroAtk }, { unit: attUnitDef, hero: attHeroDef }),
+    atkDefStep(
+      P,
+      B('atkDef'),
+      { unit: defUnitAttack, hero: defHeroAttack },
+      { unit: attUnitDefense, hero: attHeroDefense },
+    ),
   ];
   if (retContributions.length > 0) {
     const open = retaliationRaw < 0 ? 'max(0; ' : '';
@@ -703,8 +867,7 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     ? strike({
         label: B('survivorsDamage'),
         strikers: survivors,
-        damageMin: defDamageMin,
-        damageMax: defDamageMax,
+        damage: retaliationDamage,
         modifier: retaliationModifier * retaliationFactor,
         flat: 0,
         modifierSteps: retaliationModifierSteps,
@@ -728,8 +891,7 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     ? strike({
         label: B('survivorsDamage'),
         strikers: attackers,
-        damageMin,
-        damageMax,
+        damage: attackDamage,
         modifier: base,
         flat: flatDamage,
         modifierSteps,

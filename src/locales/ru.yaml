@@ -223,3 +223,9 @@ strings:
     name: "Название"
   presets:
     stackFallback: "Отряд"
+  validation:
+    title: "Расчёт не выполнен — значения невозможны в игре:"
+    notFinite: "{field} ({side}): «{value}» — не число"
+    notBelow: "{field} ({side}): {value} — в игре не бывает меньше {min}"
+    maxBelowMin: "{field} ({side}): {value} — меньше минимального урона {min}"
+    topAboveFull: "{field} ({side}): {value} — больше полного здоровья существа {health}"
