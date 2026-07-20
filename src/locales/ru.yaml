@@ -47,7 +47,6 @@ strings:
     second: "Второй удар (средний)"
     damage: "урон:"
     dies: "умрёт:"
-    striking: "бьют:"
     wholeStack: "весь отряд:"
     destroyedShort: "уничтожен"
   luck:

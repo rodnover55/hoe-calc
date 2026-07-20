@@ -46,7 +46,6 @@ strings:
     second: "Second strike (average)"
     damage: "damage:"
     dies: "kills:"
-    striking: "striking:"
     wholeStack: "full stack:"
     destroyedShort: "destroyed"
   luck:

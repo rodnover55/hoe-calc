@@ -5,6 +5,7 @@ import type {
   DamageStep,
   DefenderStats,
   LuckDamage,
+  StrikeResult,
 } from './formula';
 import { calculateAbilityDamage, calculateDamage } from './formula';
 import type { AttackMode } from './abilityEffects';
@@ -174,6 +175,31 @@ export default function App() {
             max: formatNumber(max),
             word: pluralWord(lang, 'strikes.word', max),
           });
+
+  /**
+   * Карточка блока урона: атака, ответный и второй удар выводятся одной
+   * разметкой с одинаковыми строками и формулой — различаются только
+   * данные блока. Когда бить некому (strikers.max = 0), вместо значений
+   * выводится пометка об уничтоженном отряде.
+   */
+  const strikeCard = (label: string, strike: StrikeResult) => (
+    <div className="card">
+      <div className="label">{label}</div>
+      <DamageGrid
+        columns={luckColumns(strike.byLuck, (row) => (strike.strikers.max > 0 ? row : null))}
+        rows={[
+          { label: t('cards.damage'), render: damageCell },
+          { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
+          {
+            label: t('cards.wholeStack'),
+            render: (row) =>
+              row.strikesMin === null ? '—' : formatStrikes(row.strikesMin, row.strikesMax),
+          },
+        ]}
+      />
+      <Formula steps={strike.steps} />
+    </div>
+  );
 
   const [attacker, setAttacker] = useState<AttackerStats>(restored?.attacker ?? DEFAULT_ATTACKER);
   const [attack, setAttack] = useState<AttackParams>(restored?.attack ?? DEFAULT_ATTACK);
@@ -1206,62 +1232,9 @@ export default function App() {
             <Formula steps={specialResult.steps} />
           </div>
         )}
-        {!specialResult && (
-          <div className="card">
-            <div className="label">{t('cards.attack')}</div>
-            <DamageGrid
-              columns={luckColumns(result.byLuck, (row) => row)}
-              rows={[
-                { label: t('cards.damage'), render: damageCell },
-                { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
-                {
-                  label: t('cards.wholeStack'),
-                  render: (row) => formatStrikes(row.strikesMin, row.strikesMax),
-                },
-              ]}
-            />
-            <Formula steps={result.steps} />
-          </div>
-        )}
-        {attack.retaliation && (
-          <div className="card">
-            <div className="label">{t('cards.retaliation')}</div>
-            <DamageGrid
-              columns={luckColumns(result.byLuck, (row) =>
-                row.retaliation && row.retaliation.survivorsMax > 0 ? row.retaliation : null,
-              )}
-              rows={[
-                { label: t('cards.damage'), render: damageCell },
-                { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
-                {
-                  label: t('cards.wholeStack'),
-                  render: (row) =>
-                    row.strikesMin === null ? '—' : formatStrikes(row.strikesMin, row.strikesMax),
-                },
-              ]}
-            />
-            <Formula steps={result.retaliationSteps} />
-          </div>
-        )}
-        {doubleStrike && (
-          <div className="card">
-            <div className="label">{t('cards.second')}</div>
-            <DamageGrid
-              columns={luckColumns(result.byLuck, (row) =>
-                row.secondStrike && row.secondStrike.attackersMax > 0 ? row.secondStrike : null,
-              )}
-              rows={[
-                { label: t('cards.damage'), render: damageCell },
-                {
-                  label: t('cards.striking'),
-                  render: (row) => formatCount(row.attackersMin, row.attackersMax),
-                },
-                { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
-              ]}
-            />
-            <Formula steps={result.secondStrikeSteps} />
-          </div>
-        )}
+        {!specialResult && strikeCard(t('cards.attack'), result.attack)}
+        {result.retaliation && strikeCard(t('cards.retaliation'), result.retaliation)}
+        {result.secondStrike && strikeCard(t('cards.second'), result.secondStrike)}
       </div>
 
       <p className="note">{t('note')}</p>

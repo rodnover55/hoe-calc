@@ -4,9 +4,9 @@
  * Покрывают уже учтённые калькулятором варианты расчёта: базовую формулу
  * урона, вклад характеристик героев, удачу, общие и типовые модификаторы,
  * штраф дальности и множитель режима атаки, подсчёт погибших, число
- * ударов до гибели отряда защитника, ответный удар выживших, второй удар
- * после ответа, приведение некорректного входа и формулу с подставленными
- * значениями.
+ * ударов до гибели отряда защитника, однотипные блоки ответного удара
+ * выживших и второго удара после ответа, приведение некорректного входа
+ * и формулу с подставленными значениями.
  */
 
 import { describe, expect, it } from 'vitest';
@@ -17,6 +17,7 @@ import type {
   DamageStep,
   DefenderStats,
   LuckDamage,
+  StrikeResult,
 } from './formula';
 import { calculateAbilityDamage, calculateDamage } from './formula';
 
@@ -70,8 +71,14 @@ const calc = ({ attacker, abilities, defender }: CalcOverrides = {}): DamageResu
     defender: unit(defender),
   });
 
-/** Строка обычной удачи из результата */
-const normal = (result: DamageResult): LuckDamage => result.byLuck[1];
+/**
+ * Строка обычной удачи: у результата боя берётся блок атаки, у блока
+ * урона — собственные строки; отсутствующий блок — ошибка теста.
+ */
+const normal = (source: DamageResult | StrikeResult | null): LuckDamage => {
+  if (source === null) throw new Error('блок урона отсутствует');
+  return ('attack' in source ? source.attack : source).byLuck[1];
+};
 
 /** Числовая строка бакета: тексты токенов подряд */
 const stepText = (step?: DamageStep): string | undefined =>
@@ -160,7 +167,7 @@ describe('характеристики героя', () => {
   it('атака героя складывается с атакой существа', () => {
     const withHero = calc({ attacker: { attack: 10, heroAttack: 20 } });
     const merged = calc({ attacker: { attack: 30 } });
-    expect(withHero.byLuck).toEqual(merged.byLuck);
+    expect(withHero.attack.byLuck).toEqual(merged.attack.byLuck);
     expect(withHero.attackDefenseModifier).toBe(merged.attackDefenseModifier);
   });
 
@@ -179,7 +186,7 @@ describe('характеристики героя', () => {
       defender: { defense: 10, heroDefense: 20 },
     });
     const merged = calc({ attacker: { attack: 30 }, defender: { defense: 30 } });
-    expect(withHero.byLuck).toEqual(merged.byLuck);
+    expect(withHero.attack.byLuck).toEqual(merged.attack.byLuck);
     expect(normal(withHero).min).toBe(100);
   });
 });
@@ -195,8 +202,8 @@ describe('удача', () => {
    */
   it('неудача даёт ×0.5, удача — ×1.5 обычного урона', () => {
     const result = calc();
-    expect(result.byLuck.map((row) => row.luck)).toEqual(['unlucky', 'normal', 'lucky']);
-    expect(result.byLuck.map((row) => row.min)).toEqual([50, 100, 150]);
+    expect(result.attack.byLuck.map((row) => row.luck)).toEqual(['unlucky', 'normal', 'lucky']);
+    expect(result.attack.byLuck.map((row) => row.min)).toEqual([50, 100, 150]);
   });
 });
 
@@ -434,36 +441,38 @@ describe('ударов до гибели отряда', () => {
    */
   it('удача учитывается в числе ударов', () => {
     const result = calc();
-    expect(result.byLuck[0].strikesMax).toBe(2);
+    expect(result.attack.byLuck[0].strikesMax).toBe(2);
     expect(normal(result).strikesMax).toBe(1);
-    expect(result.byLuck[2].strikesMin).toBe(1);
+    expect(result.attack.byLuck[2].strikesMin).toBe(1);
   });
 });
 
 describe('ответный удар', () => {
   /**
-   * Без ответного удара расчёт ответа не выполняется.
+   * Без ответного удара блок ответа не считается.
    *
    * Условия: база, ответный удар выключен.
    *
-   * Ожидание: во всех строках удачи ответ отсутствует.
+   * Ожидание: блок ответа отсутствует.
    */
   it('при выключенном ответном ударе ответа нет', () => {
     const result = calc();
-    for (const row of result.byLuck) expect(row.retaliation).toBeNull();
+    expect(result.retaliation).toBeNull();
   });
 
   /**
    * Выжившие после удара существа защитника отвечают своим уроном со
-   * своим модификатором АТК/ЗЩТ, а их потери считаются по здоровью
+   * своим модификатором АТК/ЗЩТ: число выживших берётся диапазоном по
+   * всем вариантам удачи атаки, а потери считаются по здоровью
    * атакующего.
    *
-   * Условия: 4 существа бьют на 40 урона отряд из 10 существ по 10
-   * здоровья (суммарно 100), урон защитника 5–5, модификаторы обеих
-   * сторон равны 1.
+   * Условия: 4 существа бьют уроном 40 (20–60 по удаче) отряд из 10
+   * существ по 10 здоровья (суммарно 100), урон защитника 5–5,
+   * модификаторы обеих сторон равны 1.
    *
-   * Ожидание: выживает 6 существ, ответ 30 урона, от него гибнут 3
-   * атакующих с 10 здоровья.
+   * Ожидание: выживают от 4 (после удачного максимума) до 8 (после
+   * неудачного минимума) существ, обычный ответ 20–40, от него гибнут
+   * 2–4 атакующих с 10 здоровья.
    */
   it('выжившие отвечают своим уроном со своим модификатором', () => {
     const result = calc({
@@ -471,23 +480,25 @@ describe('ответный удар', () => {
       defender: { damageMin: 5, damageMax: 5 },
       abilities: { retaliation: true },
     });
-    const retaliation = normal(result).retaliation;
-    expect(retaliation?.survivorsMax).toBe(6);
-    expect(retaliation?.min).toBe(30);
-    expect(retaliation?.max).toBe(30);
-    expect(retaliation?.killsMax).toBe(3);
+    expect(result.retaliation?.strikers).toEqual({ min: 4, max: 8 });
+    const row = normal(result.retaliation);
+    expect(row.min).toBe(20);
+    expect(row.max).toBe(40);
+    expect(row.killsMin).toBe(2);
+    expect(row.killsMax).toBe(4);
   });
 
   /**
-   * Диапазон ответа строится от худшего и лучшего исхода атаки: после
-   * максимального урона выживших меньше, после минимального — больше.
+   * Диапазон бьющих в ответе строится от худшего и лучшего исхода атаки
+   * по всем вариантам удачи: после удачного максимального урона выживших
+   * меньше всего, после неудачного минимального — больше всего.
    *
-   * Условия: 4 существа бьют на 40–80 урона отряд с суммарным здоровьем
-   * 100 по 10 на существо, урон защитника 3–5.
+   * Условия: 4 существа бьют уроном 10–20 (20–120 с удачей) отряд с
+   * суммарным здоровьем 100 по 10 на существо, урон защитника 3–5.
    *
-   * Ожидание: после максимального удара выживают 2 существа и отвечают
-   * минимум на 6, после минимального выживают 6 и отвечают максимум
-   * на 30.
+   * Ожидание: удачный максимум уничтожает отряд — бьющих от 0 и минимум
+   * ответа 0; после неудачного минимума выживают 8 и отвечают максимум
+   * на 8 × 5 = 40.
    */
   it('диапазон ответа считается от мин и макс урона атаки', () => {
     const result = calc({
@@ -495,53 +506,52 @@ describe('ответный удар', () => {
       defender: { damageMin: 3, damageMax: 5 },
       abilities: { retaliation: true },
     });
-    const retaliation = normal(result).retaliation;
-    expect(retaliation?.survivorsMin).toBe(2);
-    expect(retaliation?.survivorsMax).toBe(6);
-    expect(retaliation?.min).toBe(6);
-    expect(retaliation?.max).toBe(30);
+    expect(result.retaliation?.strikers).toEqual({ min: 0, max: 8 });
+    const row = normal(result.retaliation);
+    expect(row.min).toBe(0);
+    expect(row.max).toBe(40);
   });
 
   /**
    * Число выживших округляется вверх: существо с остатком здоровья
    * участвует в ответе.
    *
-   * Условия: удар на 45 урона по отряду с суммарным здоровьем 100 по 10
-   * на существо — остаётся 55 здоровья, то есть 5 целых существ и одно
-   * раненое.
+   * Условия: удар на 45 (23–68 по удаче) по отряду с суммарным здоровьем
+   * 100 по 10 на существо: после удачного удара остаётся 32 здоровья —
+   * 3 целых существа и одно раненое, после неудачного 77 — 7 целых и
+   * одно раненое.
    *
-   * Ожидание: в ответе участвуют 6 существ.
+   * Ожидание: в ответе участвуют от 4 до 8 существ.
    */
   it('раненое существо участвует в ответном ударе', () => {
     const result = calc({
       attacker: { count: 1, damageMin: 45, damageMax: 45 },
       abilities: { retaliation: true },
     });
-    expect(normal(result).retaliation?.survivorsMax).toBe(6);
+    expect(result.retaliation?.strikers).toEqual({ min: 4, max: 8 });
   });
 
   /**
-   * Удача, общие и типовые модификаторы, дальность и половинный урон не
-   * входят в ставку ответа — они влияют лишь на урон атаки и через него
-   * на число выживших.
+   * Общие модификаторы, дальность и режим атаки не входят в ставку
+   * ответа — они влияют лишь на урон атаки и через него на число
+   * выживших; удача же применяется к ответу собственным множителем, как
+   * в любом блоке урона.
    *
    * Условия: атака с общими модификаторами +100%, дистанцией 6 гексов и
    * режимом ×0.5 по отряду с большим запасом здоровья, чтобы при
    * любой удаче выжили все 10 существ защитника с уроном 5–5.
    *
-   * Ожидание: во всех строках удачи ответ одинаков и равен
-   * 10 × 5 × 1 = 50.
+   * Ожидание: строки ответа 25/50/75 — база 10 × 5 = 50 только с
+   * множителем удачи, без модификаторов атаки.
    */
-  it('модификаторы атаки и удача не влияют на ставку ответа', () => {
+  it('модификаторы атаки не входят в ставку ответа, удача ответа — своя', () => {
     const result = calc({
       attacker: { count: 4 },
       defender: { count: 10, health: 1000, topHealth: 1000, damageMin: 5, damageMax: 5 },
       abilities: { retaliation: true, generalModifiers: 100, distance: 6, modeMultiplier: 0.5 },
     });
-    for (const row of result.byLuck) {
-      expect(row.retaliation?.min).toBe(50);
-      expect(row.retaliation?.max).toBe(50);
-    }
+    expect(result.retaliation?.byLuck.map((row) => row.min)).toEqual([25, 50, 75]);
+    expect(result.retaliation?.byLuck.map((row) => row.max)).toEqual([25, 50, 75]);
   });
 
   /**
@@ -552,8 +562,8 @@ describe('ответный удар', () => {
    * защита 10 и герой с защитой 5, в ответе участвуют все 10 существ
    * защитника с уроном 5–5.
    *
-   * Ожидание: модификатор ответа 45/35, ответ 50 × 45/35 ≈ 64.3, после
-   * округления 64.
+   * Ожидание: модификатор ответа 45/35, обычный ответ 50 × 45/35 ≈ 64.3,
+   * после округления 64.
    */
   it('модификатор ответа учитывает героев обеих сторон', () => {
     const result = calc({
@@ -562,30 +572,37 @@ describe('ответный удар', () => {
       abilities: { retaliation: true },
     });
     expect(result.retaliationModifier).toBeCloseTo(45 / 35);
-    expect(normal(result).retaliation?.min).toBe(64);
+    expect(normal(result.retaliation).min).toBe(64);
   });
 
   /**
-   * Если атака уничтожает отряд целиком, отвечать некому.
+   * Если атака уничтожает отряд даже при неудачном минимальном уроне,
+   * отвечать некому: у блока ответа нет бьющих, и все строки удачи дают
+   * 0 урона.
    *
-   * Условия: удар на 100 урона по отряду с суммарным здоровьем ровно 100.
+   * Условия: неудачный минимальный удар 50 по отряду с суммарным
+   * здоровьем ровно 50.
    *
-   * Ожидание: выживших нет, урон ответа равен 0.
+   * Ожидание: бьющих 0–0, урон ответа 0 во всех строках удачи.
    */
   it('уничтоженный отряд не отвечает', () => {
-    const result = calc({ abilities: { retaliation: true } });
-    const retaliation = normal(result).retaliation;
-    expect(retaliation?.survivorsMax).toBe(0);
-    expect(retaliation?.max).toBe(0);
+    const result = calc({ defender: { count: 5 }, abilities: { retaliation: true } });
+    expect(result.retaliation?.strikers).toEqual({ min: 0, max: 0 });
+    expect(result.retaliation?.byLuck.map((row) => [row.min, row.max])).toEqual([
+      [0, 0],
+      [0, 0],
+      [0, 0],
+    ]);
   });
 
   /**
-   * Пока есть хотя бы один выживший, ответ наносит минимум 1 урона.
+   * Пока есть хотя бы один выживший, ответ наносит минимум 1 урона в
+   * каждой строке удачи.
    *
    * Условия: выживает одно существо с уроном 1 против атакующего с
-   * защитой 100 — расчётный ответ 0.25 урона.
+   * защитой 100 — расчётный ответ 0.25 урона и того меньше при неудаче.
    *
-   * Ожидание: ответ равен 1.
+   * Ожидание: все строки ответа равны 1.
    */
   it('ответ выживших наносит минимум 1 урона', () => {
     const result = calc({
@@ -593,95 +610,93 @@ describe('ответный удар', () => {
       defender: { count: 1, health: 100, topHealth: 100, damageMin: 1, damageMax: 1 },
       abilities: { retaliation: true },
     });
-    expect(normal(result).retaliation?.min).toBe(1);
+    expect(result.retaliation?.byLuck.map((row) => row.min)).toEqual([1, 1, 1]);
   });
 
   /**
    * Ударов ответа до гибели отряда атакующего: границы считаются как у
-   * атаки — меньше всего ответов при максимальном уроне, больше всего
-   * при минимальном.
+   * атаки — меньше всего ответов при максимальном уроне строки, больше
+   * всего при минимальном.
    *
-   * Условия: 4 существа по 10 здоровья (суммарно 40) бьют на 40–80
-   * урона; после максимального удара выживают 2 существа и отвечают на
-   * 6, после минимального — 6 существ на 30.
+   * Условия: 4 существа по 30 здоровья (суммарно 120) бьют отряд с
+   * большим запасом здоровья; отвечают все 10 существ уроном 3–5 —
+   * обычный ответ 30–50.
    *
-   * Ожидание: ceil(40/30) = 2 ответа при максимальном уроне,
-   * ceil(40/6) = 7 при минимальном.
+   * Ожидание: ceil(120/50) = 3 ответа при максимальном уроне,
+   * ceil(120/30) = 4 при минимальном.
    */
   it('число ответов до гибели отряда считается от мин и макс ответа', () => {
     const result = calc({
-      attacker: { count: 4, damageMin: 10, damageMax: 20 },
-      defender: { damageMin: 3, damageMax: 5 },
+      attacker: { count: 4, health: 30, topHealth: 30 },
+      defender: { health: 1000, topHealth: 1000, damageMin: 3, damageMax: 5 },
       abilities: { retaliation: true },
     });
-    const retaliation = normal(result).retaliation;
-    expect(retaliation?.strikesMin).toBe(2);
-    expect(retaliation?.strikesMax).toBe(7);
+    const row = normal(result.retaliation);
+    expect(row.strikesMin).toBe(3);
+    expect(row.strikesMax).toBe(4);
   });
 
   /**
    * Нулевой ответ отряд не убьёт никогда — вместо числа ударов явный
    * null, а не бесконечность или подставное значение.
    *
-   * Условия: удар на 100 урона по отряду с суммарным здоровьем ровно
-   * 100 — выживших нет, ответ 0.
+   * Условия: неудачный минимальный удар 50 уничтожает отряд с суммарным
+   * здоровьем ровно 50 — бьющих нет, ответ 0.
    *
    * Ожидание: обе границы числа ответов равны null.
    */
   it('у нулевого ответа нет числа ударов', () => {
-    const result = calc({ abilities: { retaliation: true } });
-    const retaliation = normal(result).retaliation;
-    expect(retaliation?.strikesMin).toBeNull();
-    expect(retaliation?.strikesMax).toBeNull();
+    const result = calc({ defender: { count: 5 }, abilities: { retaliation: true } });
+    const row = normal(result.retaliation);
+    expect(row.strikesMin).toBeNull();
+    expect(row.strikesMax).toBeNull();
   });
 });
 
 describe('второй удар', () => {
   /**
-   * Без двойного удара второй удар не считается.
+   * Без двойного удара блок второго удара не считается.
    *
    * Условия: база, doubleStrike выключен.
    *
-   * Ожидание: во всех строках удачи второй удар отсутствует.
+   * Ожидание: блок второго удара отсутствует.
    */
   it('без двойного удара второго удара нет', () => {
     const result = calc();
-    for (const row of result.byLuck) expect(row.secondStrike).toBeNull();
+    expect(result.secondStrike).toBeNull();
   });
 
   /**
-   * Без ответного удара второй удар наносит весь отряд, а погибшие
-   * считаются по остатку отряда защитника после первого удара.
+   * Без ответного удара второй удар наносит весь отряд по тем же
+   * входным данным, что и первый, поэтому блоки совпадают целиком —
+   * вместе с погибшими и ударами до гибели отряда защитника.
    *
    * Условия: 10 существ бьют на 100 урона отряд из 10 существ по 100
    * здоровья, ответный удар выключен.
    *
-   * Ожидание: первый удар убивает 1 существо; во втором ударе участвуют
-   * все 10 атакующих, урон снова 100 и убивает ещё 1 существо.
+   * Ожидание: во втором ударе бьют все 10 атакующих, строки удачи
+   * совпадают с первым ударом.
    */
-  it('без ответа второй удар равен первому и бьёт по остатку', () => {
+  it('без ответа второй удар совпадает с первым', () => {
     const result = calc({
       defender: { health: 100, topHealth: 100 },
       abilities: { doubleStrike: true },
     });
-    const second = normal(result).secondStrike;
-    expect(normal(result).killsMin).toBe(1);
-    expect(second?.attackersMin).toBe(10);
-    expect(second?.attackersMax).toBe(10);
-    expect(second?.min).toBe(100);
-    expect(second?.max).toBe(100);
-    expect(second?.killsMin).toBe(1);
+    expect(result.secondStrike?.strikers).toEqual({ min: 10, max: 10 });
+    expect(result.secondStrike?.byLuck).toEqual(result.attack.byLuck);
   });
 
   /**
-   * С ответным ударом второй удар наносят только выжившие атакующие.
+   * С ответным ударом второй удар наносят только выжившие атакующие:
+   * их диапазон берётся по всем вариантам удачи ответа.
    *
-   * Условия: 4 существа по 10 здоровья бьют на 40 урона отряд из 10
-   * существ по 10 здоровья с уроном 5–5, ответный удар включён.
+   * Условия: 4 существа по 10 здоровья бьют отряд из 10 существ по 10
+   * здоровья с уроном 5–5, ответный удар включён.
    *
-   * Ожидание: выживает 6 защитников, ответ 30 урона оставляет из
-   * атакующих одно существо; второй удар 1 × 10 = 10 и убивает 1
-   * защитника из оставшихся.
+   * Ожидание: сильнейший ответ (удачный максимум 60) уничтожает
+   * атакующих — бьющих от 0 и минимум второго удара 0; слабейший ответ
+   * (неудачный минимум 10) оставляет 3 существа — обычный максимум
+   * второго удара 30, он убивает 3 защитников.
    */
   it('второй удар наносят выжившие после ответа', () => {
     const result = calc({
@@ -689,52 +704,54 @@ describe('второй удар', () => {
       defender: { damageMin: 5, damageMax: 5 },
       abilities: { retaliation: true, doubleStrike: true },
     });
-    const second = normal(result).secondStrike;
-    expect(normal(result).retaliation?.max).toBe(30);
-    expect(second?.attackersMin).toBe(1);
-    expect(second?.attackersMax).toBe(1);
-    expect(second?.min).toBe(10);
-    expect(second?.max).toBe(10);
-    expect(second?.killsMin).toBe(1);
+    expect(result.secondStrike?.strikers).toEqual({ min: 0, max: 3 });
+    const row = normal(result.secondStrike);
+    expect(row.min).toBe(0);
+    expect(row.max).toBe(30);
+    expect(row.killsMax).toBe(3);
   });
 
   /**
-   * Если ответ уничтожает атакующий отряд, второго удара нет.
+   * Если ответ уничтожает атакующий отряд даже при неудачном минимуме,
+   * второго удара нет: бьющих 0, все строки удачи дают 0 урона.
    *
-   * Условия: 4 существа по 10 здоровья бьют на 40 урона отряд с уроном
-   * 10–10 — 6 выживших отвечают на 60 по отряду с суммарным здоровьем 40.
+   * Условия: 4 существа по 10 здоровья (суммарно 40) бьют отряд с
+   * большим запасом здоровья — отвечают все 10 существ уроном 10–10,
+   * неудачный минимальный ответ 50 превышает суммарное здоровье
+   * атакующих.
    *
-   * Ожидание: атакующих не осталось, урон второго удара равен 0.
+   * Ожидание: бьющих 0–0, урон второго удара 0 во всех строках удачи.
    */
   it('уничтоженный ответом отряд не бьёт второй раз', () => {
     const result = calc({
       attacker: { count: 4 },
+      defender: { health: 1000, topHealth: 1000 },
       abilities: { retaliation: true, doubleStrike: true },
     });
-    const second = normal(result).secondStrike;
-    expect(second?.attackersMin).toBe(0);
-    expect(second?.attackersMax).toBe(0);
-    expect(second?.min).toBe(0);
-    expect(second?.max).toBe(0);
+    expect(result.secondStrike?.strikers).toEqual({ min: 0, max: 0 });
+    expect(result.secondStrike?.byLuck.map((row) => [row.min, row.max])).toEqual([
+      [0, 0],
+      [0, 0],
+      [0, 0],
+    ]);
   });
 
   /**
-   * Удача действует одинаково на оба удара: строка удачи умножает и
-   * первый, и второй удар на свой множитель.
+   * Удача второго удара — собственные строки блока: как и первый удар,
+   * он считается с множителями ×0.5/×1/×1.5 от своей базы.
    *
    * Условия: база против отряда с большим запасом здоровья, двойной удар
    * без ответа.
    *
-   * Ожидание: второй удар в строках неудачи, обычной и удачи равен
-   * 50, 100 и 150 — как и первый.
+   * Ожидание: строки второго удара 50/100/150 — как у первого.
    */
-  it('удача действует на оба удара одинаково', () => {
+  it('удача второго удара считается своими строками', () => {
     const result = calc({
       defender: { health: 1000, topHealth: 1000 },
       abilities: { doubleStrike: true },
     });
-    expect(result.byLuck.map((row) => row.secondStrike?.min)).toEqual([50, 100, 150]);
-    expect(result.byLuck.map((row) => row.min)).toEqual([50, 100, 150]);
+    expect(result.secondStrike?.byLuck.map((row) => row.min)).toEqual([50, 100, 150]);
+    expect(result.attack.byLuck.map((row) => row.min)).toEqual([50, 100, 150]);
   });
 
   /**
@@ -751,7 +768,7 @@ describe('второй удар', () => {
       attacker: { count: 1, damageMin: 1, damageMax: 1 },
       abilities: { typeModifiers: -95, doubleStrike: true },
     });
-    expect(normal(result).secondStrike?.min).toBe(1);
+    expect(normal(result.secondStrike).min).toBe(1);
   });
 });
 
@@ -1031,7 +1048,7 @@ describe('формула с подставленными значениями', 
       attacker: { attack: 30, heroAttack: 5 },
       defender: { defense: 12, heroDefense: 3 },
     });
-    const step = result.steps.find((s) => s.label === 'соотношение атаки и защиты');
+    const step = result.attack.steps.find((s) => s.label === 'соотношение атаки и защиты');
     expect(stepText(step)).toBe('(20 + 30 + 5) / (20 + 12 + 3)');
     expect(step?.formula).toBe(
       '(20 + атака юнита + атака героя) / (20 + защита юнита + защита героя)',
@@ -1051,7 +1068,7 @@ describe('формула с подставленными значениями', 
    */
   it('ограничение типовых модификаторов видно в формуле', () => {
     const result = calc({ abilities: { typeModifiers: -95 } });
-    const step = result.steps.find((s) => s.label === 'типовые модификаторы');
+    const step = result.attack.steps.find((s) => s.label === 'типовые модификаторы');
     expect(stepText(step)).toBe('max(0.1; 1 − 95/100)');
     expect(step?.formula).toBe('max(0.1; 1 + типовые модификаторы/100)');
   });
@@ -1068,12 +1085,16 @@ describe('формула с подставленными значениями', 
    */
   it('нулевые модификаторы не показываются в формуле', () => {
     const base = calc();
-    expect(base.steps.find((s) => s.label === 'общие модификаторы')).toBeUndefined();
-    expect(base.steps.find((s) => s.label === 'типовые модификаторы')).toBeUndefined();
+    expect(base.attack.steps.find((s) => s.label === 'общие модификаторы')).toBeUndefined();
+    expect(base.attack.steps.find((s) => s.label === 'типовые модификаторы')).toBeUndefined();
 
     const shown = calc({ abilities: { generalModifiers: 25, typeModifiers: -10 } });
-    expect(stepText(shown.steps.find((s) => s.label === 'общие модификаторы'))).toBe('1 + 25/100');
-    expect(stepText(shown.steps.find((s) => s.label === 'типовые модификаторы'))).toBe('1 − 10/100');
+    expect(stepText(shown.attack.steps.find((s) => s.label === 'общие модификаторы'))).toBe(
+      '1 + 25/100',
+    );
+    expect(stepText(shown.attack.steps.find((s) => s.label === 'типовые модификаторы'))).toBe(
+      '1 − 10/100',
+    );
   });
 
   /**
@@ -1087,13 +1108,13 @@ describe('формула с подставленными значениями', 
    */
   it('штраф дальности раскрыт по гексам', () => {
     const result = calc({ abilities: { distance: 6 } });
-    const step = result.steps.find((s) => s.label === 'штраф дальности');
+    const step = result.attack.steps.find((s) => s.label === 'штраф дальности');
     expect(stepText(step)).toBe('1 − 0.1×(6−3)');
     expect(step?.formula).toBe('1 − 0.1×(дистанция в гексах − 3)');
     expect(step?.tokens.find((token) => token.text === '6')?.param).toBe('дистанция в гексах');
 
     const close = calc();
-    expect(close.steps.find((s) => s.label === 'штраф дальности')).toBeUndefined();
+    expect(close.attack.steps.find((s) => s.label === 'штраф дальности')).toBeUndefined();
   });
 
   /**
@@ -1107,17 +1128,17 @@ describe('формула с подставленными значениями', 
    */
   it('множитель режима виден в формуле только при отличии от единицы', () => {
     const half = calc({ abilities: { modeMultiplier: 0.5 } });
-    const step = half.steps.find((s) => s.label === 'режим атаки');
+    const step = half.attack.steps.find((s) => s.label === 'режим атаки');
     expect(stepText(step)).toBe('0.5');
     expect(step?.formula).toBe('множитель режима атаки');
 
     const base = calc();
-    expect(base.steps.find((s) => s.label === 'режим атаки')).toBeUndefined();
+    expect(base.attack.steps.find((s) => s.label === 'режим атаки')).toBeUndefined();
   });
 
   /**
    * Формула второго удара строится от числа выживших атакующих и
-   * повторяет множители первого удара.
+   * повторяет множители первого удара, включая бакет удачи.
    *
    * Условия: нейтральная база с уроном существа 10–10, ответного удара
    * нет — второй удар наносит весь отряд из 10 существ.
@@ -1128,35 +1149,34 @@ describe('формула с подставленными значениями', 
    */
   it('формула второго удара строится от выживших атакующих', () => {
     const result = calc({ abilities: { doubleStrike: true } });
-    expect(stepText(result.secondStrikeSteps[0])).toBe('10 × 10');
-    expect(result.secondStrikeSteps[0]?.formula).toBe(
+    expect(stepText(result.secondStrike?.steps[0])).toBe('10 × 10');
+    expect(result.secondStrike?.steps[0]?.formula).toBe(
       'существа в отряде × урон существа',
     );
-    expect(result.secondStrikeSteps.slice(1)).toEqual(result.steps.slice(1));
+    expect(result.secondStrike?.steps.slice(1)).toEqual(result.attack.steps.slice(1));
   });
 
   /**
    * Число выживших атакующих в формуле второго удара — диапазон по
-   * вариантам удачи: сильнейший ответ оставляет меньше всего бойцов,
-   * слабейший — больше всего.
+   * вариантам удачи ответа: сильнейший ответ оставляет меньше всего
+   * бойцов, слабейший — больше всего.
    *
    * Условия: 10 существ по 10 здоровья бьют отряд с суммарным здоровьем
    * 100 уроном 10–10, урон защитника 3–5, модификаторы сторон равны 1.
    *
-   * Ожидание: границы бакета совпадают с attackersMin строки неудачи и
-   * attackersMax строки удачи, а числа помечены минимумом и максимумом
-   * существ в отряде.
+   * Ожидание: сильнейший ответ (удачный максимум 38) оставляет 7 бойцов,
+   * слабейший (0 — после удачной атаки выживших может не быть) — всех 10;
+   * бакет «(7..10) × 10», числа помечены минимумом и максимумом существ
+   * в отряде.
    */
   it('выжившие атакующие подставлены диапазоном по вариантам удачи', () => {
     const result = calc({
       defender: { damageMin: 3, damageMax: 5 },
       abilities: { retaliation: true, doubleStrike: true },
     });
-    const [unlucky, , lucky] = result.byLuck;
-    const step = result.secondStrikeSteps[0];
-    expect(stepText(step)).toBe(
-      `(${unlucky.secondStrike?.attackersMin}..${lucky.secondStrike?.attackersMax}) × 10`,
-    );
+    expect(result.secondStrike?.strikers).toEqual({ min: 7, max: 10 });
+    const step = result.secondStrike?.steps[0];
+    expect(stepText(step)).toBe('(7..10) × 10');
     expect(step?.tokens[1]?.param).toBe('минимум существ в отряде');
     expect(step?.tokens[3]?.param).toBe('максимум существ в отряде');
   });
@@ -1169,15 +1189,13 @@ describe('формула с подставленными значениями', 
    * Условия: нейтральная база — 10 существ бьют на 100 отряд с суммарным
    * здоровьем 100; при удаче гибнет весь отряд, при неудаче выживает 5.
    *
-   * Ожидание: бакет «(0..5) × 10» с легендой минимума и максимума.
+   * Ожидание: бьющих 0–5, бакет «(0..5) × 10» с легендой отряда.
    */
   it('выжившие защитники подставлены диапазоном по вариантам удачи', () => {
     const result = calc({ abilities: { retaliation: true } });
-    const [unlucky, , lucky] = result.byLuck;
-    expect(lucky.retaliation?.survivorsMin).toBe(0);
-    expect(unlucky.retaliation?.survivorsMax).toBe(5);
-    expect(stepText(result.retaliationSteps[0])).toBe('(0..5) × 10');
-    expect(result.retaliationSteps[0]?.formula).toBe(
+    expect(result.retaliation?.strikers).toEqual({ min: 0, max: 5 });
+    expect(stepText(result.retaliation?.steps[0])).toBe('(0..5) × 10');
+    expect(result.retaliation?.steps[0]?.formula).toBe(
       'существа в отряде × урон существа',
     );
   });
@@ -1187,19 +1205,35 @@ describe('формула с подставленными значениями', 
    * атака существа и героя защитника против защиты существа и героя
    * атакующего.
    *
-   * Условия: нейтральная база — атака защитника 10 без героя, защита
-   * атакующего 10 без героя.
+   * Условия: нейтральная база с ответом — атака защитника 10 без героя,
+   * защита атакующего 10 без героя.
    *
    * Ожидание: в формуле ответа бакет «(20 + 10 + 0) / (20 + 10 + 0)» с
    * легендой из названий атак и защит.
    */
   it('формула ответа раскрывает модификатор по слагаемым', () => {
-    const result = calc();
-    const step = result.retaliationSteps.find((s) => s.formula.startsWith('(20'));
+    const result = calc({ abilities: { retaliation: true } });
+    const step = result.retaliation?.steps.find((s) => s.formula.startsWith('(20'));
     expect(stepText(step)).toBe('(20 + 10 + 0) / (20 + 10 + 0)');
     expect(step?.formula).toBe(
       '(20 + атака юнита + атака героя) / (20 + защита юнита + защита героя)',
     );
+  });
+
+  /**
+   * Формула ответа, как и формула атаки, заканчивается бакетом удачи:
+   * ответ — такой же блок урона со своими вариантами удачи.
+   *
+   * Условия: нейтральная база с ответом.
+   *
+   * Ожидание: последний бакет формулы ответа — «(0.5 / 1 / 1.5)» с
+   * подписью «удача».
+   */
+  it('формула ответа содержит бакет удачи', () => {
+    const result = calc({ abilities: { retaliation: true } });
+    const step = result.retaliation?.steps.at(-1);
+    expect(step?.label).toBe('удача');
+    expect(stepText(step)).toBe('(0.5 / 1 / 1.5)');
   });
 });
 
@@ -1216,13 +1250,13 @@ describe('эффекты заклинаний', () => {
    */
   it('«всегда максимальный урон» схлопывает диапазон в максимум', () => {
     const result = calc({ attacker: { damageMin: 5 }, abilities: { maxDamage: true } });
-    expect(result.byLuck.map((row) => [row.min, row.max])).toEqual([
+    expect(result.attack.byLuck.map((row) => [row.min, row.max])).toEqual([
       [50, 50],
       [100, 100],
       [150, 150],
     ]);
     expect(normal(result).killsMin).toBe(10);
-    expect(stepText(result.steps[0])).toBe('10 × 10');
+    expect(stepText(result.attack.steps[0])).toBe('10 × 10');
   });
 
   /**
@@ -1236,34 +1270,36 @@ describe('эффекты заклинаний', () => {
    */
   it('чистый урон эффекта прибавляется после удачи', () => {
     const result = calc({ abilities: { flatDamage: [eff('Небесные клинки', 35)] } });
-    expect(result.byLuck.map((row) => [row.min, row.max])).toEqual([
+    expect(result.attack.byLuck.map((row) => [row.min, row.max])).toEqual([
       [85, 85],
       [135, 135],
       [185, 185],
     ]);
-    const step = result.steps.at(-1);
+    const step = result.attack.steps.at(-1);
     expect(step?.op).toBe('+');
     expect(stepText(step)).toBe('35');
   });
 
   /**
    * Чистый урон эффекта действует только на удары атакующего: ответный
-   * удар защитника считается без него.
+   * удар защитника считается без него, и слагаемого в формуле ответа нет.
    *
    * Условия: один атакующий с flatDamage 35 против 10 существ, ответ есть.
    *
-   * Ожидание: обычный удар 10 + 35 = 45; выживает 6 существ, ответ равен
-   * 60 без прибавки.
+   * Ожидание: обычный удар 10 + 35 = 45 (40–50 по удаче); выживают 5–6
+   * существ, обычный ответ 50–60 без прибавки, в формуле ответа нет
+   * слагаемых.
    */
   it('чистый урон не влияет на ответный удар', () => {
     const result = calc({
       attacker: { count: 1 },
       abilities: { retaliation: true, flatDamage: [eff('Небесные клинки', 35)] },
     });
-    const row = normal(result);
-    expect(row.min).toBe(45);
-    expect(row.retaliation?.min).toBe(60);
-    expect(row.retaliation?.max).toBe(60);
+    expect(normal(result).min).toBe(45);
+    const row = normal(result.retaliation);
+    expect(row.min).toBe(50);
+    expect(row.max).toBe(60);
+    expect(result.retaliation?.steps.some((s) => s.op === '+')).toBe(false);
   });
 
   /**
@@ -1277,10 +1313,10 @@ describe('эффекты заклинаний', () => {
    */
   it('чистый урон входит во второй удар', () => {
     const result = calc({ abilities: { doubleStrike: true, flatDamage: [eff('Небесные клинки', 35)] } });
-    const row = normal(result);
-    expect(row.secondStrike?.min).toBe(135);
-    expect(row.secondStrike?.max).toBe(135);
-    const step = result.secondStrikeSteps.at(-1);
+    const row = normal(result.secondStrike);
+    expect(row.min).toBe(135);
+    expect(row.max).toBe(135);
+    const step = result.secondStrike?.steps.at(-1);
     expect(step?.op).toBe('+');
     expect(stepText(step)).toBe('35');
   });
@@ -1321,7 +1357,7 @@ describe('эффекты заклинаний', () => {
       },
     });
     expect(normal(result).min).toBe(85);
-    const step = result.steps.find((s) => s.label === 'типовые модификаторы');
+    const step = result.attack.steps.find((s) => s.label === 'типовые модификаторы');
     expect(stepText(step)).toBe('1 + (−25 + 15 − 5)/100');
     expect(step?.formula).toBe('1 + типовые модификаторы/100');
     expect(step?.tokens.map((token) => token.param).filter(Boolean)).toEqual([
@@ -1343,7 +1379,7 @@ describe('эффекты заклинаний', () => {
    */
   it('нулевой процент поля не показывается рядом с эффектами', () => {
     const result = calc({ abilities: { effectModifiers: [eff('Благословение', 15)] } });
-    const step = result.steps.find((s) => s.label === 'типовые модификаторы');
+    const step = result.attack.steps.find((s) => s.label === 'типовые модификаторы');
     expect(stepText(step)).toBe('1 + 15/100');
     expect(step?.tokens.map((token) => token.param).filter(Boolean)).toEqual(['Благословение']);
   });
@@ -1362,7 +1398,7 @@ describe('эффекты заклинаний', () => {
       abilities: { typeModifiers: -15, effectModifiers: [eff('Благословение', 15)] },
     });
     expect(normal(result).min).toBe(100);
-    expect(result.steps.find((s) => s.label === 'типовые модификаторы')).toBeUndefined();
+    expect(result.attack.steps.find((s) => s.label === 'типовые модификаторы')).toBeUndefined();
   });
 
   /**
@@ -1380,7 +1416,7 @@ describe('эффекты заклинаний', () => {
     expect(result.typeCapped).toBe(true);
     expect(normal(result).min).toBe(10);
     expect(
-      stepText(result.steps.find((s) => s.label === 'типовые модификаторы')),
+      stepText(result.attack.steps.find((s) => s.label === 'типовые модификаторы')),
     ).toBe('max(0.1; 1 + (−80 − 40)/100)');
   });
 
@@ -1391,33 +1427,34 @@ describe('эффекты заклинаний', () => {
    *
    * Условия: один атакующий против 10 существ, ответ с retaliationModifiers 20.
    *
-   * Ожидание: удар 10; выживает 9 существ, ответ 9 × 10 × 1.2 = 108;
-   * третий бакет формулы ответа — «1 + 20/100».
+   * Ожидание: удар 10; выживают 9–10 существ, обычный ответ
+   * 9 × 10 × 1.2 = 108 – 10 × 10 × 1.2 = 120; третий бакет формулы
+   * ответа — «1 + 20/100».
    */
   it('модификаторы ответного удара масштабируют только ответ', () => {
     const result = calc({
       attacker: { count: 1 },
       abilities: { retaliation: true, retaliationModifiers: [eff('Парирование', 20)] },
     });
-    const row = normal(result);
-    expect(row.min).toBe(10);
-    expect(row.retaliation?.min).toBe(108);
-    expect(row.retaliation?.max).toBe(108);
-    const step = result.retaliationSteps[2];
+    expect(normal(result).min).toBe(10);
+    const row = normal(result.retaliation);
+    expect(row.min).toBe(108);
+    expect(row.max).toBe(120);
+    const step = result.retaliation?.steps[2];
     expect(stepText(step)).toBe('1 + 20/100');
   });
 
   /**
    * Нулевые модификаторы ответа не добавляют бакета: формула ответа
-   * остаётся из двух бакетов, как до появления поля.
+   * состоит из трёх бакетов — отряд × урон, АТК/ЗЩТ и удача.
    *
    * Условия: нейтральная база с ответом, retaliationModifiers 0.
    *
-   * Ожидание: в формуле ответа два бакета.
+   * Ожидание: в формуле ответа три бакета.
    */
   it('без модификаторов ответа лишнего бакета нет', () => {
     const result = calc({ abilities: { retaliation: true } });
-    expect(result.retaliationSteps).toHaveLength(2);
+    expect(result.retaliation?.steps).toHaveLength(3);
   });
 
   /**
@@ -1434,7 +1471,7 @@ describe('эффекты заклинаний', () => {
       attacker: { count: 1 },
       abilities: { retaliation: true, retaliationModifiers: [eff('Парирование', -150)] },
     });
-    expect(normal(result).retaliation?.min).toBe(1);
-    expect(stepText(result.retaliationSteps[2])).toBe('max(0; 1 − 150/100)');
+    expect(normal(result.retaliation).min).toBe(1);
+    expect(stepText(result.retaliation?.steps[2])).toBe('max(0; 1 − 150/100)');
   });
 });

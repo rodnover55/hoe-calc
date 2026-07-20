@@ -3,10 +3,12 @@
  *
  * Экспортирует чистую функцию `calculateDamage`: полное описание боя —
  * оба отряда с характеристиками героев и учитываемые абилки атаки —
- * приходит одним входным объектом, результат — диапазоны урона и потерь
- * по вариантам удачи, ответный удар выживших, второй удар после ответа
- * и формула расчёта с подставленными значениями. Названия параметров
- * формулы берутся из локали по языку, переданному вторым аргументом.
+ * приходит одним входным объектом, результат — три однотипных блока
+ * урона: удар атакующего, ответный удар выживших и второй удар после
+ * ответа. Каждый блок считается одной и той же формулой со строками
+ * удачи и формулой расчёта с подставленными значениями — блоки
+ * отличаются только входными данными. Названия параметров формулы
+ * берутся из локали по языку, переданному вторым аргументом.
  */
 
 import type { Lang } from './i18n';
@@ -115,56 +117,40 @@ export interface DamageInput {
   defender: DefenderStats;
 }
 
-export interface RetaliationDamage {
-  /** Выжившие после максимального урона атаки (худший для защитника случай) */
-  survivorsMin: number;
-  /** Выжившие после минимального урона атаки */
-  survivorsMax: number;
-  min: number;
-  max: number;
-  average: number;
-  /** Погибшие существа атакующего; не ограничено размером отряда */
-  killsMin: number;
-  killsMax: number;
-  /**
-   * Ответов с максимальным уроном до гибели всего отряда атакующего;
-   * null — ответ не наносит урона, отряд им не убить
-   */
-  strikesMin: number | null;
-  /** Ответов с минимальным уроном; null — как выше */
-  strikesMax: number | null;
-}
-
-/** Второй удар атакующего после ответа защитника */
-export interface SecondStrikeDamage {
-  /** Атакующие во втором ударе после максимального ответа (худший случай) */
-  attackersMin: number;
-  /** Атакующие во втором ударе после минимального ответа */
-  attackersMax: number;
-  min: number;
-  max: number;
-  average: number;
-  /** Погибшие существа защитника от второго удара, по остатку его отряда */
-  killsMin: number;
-  killsMax: number;
-}
-
 export interface LuckDamage {
   luck: Luck;
   min: number;
   max: number;
   average: number;
-  /** Погибшие существа защитника; не ограничено размером отряда */
+  /** Погибшие существа отряда-цели; не ограничено размером отряда */
   killsMin: number;
   killsMax: number;
-  /** Ударов с максимальным уроном строки до гибели всего отряда защитника */
-  strikesMin: number;
-  /** Ударов с минимальным уроном строки до гибели всего отряда защитника */
-  strikesMax: number;
-  /** Ответный удар выживших; null, если ответа не будет */
-  retaliation: RetaliationDamage | null;
-  /** Второй удар после ответа; null, если двойного удара нет */
-  secondStrike: SecondStrikeDamage | null;
+  /**
+   * Ударов с максимальным уроном строки до гибели всего отряда цели;
+   * null — удар не наносит урона, отряд им не убить
+   */
+  strikesMin: number | null;
+  /** Ударов с минимальным уроном; null — как выше */
+  strikesMax: number | null;
+}
+
+/**
+ * Результат одного блока урона — атаки, ответного или второго удара.
+ * Все блоки считаются одной формулой «бьющие × урон × АТК/ЗЩТ ×
+ * модификаторы × удача» и отличаются только входными данными.
+ */
+export interface StrikeResult {
+  /**
+   * Бьющие существа: у атаки — весь отряд, у ответного удара — выжившие
+   * защитники по всем вариантам удачи атаки, у второго удара — выжившие
+   * атакующие по всем вариантам удачи ответа. При нуле бить некому, и
+   * строки удачи дают 0 урона.
+   */
+  strikers: { min: number; max: number };
+  /** Диапазоны урона по вариантам удачи: неудача, обычный, удача */
+  byLuck: LuckDamage[];
+  /** Формула блока по бакетам с подставленными значениями */
+  steps: DamageStep[];
 }
 
 /** Фрагмент числовой формулы бакета */
@@ -262,20 +248,18 @@ const atkDefStep = (
 });
 
 export interface DamageResult {
-  /** Диапазоны урона по вариантам удачи: неудача, обычный, удача */
-  byLuck: LuckDamage[];
+  /** Удар атакующего отряда */
+  attack: StrikeResult;
+  /** Ответный удар выживших защитников; null, если ответа не будет */
+  retaliation: StrikeResult | null;
+  /** Второй удар выживших атакующих после ответа; null, если двойного удара нет */
+  secondStrike: StrikeResult | null;
   /** Множитель (20 + ATK) / (20 + DEF) */
   attackDefenseModifier: number;
   /** Множитель ответного удара: (20 + ATK защитника) / (20 + DEF атакующего) */
   retaliationModifier: number;
   /** Сработало ли ограничение типовых модификаторов в 10% */
   typeCapped: boolean;
-  /** Полная формула урона по бакетам с подставленными значениями */
-  steps: DamageStep[];
-  /** Формула ответного удара по бакетам */
-  retaliationSteps: DamageStep[];
-  /** Формула второго удара по бакетам */
-  secondStrikeSteps: DamageStep[];
 }
 
 export const LUCK_FACTOR: Record<Luck, number> = {
@@ -441,7 +425,17 @@ const killsFrom = (damage: number, topHealth: number, health: number): number =>
   damage < topHealth ? 0 : 1 + Math.floor((damage - topHealth) / health);
 
 /**
- * Считает урон удара и ответного удара по полному описанию боя.
+ * Считает три однотипных блока урона по полному описанию боя: удар
+ * атакующего, ответный удар выживших защитников и второй удар после
+ * ответа.
+ *
+ * Все блоки считаются одной формулой «бьющие × урон × АТК/ЗЩТ ×
+ * модификаторы × удача» и отличаются только входными данными: у ответа
+ * бьют выжившие защитники своим уроном с модификаторами ответа, у
+ * второго удара — выжившие после ответа атакующие с входными данными
+ * первого удара. Число выживших берётся диапазоном по всем вариантам
+ * удачи предыдущего удара, а погибшие и удары до полной гибели каждого
+ * блока считаются по его отряду-цели.
  *
  * Чистая функция: результат определяется только входным объектом.
  * Некорректный вход приводится к допустимому вместо ошибки: количество
@@ -452,10 +446,9 @@ const killsFrom = (damage: number, topHealth: number, health: number): number =>
  * @param input полное описание боя: атакующий и защищающийся отряды с
  *   характеристиками героев и учитываемые абилки атаки.
  * @param lang язык подписей шагов формулы.
- * @returns диапазоны урона и погибших по вариантам удачи с ответным
- *   ударом выживших и вторым ударом после ответа, модификаторы АТК/ЗЩТ
- *   обеих сторон, признак ограничения типовых модификаторов и формула
- *   расчёта с подставленными значениями.
+ * @returns блоки урона со строками удачи и формулой каждого,
+ *   модификаторы АТК/ЗЩТ обеих сторон и признак ограничения типовых
+ *   модификаторов.
  */
 export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageResult {
   const { attacker, abilities, defender } = input;
@@ -503,87 +496,14 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
   const range = abilities.rangePenalty ? rangeFactor(distance) : 1;
   const mode = Math.max(0, abilities.modeMultiplier);
 
-  /** Сколько существ защитника переживёт указанный урон */
   const defTotalHealth = (defCount - 1) * defHealth + defTopHealth;
-  const survivorsAfter = (damage: number): number =>
-    Math.max(0, Math.ceil((defTotalHealth - damage) / defHealth));
-
-  /** Остаток отряда после урона: живые существа и здоровье верхнего */
-  const remainingAfter = (totalHealth: number, unitHealth: number, damage: number) => {
-    const left = Math.max(0, totalHealth - damage);
-    const alive = Math.ceil(left / unitHealth);
-    return { alive, topHealth: alive > 0 ? left - (alive - 1) * unitHealth : 0 };
-  };
   const attTotalHealth = (count - 1) * health + topHealth;
 
-  const retaliationAfter = (attackMin: number, attackMax: number): RetaliationDamage => {
-    const survivorsMin = survivorsAfter(attackMax);
-    const survivorsMax = survivorsAfter(attackMin);
-    const min =
-      survivorsMin > 0
-        ? Math.max(1, round(survivorsMin * defDamageMin * retaliationModifier * retaliationFactor))
-        : 0;
-    const max =
-      survivorsMax > 0
-        ? Math.max(1, round(survivorsMax * defDamageMax * retaliationModifier * retaliationFactor))
-        : 0;
-    return {
-      survivorsMin,
-      survivorsMax,
-      min,
-      max,
-      average: Math.round((min + max) / 2),
-      killsMin: killsFrom(min, topHealth, health),
-      killsMax: killsFrom(max, topHealth, health),
-      strikesMin: max > 0 ? Math.ceil(attTotalHealth / max) : null,
-      strikesMax: min > 0 ? Math.ceil(attTotalHealth / min) : null,
-    };
-  };
+  /** Сколько существ отряда переживёт указанный урон */
+  const aliveAfter = (totalHealth: number, unitHealth: number, damage: number): number =>
+    Math.max(0, Math.ceil((totalHealth - damage) / unitHealth));
 
   const base = attackDefenseModifier * general * type * range * mode;
-  const byLuck = LUCK_ORDER.map((luck) => {
-    const total = base * LUCK_FACTOR[luck];
-    const min = Math.max(1, round(count * damageMin * total)) + flatDamage;
-    const max = Math.max(1, round(count * damageMax * total)) + flatDamage;
-    const retaliation = abilities.retaliation ? retaliationAfter(min, max) : null;
-
-    // Второй удар идёт после ответа: худшая цепочка — минимальный урон и
-    // максимальный ответ, лучшая — максимальный урон и минимальный ответ.
-    let secondStrike: SecondStrikeDamage | null = null;
-    if (abilities.doubleStrike) {
-      const full = { alive: count, topHealth };
-      const worst = retaliation ? remainingAfter(attTotalHealth, health, retaliation.max) : full;
-      const best = retaliation ? remainingAfter(attTotalHealth, health, retaliation.min) : full;
-      const minSecond =
-        worst.alive > 0 ? Math.max(1, round(worst.alive * damageMin * total)) + flatDamage : 0;
-      const maxSecond =
-        best.alive > 0 ? Math.max(1, round(best.alive * damageMax * total)) + flatDamage : 0;
-      const defAfterMin = remainingAfter(defTotalHealth, defHealth, min);
-      const defAfterMax = remainingAfter(defTotalHealth, defHealth, max);
-      secondStrike = {
-        attackersMin: worst.alive,
-        attackersMax: best.alive,
-        min: minSecond,
-        max: maxSecond,
-        average: Math.round((minSecond + maxSecond) / 2),
-        killsMin: defAfterMin.alive > 0 ? killsFrom(minSecond, defAfterMin.topHealth, defHealth) : 0,
-        killsMax: defAfterMax.alive > 0 ? killsFrom(maxSecond, defAfterMax.topHealth, defHealth) : 0,
-      };
-    }
-
-    return {
-      luck,
-      min,
-      max,
-      average: Math.round((min + max) / 2),
-      killsMin: killsFrom(min, defTopHealth, defHealth),
-      killsMax: killsFrom(max, defTopHealth, defHealth),
-      strikesMin: Math.ceil(defTotalHealth / max),
-      strikesMax: Math.ceil(defTotalHealth / min),
-      retaliation,
-      secondStrike,
-    };
-  });
 
   /** Бакет процентного модификатора: «1 + 25/100», при поле — max(порог; …) */
   const pctStep = (percent: number, label: string, param: string, floor: number | null): DamageStep => {
@@ -639,72 +559,134 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     };
   };
 
-  const steps: DamageStep[] = [
-    stackStep(P, B('stackDamage'), count, damageMin, damageMax),
+  const modifierSteps: DamageStep[] = [
     atkDefStep(P, B('atkDef'), { unit: unitAtk, hero: heroAtk }, { unit: unitDef, hero: heroDef }),
   ];
   // Единичный множитель не влияет на урон, и его бакет в формулу не попадает.
   if (abilities.generalModifiers !== 0) {
-    steps.push(pctStep(abilities.generalModifiers, B('general'), P('general'), null));
+    modifierSteps.push(pctStep(abilities.generalModifiers, B('general'), P('general'), null));
   }
   const typeBucket = typeStep();
   if (typeBucket !== null) {
-    steps.push(typeBucket);
+    modifierSteps.push(typeBucket);
   }
   // Дальность попадает в формулу, только когда штраф действует.
   if (abilities.rangePenalty && distance > 3) {
     const capped = 1 - 0.1 * (distance - 3) < 0.5;
     const open = capped ? 'max(0.5; ' : '';
     const close = capped ? ')' : '';
-    steps.push({
+    modifierSteps.push({
       label: B('range'),
       formula: `${open}1 − 0.1×(${P('distance')} − 3)${close}`,
       tokens: tokens(`${open}1 − 0.1×(`, num(distance, P('distance')), `−3)${close}`),
     });
   }
   if (mode !== 1) {
-    steps.push({ label: B('mode'), formula: P('mode'), tokens: tokens(num(mode, P('mode'))) });
+    modifierSteps.push({ label: B('mode'), formula: P('mode'), tokens: tokens(num(mode, P('mode'))) });
   }
-  steps.push({
+  const luckStep: DamageStep = {
     label: B('luck'),
     formula: `${P('unlucky')} / ${P('normalLuck')} / ${P('lucky')}`,
     tokens: tokens(`(${LUCK_FACTOR.unlucky} / ${LUCK_FACTOR.normal} / ${LUCK_FACTOR.lucky})`),
+  };
+  const flatStep: DamageStep | null =
+    flatDamage > 0
+      ? {
+          op: '+',
+          label: B('flatDamage'),
+          formula: P('flatDamage'),
+          tokens: tokens(
+            ...(flatContributions.length === 1
+              ? contributionTokens(flatContributions)
+              : ['(', ...contributionTokens(flatContributions), ')']),
+          ),
+        }
+      : null;
+
+  /**
+   * Единый расчёт блока урона: атака, ответный и второй удар считаются
+   * одной формулой «бьющие × урон × модификаторы × удача (+ чистый
+   * урон)» и отличаются только входными данными. Пока есть хотя бы один
+   * бьющий, удар наносит минимум 1 урона; при нуле бьющих урон равен 0.
+   */
+  const strike = (spec: {
+    /** Подпись бакета «отряд × урон» */
+    label: string;
+    /** Бьющие существа; диапазон — выжившие после предыдущего удара */
+    strikers: { min: number; max: number };
+    damageMin: number;
+    damageMax: number;
+    /** Произведение множителей блока без удачи */
+    modifier: number;
+    /** Чистый урон, прибавляемый после удачи и минимума в 1 */
+    flat: number;
+    /** Бакеты множителей между отрядом и удачей */
+    modifierSteps: DamageStep[];
+    /** Слагаемое чистого урона в конце формулы; null — не показывается */
+    flatStep: DamageStep | null;
+    /** Отряд-цель: здоровье для погибших и ударов до полной гибели */
+    target: { health: number; topHealth: number; totalHealth: number };
+  }): StrikeResult => {
+    const bound = (strikers: number, damage: number, luckFactor: number): number =>
+      strikers > 0
+        ? Math.max(1, round(strikers * damage * spec.modifier * luckFactor)) + spec.flat
+        : 0;
+    return {
+      strikers: spec.strikers,
+      byLuck: LUCK_ORDER.map((luck) => {
+        const min = bound(spec.strikers.min, spec.damageMin, LUCK_FACTOR[luck]);
+        const max = bound(spec.strikers.max, spec.damageMax, LUCK_FACTOR[luck]);
+        return {
+          luck,
+          min,
+          max,
+          average: Math.round((min + max) / 2),
+          killsMin: killsFrom(min, spec.target.topHealth, spec.target.health),
+          killsMax: killsFrom(max, spec.target.topHealth, spec.target.health),
+          strikesMin: max > 0 ? Math.ceil(spec.target.totalHealth / max) : null,
+          strikesMax: min > 0 ? Math.ceil(spec.target.totalHealth / min) : null,
+        };
+      }),
+      steps: [
+        stackStep(P, spec.label, spec.strikers, spec.damageMin, spec.damageMax),
+        ...spec.modifierSteps,
+        luckStep,
+        ...(spec.flatStep ? [spec.flatStep] : []),
+      ],
+    };
+  };
+
+  const defenderTarget = { health: defHealth, topHealth: defTopHealth, totalHealth: defTotalHealth };
+  const attackerTarget = { health, topHealth, totalHealth: attTotalHealth };
+
+  const attack = strike({
+    label: B('stackDamage'),
+    strikers: { min: count, max: count },
+    damageMin,
+    damageMax,
+    modifier: base,
+    flat: flatDamage,
+    modifierSteps,
+    flatStep,
+    target: defenderTarget,
   });
-  if (flatDamage > 0) {
-    steps.push({
-      op: '+',
-      label: B('flatDamage'),
-      formula: P('flatDamage'),
-      tokens: tokens(
-        ...(flatContributions.length === 1
-          ? contributionTokens(flatContributions)
-          : ['(', ...contributionTokens(flatContributions), ')']),
-      ),
-    });
-  }
 
-  // Формула у карточки одна на все варианты удачи, поэтому выжившие в ней
-  // берутся диапазоном по всем строкам: меньше всего защитников остаётся
-  // после удачного максимального удара, больше всего — после неудачного
-  // минимального. Границы совпадают с survivorsMin/survivorsMax строк.
-  const survivorsMin = survivorsAfter(Math.max(...byLuck.map((row) => row.max)));
-  const survivorsMax = survivorsAfter(Math.min(...byLuck.map((row) => row.min)));
+  // Выжившие защитники — диапазон по всем вариантам удачи атаки: меньше
+  // всего их остаётся после удачного максимального удара, больше всего —
+  // после неудачного минимального.
+  const survivors = {
+    min: aliveAfter(defTotalHealth, defHealth, Math.max(...attack.byLuck.map((row) => row.max))),
+    max: aliveAfter(defTotalHealth, defHealth, Math.min(...attack.byLuck.map((row) => row.min))),
+  };
 
-  const retaliationSteps: DamageStep[] = [
-    stackStep(
-      P,
-      B('survivorsDamage'),
-      { min: survivorsMin, max: survivorsMax },
-      defDamageMin,
-      defDamageMax,
-    ),
+  const retaliationModifierSteps: DamageStep[] = [
     atkDefStep(P, B('atkDef'), { unit: defUnitAtk, hero: defHeroAtk }, { unit: attUnitDef, hero: attHeroDef }),
   ];
   if (retContributions.length > 0) {
     const open = retaliationRaw < 0 ? 'max(0; ' : '';
     const close = retaliationRaw < 0 ? ')' : '';
     const single = retContributions.length === 1;
-    retaliationSteps.push({
+    retaliationModifierSteps.push({
       label: B('retaliationBonus'),
       formula: `${open}1 + ${P('retaliationModifiers')}/100${close}`,
       tokens: tokens(
@@ -717,36 +699,51 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     });
   }
 
-  // Второй удар считается по формуле первого, но от выживших атакующих:
-  // их тем меньше, чем сильнее ответный удар защитника.
-  const retaliations = byLuck.map((row) => row.retaliation).filter((r) => r !== null);
-  const attackersAfter = (retaliation: number): number =>
-    remainingAfter(attTotalHealth, health, retaliation).alive;
-  const attackersMin = retaliations.length
-    ? attackersAfter(Math.max(...retaliations.map((r) => r.max)))
-    : count;
-  const attackersMax = retaliations.length
-    ? attackersAfter(Math.min(...retaliations.map((r) => r.min)))
-    : count;
+  const retaliation = abilities.retaliation
+    ? strike({
+        label: B('survivorsDamage'),
+        strikers: survivors,
+        damageMin: defDamageMin,
+        damageMax: defDamageMax,
+        modifier: retaliationModifier * retaliationFactor,
+        flat: 0,
+        modifierSteps: retaliationModifierSteps,
+        flatStep: null,
+        target: attackerTarget,
+      })
+    : null;
 
-  const secondStrikeSteps: DamageStep[] = [
-    stackStep(
-      P,
-      B('survivorsDamage'),
-      { min: attackersMin, max: attackersMax },
-      damageMin,
-      damageMax,
-    ),
-    ...steps.slice(1),
-  ];
+  // Выжившие атакующие для второго удара — диапазон по вариантам удачи
+  // ответа; без ответа бьёт весь отряд.
+  const attackers = retaliation
+    ? {
+        min: aliveAfter(attTotalHealth, health, Math.max(...retaliation.byLuck.map((row) => row.max))),
+        max: aliveAfter(attTotalHealth, health, Math.min(...retaliation.byLuck.map((row) => row.min))),
+      }
+    : { min: count, max: count };
+
+  // Второй удар считается по формуле и входным данным первого — меняется
+  // только число бьющих.
+  const secondStrike = abilities.doubleStrike
+    ? strike({
+        label: B('survivorsDamage'),
+        strikers: attackers,
+        damageMin,
+        damageMax,
+        modifier: base,
+        flat: flatDamage,
+        modifierSteps,
+        flatStep,
+        target: defenderTarget,
+      })
+    : null;
 
   return {
-    byLuck,
+    attack,
+    retaliation,
+    secondStrike,
     attackDefenseModifier,
     retaliationModifier,
     typeCapped,
-    steps,
-    retaliationSteps,
-    secondStrikeSteps,
   };
 }
