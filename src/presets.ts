@@ -3,10 +3,12 @@
  *
  * Пресет героя запоминает атаку и защиту героя и владеет списком
  * сохранённых отрядов; отряд запоминает тип юнита (или ручной ввод)
- * и полные статы стека. Списки пресетов раздельны для атакующего и
- * защитника и хранятся вместе с остальным состоянием калькулятора в
- * ссылке (см. urlState.ts). Все операции иммутабельны и возвращают
- * новые массивы: результат кладётся в React-стейт как есть.
+ * и полные статы стека. Список пресетов один на обе стороны: атакующий
+ * и защитник выбирают из него независимо (в том числе один и тот же
+ * пресет), поэтому обмен сторон не теряет привязку к пресетам. Список
+ * хранится вместе с остальным состоянием калькулятора в ссылке
+ * (см. urlState.ts). Все операции иммутабельны и возвращают новые
+ * массивы: результат кладётся в React-стейт как есть.
  */
 
 import type { AttackerStats } from './formula';
@@ -55,21 +57,16 @@ export interface HeroPreset {
   units: SavedUnit[];
 }
 
-/** Все пресеты: у каждой стороны свой независимый список */
-export interface PresetStore {
-  attacker: HeroPreset[];
-  defender: HeroPreset[];
-}
-
-/** Текущий выбор пресетов обеих сторон; null — не выбрано */
+/**
+ * Текущий выбор пресетов обеих сторон из общего списка; null — не
+ * выбрано. Стороны могут указывать на один и тот же пресет.
+ */
 export interface PresetSelection {
   attackerHeroId: string | null;
   attackerSavedUnitId: string | null;
   defenderHeroId: string | null;
   defenderSavedUnitId: string | null;
 }
-
-export const EMPTY_STORE: PresetStore = { attacker: [], defender: [] };
 
 export const EMPTY_SELECTION: PresetSelection = {
   attackerHeroId: null,

@@ -3,17 +3,18 @@
  *
  * Покрывают round-trip кодирования для ручного ввода, выбранного юнита
  * и пресетов героев, пригодность результата для query-параметра без
- * экранирования, обратную совместимость с версией 1, отказ на
- * повреждённой или структурно неверной строке и мягкую деградацию:
- * пропавший юнит, недопустимый режим атаки, битые пресеты и выбор.
+ * экранирования, обратную совместимость с версиями 1 и 2 (раздельные
+ * списки пресетов сторон склеиваются в общий), отказ на повреждённой
+ * или структурно неверной строке и мягкую деградацию: пропавший юнит,
+ * недопустимый режим атаки, битые пресеты и выбор.
  */
 
 import { describe, expect, it } from 'vitest';
 import type { HeroPick } from './heroEffects';
 import { EMPTY_HERO_PICK, defaultSkillPicks } from './heroEffects';
 import { HEROES_BY_ID } from './heroes';
-import type { PresetStore } from './presets';
-import { EMPTY_SELECTION, EMPTY_STORE, createHeroPreset, createSavedUnit } from './presets';
+import type { HeroPreset } from './presets';
+import { EMPTY_SELECTION, createHeroPreset, createSavedUnit } from './presets';
 import type { AppUrlState } from './urlState';
 import { decodeAppState, encodeAppState } from './urlState';
 
@@ -51,31 +52,27 @@ const manualState = (over: Partial<AppUrlState> = {}): AppUrlState => ({
   defenderUnitId: null,
   attackerHero: EMPTY_HERO_PICK,
   defenderHero: EMPTY_HERO_PICK,
-  presets: EMPTY_STORE,
+  presets: [],
   presetSelection: EMPTY_SELECTION,
   ...over,
 });
 
-/** Пресеты обеих сторон: юнит из базы, ручной ввод, по два отряда */
-const sampleStore = (): PresetStore => ({
-  attacker: [
-    createHeroPreset(stats(), 'marksman'),
-    {
-      ...createHeroPreset(stats({ heroAttack: 9 }), null),
-      units: [createSavedUnit(stats({ count: 20 }), null), createSavedUnit(stats(), 'marksman')],
-    },
-  ],
-  defender: [createHeroPreset(stats({ count: 7 }), null)],
-});
+/** Общий список пресетов: юнит из базы, ручной ввод, по два отряда */
+const samplePresets = (): HeroPreset[] => [
+  createHeroPreset(stats(), 'marksman'),
+  {
+    ...createHeroPreset(stats({ heroAttack: 9 }), null),
+    units: [createSavedUnit(stats({ count: 20 }), null), createSavedUnit(stats(), 'marksman')],
+  },
+  createHeroPreset(stats({ count: 7 }), null),
+];
 
 /** Пресеты без runtime-id: декодер выдаёт новые id при каждом разборе */
-const stripIds = (store: PresetStore) =>
-  (['attacker', 'defender'] as const).map((side) =>
-    store[side].map(({ id: _id, units, ...hero }) => ({
-      ...hero,
-      units: units.map(({ id: _unitId, ...unit }) => unit),
-    })),
-  );
+const stripIds = (presets: HeroPreset[]) =>
+  presets.map(({ id: _id, units, ...hero }) => ({
+    ...hero,
+    units: units.map(({ id: _unitId, ...unit }) => unit),
+  }));
 
 /** Кодирует состояние с подменённым wire-полем: для проверок валидации */
 const tamper = (patch: Record<string, unknown>): string => {
@@ -110,29 +107,50 @@ describe('round-trip', () => {
   });
 
   /**
-   * Пресеты обеих сторон восстанавливаются с точностью до runtime-id
-   * (декодер выдаёт свежие), а выбор указывает на те же позиции уже
-   * с новыми id.
+   * Общий список пресетов восстанавливается с точностью до runtime-id
+   * (декодер выдаёт свежие), а выбор обеих сторон указывает на те же
+   * позиции уже с новыми id.
    */
   it('пресеты и их выбор восстанавливаются', () => {
-    const store = sampleStore();
+    const list = samplePresets();
     const state = manualState({
-      presets: store,
+      presets: list,
       presetSelection: {
-        attackerHeroId: store.attacker[1].id,
-        attackerSavedUnitId: store.attacker[1].units[1].id,
-        defenderHeroId: store.defender[0].id,
+        attackerHeroId: list[1].id,
+        attackerSavedUnitId: list[1].units[1].id,
+        defenderHeroId: list[2].id,
         defenderSavedUnitId: null,
       },
     });
     const decoded = decodeAppState(encodeAppState(state));
     expect(decoded).not.toBeNull();
-    expect(stripIds(decoded!.presets)).toEqual(stripIds(store));
+    expect(stripIds(decoded!.presets)).toEqual(stripIds(list));
     expect(decoded!.presetSelection).toEqual({
-      attackerHeroId: decoded!.presets.attacker[1].id,
-      attackerSavedUnitId: decoded!.presets.attacker[1].units[1].id,
-      defenderHeroId: decoded!.presets.defender[0].id,
+      attackerHeroId: decoded!.presets[1].id,
+      attackerSavedUnitId: decoded!.presets[1].units[1].id,
+      defenderHeroId: decoded!.presets[2].id,
       defenderSavedUnitId: null,
+    });
+  });
+
+  /** Обе стороны могут выбрать один и тот же пресет из общего списка */
+  it('пресет, выбранный обеими сторонами, восстанавливается у обеих', () => {
+    const list = samplePresets();
+    const state = manualState({
+      presets: list,
+      presetSelection: {
+        attackerHeroId: list[0].id,
+        attackerSavedUnitId: list[0].units[0].id,
+        defenderHeroId: list[0].id,
+        defenderSavedUnitId: list[0].units[0].id,
+      },
+    });
+    const decoded = decodeAppState(encodeAppState(state));
+    expect(decoded!.presetSelection).toEqual({
+      attackerHeroId: decoded!.presets[0].id,
+      attackerSavedUnitId: decoded!.presets[0].units[0].id,
+      defenderHeroId: decoded!.presets[0].id,
+      defenderSavedUnitId: decoded!.presets[0].units[0].id,
     });
   });
 
@@ -151,35 +169,32 @@ describe('round-trip', () => {
       spellPower: 4,
       knowledge: 6,
     });
-    const store: PresetStore = {
-      attacker: [
-        createHeroPreset(
-          stats(),
-          null,
-          'ru',
-          heroPick('niev', 12, { skills: [{ id: 'defence', level: 3, mods: [] }] }),
-        ),
-      ],
-      defender: [],
-    };
+    const list: HeroPreset[] = [
+      createHeroPreset(
+        stats(),
+        null,
+        'ru',
+        heroPick('niev', 12, { skills: [{ id: 'defence', level: 3, mods: [] }] }),
+      ),
+    ];
     const state = manualState({
       attackerHero: attackerPick,
       defenderHero: heroPick('bulwark', 3),
       modeId: 'hero_strike',
-      presets: store,
+      presets: list,
     });
     const decoded = decodeAppState(encodeAppState(state));
     expect(decoded?.attackerHero).toEqual(attackerPick);
     expect(decoded?.defenderHero).toEqual(heroPick('bulwark', 3));
     expect(decoded?.modeId).toBe('hero_strike');
-    expect(decoded?.presets.attacker[0].hero).toEqual(
+    expect(decoded?.presets[0].hero).toEqual(
       heroPick('niev', 12, { skills: [{ id: 'defence', level: 3, mods: [] }] }),
     );
   });
 
   /** Строка пригодна для query-параметра: только A-Za-z0-9-_ */
   it('кодирует только в URL-безопасные символы', () => {
-    const withPresets = manualState({ presets: sampleStore() });
+    const withPresets = manualState({ presets: samplePresets() });
     expect(encodeAppState(withPresets)).toMatch(/^[A-Za-z0-9_-]+$/);
   });
 
@@ -204,7 +219,7 @@ describe('повреждённая строка', () => {
 
   /** Структурно неверный payload целиком отвергается */
   it.each([
-    ['неизвестная версия', { v: 3 }],
+    ['неизвестная версия', { v: 4 }],
     ['статов меньше девяти', { a: [1, 2, 3, 4, 5, 6, 7, 8] }],
     ['стат-строка', { a: [1, 2, 3, 4, 5, 6, 7, 8, '9'] }],
     ['стат-NaN', { d: [1, 2, 3, 4, 5, 6, 7, 8, Number.NaN] }],
@@ -246,9 +261,9 @@ describe('мягкая деградация', () => {
   /** Юнит пресета, пропавший из базы, становится ручным вводом */
   it('неизвестный юнит в пресете сбрасывается в ручной ввод', () => {
     const decoded = decodeAppState(
-      tamper({ pa: [{ n: 'hero', h: [5, 3], u: [{ ...wireUnit, u: 'deleted_unit' }] }] }),
+      tamper({ p: [{ n: 'hero', h: [5, 3], u: [{ ...wireUnit, u: 'deleted_unit' }] }] }),
     );
-    const saved = decoded?.presets.attacker[0]?.units[0];
+    const saved = decoded?.presets[0]?.units[0];
     expect(saved?.unitId).toBeNull();
     expect(saved?.stats).toEqual({
       count: 10,
@@ -265,20 +280,49 @@ describe('мягкая деградация', () => {
   it('битый отряд и битый пресет отбрасываются поштучно', () => {
     const decoded = decodeAppState(
       tamper({
-        pa: [
+        p: [
           { n: 'valid', h: [5, 3], u: [wireUnit, { n: 'broken', s: [1, 2, 3] }] },
           { n: 'broken', h: [5], u: [] },
         ],
       }),
     );
-    expect(decoded?.presets.attacker).toHaveLength(1);
-    expect(decoded?.presets.attacker[0].name).toBe('valid');
-    expect(decoded?.presets.attacker[0].units).toHaveLength(1);
+    expect(decoded?.presets).toHaveLength(1);
+    expect(decoded?.presets[0].name).toBe('valid');
+    expect(decoded?.presets[0].units).toHaveLength(1);
   });
 
-  /** Список пресетов стороны, не являющийся массивом, даёт пустой список */
-  it('pa не-массив даёт пустой список пресетов', () => {
-    expect(decodeAppState(tamper({ pa: 'junk' }))?.presets.attacker).toEqual([]);
+  /** Список пресетов, не являющийся массивом, даёт пустой список */
+  it('p не-массив даёт пустой список пресетов', () => {
+    expect(decodeAppState(tamper({ p: 'junk' }))?.presets).toEqual([]);
+  });
+
+  /**
+   * Ссылка версии 2 хранила раздельные списки пресетов сторон: при
+   * декодировании они склеиваются в общий список, а выбор ps, адресующий
+   * каждый свой список, переносится на склеенные позиции.
+   */
+  it('раздельные списки v2 склеиваются с сохранением выбора', () => {
+    const decoded = decodeAppState(
+      tamper({
+        v: 2,
+        pa: [{ n: 'att hero', h: [5, 3], u: [wireUnit] }],
+        pd: [{ n: 'def hero', h: [7, 1], u: [wireUnit] }],
+        ps: [0, 0, 0, -1],
+      }),
+    );
+    expect(decoded?.presets.map((preset) => preset.name)).toEqual(['att hero', 'def hero']);
+    expect(decoded?.presetSelection).toEqual({
+      attackerHeroId: decoded?.presets[0].id,
+      attackerSavedUnitId: decoded?.presets[0].units[0].id,
+      defenderHeroId: decoded?.presets[1].id,
+      defenderSavedUnitId: null,
+    });
+  });
+
+  /** В ссылке версии 3 старые поля pa/pd не читаются */
+  it('v3 игнорирует устаревшие поля pa/pd', () => {
+    const decoded = decodeAppState(tamper({ pa: [{ n: 'stale', h: [5, 3], u: [wireUnit] }] }));
+    expect(decoded?.presets).toEqual([]);
   });
 
   /** Герой, пропавший из базы, и битые кортежи дают пустой выбор героя */
@@ -360,16 +404,16 @@ describe('мягкая деградация', () => {
     const decoded = decodeAppState(tamper({ v: 1 }));
     expect(decoded?.attackerHero).toEqual(EMPTY_HERO_PICK);
     expect(decoded?.defenderHero).toEqual(EMPTY_HERO_PICK);
-    expect(decoded?.presets.attacker).toEqual([]);
+    expect(decoded?.presets).toEqual([]);
   });
 
   /** Индексы выбора вне диапазона сбрасываются, валидные выживают */
   it('выбор с индексами вне диапазона сбрасывается', () => {
     const decoded = decodeAppState(
-      tamper({ pa: [{ n: 'hero', h: [5, 3], u: [wireUnit] }], ps: [0, 7, 4, 0] }),
+      tamper({ p: [{ n: 'hero', h: [5, 3], u: [wireUnit] }], ps: [0, 7, 4, 0] }),
     );
     expect(decoded?.presetSelection).toEqual({
-      attackerHeroId: decoded?.presets.attacker[0].id,
+      attackerHeroId: decoded?.presets[0].id,
       attackerSavedUnitId: null,
       defenderHeroId: null,
       defenderSavedUnitId: null,

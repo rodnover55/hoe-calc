@@ -24,7 +24,7 @@ import {
 import type { GameHero } from './heroes';
 import { HEROES_BY_ID } from './heroes';
 import { SKILLS_BY_ID, clampSkillLevel, normalizeMods } from './skills';
-import type { HeroPreset, PresetSelection, PresetStore, SavedUnit, UnitSnapshot } from './presets';
+import type { HeroPreset, PresetSelection, SavedUnit, UnitSnapshot } from './presets';
 import { EMPTY_SELECTION, UNIT_SNAPSHOT_KEYS, newId } from './presets';
 import { UNITS_BY_ID } from './units';
 
@@ -41,7 +41,8 @@ export interface AppUrlState {
   defenderUnitId: string | null;
   attackerHero: HeroPick;
   defenderHero: HeroPick;
-  presets: PresetStore;
+  /** Общий список пресетов героев обеих сторон */
+  presets: HeroPreset[];
   presetSelection: PresetSelection;
 }
 
@@ -95,12 +96,14 @@ interface WireHero {
  * декодируются без них), затем кортеж героя удлинился навыками и силой
  * магии со знанием: короткий кортеж из двух элементов — старая ссылка,
  * для неё сеются стартовые навыки героя и его сила магии и знание.
- * Остальные поля совпадают, поэтому декодер принимает обе версии, а
- * кодер всегда пишет вторую. При изменении смысла существующих полей
- * заводится версия 3.
+ * Версия 3 объединила раздельные списки пресетов сторон pa/pd в общий
+ * список p: индексы героев в ps теперь адресуют его для обеих сторон.
+ * Декодер принимает все версии (старые pa/pd склеиваются в общий
+ * список), кодер всегда пишет третью. При изменении смысла
+ * существующих полей заводится версия 4.
  */
-interface ShareV2 {
-  v: 1 | 2;
+interface ShareV3 {
+  v: 1 | 2 | 3;
   /** Статы атакующего в порядке STAT_KEYS */
   a: number[];
   /** Статы защитника в порядке STAT_KEYS */
@@ -117,9 +120,11 @@ interface ShareV2 {
   ah?: WireHeroPick;
   /** Игровой герой защитника; нет — не выбран */
   dh?: WireHeroPick;
-  /** Пресеты героев атакующего; нет — пусто */
+  /** Общий список пресетов героев (v3); нет — пусто */
+  p?: WireHero[];
+  /** Пресеты героев атакующего (v1/v2); в v3 не пишется */
   pa?: WireHero[];
-  /** Пресеты героев защитника; нет — пусто */
+  /** Пресеты героев защитника (v1/v2); в v3 не пишется */
   pd?: WireHero[];
   /** Выбор пресетов: [герой атк, отряд атк, герой защ, отряд защ]; -1 — нет */
   ps?: [number, number, number, number];
@@ -234,24 +239,24 @@ const toWireHero = (hero: HeroPreset): WireHero => {
 
 /**
  * Выбор пресетов в индексы wire-формата. Runtime-id в ссылку не пишутся,
- * поэтому выбор адресуется позициями в списках; ничего не выбрано — null
- * (поле ps опускается).
+ * поэтому выбор адресуется позициями в общем списке пресетов; ничего не
+ * выбрано — null (поле ps опускается).
  */
 const toWireSelection = (
-  store: PresetStore,
+  presets: HeroPreset[],
   selection: PresetSelection,
 ): [number, number, number, number] | null => {
-  const heroIndex = (list: HeroPreset[], id: string | null): number =>
-    id === null ? -1 : list.findIndex((hero) => hero.id === id);
-  const unitIndex = (list: HeroPreset[], heroIdx: number, id: string | null): number =>
-    heroIdx < 0 || id === null ? -1 : list[heroIdx].units.findIndex((unit) => unit.id === id);
-  const attackerHero = heroIndex(store.attacker, selection.attackerHeroId);
-  const defenderHero = heroIndex(store.defender, selection.defenderHeroId);
+  const heroIndex = (id: string | null): number =>
+    id === null ? -1 : presets.findIndex((hero) => hero.id === id);
+  const unitIndex = (heroIdx: number, id: string | null): number =>
+    heroIdx < 0 || id === null ? -1 : presets[heroIdx].units.findIndex((unit) => unit.id === id);
+  const attackerHero = heroIndex(selection.attackerHeroId);
+  const defenderHero = heroIndex(selection.defenderHeroId);
   const wire: [number, number, number, number] = [
     attackerHero,
-    unitIndex(store.attacker, attackerHero, selection.attackerSavedUnitId),
+    unitIndex(attackerHero, selection.attackerSavedUnitId),
     defenderHero,
-    unitIndex(store.defender, defenderHero, selection.defenderSavedUnitId),
+    unitIndex(defenderHero, selection.defenderSavedUnitId),
   ];
   return wire.some((index) => index >= 0) ? wire : null;
 };
@@ -305,15 +310,23 @@ const toHeroList = (value: unknown): HeroPreset[] =>
     ? value.map(toHeroPreset).filter((preset): preset is HeroPreset => preset !== null)
     : [];
 
-/** Индексы ps → runtime-id декодированных пресетов; вне диапазона — null */
-const toSelection = (value: unknown, store: PresetStore): PresetSelection => {
+/**
+ * Индексы ps → runtime-id декодированных пресетов; вне диапазона — null.
+ * Списки поиска передаются отдельно для каждой стороны: в v3 оба — общий
+ * список, в старых ссылках у каждой стороны был свой.
+ */
+const toSelection = (
+  value: unknown,
+  attackerList: HeroPreset[],
+  defenderList: HeroPreset[],
+): PresetSelection => {
   const indexes: unknown[] = Array.isArray(value) && value.length === 4 ? value : [];
   const hero = (list: HeroPreset[], index: unknown): HeroPreset | undefined =>
     typeof index === 'number' ? list[index] : undefined;
   const unit = (owner: HeroPreset | undefined, index: unknown): SavedUnit | undefined =>
     owner && typeof index === 'number' ? owner.units[index] : undefined;
-  const attackerHero = hero(store.attacker, indexes[0]);
-  const defenderHero = hero(store.defender, indexes[2]);
+  const attackerHero = hero(attackerList, indexes[0]);
+  const defenderHero = hero(defenderList, indexes[2]);
   return {
     attackerHeroId: attackerHero?.id ?? null,
     attackerSavedUnitId: unit(attackerHero, indexes[1])?.id ?? null,
@@ -328,8 +341,8 @@ const toSelection = (value: unknown, store: PresetStore): PresetSelection => {
  * query без экранирования.
  */
 export function encodeAppState(state: AppUrlState): string {
-  const payload: ShareV2 = {
-    v: 2,
+  const payload: ShareV3 = {
+    v: 3,
     a: STAT_KEYS.map((key) => state.attacker[key]),
     d: STAT_KEYS.map((key) => state.defender[key]),
     x: [
@@ -346,8 +359,7 @@ export function encodeAppState(state: AppUrlState): string {
   if (attackerHero) payload.ah = attackerHero;
   const defenderHero = toWireHeroPick(state.defenderHero);
   if (defenderHero) payload.dh = defenderHero;
-  if (state.presets.attacker.length > 0) payload.pa = state.presets.attacker.map(toWireHero);
-  if (state.presets.defender.length > 0) payload.pd = state.presets.defender.map(toWireHero);
+  if (state.presets.length > 0) payload.p = state.presets.map(toWireHero);
   const selection = toWireSelection(state.presets, state.presetSelection);
   if (selection) payload.ps = selection;
   return toBase64Url(JSON.stringify(payload));
@@ -370,8 +382,8 @@ export function decodeAppState(raw: string | null | undefined): AppUrlState | nu
   try {
     const parsed: unknown = JSON.parse(fromBase64Url(raw));
     if (typeof parsed !== 'object' || parsed === null) return null;
-    const share = parsed as Partial<ShareV2>;
-    if (share.v !== 1 && share.v !== 2) return null;
+    const share = parsed as Partial<ShareV3>;
+    if (share.v !== 1 && share.v !== 2 && share.v !== 3) return null;
     if (!isStatsArray(share.a) || !isStatsArray(share.d)) return null;
     if (typeof share.m !== 'string') return null;
     const x: unknown = share.x;
@@ -394,11 +406,14 @@ export function decodeAppState(raw: string | null | undefined): AppUrlState | nu
     const validMode =
       modes.some((mode) => mode.id === requestedMode) ||
       (requestedMode === HERO_STRIKE_MODE_ID && attackerHero.heroId !== null);
-    // В v1 полей пресетов нет: обе стороны декодируются в пустые списки.
-    const presets: PresetStore = {
-      attacker: toHeroList(share.pa),
-      defender: toHeroList(share.pd),
-    };
+    // В v3 общий список лежит в поле p; в v2 раздельные списки сторон
+    // pa/pd склеиваются в общий (выбор ps при этом адресует исходные
+    // подсписки, поэтому они сохраняются). В v1 полей пресетов нет:
+    // декодируется пустой список.
+    const legacyAttacker = share.v === 3 ? [] : toHeroList(share.pa);
+    const legacyDefender = share.v === 3 ? [] : toHeroList(share.pd);
+    const presets: HeroPreset[] =
+      share.v === 3 ? toHeroList(share.p) : [...legacyAttacker, ...legacyDefender];
 
     return {
       attacker: toStats(share.a),
@@ -415,7 +430,12 @@ export function decodeAppState(raw: string | null | undefined): AppUrlState | nu
       attackerHero,
       defenderHero: toHeroPick(share.dh),
       presets,
-      presetSelection: share.ps === undefined ? EMPTY_SELECTION : toSelection(share.ps, presets),
+      presetSelection:
+        share.ps === undefined
+          ? EMPTY_SELECTION
+          : share.v === 3
+            ? toSelection(share.ps, presets, presets)
+            : toSelection(share.ps, legacyAttacker, legacyDefender),
     };
   } catch {
     return null;
