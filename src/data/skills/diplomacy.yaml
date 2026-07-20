@@ -1,0 +1,54 @@
+id: diplomacy
+name: "Дипломатия"
+nameEn: "Diplomacy"
+levels:
+  - name: "Основы дипломатии"
+    nameEn: "Basic Diplomacy"
+    description: "Герой получает шанс убедить нейтральную армию присоединиться к нему за золото (не сражаясь с ней)."
+    descriptionEn: "Provides a chance of neutral squads offering to join the hero’s army for Gold instead of fighting them."
+  - name: "Продвинутая дипломатия"
+    nameEn: "Advanced Diplomacy"
+    description: "Герой получает шанс убедить нейтральную армию присоединиться к нему за золото (не сражаясь с ней). +25% к силе убеждения героя."
+    descriptionEn: "Provides a chance of neutral squads offering to join the hero’s army for Gold instead of fighting them. +25% Persuasion Power in Diplomacy."
+  - name: "Экспертная дипломатия"
+    nameEn: "Expert Diplomacy"
+    description: "Герой получает шанс убедить нейтральную армию присоединиться к нему за золото (не сражаясь с ней). +50% к силе убеждения героя."
+    descriptionEn: "Provides a chance of neutral squads offering to join the hero’s army for Gold instead of fighting them. +50% Persuasion Power in Diplomacy."
+subskills:
+  - id: larger_than_life
+    tier: 2
+    name: "Краснобай"
+    nameEn: "Larger Than Life"
+    description: "+25% к мощи армии героя в глазах нейтральных армий — это повышает шанс их бегства или присоединения. Бонус удваивается, если герой владеет «Боевым порядком»."
+    descriptionEn: "Neutral squads view the hero’s army as +25% more powerful than it is, increasing the chance that they will join or flee. This bonus is doubled if the hero knows “Battlecraft.”"
+  - id: eloquence
+    tier: 2
+    name: "Красноречие"
+    nameEn: "Eloquence"
+    description: "–75% к стоимости капитуляции."
+    descriptionEn: "–75% to the cost of surrendering."
+  - id: folk_hero
+    tier: 2
+    name: "Народный герой"
+    nameEn: "Folk Hero"
+    description: "+50% к силе убеждения нейтральных армий из фракции героя."
+    descriptionEn: "+50% Persuasion Power in Diplomacy with neutral squads from the hero’s faction."
+  - id: art_of_the_deal
+    tier: 3
+    name: "Искусство переговоров"
+    nameEn: "Art of the Deal"
+    description: "–15% к стоимости присоединения нейтральных армий. Бонус удваивается, если герой владеет «Экономикой»."
+    descriptionEn: "Neutral squads take –15% Gold to recruit. This bonus is doubled if the hero knows “Economy.”"
+  - id: vagrant_army
+    tier: 3
+    name: "Бродячая армия"
+    nameEn: "Vagrant Army"
+    description: "Существа, не принадлежащие ни одной из фракций, получают в армии героя бонус к атаке и защите: +100% от его атаки и защиты."
+    descriptionEn: "Friendly creatures with neutral affinity gain an additional +100% of the hero’s Attack and Defense to their Attack and Defense."
+  - id: negotiator
+    tier: 3
+    name: "Переговорщик"
+    nameEn: "Negotiator"
+    description: "+20% к количеству присоединяемых существ из нейтральных армий."
+    descriptionEn: "+20% to the number of units from neutral squads joining the hero’s army."
+source: https://www.olden-era.com/ru/skills/basic_diplomacy

@@ -1,0 +1,54 @@
+id: intelligence
+name: "Интеллект"
+nameEn: "Intelligence"
+levels:
+  - name: "Основы мудрости"
+    nameEn: "Basic Wisdom"
+    description: "Герой может изучать заклинания до 3‑го ранга, даже не владея навыком соответствующей школы магии."
+    descriptionEn: "The hero can learn up to tier‑3 spells without knowing the corresponding Magic School skill."
+  - name: "Продвинутая мудрость"
+    nameEn: "Advanced Wisdom"
+    description: "Герой может изучать заклинания до 4‑го ранга, даже не владея навыком соответствующей школы магии."
+    descriptionEn: "The hero can learn up to tier‑4 spells without knowing the corresponding Magic School skill."
+  - name: "Экспертная мудрость"
+    nameEn: "Expert Wisdom"
+    description: "Герой может изучать заклинания до 5‑го ранга, даже не владея навыком соответствующей школы магии."
+    descriptionEn: "The hero can learn up to tier‑5 spells without knowing the corresponding Magic School skill."
+subskills:
+  - id: rite_of_magic
+    tier: 2
+    name: "Магический ритуал"
+    nameEn: "Rite of Magic"
+    description: "Новое походное заклинание: полностью восстанавливает ману героя в обмен на все его очки движения."
+    descriptionEn: "Grants a new global map spell. It allows the hero to convert all of their current Movement points into mana."
+  - id: between_the_lines
+    tier: 2
+    name: "Между строк"
+    nameEn: "Between the Lines"
+    description: "Герой может изучать высшую нейтральную магию на любом уровне."
+    descriptionEn: "The hero may learn High Neutral magic, regardless of their level."
+  - id: seeing_through
+    tier: 2
+    name: "Взгляд насквозь"
+    nameEn: "Seeing Through"
+    description: "Удар героя уничтожает всех временных существ в атакованном отряде."
+    descriptionEn: "Heroic Strike instantly kills all temporary units in the target stack."
+  - id: rhythmic_cadence
+    tier: 3
+    name: "Ритмичная каденция"
+    nameEn: "Rhythmic Cadence"
+    description: "+40% к максимальной мане. Бонус удваивается, если герой владеет «Волшебством»."
+    descriptionEn: "+40% maximum mana. This bonus is doubled if the hero knows “Sorcery.”"
+  - id: eagle_eye
+    tier: 3
+    name: "Орлиный глаз"
+    nameEn: "Eagle Eye"
+    description: "В начале боя герой изучает все заклинания противника, которые может выучить."
+    descriptionEn: "At the start of battle, the hero learns all spells the enemy knows that the hero is capable of learning."
+  - id: stargazer
+    tier: 3
+    name: "Звездочёт"
+    nameEn: "Stargazer"
+    description: "+500 очков астрологии в день. Бонус удваивается, если герой владеет «Разведкой»."
+    descriptionEn: "+500 Astrology Points per day. This bonus is doubled if the hero knows “Scouting.”"
+source: https://www.olden-era.com/ru/skills/basic_intelligence

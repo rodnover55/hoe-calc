@@ -1,0 +1,54 @@
+id: primal_magic
+name: "Первозданная магия"
+nameEn: "Primal Magic"
+levels:
+  - name: "Основы первородной магии"
+    nameEn: "Basic Primal Magic"
+    description: "Герой может изучать первородные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Primal spells up to tier 5."
+  - name: "Продвинутая первородная магия"
+    nameEn: "Advanced Primal Magic"
+    description: "Герой может изучать первородные заклинания 5‑го ранга и ниже. Его первородные заклинания получают +1 к уровню."
+    descriptionEn: "The hero can learn Primal spells up to tier 5. Primal spells gain +1 level(s)."
+  - name: "Экспертная первородная магия"
+    nameEn: "Expert Primal Magic"
+    description: "Герой может изучать первородные заклинания 5‑го ранга и ниже, не посещая гильдию магов, если они открыты в обсерватории. Его первородные заклинания получают +1 к уровню."
+    descriptionEn: "The hero can learn Primal spells up to tier 5, without visiting a Mage Guild, provided they are unlocked in the Observatory. Primal spells gain +1 level(s)."
+subskills:
+  - id: primal_time
+    tier: 2
+    name: "Первородное время"
+    nameEn: "Primal Time"
+    description: "Снижает время восстановления всех первородных заклинаний на несколько раундов: –1."
+    descriptionEn: "The cooldowns of all the hero’s Primal spells are reduced by 1 round(s)."
+  - id: primal_force
+    tier: 2
+    name: "Первородная сила"
+    nameEn: "Primal Force"
+    description: "Все эффекты, накладываемые героем и дружественными существами, длятся на несколько раундов дольше: +1."
+    descriptionEn: "Negative and positive effects used by the hero and friendly creatures last 1 additional round(s)."
+  - id: sharpest_teeth
+    tier: 2
+    name: "Острейшие зубы"
+    nameEn: "Sharpest Teeth"
+    description: "–1 к уровню всех первородных заклинаний противника."
+    descriptionEn: "–1 level(s) to all enemy Primal spells."
+  - id: primal_teachings
+    tier: 3
+    name: "Первородное учение"
+    nameEn: "Primal Teachings"
+    description: "+1 к уровню всех первородных заклинаний героя."
+    descriptionEn: "+1 level(s) to this hero’s Primal spells."
+  - id: chaos_reigns
+    tier: 3
+    name: "Правление хаоса"
+    nameEn: "Chaos Reigns"
+    description: "Герой и дружественные существа наносят +50% урона удачными ударами. Бонус удваивается, если герой владеет «Боевой магией»."
+    descriptionEn: "The hero and friendly creatures deal 50% more Damage with Lucky Strikes. This bonus is doubled if the hero knows “Battle Magic.”"
+  - id: scholar_synergy_hksmilla
+    tier: 3
+    name: "Синергия магов. Кшмилья"
+    nameEn: "Scholar Synergy: Hksmilla"
+    description: "На время использования первородных заклинаний герой получает +6 к силе магии. Бонус повышается на 3 за навык каждой другой школы магии, которым владеет герой."
+    descriptionEn: "+6 Spell Power when casting Primal spells. Gain an additional +3 for each other Magic School skill known."
+source: https://www.olden-era.com/ru/skills/basic_primal_magic

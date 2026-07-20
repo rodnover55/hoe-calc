@@ -1,0 +1,54 @@
+id: tactics
+name: "Тактика"
+nameEn: "Tactics"
+levels:
+  - name: "Основы тактики"
+    nameEn: "Basic Tactics"
+    description: "Увеличивает область расстановки в тактической фазе до 3 рядов. Если противник тоже владеет «Тактикой», его область снижается на 1 ряд(а)."
+    descriptionEn: "In the Tactics Phase, creatures can be placed within a 3‑line area. If the enemy also knows “Tactics”, their area of placement reduces by 1 line(s)."
+  - name: "Продвинутая тактика"
+    nameEn: "Advanced Tactics"
+    description: "Увеличивает область расстановки в тактической фазе до 4 рядов. Если противник тоже владеет «Тактикой», его область снижается на 2 ряд(а)."
+    descriptionEn: "In the Tactics Phase, creatures can be placed within a 4‑line area. If the enemy also knows “Tactics”, their area of placement reduces by 2 line(s)."
+  - name: "Экспертная тактика"
+    nameEn: "Expert Tactics"
+    description: "Увеличивает область расстановки в тактической фазе до 5 рядов. Если противник тоже владеет «Тактикой», его область снижается на 3 ряд(а)."
+    descriptionEn: "In the Tactics Phase, creatures can be placed within a 5‑line area. If the enemy also knows “Tactics”, their area of placement reduces by 3 line(s)."
+subskills:
+  - id: one_for_all
+    tier: 2
+    name: "Один за всех"
+    nameEn: "One for All"
+    description: "Дружественные существа получают +2 к атаке за каждый соседний отряд противника. Бонус удваивается, если герой владеет «Нападением»."
+    descriptionEn: "Friendly creatures gain +2 Attack for each adjacent enemy. This bonus is doubled if the hero knows “Offense.”"
+  - id: easy_prey
+    tier: 2
+    name: "Лёгкая добыча"
+    nameEn: "Easy Prey"
+    description: "Раз за раунд, когда отряд противника ожидает, дружественные существа получают +2 к инициативе до конца раунда. Эффект не суммируется."
+    descriptionEn: "Once per round, when an enemy waits, friendly creatures gain +2 Initiative until the end of round. This effect does not stack."
+  - id: energizing_mana
+    tier: 2
+    name: "Бодрящая мана"
+    nameEn: "Energizing Mana"
+    description: "Генерирует заряды концентрации каждый раз, когда противник использует заклинание: +1."
+    descriptionEn: "Generate +1 Focus Charge each time your enemy uses a spell."
+  - id: all_for_one
+    tier: 3
+    name: "Все за одного"
+    nameEn: "All for One"
+    description: "Дружественные существа получают +2 к защите за каждый соседний отряд героя. Бонус удваивается, если герой владеет «Обороной»."
+    descriptionEn: "Friendly creatures gain +2 Defense for each adjacent ally. This bonus is doubled if the hero knows “Defense.”"
+  - id: riposte_mastery
+    tier: 3
+    name: "Мастерство ответного удара"
+    nameEn: "Riposte Mastery"
+    description: "Каждый раз, когда дружественный отряд убивает отряд противника контратакой, его заряды контратак обновляются на этот раунд."
+    descriptionEn: "Whenever a friendly creature kills an enemy with a counterattack, their counterattacks are refreshed for the round."
+  - id: spellcaster_tactics
+    tier: 3
+    name: "Тактика заклинателей"
+    nameEn: "Spellcaster Tactics"
+    description: "Каждый раз, когда дружественные существа или герой тратит в бою концентрацию, он получает 4 временной маны."
+    descriptionEn: "Whenever friendly creatures or the hero spend Focus, they gain 4 temporary mana."
+source: https://www.olden-era.com/ru/skills/basic_tactics

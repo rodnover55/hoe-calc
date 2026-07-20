@@ -1,0 +1,54 @@
+id: murmuring
+name: "Шёпот стихий"
+nameEn: "Murmuring"
+levels:
+  - name: "Basic Murmuring"
+    nameEn: "Basic Murmuring"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - name: "Продвинутый шёпот стихий"
+    nameEn: "Advanced Murmuring"
+    description: "Генерирует заряды концентрации в начале боя: 2."
+    descriptionEn: "Generates 2 Focus Charge(s) at the start of every battle."
+  - name: "Экспертный шёпот стихий"
+    nameEn: "Expert Murmuring"
+    description: "Генерирует заряды концентрации в начале боя: 3."
+    descriptionEn: "Generates 3 Focus Charge(s) at the start of every battle."
+subskills:
+  - id: mycelium_grounds
+    tier: 2
+    name: "Поля мицелия"
+    nameEn: "Mycelium Grounds"
+    description: "Дружественные существа Рощи наносят +10% и получают –10% урона на родной земле."
+    descriptionEn: "Friendly Grove creatures deal +10% and take –10% Damage on Native Terrain."
+  - id: life_essence
+    tier: 2
+    name: "Эссенция жизни"
+    nameEn: "Life Essence"
+    description: "+1 к максимальному запасу зарядов концентрации."
+    descriptionEn: "Focus Charge limit increases by 1."
+  - id: child_of_the_woods
+    tier: 2
+    name: "Дитя лесов"
+    nameEn: "Child of the Woods"
+    description: "+20 к максимальной мане."
+    descriptionEn: "+20 maximum mana."
+  - id: just_one_more_time
+    tier: 3
+    name: "Ещё разок"
+    nameEn: "Just One More Time"
+    description: "За каждый заряд концентрации, потраченный дружественными существами или героем, время восстановления всех его заклинаний снижается на несколько раундов: –1."
+    descriptionEn: "Every Focus Charge spent by friendly creatures or the hero reduces the cooldowns of all the hero’s spells by 1 round(s)."
+  - id: burst_of_energy
+    tier: 3
+    name: "Прилив сил"
+    nameEn: "Burst of Energy"
+    description: "За каждый заряд концентрации, потраченный дружественными существами или героем, урон, наносимый ударом героя, повышается на 15% за уровень героя до конца раунда."
+    descriptionEn: "Every Focus Charge spent by friendly creatures or the hero increases Heroic Strike Damage by 15% per hero level until the end of the round."
+  - id: strong_connection
+    tier: 3
+    name: "Крепкая связь"
+    nameEn: "Strong Connection"
+    description: "За каждый заряд концентрации, потраченный дружественными существами или героем, все характеристики героя повышаются на 2 до конца раунда."
+    descriptionEn: "Every Focus Charge spent by friendly creatures or the hero increases all hero attributes by 2 until the end of the round."
+source: https://www.olden-era.com/ru/skills/basic_murmuring

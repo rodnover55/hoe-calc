@@ -1,5 +1,11 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import type { AttackerStats, DamageStep, DefenderStats } from './formula';
+import type {
+  AbilityDamageResult,
+  AttackerStats,
+  DamageStep,
+  DefenderStats,
+  LuckDamage,
+} from './formula';
 import { calculateAbilityDamage, calculateDamage } from './formula';
 import type { AttackMode } from './abilityEffects';
 import { attackModesFor, damageReduction, defaultRetaliation, doubleStrikeFor } from './abilityEffects';
@@ -7,6 +13,7 @@ import type { HeroPick } from './heroEffects';
 import {
   EMPTY_HERO_PICK,
   HERO_STRIKE_MODE_ID,
+  defaultSkillPicks,
   heroBonuses,
   heroStrikeMode,
   heroStrikeSteps,
@@ -16,6 +23,8 @@ import type { GameHero } from './heroes';
 import { HEROES_BY_ID } from './heroes';
 import { LANGUAGES, numberLocale, pluralWord } from './i18n';
 import { useI18n } from './LangContext';
+import type { DamageGridColumn } from './components/DamageGrid';
+import { DamageGrid } from './components/DamageGrid';
 import { HeroPicker } from './components/HeroPicker';
 import { HeroPresetPanel } from './components/HeroPresetPanel';
 import { NumberField } from './components/NumberField';
@@ -120,6 +129,29 @@ export default function App() {
 
   const formatRange = (min: number, max: number) =>
     min === max ? formatNumber(min) : `${formatNumber(min)} – ${formatNumber(max)}`;
+
+  const formatCount = (min: number, max: number) =>
+    min === max ? formatNumber(min) : `${formatNumber(min)}–${formatNumber(max)}`;
+
+  /** Ячейка урона: диапазон и среднее в скобках; на узком экране среднее переносится */
+  const damageCell = (row: { min: number; max: number; average: number }) => (
+    <>
+      <span className="damage-range">{formatRange(row.min, row.max)}</span>{' '}
+      <span className="damage-avg">({formatNumber(row.average)})</span>
+    </>
+  );
+
+  /** Колонки по вариантам удачи; select возвращает null, когда бить уже некому */
+  const luckColumns = <T,>(
+    rows: LuckDamage[],
+    select: (row: LuckDamage) => T | null,
+  ): DamageGridColumn<T>[] =>
+    rows.map((row) => ({
+      key: row.luck,
+      luck: row.luck,
+      data: select(row),
+      note: t('cards.destroyedShort'),
+    }));
 
   /** «за 3 удара», «за 2–4 удара»; без верхней границы — «минимум за 3 удара» */
   const formatStrikes = (min: number, max: number | null) =>
@@ -243,9 +275,11 @@ export default function App() {
   // сбросе героя выбор режима сам падает на первый из списка юнита.
   const modes = useMemo(() => {
     const list = attackModesFor(attackerUnit, lang);
-    if (attackerGameHero) list.push(heroStrikeMode(attackerGameHero, attackerHero.level, lang));
+    if (attackerGameHero) {
+      list.push(heroStrikeMode(attackerGameHero, attackerHero.level, attackerHero.skills, lang));
+    }
     return list;
-  }, [attackerUnit, attackerGameHero, attackerHero.level, lang]);
+  }, [attackerUnit, attackerGameHero, attackerHero.level, attackerHero.skills, lang]);
   const mode = modes.find((m) => m.id === modeId) ?? modes[0];
   const doubleStrike = doubleStrikeFor(attackerUnit, mode);
   const reduction = damageReduction(defenderUnit, mode, lang);
@@ -280,25 +314,35 @@ export default function App() {
     setPresetSel((sel) => ({ ...sel, defenderSavedUnitId: null }));
   };
 
-  // Выбор игрового героя один раз заполняет атаку/защиту его стартовыми
-  // статами; дальше они правятся вручную, как статы юнита.
+  // Выбор игрового героя один раз заполняет атаку/защиту, силу магии и
+  // знание его стартовыми статами и сеет стартовые навыки; дальше всё
+  // правится вручную, как статы юнита.
+  const pickOfHero = (hero: GameHero | null, level: number): HeroPick =>
+    hero
+      ? {
+          heroId: hero.id,
+          level,
+          skills: defaultSkillPicks(hero),
+          spellPower: hero.stats.spellPower,
+          knowledge: hero.stats.knowledge,
+        }
+      : { ...EMPTY_HERO_PICK, level };
+
   const selectAttackerGameHero = (hero: GameHero | null) => {
-    setAttackerHero((prev) => ({ heroId: hero?.id ?? null, level: prev.level }));
+    setAttackerHero((prev) => pickOfHero(hero, prev.level));
     if (hero) patchAttacker({ heroAttack: hero.stats.attack, heroDefense: hero.stats.defense });
   };
 
   const selectDefenderGameHero = (hero: GameHero | null) => {
-    setDefenderHero((prev) => ({ heroId: hero?.id ?? null, level: prev.level }));
+    setDefenderHero((prev) => pickOfHero(hero, prev.level));
     if (hero) patchDefender({ heroAttack: hero.stats.attack, heroDefense: hero.stats.defense });
   };
 
-  const setAttackerHeroLevel = (level: number) => {
-    setAttackerHero((prev) => ({ ...prev, level }));
-  };
+  const patchAttackerHero = (patch: Partial<HeroPick>) =>
+    setAttackerHero((prev) => ({ ...prev, ...patch }));
 
-  const setDefenderHeroLevel = (level: number) => {
-    setDefenderHero((prev) => ({ ...prev, level }));
-  };
+  const patchDefenderHero = (patch: Partial<HeroPick>) =>
+    setDefenderHero((prev) => ({ ...prev, ...patch }));
 
   // Режим атаки принадлежит атакующему, поэтому после обмена он строится
   // заново по способностям нового атакующего, как при выборе юнита.
@@ -545,16 +589,21 @@ export default function App() {
         {
           hero: attackerGameHero,
           level: attackerHero.level,
+          skills: attackerHero.skills,
+          spellPower: attackerHero.spellPower,
+          knowledge: attackerHero.knowledge,
           unit: attackerUnit,
           enemyUnit: defenderUnit,
           heroAttack: attacker.heroAttack,
           heroDefense: attacker.heroDefense,
+          enemyUnitAttack: defender.attack,
+          enemyUnitDefense: defender.defense,
           mode,
           side: 'attacker',
         },
         lang,
       ),
-    [attackerGameHero, attackerHero.level, attackerUnit, defenderUnit, attacker, mode, lang],
+    [attackerGameHero, attackerHero, attackerUnit, defenderUnit, attacker, defender, mode, lang],
   );
   const defBonus = useMemo(
     () =>
@@ -562,25 +611,34 @@ export default function App() {
         {
           hero: defenderGameHero,
           level: defenderHero.level,
+          skills: defenderHero.skills,
+          spellPower: defenderHero.spellPower,
+          knowledge: defenderHero.knowledge,
           unit: defenderUnit,
           enemyUnit: attackerUnit,
           heroAttack: defender.heroAttack,
           heroDefense: defender.heroDefense,
+          enemyUnitAttack: attacker.attack,
+          enemyUnitDefense: attacker.defense,
           mode,
           side: 'defender',
         },
         lang,
       ),
-    [defenderGameHero, defenderHero.level, defenderUnit, attackerUnit, defender, mode, lang],
+    [defenderGameHero, defenderHero, defenderUnit, attackerUnit, defender, attacker, mode, lang],
   );
 
   // Бонусы героев складываются с полями формы в момент расчёта и не
   // перезаписывают введённые вручную значения: свои — в атаку/защиту
-  // героя, штрафы специализаций противника — в статы юнита (формула сама
-  // ограничивает их нулём снизу).
+  // героя, урон и здоровье отряда, штрафы противника — в статы юнита
+  // (формула сама ограничивает их снизу).
   const effectiveAttacker = useMemo(
     () => ({
       ...attacker,
+      health: attacker.health + attBonus.health + defBonus.enemyHealth,
+      topHealth: attacker.topHealth + attBonus.health + defBonus.enemyHealth,
+      damageMin: attacker.damageMin + attBonus.damage + defBonus.enemyDamage,
+      damageMax: attacker.damageMax + attBonus.damage + defBonus.enemyDamage,
       attack: attacker.attack + defBonus.enemyAttack,
       defense: attacker.defense + defBonus.enemyDefense,
       heroAttack: attacker.heroAttack + attBonus.attack,
@@ -591,6 +649,10 @@ export default function App() {
   const effectiveDefender = useMemo(
     () => ({
       ...defender,
+      health: defender.health + defBonus.health + attBonus.enemyHealth,
+      topHealth: defender.topHealth + defBonus.health + attBonus.enemyHealth,
+      damageMin: defender.damageMin + defBonus.damage + attBonus.enemyDamage,
+      damageMax: defender.damageMax + defBonus.damage + attBonus.enemyDamage,
       attack: defender.attack + attBonus.enemyAttack,
       defense: defender.defense + attBonus.enemyDefense,
       heroAttack: defender.heroAttack + defBonus.attack,
@@ -642,26 +704,32 @@ export default function App() {
         // «Сопротивление» героя защитника складывается с защитой
         // цели от магии; на чистый урон оба не действуют.
         reduction: (reduction?.percent ?? 0) + defBonus.magicReduction || undefined,
+        // Цель — эффективные статы: прибавки и штрафы здоровью от
+        // навыков влияют на счёт погибших и от способностей.
         defender: {
-          count: defender.count,
-          health: defender.health,
-          topHealth: defender.topHealth,
+          count: effectiveDefender.count,
+          health: effectiveDefender.health,
+          topHealth: effectiveDefender.topHealth,
         },
       },
       lang,
     );
     // У удара героя вместо «фиксированного урона» — его собственная
-    // формула с подставленными уровнем и бонусом специализации.
+    // формула с подставленными уровнем и бонусами специализации и навыков.
     return mode.id === HERO_STRIKE_MODE_ID && attackerGameHero
-      ? { ...result, steps: heroStrikeSteps(attackerGameHero, attackerHero.level, lang) }
+      ? {
+          ...result,
+          steps: heroStrikeSteps(attackerGameHero, attackerHero.level, attackerHero.skills, lang),
+        }
       : result;
   }, [
     special,
     mode.id,
     attackerGameHero,
     attackerHero.level,
+    attackerHero.skills,
     effectiveAttacker,
-    defender,
+    effectiveDefender,
     reduction,
     defBonus,
     lang,
@@ -720,9 +788,11 @@ export default function App() {
               idPrefix="attacker"
               selectedId={attackerHero.heroId}
               level={attackerHero.level}
+              skills={attackerHero.skills}
               notes={attBonus.notes}
               onSelect={selectAttackerGameHero}
-              onLevelChange={setAttackerHeroLevel}
+              onLevelChange={(level) => patchAttackerHero({ level })}
+              onSkillsChange={(skills) => patchAttackerHero({ skills })}
             />
             <NumberField
               id="attacker-hero-attack"
@@ -738,6 +808,24 @@ export default function App() {
               min={0}
               onChange={(heroDefense) => patchAttacker({ heroDefense })}
             />
+            {attackerHero.heroId !== null && (
+              <>
+                <NumberField
+                  id="attacker-hero-spell-power"
+                  label={t('fields.spellPower')}
+                  value={attackerHero.spellPower}
+                  min={0}
+                  onChange={(spellPower) => patchAttackerHero({ spellPower })}
+                />
+                <NumberField
+                  id="attacker-hero-knowledge"
+                  label={t('fields.knowledge')}
+                  value={attackerHero.knowledge}
+                  min={0}
+                  onChange={(knowledge) => patchAttackerHero({ knowledge })}
+                />
+              </>
+            )}
           </div>
           <div className="group">
             <div className="group-title">{t('app.unit')}</div>
@@ -898,9 +986,11 @@ export default function App() {
               idPrefix="defender"
               selectedId={defenderHero.heroId}
               level={defenderHero.level}
+              skills={defenderHero.skills}
               notes={defBonus.notes}
               onSelect={selectDefenderGameHero}
-              onLevelChange={setDefenderHeroLevel}
+              onLevelChange={(level) => patchDefenderHero({ level })}
+              onSkillsChange={(skills) => patchDefenderHero({ skills })}
             />
             <NumberField
               id="defender-hero-attack"
@@ -916,6 +1006,24 @@ export default function App() {
               min={0}
               onChange={(heroDefense) => patchDefender({ heroDefense })}
             />
+            {defenderHero.heroId !== null && (
+              <>
+                <NumberField
+                  id="defender-hero-spell-power"
+                  label={t('fields.spellPower')}
+                  value={defenderHero.spellPower}
+                  min={0}
+                  onChange={(spellPower) => patchDefenderHero({ spellPower })}
+                />
+                <NumberField
+                  id="defender-hero-knowledge"
+                  label={t('fields.knowledge')}
+                  value={defenderHero.knowledge}
+                  min={0}
+                  onChange={(knowledge) => patchDefenderHero({ knowledge })}
+                />
+              </>
+            )}
           </div>
           <div className="group">
             <div className="group-title">{t('app.unit')}</div>
@@ -1002,105 +1110,74 @@ export default function App() {
         {specialResult && (
           <div className="card">
             <div className="label">{t('cards.ability')}</div>
-            <div className="damage-row">
-              <span className="damage-luck">{mode.label}</span>
-              <span className="damage-value">
-                {formatRange(specialResult.min, specialResult.max)}{' '}
-                <span className="damage-avg">({formatNumber(specialResult.average)})</span>
-                <span className="damage-sub">
-                  {t('cards.dies')}{' '}
-                  {specialResult.killsMin === specialResult.killsMax
-                    ? formatNumber(specialResult.killsMin)
-                    : `${formatNumber(specialResult.killsMin)}–${formatNumber(specialResult.killsMax)}`}
-                  {specialResult.strikesMin !== null &&
-                    ` · ${t('cards.wholeStack')} ${formatStrikes(specialResult.strikesMin, specialResult.strikesMax)}`}
-                </span>
-              </span>
-            </div>
+            <DamageGrid
+              columns={[{ key: 'ability', luck: null, label: mode.label, data: specialResult }]}
+              rows={[
+                { label: t('cards.damage'), render: damageCell },
+                { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
+                {
+                  label: t('cards.wholeStack'),
+                  render: (row: AbilityDamageResult) =>
+                    row.strikesMin === null ? '—' : formatStrikes(row.strikesMin, row.strikesMax),
+                },
+              ]}
+            />
             <Formula steps={specialResult.steps} />
           </div>
         )}
         {!specialResult && (
           <div className="card">
             <div className="label">{t('cards.attack')}</div>
-            {result.byLuck.map((row) => (
-              <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
-                <span className="damage-luck">{t(`luck.${row.luck}`)}</span>
-                <span className="damage-value">
-                  {formatRange(row.min, row.max)}{' '}
-                  <span className="damage-avg">({formatNumber(row.average)})</span>
-                  <span className="damage-sub">
-                    {t('cards.dies')}{' '}
-                    {row.killsMin === row.killsMax
-                      ? formatNumber(row.killsMin)
-                      : `${formatNumber(row.killsMin)}–${formatNumber(row.killsMax)}`}
-                    {` · ${t('cards.wholeStack')} ${formatStrikes(row.strikesMin, row.strikesMax)}`}
-                  </span>
-                </span>
-              </div>
-            ))}
+            <DamageGrid
+              columns={luckColumns(result.byLuck, (row) => row)}
+              rows={[
+                { label: t('cards.damage'), render: damageCell },
+                { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
+                {
+                  label: t('cards.wholeStack'),
+                  render: (row) => formatStrikes(row.strikesMin, row.strikesMax),
+                },
+              ]}
+            />
             <Formula steps={result.steps} />
           </div>
         )}
         {attack.retaliation && (
           <div className="card">
             <div className="label">{t('cards.retaliation')}</div>
-            {result.byLuck.map((row) => {
-              const retaliation = row.retaliation;
-              if (!retaliation) return null;
-              return (
-                <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
-                  <span className="damage-luck">{t(`luck.${row.luck}`)}</span>
-                  {retaliation.survivorsMax > 0 ? (
-                    <span className="damage-value damage-value--retaliation">
-                      {formatRange(retaliation.min, retaliation.max)}{' '}
-                      <span className="damage-avg">({formatNumber(retaliation.average)})</span>
-                      <span className="damage-sub">
-                        {t('cards.dies')}{' '}
-                        {retaliation.killsMin === retaliation.killsMax
-                          ? formatNumber(retaliation.killsMin)
-                          : `${formatNumber(retaliation.killsMin)}–${formatNumber(retaliation.killsMax)}`}
-                      </span>
-                    </span>
-                  ) : (
-                    <span className="damage-avg">{t('cards.destroyed')}</span>
-                  )}
-                </div>
-              );
-            })}
+            <DamageGrid
+              columns={luckColumns(result.byLuck, (row) =>
+                row.retaliation && row.retaliation.survivorsMax > 0 ? row.retaliation : null,
+              )}
+              rows={[
+                { label: t('cards.damage'), render: damageCell },
+                { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
+                {
+                  label: t('cards.wholeStack'),
+                  render: (row) =>
+                    row.strikesMin === null ? '—' : formatStrikes(row.strikesMin, row.strikesMax),
+                },
+              ]}
+            />
             <Formula steps={result.retaliationSteps} />
           </div>
         )}
         {doubleStrike && (
           <div className="card">
             <div className="label">{t('cards.second')}</div>
-            {result.byLuck.map((row) => {
-              const second = row.secondStrike;
-              if (!second) return null;
-              return (
-                <div className={`damage-row damage-row--${row.luck}`} key={row.luck}>
-                  <span className="damage-luck">{t(`luck.${row.luck}`)}</span>
-                  {second.attackersMax > 0 ? (
-                    <span className="damage-value">
-                      {formatRange(second.min, second.max)}{' '}
-                      <span className="damage-avg">({formatNumber(second.average)})</span>
-                      <span className="damage-sub">
-                        {t('cards.striking')}{' '}
-                        {second.attackersMin === second.attackersMax
-                          ? formatNumber(second.attackersMin)
-                          : `${formatNumber(second.attackersMin)}–${formatNumber(second.attackersMax)}`}{' '}
-                        · {t('cards.dies')}{' '}
-                        {second.killsMin === second.killsMax
-                          ? formatNumber(second.killsMin)
-                          : `${formatNumber(second.killsMin)}–${formatNumber(second.killsMax)}`}
-                      </span>
-                    </span>
-                  ) : (
-                    <span className="damage-avg">{t('cards.destroyedNoSecond')}</span>
-                  )}
-                </div>
-              );
-            })}
+            <DamageGrid
+              columns={luckColumns(result.byLuck, (row) =>
+                row.secondStrike && row.secondStrike.attackersMax > 0 ? row.secondStrike : null,
+              )}
+              rows={[
+                { label: t('cards.damage'), render: damageCell },
+                {
+                  label: t('cards.striking'),
+                  render: (row) => formatCount(row.attackersMin, row.attackersMax),
+                },
+                { label: t('cards.dies'), render: (row) => formatCount(row.killsMin, row.killsMax) },
+              ]}
+            />
             <Formula steps={result.secondStrikeSteps} />
           </div>
         )}

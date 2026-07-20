@@ -1,0 +1,54 @@
+id: insight
+name: "Озарение"
+nameEn: "Insight"
+levels:
+  - name: "Основы проницательности"
+    nameEn: "Basic Insight"
+    description: "Герой получает +20% опыта."
+    descriptionEn: "The hero gains +20% more XP."
+  - name: "Продвинутая проницательность"
+    nameEn: "Advanced Insight"
+    description: "Герой получает +30% опыта."
+    descriptionEn: "The hero gains +30% more XP."
+  - name: "Экспертная проницательность"
+    nameEn: "Expert Insight"
+    description: "Герой получает +40% опыта."
+    descriptionEn: "The hero gains +40% more XP."
+subskills:
+  - id: enlightenment
+    tier: 2
+    name: "Просвещённость"
+    nameEn: "Enlightenment"
+    description: "Герой получает ещё +10% опыта."
+    descriptionEn: "The hero gains an additional +10% XP."
+  - id: civic_innovation
+    tier: 2
+    name: "Гражданские инновации"
+    nameEn: "Civic Innovation"
+    description: "Герой получает +30% очков законов. Бонус удваивается, если герой владеет «Лидерством»."
+    descriptionEn: "The hero gains +30% Law points. This bonus is doubled if the hero knows “Leadership.”"
+  - id: sagacity
+    tier: 2
+    name: "Прозорливость"
+    nameEn: "Sagacity"
+    description: "Показывает намерения нейтральных армий в пределах нескольких клеток вокруг героя: [ 300% × радиус обзора героя ]."
+    descriptionEn: "Shows the intentions of all neutral squads within [ 300% × hero sight radius ] square(s) of the hero."
+  - id: scholar_of_magic
+    tier: 3
+    name: "Учёный маг"
+    nameEn: "Scholar of Magic"
+    description: "Позволяет героям учить друг друга заклинаниям, когда они взаимодействуют на карте приключений. Каждый учит те заклинания, которые ему доступны."
+    descriptionEn: "Allows heroes to teach each other spells when they interact on the global map. In the exchange, each hero will learn all the spells of the other that their skills, level, and items permit."
+  - id: endless_charisma
+    tier: 3
+    name: "Бесконечная харизма"
+    nameEn: "Endless Charisma"
+    description: "+1 к атаке, защите, силе магии и знаниям. Бонус удваивается, если герой владеет «Тактикой»."
+    descriptionEn: "+1 Attack, Defense, Spell Power, and Knowledge. This bonus is doubled if the hero knows “Tactics.”"
+  - id: perception
+    tier: 3
+    name: "Видение"
+    nameEn: "Perception"
+    description: "Позволяет просматривать подробную информацию о герое противника в бою."
+    descriptionEn: "Enables viewing detailed information about the enemy hero during battle."
+source: https://www.olden-era.com/ru/skills/basic_insight

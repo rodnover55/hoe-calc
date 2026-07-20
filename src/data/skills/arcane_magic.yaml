@@ -1,0 +1,54 @@
+id: arcane_magic
+name: "Арканная магия"
+nameEn: "Arcane Magic"
+levels:
+  - name: "Основы арканной магии"
+    nameEn: "Basic Arcane Magic"
+    description: "Герой может изучать арканные заклинания 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Arcane spells up to tier 5."
+  - name: "Продвинутая арканная магия"
+    nameEn: "Advanced Arcane Magic"
+    description: "Герой может изучать арканные заклинания 5‑го ранга и ниже. Его арканные заклинания получают +1 к уровню."
+    descriptionEn: "The hero can learn Arcane spells up to tier 5. Arcane spells gain +1 level(s)."
+  - name: "Экспертная арканная магия"
+    nameEn: "Expert Arcane Magic"
+    description: "Герой может изучать арканные заклинания 5‑го ранга и ниже, не посещая гильдию магов, если они открыты в обсерватории. Его арканные заклинания получают +1 к уровню."
+    descriptionEn: "The hero can learn Arcane spells up to tier 5, without visiting a Mage Guild, provided they are unlocked in the Observatory. Arcane spells gain +1 level(s)."
+subskills:
+  - id: arcane_time
+    tier: 2
+    name: "Время тайн"
+    nameEn: "Arcane Time"
+    description: "Снижает время восстановления всех арканных заклинаний на несколько раундов: –1."
+    descriptionEn: "The cooldowns of all the hero’s Arcane spells are reduced by 1 round(s)."
+  - id: all_life_is_endless
+    tier: 2
+    name: "Всякая жизнь бесконечна"
+    nameEn: "All Life is Endless"
+    description: "В бою способности дружественных существ и заклинания героя восстанавливают +30% здоровья (в том числе при воскрешении). Бонус удваивается, если герой владеет «Призывом аватара»."
+    descriptionEn: "+30% healing and revival from friendly creature abilities and hero spells in battle. This bonus is doubled if the hero knows “Summon Avatar.”"
+  - id: purest_thought
+    tier: 2
+    name: "Чистейшая мысль"
+    nameEn: "Purest Thought"
+    description: "–1 к уровню всех арканных заклинаний противника."
+    descriptionEn: "–1 level(s) to all enemy Arcane spells."
+  - id: arcane_teachings
+    tier: 3
+    name: "Арканное учение"
+    nameEn: "Arcane Teachings"
+    description: "+1 к уровню всех арканных заклинаний героя."
+    descriptionEn: "+1 level(s) to this hero’s Arcane spells."
+  - id: mana_flex
+    tier: 3
+    name: "Ловкость рук"
+    nameEn: "Mana Flex"
+    description: "Заклинания героя стоят –2 маны."
+    descriptionEn: "Spells cost –2 mana."
+  - id: scholar_synergy_doreath
+    tier: 3
+    name: "Синергия магов. Дореат"
+    nameEn: "Scholar Synergy: Doreath"
+    description: "На время использования арканных заклинаний герой получает +6 к силе магии. Бонус повышается на 3 за навык каждой другой школы магии, которым владеет герой."
+    descriptionEn: "+6 Spell Power when casting Arcane spells. Gain an additional +3 for each other Magic School skill known."
+source: https://www.olden-era.com/ru/skills/basic_arcane_magic

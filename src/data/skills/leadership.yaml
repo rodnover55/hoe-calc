@@ -1,0 +1,54 @@
+id: leadership
+name: "Лидерство"
+nameEn: "Leadership"
+levels:
+  - name: "Основы лидерства"
+    nameEn: "Basic Leadership"
+    description: "Герой получает +1 к боевому духу."
+    descriptionEn: "The hero gains 1 Morale."
+  - name: "Продвинутое лидерство"
+    nameEn: "Advanced Leadership"
+    description: "Герой получает +2 к боевому духу."
+    descriptionEn: "The hero gains 2 Morale."
+  - name: "Экспертное лидерство"
+    nameEn: "Expert Leadership"
+    description: "Герой получает +3 к боевому духу."
+    descriptionEn: "The hero gains 3 Morale."
+subskills:
+  - id: resolve
+    tier: 2
+    name: "Решимость"
+    nameEn: "Resolve"
+    description: "Дружественные существа получают +1% к шансу сделать дополнительный ход за каждую единицу боевого духа. Бонус удваивается, если герой владеет «Боевым порядком»."
+    descriptionEn: "Friendly creatures’ chance to take an additional turn increases by 1% for each point of Morale. This bonus is doubled if the hero knows “Battlecraft.”"
+  - id: where_the_sun_never_sets
+    tier: 2
+    name: "Где не садится солнце"
+    nameEn: "Where the Sun Never Sets"
+    description: "Атака, защита, сила магии и радиус обзора героя повышаются на 2, пока он на территории не под вашим контролем. Бонус удваивается, если герой владеет «Магией дня»."
+    descriptionEn: "Attack, Defense, Spell Power, and sight radius increase by 2 when in an area you do not control. This bonus is doubled if the hero knows “Daylight Magic.”"
+  - id: hero_of_legends
+    tier: 2
+    name: "Легендарный герой"
+    nameEn: "Hero of Legends"
+    description: "В бою боевой дух существ противника снижается на 1."
+    descriptionEn: "Enemy Morale is reduced by 1 in battle."
+  - id: inspiring_strike
+    tier: 3
+    name: "Вдохновляющий удар"
+    nameEn: "Inspiring Strike"
+    description: "Герой получает шанс сбросить время восстановления удара героя при его использовании: 5% за каждую его единицу боевого духа."
+    descriptionEn: "The hero gains a chance to instantly reset the cooldown of Heroic Strike whenever they use it: 5% per point of the hero’s Morale."
+  - id: march
+    tier: 3
+    name: "Шагом марш!"
+    nameEn: "March!"
+    description: "Дружественные существа получают +1 к инициативе."
+    descriptionEn: "Friendly creatures gain 1 Initiative."
+  - id: enthusiasm
+    tier: 3
+    name: "Воодушевление"
+    nameEn: "Enthusiasm"
+    description: "Каждый раз, когда срабатывает высокий боевой дух дружественного отряда, все дружественные существа получают +1 к боевому духу до конца следующего раунда."
+    descriptionEn: "Whenever a friendly creature gains a turn from positive Morale effect, all friendly creatures’ Morale increases by 1 until the end of the next round."
+source: https://www.olden-era.com/ru/skills/basic_leadership

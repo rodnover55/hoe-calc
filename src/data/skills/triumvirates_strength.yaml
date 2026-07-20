@@ -1,0 +1,54 @@
+id: triumvirates_strength
+name: "Сила Триумвирата"
+nameEn: "Triumvirate's Strength"
+levels:
+  - name: "Основы силы Триумвирата"
+    nameEn: "Basic Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +2 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +2 to the Stance’s corresponding attribute."
+  - name: "Продвинутая сила Триумвирата"
+    nameEn: "Advanced Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +4 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +4 to the Stance’s corresponding attribute."
+  - name: "Экспертная сила Триумвирата"
+    nameEn: "Expert Triumvirate’s Strength"
+    description: "Раз за раунд позволяет герою выбрать одну из трёх боевых стоек. Каждая стойка даёт +6 к одной из характеристик героя."
+    descriptionEn: "Once per round, the hero can activate one of the three Stances in battle. The active Stance grants the hero +6 to the Stance’s corresponding attribute."
+subskills:
+  - id: underground_passages
+    tier: 2
+    name: "Подземные пути"
+    nameEn: "Underground Passages"
+    description: "Дружественные существа Подземелья наносят +10% и получают –10% урона на родной земле."
+    descriptionEn: "Friendly Dungeon creatures deal +10% and take –10% Damage on Native Terrain."
+  - id: alvarian_expertise
+    tier: 2
+    name: "Альварский опыт"
+    nameEn: "Alvarian Expertise"
+    description: "Когда герой выбирает боевую стойку, он также частично снижает соответствующую характеристику героя противника на время действия стойки."
+    descriptionEn: "When selecting a Stance, the corresponding attribute of enemy hero partially decreases while the Stance is active."
+  - id: underground_mana_pools
+    tier: 2
+    name: "Подземные источники маны"
+    nameEn: "Underground Mana Pools"
+    description: "Получает временную ману при выборе боевой стойки: +3"
+    descriptionEn: "When selecting a Stance, the hero gains 3 temporary mana."
+  - id: jack_of_all_trades
+    tier: 3
+    name: "Мастер на все руки"
+    nameEn: "Jack of All Trades"
+    description: "Когда герой выбирает боевую стойку, он повышает соответствующую характеристику на 5% до конца боя."
+    descriptionEn: "When selecting a Stance, the hero’s corresponding attribute increases by 5% until the end of the battle."
+  - id: flow
+    tier: 3
+    name: "Состояние потока"
+    nameEn: "Flow"
+    description: "Генерирует заряды концентрации при выборе боевой стойки: 1."
+    descriptionEn: "Generates 1 Focus Charge(s) each time the hero selects a Stance."
+  - id: opportunists
+    tier: 3
+    name: "Оппортунисты"
+    nameEn: "Opportunists"
+    description: "+1 к инициативе дружественных существ."
+    descriptionEn: "Friendly creatures gain 1 Initiative."
+source: https://www.olden-era.com/ru/skills/basic_triumvirates_strength

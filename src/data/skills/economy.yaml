@@ -1,0 +1,54 @@
+id: economy
+name: "Экономика"
+nameEn: "Economy"
+levels:
+  - name: "Основы экономики"
+    nameEn: "Basic Economy"
+    description: "Ежедневно приносит +500 золота."
+    descriptionEn: "+500 Gold daily."
+  - name: "Продвинутая экономика"
+    nameEn: "Advanced Economy"
+    description: "Ежедневно приносит +750 золота."
+    descriptionEn: "+750 Gold daily."
+  - name: "Экспертная экономика"
+    nameEn: "Expert Economy"
+    description: "Ежедневно приносит +1000 золота."
+    descriptionEn: "+1000 Gold daily."
+subskills:
+  - id: tax_collector
+    tier: 2
+    name: "Сборщик податей"
+    nameEn: "Tax Collector"
+    description: "Ежедневно приносит +250 золота. Бонус удваивается, если герой владеет «Логистикой»."
+    descriptionEn: "+250 Gold daily. This bonus is doubled if the hero knows “Logistics.”"
+  - id: smuggler
+    tier: 2
+    name: "Контрабандист"
+    nameEn: "Smuggler"
+    description: "Ежедневно приносит +1 кристаллов, драгоценных камней или ртути (ресурс зависит от фракции героя)."
+    descriptionEn: "+1 Crystal, Gem, or Mercury daily (depending on the hero’s faction)."
+  - id: master_builder
+    tier: 2
+    name: "Бригадир"
+    nameEn: "Master Builder"
+    description: "Ежедневно приносит +1 дерева и руды."
+    descriptionEn: "+1 Wood and Ore daily."
+  - id: experimenter
+    tier: 3
+    name: "Экспериментатор"
+    nameEn: "Experimenter"
+    description: "Ежедневно приносит +5 алхимической пыли. Бонус удваивается, если герой владеет «Проницательностью»."
+    descriptionEn: "+5 Alchemical Dust daily. This bonus is doubled if the hero knows “Insight.”"
+  - id: merchant
+    tier: 3
+    name: "Торговец"
+    nameEn: "Merchant"
+    description: "При расчёте курса обмена ресурсов на рынке этот герой учитывается как дополнительный рынок."
+    descriptionEn: "This hero counts as an additional Marketplace when calculating trading prices."
+  - id: antiquarian
+    tier: 3
+    name: "Антикварий"
+    nameEn: "Antiquarian"
+    description: "Этот герой продаёт артефакты на 25% золота дороже, а покупает — на 25% дешевле."
+    descriptionEn: "This hero sells artifacts for 25% more Gold and buys them for 25% less."
+source: https://www.olden-era.com/ru/skills/basic_economy

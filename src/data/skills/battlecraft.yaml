@@ -1,0 +1,54 @@
+id: battlecraft
+name: "Боевое мастерство"
+nameEn: "Battlecraft"
+levels:
+  - name: "Основы боевого порядка"
+    nameEn: "Basic Battlecraft"
+    description: "Ожидая в бою, дружественные существа получают +20% к атаке до конца раунда, а пропуская ход — +20% к защите."
+    descriptionEn: "When a friendly creature waits on their turn, they gain +20% Attack until the end of the round. When they skip turn, they gain +20% Defense until the end of the round."
+  - name: "Продвинутый боевой порядок"
+    nameEn: "Advanced Battlecraft"
+    description: "Ожидая в бою, дружественные существа получают +30% к атаке до конца раунда, а пропуская ход — +30% к защите."
+    descriptionEn: "When a friendly creature waits on their turn, they gain +30% Attack until the end of the round. When they skip turn, they gain +30% Defense until the end of the round."
+  - name: "Экспертный боевой порядок"
+    nameEn: "Expert Battlecraft"
+    description: "Ожидая в бою, дружественные существа получают +40% к атаке до конца раунда, а пропуская ход — +40% к защите."
+    descriptionEn: "When a friendly creature waits on their turn, they gain +40% Attack until the end of the round. When they skip turn, they gain +40% Defense until the end of the round."
+subskills:
+  - id: melee_mastery
+    tier: 2
+    name: "Мастерство ближнего боя"
+    nameEn: "Melee Mastery"
+    description: "Дружественные существа наносят +10% и получают –10% урона в ближнем бою."
+    descriptionEn: "Friendly creatures deal +10% and take –10% Melee Damage."
+  - id: ranged_mastery
+    tier: 2
+    name: "Мастерство стрельбы"
+    nameEn: "Ranged Mastery"
+    description: "Дружественные существа наносят +10% и получают –10% урона от выстрелов и на расстоянии."
+    descriptionEn: "Friendly creatures deal +10% and take –10% Ranged and Long Reach Damage."
+  - id: overwatch
+    tier: 2
+    name: "Наблюдение"
+    nameEn: "Overwatch"
+    description: "Ожидая в бою, дружественный отряд переходит в состояние наблюдения. В этом состоянии он контратакует отряды противника, передвигающиеся в радиусе атаки ближнего боя."
+    descriptionEn: "Friendly creatures gain overwatch when they choose to wait in battle. While overwatching, they will counterattack when an enemy moves into their Melee Range."
+  - id: battle_focus
+    tier: 3
+    name: "Боевая концентрация"
+    nameEn: "Battle Focus"
+    description: "В начале каждого раунда, кроме первого, генерирует заряды концентрации: +1. Бонус удваивается, если герой владеет «Боевой магией»."
+    descriptionEn: "Generates +1 Focus Charge(s) at the beginning of each round, except the first. This bonus is doubled if the hero knows “Battle Magic.”"
+  - id: preemptive_strike
+    tier: 3
+    name: "Упреждающий удар"
+    nameEn: "Preemptive Strike"
+    description: "Пропуская ход, дружественный отряд готовится нанести упреждающий удар. Благодаря этому он контратакует противника перед его атакой."
+    descriptionEn: "Friendly creatures prepare for a preemptive strike when they choose to skip their turn. If they are attacked, their counterattack will land before the enemy’s first blow."
+  - id: manacraft
+    tier: 3
+    name: "Магический порядок"
+    nameEn: "Manacraft"
+    description: "Максимальный запас маны героя повышается на 2 за каждую единицу его атаки и защиты. Бонус удваивается, если герой владеет «Вербовкой»."
+    descriptionEn: "The hero’s maximum mana increases by 2 per their Attack and Defense. This bonus is doubled if the hero knows “Recruitment.”"
+source: https://www.olden-era.com/ru/skills/basic_battlecraft

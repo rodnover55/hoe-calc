@@ -1,0 +1,54 @@
+id: resistance
+name: "Сопротивление"
+nameEn: "Resistance"
+levels:
+  - name: "Основы сопротивления"
+    nameEn: "Basic Resistance"
+    description: "Дружественные существа получают –15% магического урона."
+    descriptionEn: "Friendly creatures take –15% Magic Damage."
+  - name: "Продвинутое сопротивление"
+    nameEn: "Advanced Resistance"
+    description: "Дружественные существа получают –25% магического урона."
+    descriptionEn: "Friendly creatures take –25% Magic Damage."
+  - name: "Экспертное сопротивление"
+    nameEn: "Expert Resistance"
+    description: "Дружественные существа получают –35% магического урона."
+    descriptionEn: "Friendly creatures take –35% Magic Damage."
+subskills:
+  - id: obstruction
+    tier: 2
+    name: "Закупорка"
+    nameEn: "Obstruction"
+    description: "Заклинания противника стоят +20% маны. Если герой владеет навыками магических школ, стоимость заклинаний этих школ повышается ещё на 20%."
+    descriptionEn: "Enemy spells cost 20% more mana. If the hero knows a Magic School skill, the cost of enemy spells from that School increases by an additional 20%."
+  - id: hindrance_aura
+    tier: 2
+    name: "Аура медлительности"
+    nameEn: "Hindrance Aura"
+    description: "В начале каждого раунда, кроме первого, противник теряет заряды концентрации : 1."
+    descriptionEn: "Enemy loses 1 Focus Charge(s) at the beginning of each battle round, except the first."
+  - id: fast_metabolism
+    tier: 2
+    name: "Быстрый метаболизм"
+    nameEn: "Fast Metabolism"
+    description: "Отрицательные эффекты, наложенные на дружественных существ, длятся на несколько раундов меньше: –2 (но не менее 1)."
+    descriptionEn: "All negative effects on friendly creatures last for 2 fewer rounds (no less than 1)."
+  - id: magic_suppression
+    tier: 3
+    name: "Подавление магии"
+    nameEn: "Magic Suppression"
+    description: "Новая способность: наносит значительный магический урон призванному существу в зависимости от уровня героя."
+    descriptionEn: "Grants a new ability. It deals significant Magic Damage to the target summoned creature, scaling with the hero’s level."
+  - id: time_shift
+    tier: 3
+    name: "Сдвиг времени"
+    nameEn: "Time Shift"
+    description: "Повышает время восстановления всех заклинаний героя противника на несколько раундов: 1."
+    descriptionEn: "+1 round(s) to the cooldown of all enemy spells."
+  - id: draining
+    tier: 3
+    name: "Иссушение"
+    nameEn: "Draining"
+    description: "–1 к уровню всех заклинаний противника, принадлежащих к школам магии."
+    descriptionEn: "The enemy loses 1 levels on all Magic School spells."
+source: https://www.olden-era.com/ru/skills/basic_resistance

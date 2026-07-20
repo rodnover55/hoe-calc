@@ -1,0 +1,54 @@
+id: scouting
+name: "Разведка"
+nameEn: "Scouting"
+levels:
+  - name: "Основы разведки"
+    nameEn: "Basic Scouting"
+    description: "Герой получает +1 к радиусу обзора."
+    descriptionEn: "The hero gains 1 sight radius."
+  - name: "Продвинутая разведка"
+    nameEn: "Advanced Scouting"
+    description: "Герой получает +2 к радиусу обзора."
+    descriptionEn: "The hero gains 2 sight radius."
+  - name: "Экспертная разведка"
+    nameEn: "Expert Scouting"
+    description: "Герой получает +3 к радиусу обзора."
+    descriptionEn: "The hero gains 3 sight radius."
+subskills:
+  - id: long_sight
+    tier: 2
+    name: "Дальнозоркость"
+    nameEn: "Long‑Sight"
+    description: "Ещё +1 к радиусу обзора. Бонус удваивается, если герой владеет «Удачей»."
+    descriptionEn: "Sight radius increases by an additional 1. This bonus is doubled if the hero knows “Luck.”"
+  - id: familiar_paths
+    tier: 2
+    name: "Знакомые тропы"
+    nameEn: "Familiar Paths"
+    description: "+10 очков движения в начале дня, если герой находится на контролируемой вами территории. Бонус удваивается, если герой владеет «Мудростью»."
+    descriptionEn: "+10 Movement points when the hero starts the day in an area you control. This bonus is doubled if the hero knows “Wisdom.”"
+  - id: pathfinding
+    tier: 2
+    name: "Поиск пути"
+    nameEn: "Pathfinding"
+    description: "Снижает штраф при передвижении по пересечённой местности на 50%."
+    descriptionEn: "Terrain penalties are reduced by 50%."
+  - id: reconnaissance
+    tier: 3
+    name: "Разведотряды"
+    nameEn: "Reconnaissance"
+    description: "Каждое утро развеивает туман войны в пределах нескольких клеток вокруг героя: [ 150% × радиус обзора героя ]."
+    descriptionEn: "Removes the fog of war within [ 150% × hero sight radius ] square(s) of the hero each morning."
+  - id: visions
+    tier: 3
+    name: "Видения"
+    nameEn: "Visions"
+    description: "Показывает точный состав армии противника в пределах нескольких клеток вокруг героя: [ 300% × радиус обзора героя ]."
+    descriptionEn: "Shows the exact army composition of any enemy within [ 300% × hero sight radius ] square(s) of the hero."
+  - id: counterespionage
+    tier: 3
+    name: "Контрразведка"
+    nameEn: "Counterespionage"
+    description: "Противники не могут узнать детальную информации об армии героя. (При её просмотре дружественные отряды будут выглядеть как случайные отряды из его фракции.)"
+    descriptionEn: "Enemies can’t see detailed information about your army. When they try, they see random numbers of random creatures of your faction."
+source: https://www.olden-era.com/ru/skills/basic_scouting

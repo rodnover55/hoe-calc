@@ -14,9 +14,16 @@
 
 import type { AttackAbilities, AttackerStats, DefenderStats } from './formula';
 import { attackModesFor } from './abilityEffects';
-import type { HeroPick } from './heroEffects';
-import { EMPTY_HERO_PICK, HERO_STRIKE_MODE_ID, clampLevel } from './heroEffects';
+import type { HeroPick, SkillPick } from './heroEffects';
+import {
+  EMPTY_HERO_PICK,
+  HERO_STRIKE_MODE_ID,
+  clampLevel,
+  defaultSkillPicks,
+} from './heroEffects';
+import type { GameHero } from './heroes';
 import { HEROES_BY_ID } from './heroes';
+import { SKILLS_BY_ID, clampSkillLevel, normalizeMods } from './skills';
 import type { HeroPreset, PresetSelection, PresetStore, SavedUnit, UnitSnapshot } from './presets';
 import { EMPTY_SELECTION, UNIT_SNAPSHOT_KEYS, newId } from './presets';
 import { UNITS_BY_ID } from './units';
@@ -62,8 +69,16 @@ interface WireUnit {
   s: number[];
 }
 
-/** Игровой герой в ссылке: [id, уровень] */
-type WireHeroPick = [string, number];
+/** Навык героя в ссылке: [id, уровень] или [id, уровень, поднавыки] */
+type WireSkillPick = [string, number] | [string, number, string[]];
+
+/**
+ * Игровой герой в ссылке. Старые ссылки — [id, уровень]; новые всегда
+ * пишутся как [id, уровень, навыки, сила магии, знание] (список навыков
+ * пишется и пустым: пустота отличает «все навыки удалены» от старой
+ * ссылки, где сеются стартовые навыки героя).
+ */
+type WireHeroPick = [string, number] | [string, number, WireSkillPick[], number, number];
 
 /** Пресет героя: имя, [атака, защита] героя, игровой герой, отряды */
 interface WireHero {
@@ -77,9 +92,12 @@ interface WireHero {
 /**
  * Wire-формат. Версия 1 не содержала пресетов; версия 2 добавила поля
  * pa/pd/ps, затем — необязательные ah/dh и g в пресетах (старые ссылки
- * декодируются без них); остальные поля совпадают, поэтому декодер
- * принимает обе версии, а кодер всегда пишет вторую. При изменении
- * существующих полей заводится версия 3.
+ * декодируются без них), затем кортеж героя удлинился навыками и силой
+ * магии со знанием: короткий кортеж из двух элементов — старая ссылка,
+ * для неё сеются стартовые навыки героя и его сила магии и знание.
+ * Остальные поля совпадают, поэтому декодер принимает обе версии, а
+ * кодер всегда пишет вторую. При изменении смысла существующих полей
+ * заводится версия 3.
  */
 interface ShareV2 {
   v: 1 | 2;
@@ -152,21 +170,54 @@ const toWireUnit = (unit: SavedUnit): WireUnit => {
   return wire;
 };
 
+const toWireSkillPick = (pick: SkillPick): WireSkillPick =>
+  pick.mods.length > 0 ? [pick.id, pick.level, pick.mods] : [pick.id, pick.level];
+
 const toWireHeroPick = (pick: HeroPick): WireHeroPick | null =>
-  pick.heroId === null ? null : [pick.heroId, pick.level];
+  pick.heroId === null
+    ? null
+    : [pick.heroId, pick.level, pick.skills.map(toWireSkillPick), pick.spellPower, pick.knowledge];
+
+/** Навыки героя из ссылки: невалидные элементы отбрасываются поштучно */
+const toSkillPicks = (value: unknown): SkillPick[] => {
+  if (!Array.isArray(value)) return [];
+  const picks: SkillPick[] = [];
+  for (const item of value) {
+    if (!Array.isArray(item) || item.length < 2) continue;
+    const [id, level, mods] = item as unknown[];
+    if (typeof id !== 'string') continue;
+    const skill = SKILLS_BY_ID.get(id);
+    if (!skill || picks.some((pick) => pick.id === id)) continue;
+    const lvl = clampSkillLevel(typeof level === 'number' && Number.isFinite(level) ? level : 1);
+    picks.push({ id, level: lvl, mods: normalizeMods(skill, lvl, mods) });
+  }
+  return picks;
+};
+
+/** Конечное неотрицательное число из ссылки; иначе — запасное значение */
+const toStat = (value: unknown, fallback: number): number =>
+  typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : fallback;
 
 /**
  * Игровой герой из ссылки. Неизвестный или нестроковый id даёт пустой
  * выбор (числовые статы формы при этом сохраняются); уровень зажимается
- * в допустимый диапазон.
+ * в допустимый диапазон. Кортеж из двух элементов — старая ссылка без
+ * навыков: сеются стартовые навыки героя и его сила магии и знание,
+ * чтобы расчёт совпадал с прежним поведением.
  */
 const toHeroPick = (value: unknown): HeroPick => {
-  if (!Array.isArray(value) || value.length !== 2) return EMPTY_HERO_PICK;
-  const [id, level] = value as unknown[];
-  if (typeof id !== 'string' || !HEROES_BY_ID.has(id)) return EMPTY_HERO_PICK;
+  if (!Array.isArray(value) || value.length < 2) return EMPTY_HERO_PICK;
+  const [id, level, skills, spellPower, knowledge] = value as unknown[];
+  if (typeof id !== 'string') return EMPTY_HERO_PICK;
+  const hero: GameHero | undefined = HEROES_BY_ID.get(id);
+  if (!hero) return EMPTY_HERO_PICK;
+  const seeded = value.length === 2 || !Array.isArray(skills);
   return {
     heroId: id,
     level: clampLevel(typeof level === 'number' && Number.isFinite(level) ? level : 1),
+    skills: seeded ? defaultSkillPicks(hero) : toSkillPicks(skills),
+    spellPower: toStat(spellPower, hero.stats.spellPower),
+    knowledge: toStat(knowledge, hero.stats.knowledge),
   };
 };
 

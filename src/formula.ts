@@ -95,6 +95,13 @@ export interface RetaliationDamage {
   /** Погибшие существа атакующего; не ограничено размером отряда */
   killsMin: number;
   killsMax: number;
+  /**
+   * Ответов с максимальным уроном до гибели всего отряда атакующего;
+   * null — ответ не наносит урона, отряд им не убить
+   */
+  strikesMin: number | null;
+  /** Ответов с минимальным уроном; null — как выше */
+  strikesMax: number | null;
 }
 
 /** Второй удар атакующего после ответа защитника */
@@ -167,25 +174,39 @@ export const tokens = (...parts: (string | FormulaToken)[]): FormulaToken[] =>
 /** Перевод названия параметра формулы по ключу */
 type ParamName = (key: string) => string;
 
-/** Бакет «отряд × урон»: количество существ и диапазон урона одного */
+/**
+ * Бакет «отряд × урон»: количество существ и диапазон урона одного.
+ *
+ * Количество задаётся числом либо диапазоном — у ответного и второго удара
+ * бьёт не весь отряд, а выжившие, и их число зависит от урона предыдущего
+ * удара. В легенде и то и другое — одно название параметра; границы
+ * диапазона различают минимум и максимум только в подсказках у чисел.
+ * Выродившийся диапазон (минимум равен максимуму) сворачивается в одно
+ * число — и у количества, и у урона.
+ */
 const stackStep = (
   P: ParamName,
   label: string,
-  count: number,
+  count: number | { min: number; max: number },
   damageMin: number,
   damageMax: number,
-): DamageStep => ({
-  label,
-  formula: `${P('count')} × (${P('damageMin')} – ${P('damageMax')})`,
-  tokens: tokens(
-    num(count, P('count')),
-    ' × (',
-    num(damageMin, P('damageMin')),
-    '–',
-    num(damageMax, P('damageMax')),
-    ')',
-  ),
-});
+): DamageStep => {
+  const ranged = typeof count !== 'number' && count.min !== count.max;
+  return {
+    label,
+    formula: `${P('count')} × ${P('damage')}`,
+    tokens: tokens(
+      ...(typeof count === 'number'
+        ? [num(count, P('count'))]
+        : ranged
+          ? ['(', num(count.min, P('countMin')), '..', num(count.max, P('countMax')), ')']
+          : [num(count.min, P('count'))]),
+      ...(damageMin === damageMax
+        ? [' × ', num(damageMin, P('damage'))]
+        : [' × (', num(damageMin, P('damageMin')), '..', num(damageMax, P('damageMax')), ')']),
+    ),
+  };
+};
 
 /** Бакет АТК/ЗЩТ: (20 + атака юнита и героя) / (20 + защита юнита и героя) */
 const atkDefStep = (
@@ -407,7 +428,6 @@ const killsFrom = (damage: number, topHealth: number, health: number): number =>
  */
 export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageResult {
   const { attacker, abilities, defender } = input;
-  const L = (key: string): string => translate(lang, `formula.${key}`);
   const P: ParamName = (key) => translate(lang, `formula.params.${key}`);
   const B: ParamName = (key) => translate(lang, `formula.labels.${key}`);
 
@@ -475,6 +495,8 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
       average: Math.round((min + max) / 2),
       killsMin: killsFrom(min, topHealth, health),
       killsMax: killsFrom(max, topHealth, health),
+      strikesMin: max > 0 ? Math.ceil(attTotalHealth / max) : null,
+      strikesMax: min > 0 ? Math.ceil(attTotalHealth / min) : null,
     };
   };
 
@@ -558,34 +580,44 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     tokens: tokens(`(${LUCK_FACTOR.unlucky} / ${LUCK_FACTOR.normal} / ${LUCK_FACTOR.lucky})`),
   });
 
+  // Формула у карточки одна на все варианты удачи, поэтому выжившие в ней
+  // берутся диапазоном по всем строкам: меньше всего защитников остаётся
+  // после удачного максимального удара, больше всего — после неудачного
+  // минимального. Границы совпадают с survivorsMin/survivorsMax строк.
+  const survivorsMin = survivorsAfter(Math.max(...byLuck.map((row) => row.max)));
+  const survivorsMax = survivorsAfter(Math.min(...byLuck.map((row) => row.min)));
+
   const retaliationSteps: DamageStep[] = [
-    {
-      label: B('survivorsDamage'),
-      formula: `${L('survivors')} × (${P('damageMin')} – ${P('damageMax')})`,
-      tokens: tokens(
-        `${L('survivors')} × (`,
-        num(defDamageMin, P('damageMin')),
-        '–',
-        num(defDamageMax, P('damageMax')),
-        ')',
-      ),
-    },
+    stackStep(
+      P,
+      B('survivorsDamage'),
+      { min: survivorsMin, max: survivorsMax },
+      defDamageMin,
+      defDamageMax,
+    ),
     atkDefStep(P, B('atkDef'), { unit: defUnitAtk, hero: defHeroAtk }, { unit: attUnitDef, hero: attHeroDef }),
   ];
 
-  // Второй удар считается по формуле первого, но от выживших атакующих.
+  // Второй удар считается по формуле первого, но от выживших атакующих:
+  // их тем меньше, чем сильнее ответный удар защитника.
+  const retaliations = byLuck.map((row) => row.retaliation).filter((r) => r !== null);
+  const attackersAfter = (retaliation: number): number =>
+    remainingAfter(attTotalHealth, health, retaliation).alive;
+  const attackersMin = retaliations.length
+    ? attackersAfter(Math.max(...retaliations.map((r) => r.max)))
+    : count;
+  const attackersMax = retaliations.length
+    ? attackersAfter(Math.min(...retaliations.map((r) => r.min)))
+    : count;
+
   const secondStrikeSteps: DamageStep[] = [
-    {
-      label: B('survivorsDamage'),
-      formula: `${L('survivingAttackers')} × (${P('damageMin')} – ${P('damageMax')})`,
-      tokens: tokens(
-        `${L('survivingAttackers')} × (`,
-        num(damageMin, P('damageMin')),
-        '–',
-        num(damageMax, P('damageMax')),
-        ')',
-      ),
-    },
+    stackStep(
+      P,
+      B('survivorsDamage'),
+      { min: attackersMin, max: attackersMax },
+      damageMin,
+      damageMax,
+    ),
     ...steps.slice(1),
   ];
 

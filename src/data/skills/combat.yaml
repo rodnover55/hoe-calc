@@ -1,0 +1,54 @@
+id: combat
+name: "Ратное дело"
+nameEn: "Combat"
+levels:
+  - name: "Basic Combat"
+    nameEn: "Basic Combat"
+    description: "Heroic Strike deals +10 base Damage."
+    descriptionEn: "Heroic Strike deals +10 base Damage."
+  - name: "Продвинутое ратное дело"
+    nameEn: "Advanced Combat"
+    description: "Удар героя наносит +15 базового урона."
+    descriptionEn: "Heroic Strike deals +15 base Damage."
+  - name: "Экспертное ратное дело"
+    nameEn: "Expert Combat"
+    description: "Удар героя наносит +20 базового урона."
+    descriptionEn: "Heroic Strike deals +20 base Damage."
+subskills:
+  - id: swordcraft
+    tier: 2
+    name: "Фехтование на мечах"
+    nameEn: "Swordcraft"
+    description: "+2 к атаке и защите."
+    descriptionEn: "+2 Attack and Defense."
+  - id: revenge
+    tier: 2
+    name: "Месть"
+    nameEn: "Revenge"
+    description: "Один раз за раунд, после первой гибели дружественного отряда, позволяет использовать удар героя ещё раз."
+    descriptionEn: "Once per round, after the first death of a friendly stack, allows to use Heroic Strike again."
+  - id: mighty_strike
+    tier: 2
+    name: "Мощный удар"
+    nameEn: "Mighty Strike"
+    description: "Удар героя наносит +10% урона (зависит от уровня героя)."
+    descriptionEn: "Heroic Strike deals +10% Damage (based on the hero’s level)."
+  - id: effortless_strike
+    tier: 3
+    name: "Лёгкий удар"
+    nameEn: "Effortless Strike"
+    description: "Удар героя стоит меньше зарядов концентрации: –1."
+    descriptionEn: "Heroic Strike costs 1 fewer Focus Charge(s)."
+  - id: battle_thrill
+    tier: 3
+    name: "Боевой азарт"
+    nameEn: "Battle Thrill"
+    description: "Один раз за раунд, убив отряд противника ударом героя, герой может использовать его ещё раз."
+    descriptionEn: "Once per round, after killing an enemy stack with Heroic Strike, the hero can use it one additional time."
+  - id: confusing_strike
+    tier: 3
+    name: "Дезориентирующий удар"
+    nameEn: "Confusing Strike"
+    description: "Удар героя снижает количество контратак цели на 1."
+    descriptionEn: "Heroic Strike reduces the target’s counterattacks by 1."
+source: https://www.olden-era.com/ru/skills/basic_combat

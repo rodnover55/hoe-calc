@@ -1,0 +1,54 @@
+id: summon_avatar
+name: "Призыв аватара"
+nameEn: "Summon Avatar"
+levels:
+  - name: "Основы призыва аватара"
+    nameEn: "Basic Summon Avatar"
+    description: "Новое боевое заклинание: призывает на поле боя аватара, способного пережить любой урон три раза. Он не получает бонусов от атаки и защиты героя, но получает +1 к атаке и +6 к урону за каждую единицу силы магии героя."
+    descriptionEn: "Grants a new battle spell. It summons an Avatar that is destroyed upon taking three hits from any source. While it does not gain any bonuses from the hero’s Attack and Defense, it gains +1 Attack and deals +6 Damage for each point of the hero’s Spell Power."
+  - name: "Продвинутый призыв аватара"
+    nameEn: "Advanced Summon Avatar"
+    description: "Новое боевое заклинание: призывает на поле боя аватара, способного пережить любой урон три раза. Он не получает бонусов от атаки и защиты героя, но получает +1 к атаке и +8 к урону за каждую единицу силы магии героя."
+    descriptionEn: "Grants a new battle spell. It summons an Avatar that is destroyed upon taking three hits from any source. While it does not gain any bonuses from the hero’s Attack and Defense, it gains +1 Attack and deals +8 Damage for each point of the hero’s Spell Power."
+  - name: "Экспертный призыв аватара"
+    nameEn: "Expert Summon Avatar"
+    description: "Новое боевое заклинание: призывает на поле боя аватара, способного пережить любой урон три раза. Он не получает бонусов от атаки и защиты героя, но получает +1 к атаке и +10 к урону за каждую единицу силы магии героя."
+    descriptionEn: "Grants a new battle spell. It summons an Avatar that is destroyed upon taking three hits from any source. While it does not gain any bonuses from the hero’s Attack and Defense, it gains +1 Attack and deals +10 Damage for each point of the hero’s Spell Power."
+subskills:
+  - id: avatar_of_fury
+    tier: 2
+    name: "Аватар ярости"
+    nameEn: "Avatar of Fury"
+    description: "Аватар наносит +40% урона. Бонус удваивается, если герой владеет «Лидерством»."
+    descriptionEn: "Avatar deals +40% Damage. This bonus is doubled if the hero knows “Leadership.”"
+  - id: avatar_of_toughness
+    tier: 2
+    name: "Аватар стойкости"
+    nameEn: "Avatar of Toughness"
+    description: "Для убийства аватара нужно нанести урон один дополнительный раз. Бонус удваивается, если герой владеет «Обороной»."
+    descriptionEn: "Avatar can withstand one extra hit. This bonus is doubled if the hero knows “Defense.”"
+  - id: avatar_of_celerity
+    tier: 2
+    name: "Аватар стремительности"
+    nameEn: "Avatar of Celerity"
+    description: "Скорость и инициатива аватара повышаются на 2. Бонус удваивается, если герой владеет «Проницательностью»."
+    descriptionEn: "Avatar’s Speed and Initiative increase by 2. This bonus is doubled if the hero knows “Insight.”"
+  - id: stabilization
+    tier: 3
+    name: "Стабилизация"
+    nameEn: "Stabilization"
+    description: "Призванные дружественные существа становятся неуязвимы для эффектов, уничтожающих призванных существ."
+    descriptionEn: "Summoned friendly creatures become immune to effects that dispel summoned creatures."
+  - id: their_name_is_legion
+    tier: 3
+    name: "Имя им — Легион"
+    nameEn: "Their Name is Legion"
+    description: "Герой и дружественные существа призывают +30% существ."
+    descriptionEn: "The hero and friendly creatures summon +30% units."
+  - id: summon_destruction
+    tier: 3
+    name: "Разрушение призыва"
+    nameEn: "Summon Destruction"
+    description: "Герой и дружественные существа наносят +50% урона призванным существам."
+    descriptionEn: "The hero and friendly creatures deal +50% Damage to all summoned creatures."
+source: https://www.olden-era.com/ru/skills/basic_summon_avatar

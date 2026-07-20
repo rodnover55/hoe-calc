@@ -1,0 +1,54 @@
+id: logistics
+name: "Логистика"
+nameEn: "Logistics"
+levels:
+  - name: "Основы логистики"
+    nameEn: "Basic Logistics"
+    description: "+10% очков движения по карте приключений."
+    descriptionEn: "+10% Movement points on the global map."
+  - name: "Продвинутая логистика"
+    nameEn: "Advanced Logistics"
+    description: "+15% очков движения по карте приключений."
+    descriptionEn: "+15% Movement points on the global map."
+  - name: "Экспертная логистика"
+    nameEn: "Expert Logistics"
+    description: "+20% очков движения по карте приключений."
+    descriptionEn: "+20% Movement points on the global map."
+subskills:
+  - id: leaps_and_bounds
+    tier: 2
+    name: "Поступь войны"
+    nameEn: "Leaps and Bounds"
+    description: "Герой восстанавливает очки движения после каждого выигранного боя: 5."
+    descriptionEn: "The hero restores 5 Movement point(s) after each victory in battle."
+  - id: strong_mounts
+    tier: 2
+    name: "Выносливый скакун"
+    nameEn: "Strong Mounts"
+    description: "Нейтральные походные заклинания стоят –4 маны. Бонус удваивается, если герой владеет «Разведкой»."
+    descriptionEn: "Neutral Global Map spells cost –4 mana. This bonus is doubled if the hero knows “Scouting.”"
+  - id: careful_planning
+    tier: 2
+    name: "Тщательное планирование"
+    nameEn: "Careful Planning"
+    description: "Каждый день герой сохраняет очки движения на следующий день: не более 50. Бонус удваивается, если герой владеет «Арканной магией»."
+    descriptionEn: "Every day, the hero saves up to 50 unused Movement points for the next day. This bonus is doubled if the hero knows “Arcane Magic.”"
+  - id: secret_passages
+    tier: 3
+    name: "Тайные тропы"
+    nameEn: "Secret Passages"
+    description: "Снижает штраф при передвижении по пересечённой местности на 50%."
+    descriptionEn: "Terrain penalties are reduced by 50%."
+  - id: back_to_town
+    tier: 3
+    name: "Назад, в город!"
+    nameEn: "Back to Town!"
+    description: "Новое походное заклинание: переносит героя в ближайший (в пределах 16 клеток вокруг героя) город под вашим контролем. Все оставшиеся очки движения теряются."
+    descriptionEn: "Grants a new global map spell. It teleports the hero to the nearest city they control within 16 square(s). All remaining Movement points are lost upon casting."
+  - id: battle_logistics
+    tier: 3
+    name: "Боевая логистика"
+    nameEn: "Battle Logistics"
+    description: "Дружественные существа получают +1 к скорости на родной земле."
+    descriptionEn: "Friendly creatures gain +1 Speed on Native Terrain."
+source: https://www.olden-era.com/ru/skills/basic_logistics

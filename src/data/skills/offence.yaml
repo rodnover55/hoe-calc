@@ -1,0 +1,54 @@
+id: offence
+name: "Атака"
+nameEn: "Offence"
+levels:
+  - name: "Основы нападения"
+    nameEn: "Basic Offense"
+    description: "Дружественные существа наносят +10% урона обычными атаками."
+    descriptionEn: "Friendly creatures’ basic attacks deal +10% Damage."
+  - name: "Продвинутое нападение"
+    nameEn: "Advanced Offense"
+    description: "Дружественные существа наносят +15% урона обычными атаками."
+    descriptionEn: "Friendly creatures’ basic attacks deal +15% Damage."
+  - name: "Экспертное нападение"
+    nameEn: "Expert Offense"
+    description: "Дружественные существа наносят +20% урона обычными атаками."
+    descriptionEn: "Friendly creatures’ basic attacks deal +20% Damage."
+subskills:
+  - id: archery
+    tier: 2
+    name: "Стрельба"
+    nameEn: "Archery"
+    description: "Дружественные существа наносят +15% урона выстрелами и атаками на расстоянии."
+    descriptionEn: "Friendly creatures’ Ranged and Long Reach attacks deal +15% Damage."
+  - id: battle_march
+    tier: 2
+    name: "Боевой марш"
+    nameEn: "Battle March"
+    description: "При атаке дружественные существа генерируют дополнительные очки концентрации: +1. Бонус удваивается, если герой владеет «Удачей»."
+    descriptionEn: "Friendly creatures generate +1 Focus Point(s) per attack. This bonus is doubled if the hero knows “Luck.”"
+  - id: battle_frenzy
+    tier: 2
+    name: "Боевой раж"
+    nameEn: "Battle Frenzy"
+    description: "Дружественные существа получают +2 к атаке за каждую единицу боевого духа."
+    descriptionEn: "Friendly creatures gain +2 Attack for each point of Morale."
+  - id: shadow_blades
+    tier: 3
+    name: "Теневые клинки"
+    nameEn: "Shadow Blades"
+    description: "Дружественные существа наносят +1 урона."
+    descriptionEn: "Friendly creatures deal +1 Damage."
+  - id: reality_wardens
+    tier: 3
+    name: "Защитники реальности"
+    nameEn: "Reality Wardens"
+    description: "–10% к силе магии героя противника. Бонус удваивается, если герой владеет «Магией ночи»."
+    descriptionEn: "–10% to enemy hero Spell Power. This bonus is doubled if the hero knows “Nightshade Magic.”"
+  - id: firmness
+    tier: 3
+    name: "Непоколебимость"
+    nameEn: "Firmness"
+    description: "–15% к защите существ противника."
+    descriptionEn: "–15% Defense to enemy creatures."
+source: https://www.olden-era.com/ru/skills/basic_offence

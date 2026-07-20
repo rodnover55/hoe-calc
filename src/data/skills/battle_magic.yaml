@@ -1,0 +1,54 @@
+id: battle_magic
+name: "Боевая магия"
+nameEn: "Battle Magic"
+levels:
+  - name: "Основы боевой магии"
+    nameEn: "Basic Battle Magic"
+    description: "Атака и защита дружественных существ повышаются на 15% от силы магии и знаний героя соответственно."
+    descriptionEn: "Friendly creatures’ Attack and Defense increase by 15% of the hero’s Spell Power and Knowledge respectively."
+  - name: "Продвинутая боевая магия"
+    nameEn: "Advanced Battle Magic"
+    description: "Атака и защита дружественных существ повышаются на 20% от силы магии и знаний героя соответственно."
+    descriptionEn: "Friendly creatures’ Attack and Defense increase by 20% of the hero’s Spell Power and Knowledge respectively."
+  - name: "Экспертная боевая магия"
+    nameEn: "Expert Battle Magic"
+    description: "Атака и защита дружественных существ повышаются на 25% от силы магии и знаний героя соответственно."
+    descriptionEn: "Friendly creatures’ Attack and Defense increase by 25% of the hero’s Spell Power and Knowledge respectively."
+subskills:
+  - id: aura_of_destruction
+    tier: 2
+    name: "Аура разрушения"
+    nameEn: "Aura of Destruction"
+    description: "После каждого использования заклинания в бою герой получает +1 к атаке до конца боя."
+    descriptionEn: "Every time the hero uses a spell in a battle, their Attack increases by 1 until the end of that battle."
+  - id: aura_of_protection
+    tier: 2
+    name: "Аура защиты"
+    nameEn: "Aura of Protection"
+    description: "После каждого использования заклинания в бою герой получает +1 к защите до конца боя."
+    descriptionEn: "Every time the hero uses a spell in a battle, their Defense increases by 1 until the end of that battle."
+  - id: aura_of_wizardry
+    tier: 2
+    name: "Мистическая аура"
+    nameEn: "Aura of Wizardry"
+    description: "После каждого использования заклинания в бою герой получает +1 к силе магии до конца боя."
+    descriptionEn: "Every time the hero uses a spell in a battle, their Spell Power increases by 1 until the end of that battle."
+  - id: battle_mage_s_authority
+    tier: 3
+    name: "Авторитет боевого мага"
+    nameEn: "Battle Mage’s Authority"
+    description: "Атака дружественных существ повышается на 15% от силы магии героя. Бонус удваивается, если герой владеет «Волшебством»."
+    descriptionEn: "Friendly creatures’ Attack increases by 15% of the hero’s Spell Power. This bonus is doubled if the hero knows “Sorcery.”"
+  - id: mage_protector_s_authority
+    tier: 3
+    name: "Авторитет волшебника"
+    nameEn: "Mage Protector’s Authority"
+    description: "Защита дружественных существ повышается на 15% от знаний героя. Бонус удваивается, если герой владеет «Сопротивлением»."
+    descriptionEn: "Friendly creatures’ Defense increases by 15% of the hero’s Knowledge. This bonus is doubled if the hero knows “Resistance.”"
+  - id: magic_time
+    tier: 3
+    name: "Время магии"
+    nameEn: "Magic Time"
+    description: "Снижает время восстановления всех боевых заклинаний героя на несколько раундов: –1."
+    descriptionEn: "The cooldowns of all the hero’s battle spells are reduced by 1 round(s)."
+source: https://www.olden-era.com/ru/skills/basic_battle_magic

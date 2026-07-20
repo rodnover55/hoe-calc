@@ -1,0 +1,54 @@
+id: luck
+name: "Удача"
+nameEn: "Luck"
+levels:
+  - name: "Основы удачи"
+    nameEn: "Basic Luck"
+    description: "Герой получает +1 к удаче."
+    descriptionEn: "The hero gains 1 Luck."
+  - name: "Продвинутая удача"
+    nameEn: "Advanced Luck"
+    description: "Герой получает +2 к удаче."
+    descriptionEn: "The hero gains 2 Luck."
+  - name: "Экспертная удача"
+    nameEn: "Expert Luck"
+    description: "Герой получает +3 к удаче."
+    descriptionEn: "The hero gains 3 Luck."
+subskills:
+  - id: beastly_confidence
+    tier: 2
+    name: "Животная уверенность"
+    nameEn: "Beastly Confidence"
+    description: "Дружественные существа получают +1% к шансу нанести удачный удар за каждую единицу удачи. Бонус удваивается, если герой владеет «Первородной магией»."
+    descriptionEn: "Friendly creatures have a 1% higher chance to land a Lucky Strike for each point of Luck. This bonus is doubled if the hero knows “Primal Magic.”"
+  - id: always_heads
+    tier: 2
+    name: "Всегда аверс"
+    nameEn: "Always Heads"
+    description: "Герой находит +25% золота и ресурсов на карте приключений. Бонус удваивается, если герой владеет «Экономикой»."
+    descriptionEn: "The hero gains +25% Gold and resources from piles on the global map. This bonus is doubled if the hero knows “Economy.”"
+  - id: mearea_s_chosen
+    tier: 2
+    name: "Избранник Меарии"
+    nameEn: "Mearea’s Chosen"
+    description: "В бою удача существ противника снижается на 1."
+    descriptionEn: "Enemy Luck is reduced by 1 in battle."
+  - id: lucky_hit
+    tier: 3
+    name: "Безупречный удар"
+    nameEn: "Lucky Hit"
+    description: "Если дружественное существо наносит удачный удар, существа противника не контратакуют."
+    descriptionEn: "When friendly creatures land a Lucky Strike, the enemy does not counterattack."
+  - id: lightning_strikes_twice
+    tier: 3
+    name: "Молния попадает дважды"
+    nameEn: "Lightning Strikes Twice"
+    description: "Заклинания могут наносить удачный удар, нанося 200% от базового урона. Шанс срабатывания эффекта: +5% за каждую единицу удачи."
+    descriptionEn: "Spells can also land a Lucky Strike, dealing 200% Damage. The chance increases by 5% for every point of Luck."
+  - id: lucky_day
+    tier: 3
+    name: "Счастливый день"
+    nameEn: "Lucky Day"
+    description: "Каждый раз, когда дружественный отряд наносит удачный удар, все дружественные существа получают +1 к удаче до конца следующего раунда."
+    descriptionEn: "Whenever a friendly creature lands a Lucky Strike, all friendly creatures gain +1 Luck until the end of the next round."
+source: https://www.olden-era.com/ru/skills/basic_luck

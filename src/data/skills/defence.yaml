@@ -1,0 +1,54 @@
+id: defence
+name: "Защита"
+nameEn: "Defence"
+levels:
+  - name: "Основы обороны"
+    nameEn: "Basic Defense"
+    description: "Дружественные существа получают –10% урона от обычных атак."
+    descriptionEn: "Friendly creatures take –10% Damage from basic attacks."
+  - name: "Продвинутая оборона"
+    nameEn: "Advanced Defense"
+    description: "Дружественные существа получают –15% урона от обычных атак."
+    descriptionEn: "Friendly creatures take –15% Damage from basic attacks."
+  - name: "Экспертная оборона"
+    nameEn: "Expert Defense"
+    description: "Дружественные существа получают –20% урона от обычных атак."
+    descriptionEn: "Friendly creatures take –20% Damage from basic attacks."
+subskills:
+  - id: cover
+    tier: 2
+    name: "Укрытие"
+    nameEn: "Cover"
+    description: "Дружественные существа получают –20% урона от выстрелов и атак на расстоянии."
+    descriptionEn: "Friendly creatures take –20% Damage from Ranged and Long Reach attacks."
+  - id: hymn_to_the_martyrs
+    tier: 2
+    name: "Гимн мученикам"
+    nameEn: "Hymn to the Martyrs"
+    description: "При получении урона дружественные существа генерируют дополнительные очки концентрации: +1. Бонус удваивается, если герой владеет «Вербовкой»."
+    descriptionEn: "Friendly creatures generate +1 Focus Point(s) when they take Damage. This bonus is doubled if the hero knows “Recruitment.”"
+  - id: as_luck_would_have_it
+    tier: 2
+    name: "Волею судеб"
+    nameEn: "As Luck Would Have It"
+    description: "Дружественные существа получают +2 к защите за каждую единицу удачи."
+    descriptionEn: "Friendly creatures gain +2 Defense for each point of Luck."
+  - id: shields_and_shells
+    tier: 3
+    name: "Щиты и панцири"
+    nameEn: "Shields and Shells"
+    description: "Существа противника наносят –1 урона."
+    descriptionEn: "Enemy creatures deal –1 Damage."
+  - id: wizard_contract
+    tier: 3
+    name: "Договор с волшебниками"
+    nameEn: "Wizard Contract"
+    description: "Дружественные существа получают –10% магического урона. Бонус удваивается, если герой владеет «Дипломатией»."
+    descriptionEn: "Friendly creatures take –10% Magic Damage. This bonus is doubled if the hero knows “Diplomacy.”"
+  - id: unstoppable_force
+    tier: 3
+    name: "Неостановимая сила"
+    nameEn: "Unstoppable Force"
+    description: "–15% к атаке существ противника."
+    descriptionEn: "–15% Attack to enemy creatures."
+source: https://www.olden-era.com/ru/skills/basic_defence

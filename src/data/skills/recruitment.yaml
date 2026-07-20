@@ -1,0 +1,54 @@
+id: recruitment
+name: "Набор"
+nameEn: "Recruitment"
+levels:
+  - name: "Основы вербовки"
+    nameEn: "Basic Recruitment"
+    description: "+4 к приросту существ 1‑го ранга во всех ваших городах."
+    descriptionEn: "+4 to tier‑1 creature growth in all your cities."
+  - name: "Продвинутая вербовка"
+    nameEn: "Advanced Recruitment"
+    description: "Прирост существ во всех ваших городах повышается: +4 для 1‑го ранга и +3 — для 2‑го."
+    descriptionEn: "+4 to tier‑1 and +3 to tier‑2 creature growth in all your cities."
+  - name: "Экспертная вербовка"
+    nameEn: "Expert Recruitment"
+    description: "Прирост существ во всех ваших городах повышается: +4 для 1‑го ранга, +3 — для 2‑го и +2 — для 3‑го."
+    descriptionEn: "+4 to tier‑1, +3 to tier‑2, and +2 to tier‑3 creature growth in all your cities."
+subskills:
+  - id: direct_supervision
+    tier: 2
+    name: "Личный надзор"
+    nameEn: "Direct Supervision"
+    description: "Если герой находится в городе в начале недели, прирост всех существ в этом городе повышается ещё на 50%."
+    descriptionEn: "If the hero is in a city at the start of a week, growth of all creatures in that city increases by an additional 50% growth."
+  - id: elite_guards
+    tier: 2
+    name: "Элитная гвардия"
+    nameEn: "Elite Guards"
+    description: "Дружественные существа 1—3‑го рангов получают +25% от атаки и защиты героя в качестве атаки и защиты. Бонус удваивается, если герой владеет «Тактикой»."
+    descriptionEn: "Tier‑1, tier‑2 and tier‑3 friendly creatures gain 25% of the hero’s Attack and Defense as Attack and Defense. This bonus is doubled if the hero knows “Tactics.”"
+  - id: veterans
+    tier: 2
+    name: "Ветераны"
+    nameEn: "Veterans"
+    description: "Повышает прирост существ 4‑го ранга в ваших городах на +2. Бонус удваивается, если герой владеет «Дипломатией»."
+    descriptionEn: "Tier‑4 creature growth in all your cities increases by 2. This bonus is doubled if the hero knows “Diplomacy.”"
+  - id: relocation
+    tier: 3
+    name: "Переброска сил"
+    nameEn: "Relocation"
+    description: "Новое походное заклинание: позволяет герою провзаимодействовать с любым вашим городом и переместить туда или оттуда войска. Один раз в день."
+    descriptionEn: "Grants a new global map spell. It allows interaction with any controlled city, enabling the transfer of creatures to or from that city. Usable once per day."
+  - id: strenuous_training
+    tier: 3
+    name: "Изнурительные тренировки"
+    nameEn: "Strenuous Training"
+    description: "Дружественные существа получают +2 к здоровью."
+    descriptionEn: "Friendly creatures gain 2 HP."
+  - id: mentors
+    tier: 3
+    name: "Наставники"
+    nameEn: "Mentors"
+    description: "Позволяет улучшать дружественных существ, не посещая город, если в армии героя уже есть такие улучшенные существа. Такое улучшение стоит дороже обычного."
+    descriptionEn: "Allows creatures in the hero’s army to be upgraded outside the city, provided the army already contains the upgraded version. Upgrading this way costs more than normal."
+source: https://www.olden-era.com/ru/skills/basic_recruitment

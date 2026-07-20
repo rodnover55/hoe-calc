@@ -1,0 +1,54 @@
+id: sorcery
+name: "Колдовство"
+nameEn: "Sorcery"
+levels:
+  - name: "Основы волшебства"
+    nameEn: "Basic Sorcery"
+    description: "+10% магического урона."
+    descriptionEn: "+10% Magic Damage dealt."
+  - name: "Продвинутое волшебство"
+    nameEn: "Advanced Sorcery"
+    description: "+20% магического урона."
+    descriptionEn: "+20% Magic Damage dealt."
+  - name: "Экспертное волшебство"
+    nameEn: "Expert Sorcery"
+    description: "+30% магического урона."
+    descriptionEn: "+30% Magic Damage dealt."
+subskills:
+  - id: summoning_sorcery
+    tier: 2
+    name: "Волшебство призыва"
+    nameEn: "Summoning Sorcery"
+    description: "Все призванные существа в бою получают +25% здоровья и наносят +25% урона."
+    descriptionEn: "All summoned creatures in battle gain +25% health and deal +25% Damage."
+  - id: magic_arrow
+    tier: 2
+    name: "Волшебная стрела"
+    nameEn: "Magic Arrow"
+    description: "Новое боевое заклинание: наносит цели магический урон, не требует восстановления и стоит 0 маны."
+    descriptionEn: "Grants a new battle spell. It deals Magic Damage to a single target, has no cooldown, and costs no mana."
+  - id: raw_energy
+    tier: 2
+    name: "Первозданная сила"
+    nameEn: "Raw Energy"
+    description: "Ещё +10% магического урона. Бонус удваивается, если герой владеет «Нападением»."
+    descriptionEn: "+10% more Magic Damage dealt. This bonus is doubled if the hero knows “Offense.”"
+  - id: piercing_spells
+    tier: 3
+    name: "Пронзающие заклинания"
+    nameEn: "Piercing Spells"
+    description: "Заклинания игнорируют 25% магического сопротивления цели."
+    descriptionEn: "Offensive spells ignore 25% of target’s magic resistance."
+  - id: high_mage
+    tier: 3
+    name: "Великий колдун"
+    nameEn: "High Mage"
+    description: "Все изученные героем заклинания школ магии получают +1 к уровню."
+    descriptionEn: "All the spells belonging to Magic Schools the hero has learned gain 1 level(s)."
+  - id: sticky_magic
+    tier: 3
+    name: "Прилипучая магия"
+    nameEn: "Sticky Magic"
+    description: "Накладываемые героем эффекты длятся больше раундов: +2. Бонус удваивается, если герой владеет «Мудростью»."
+    descriptionEn: "Effects applied by the hero last +2 round(s). This bonus is doubled if the hero knows “Wisdom.”"
+source: https://www.olden-era.com/ru/skills/basic_sorcery

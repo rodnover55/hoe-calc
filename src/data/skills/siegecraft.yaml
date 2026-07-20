@@ -1,0 +1,54 @@
+id: siegecraft
+name: "Осадное дело"
+nameEn: "Siegecraft"
+levels:
+  - name: "Основы осадного дела"
+    nameEn: "Basic Siegecraft"
+    description: "Залп катапульты наносит +50 урона."
+    descriptionEn: "The catapult deals +50 Damage."
+  - name: "Продвинутое осадное дело"
+    nameEn: "Advanced Siegecraft"
+    description: "Залп катапульты наносит +100 урона."
+    descriptionEn: "The catapult deals +100 Damage."
+  - name: "Экспертное осадное дело"
+    nameEn: "Expert Siegecraft"
+    description: "Залп катапульты наносит +150 урона."
+    descriptionEn: "The catapult deals +150 Damage."
+subskills:
+  - id: relentless_assault
+    tier: 2
+    name: "Взять в клещи"
+    nameEn: "Relentless Assault"
+    description: "Осаждая город, дружественные существа получают +1 к скорости и инициативе."
+    descriptionEn: "While besieging a city, friendly creatures gain +1 Speed and Initiative."
+  - id: forward_observers
+    tier: 2
+    name: "Наводчики"
+    nameEn: "Forward Observers"
+    description: "Крепостные стены не снижают урон от выстрелов дружественных существ."
+    descriptionEn: "Ranged Damage of friendly creatures is not reduced by walls during a siege."
+  - id: barrage
+    tier: 2
+    name: "Заградительный огонь"
+    nameEn: "Barrage"
+    description: "Новая способность при осаде: наносит урон всем существам на выбранном гексе и соседних с ним. Один раз за раунд."
+    descriptionEn: "Grants a new siege ability. It attacks a chosen hex and all adjacent hexes. Usable once per round."
+  - id: phalanx
+    tier: 3
+    name: "Фаланга"
+    nameEn: "Phalanx"
+    description: "Осаждая город, дружественные существа получают –50% урона от защитных башен."
+    descriptionEn: "While besieging a city, friendly creatures take –50% Damage from the defender’s towers."
+  - id: tunnelling
+    tier: 3
+    name: "Подкоп"
+    nameEn: "Tunnelling"
+    description: "Новая способность при осаде: переносит выбранный дружественный отряд на несколько гексов — до 3. Один раз за раунд."
+    descriptionEn: "Grants a new siege ability. It teleports a friendly creature to a chosen free hex up to 3 hexes away. Usable once per round."
+  - id: sabotage
+    tier: 3
+    name: "Диверсия"
+    nameEn: "Sabotage"
+    description: "При осаде ворота противника всегда открыты."
+    descriptionEn: "While the hero is besieging a city, the enemy gate is always open."
+source: https://www.olden-era.com/ru/skills/basic_siegecraft

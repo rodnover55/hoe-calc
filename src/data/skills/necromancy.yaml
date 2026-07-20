@@ -1,0 +1,54 @@
+id: necromancy
+name: "Некромантия"
+nameEn: "Necromancy"
+levels:
+  - name: "Основы некромантии"
+    nameEn: "Basic Necromancy"
+    description: "После победы в бою обращает 10% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 3000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 10% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 3000 and refills each week."
+  - name: "Продвинутая некромантия"
+    nameEn: "Advanced Necromancy"
+    description: "После победы в бою обращает 15% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 4000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 15% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 4000 and refills each week."
+  - name: "Экспертная некромантия"
+    nameEn: "Expert Necromancy"
+    description: "После победы в бою обращает 20% самого сильного отряда противника в дружественную нежить того же ранга, расходуя некротическую энергию. Она накапливается до 5000 и восполняется каждую неделю."
+    descriptionEn: "After winning a battle, raises 20% of the strongest enemy stack as friendly Undead of the same tier. This requires Necromantic Energy, which stores up to 5000 and refills each week."
+subskills:
+  - id: gravesoil
+    tier: 2
+    name: "Мёртвая земля"
+    nameEn: "Gravesoil"
+    description: "Дружественные существа Некрополя наносят +10% и получают –10% урона на родной земле."
+    descriptionEn: "Friendly Necropolis creatures deal +10% and take –10% Damage on Native Terrain."
+  - id: soul_harvest
+    tier: 2
+    name: "Жатва душ"
+    nameEn: "Soul Harvest"
+    description: "После победы в бою герой восстанавливает 4 маны."
+    descriptionEn: "Restores 4 mana after a battle victory."
+  - id: death_herald
+    tier: 2
+    name: "Вестник смерти"
+    nameEn: "Death Herald"
+    description: "+1000 к максимальному количеству некротической энергии героя."
+    descriptionEn: "+1000 to the hero’s maximum Necromantic Energy."
+  - id: soul_reaper
+    tier: 3
+    name: "Мрачный жнец"
+    nameEn: "Soul Reaper"
+    description: "–1 к боевому духу и удаче существ противника."
+    descriptionEn: "–1 to enemy Morale and Luck."
+  - id: eternal_service
+    tier: 3
+    name: "Вечная служба"
+    nameEn: "Eternal Service"
+    description: "Новая способность: восстанавливает здоровье выбранной дружественной нежити. Может воскрешать павших существ."
+    descriptionEn: "Grants a new ability. It restores HP to the target friendly Undead and can revive fallen units."
+  - id: fields_of_the_dead
+    tier: 3
+    name: "Поля мёртвых"
+    nameEn: "Fields of the Dead"
+    description: "+50% к количеству восстанавливаемой некротической энергии."
+    descriptionEn: "+50% Necromantic Energy gained."
+source: https://www.olden-era.com/ru/skills/basic_necromancy

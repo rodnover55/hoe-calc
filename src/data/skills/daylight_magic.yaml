@@ -1,0 +1,54 @@
+id: daylight_magic
+name: "Магия дневного света"
+nameEn: "Daylight Magic"
+levels:
+  - name: "Basic Daylight Magic"
+    nameEn: "Basic Daylight Magic"
+    description: "The hero can learn Daylight spells up to tier 5."
+    descriptionEn: "The hero can learn Daylight spells up to tier 5."
+  - name: "Advanced Daylight Magic"
+    nameEn: "Advanced Daylight Magic"
+    description: "The hero can learn Daylight spells up to tier 5. Daylight spells gain +1 level(s)."
+    descriptionEn: "The hero can learn Daylight spells up to tier 5. Daylight spells gain +1 level(s)."
+  - name: "Expert Daylight Magic"
+    nameEn: "Expert Daylight Magic"
+    description: "The hero can learn Daylight spells up to tier 5, without visiting a Mage Guild, provided they are unlocked in the Observatory. Daylight spells gain +1 level(s)."
+    descriptionEn: "The hero can learn Daylight spells up to tier 5, without visiting a Mage Guild, provided they are unlocked in the Observatory. Daylight spells gain +1 level(s)."
+subskills:
+  - id: daylight_time
+    tier: 2
+    name: "Daylight Time"
+    nameEn: "Daylight Time"
+    description: "The cooldowns of all the hero’s Daylight spells are reduced by 1 round(s)."
+    descriptionEn: "The cooldowns of all the hero’s Daylight spells are reduced by 1 round(s)."
+  - id: luminous_focus
+    tier: 2
+    name: "Luminous Focus"
+    nameEn: "Luminous Focus"
+    description: "Generates 1 Focus Charge(s) at the start of every battle."
+    descriptionEn: "Generates 1 Focus Charge(s) at the start of every battle."
+  - id: brightest_sun
+    tier: 2
+    name: "Brightest Sun"
+    nameEn: "Brightest Sun"
+    description: "–1 level(s) to all enemy Daylight spells."
+    descriptionEn: "–1 level(s) to all enemy Daylight spells."
+  - id: daylight_teachings
+    tier: 3
+    name: "Daylight Teachings"
+    nameEn: "Daylight Teachings"
+    description: "+1 level(s) to this hero’s Daylight spells."
+    descriptionEn: "+1 level(s) to this hero’s Daylight spells."
+  - id: speed_of_light
+    tier: 3
+    name: "Скорость света"
+    nameEn: "Speed of Light"
+    description: "+10 к очкам движения. Бонус удваивается, если герой владеет «Логистикой»."
+    descriptionEn: "+10 Movement points. This bonus is doubled if the hero knows “Logistics.”"
+  - id: scholar_synergy_arina
+    tier: 3
+    name: "Синергия магов. Арина"
+    nameEn: "Scholar Synergy: Arina"
+    description: "На время использования заклинаний дня герой получает +6 к силе магии. Бонус повышается на 3 за навык каждой другой школы магии, которым владеет герой."
+    descriptionEn: "+6 Spell Power when casting Daylight spells. Gain an additional +3 for each other Magic School skill known."
+source: https://www.olden-era.com/ru/skills/basic_daylight_magic

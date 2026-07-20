@@ -1,0 +1,54 @@
+id: nightshade_magic
+name: "Магия ночной тени"
+nameEn: "Nightshade Magic"
+levels:
+  - name: "Основы магии ночи"
+    nameEn: "Basic Nightshade Magic"
+    description: "Герой может изучать заклинания ночи 5‑го ранга и ниже."
+    descriptionEn: "The hero can learn Nightshade spells up to tier 5."
+  - name: "Продвинутая магия ночи"
+    nameEn: "Advanced Nightshade Magic"
+    description: "Герой может изучать заклинания ночи 5‑го ранга и ниже. Его заклинания ночи получают +1 к уровню."
+    descriptionEn: "The hero can learn Nightshade spells up to tier 5. Nightshade spells gain +1 level(s)."
+  - name: "Экспертная магия ночи"
+    nameEn: "Expert Nightshade Magic"
+    description: "Герой может изучать заклинания ночи 5‑го ранга и ниже, не посещая гильдию магов, если они открыты в обсерватории. Его заклинания ночи получают +1 к уровню."
+    descriptionEn: "The hero can learn Nightshade spells up to tier 5, without visiting a Mage Guild, provided they are unlocked in the Observatory. Nightshade spells gain +1 level(s)."
+subskills:
+  - id: nightshade_time
+    tier: 2
+    name: "Время тьмы"
+    nameEn: "Nightshade Time"
+    description: "Снижает время восстановления всех заклинаний ночи на несколько раундов: –1."
+    descriptionEn: "The cooldowns of all the hero’s Nightshade spells are reduced by 1 round(s)."
+  - id: chronic_weakness
+    tier: 2
+    name: "Хроническая слабость"
+    nameEn: "Chronic Weakness"
+    description: "Снижает максимальное здоровье существ противника на 1. Эффект удваивается, если герой владеет «Сопротивлением»."
+    descriptionEn: "Enemy creature maximum HP reduces by 1. This effect is doubled if the hero knows “Resistance.”"
+  - id: darkest_night
+    tier: 2
+    name: "Темнейшая ночь"
+    nameEn: "Darkest Night"
+    description: "–1 к уровню всех заклинаний ночи противника."
+    descriptionEn: "–1 level(s) to all enemy Nightshade spells."
+  - id: nightshade_teachings
+    tier: 3
+    name: "Учение ночи"
+    nameEn: "Nightshade Teachings"
+    description: "+1 к уровню всех заклинаний ночи героя."
+    descriptionEn: "+1 level(s) to this hero’s Nightshade spells."
+  - id: hour_of_the_wolf
+    tier: 3
+    name: "Час волка"
+    nameEn: "Hour of the Wolf"
+    description: "–10% к атаке и защите существ противника."
+    descriptionEn: "–10% Attack and Defense to enemy creatures."
+  - id: scholar_synergy_naira
+    tier: 3
+    name: "Синергия магов. Наира"
+    nameEn: "Scholar Synergy: Naira"
+    description: "На время использования заклинаний ночи герой получает +6 к силе магии. Бонус увеличивается на 3 за навык каждой другой школы магии, которым владеет герой."
+    descriptionEn: "+6 Spell Power when casting Nightshade spells. Gain an additional +3 for each other Magic School skill known."
+source: https://www.olden-era.com/ru/skills/basic_nightshade_magic

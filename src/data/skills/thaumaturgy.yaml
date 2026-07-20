@@ -1,0 +1,54 @@
+id: thaumaturgy
+name: "Тауматургия"
+nameEn: "Thaumaturgy"
+levels:
+  - name: "Основы чародейства"
+    nameEn: "Basic Thaumaturgy"
+    description: "Герой может использовать книгу магии в бою ещё один раз, применяя при этом заклинание ещё неиспользованной школы магии. При каждом использовании стоимость заклинания повышается на 100%."
+    descriptionEn: "The hero can use the Spellbook one more time per battle round, but only to cast a spell of a Magic School that hasn’t been used this round. Spells cost +100% mana for each use after the first."
+  - name: "Продвинутое чародейство"
+    nameEn: "Advanced Thaumaturgy"
+    description: "Герой может использовать книгу магии в бою ещё один раз, применяя при этом заклинание ещё неиспользованной школы магии. При каждом использовании стоимость заклинания повышается на 75%."
+    descriptionEn: "The hero can use the Spellbook one more time per battle round, but only to cast a spell of a Magic School that hasn’t been used this round. Spells cost +75% mana for each use after the first."
+  - name: "Экспертное чародейство"
+    nameEn: "Expert Thaumaturgy"
+    description: "Герой может использовать книгу магии в бою ещё один раз, применяя при этом заклинание ещё неиспользованной школы магии. При каждом использовании стоимость заклинания повышается на 50%."
+    descriptionEn: "The hero can use the Spellbook one more time per battle round, but only to cast a spell of a Magic School that hasn’t been used this round. Spells cost +50% mana for each use after the first."
+subskills:
+  - id: antimage
+    tier: 2
+    name: "Антимаг"
+    nameEn: "Antimage"
+    description: "Заклинания противника стоят +4 маны."
+    descriptionEn: "Enemy spells cost +4 mana."
+  - id: thaumaturge_brilliance
+    tier: 2
+    name: "Чародейская премудрость"
+    nameEn: "Thaumaturge Brilliance"
+    description: "+2 к силе магии и знаниям."
+    descriptionEn: "+2 Spell Power and Knowledge."
+  - id: practical_incantations
+    tier: 2
+    name: "Практика заклинаний"
+    nameEn: "Practical Incantations"
+    description: "Удар героя наносит +10 урона."
+    descriptionEn: "Heroic Strike deals +10 Damage."
+  - id: ancient_scrolls
+    tier: 3
+    name: "Древние свитки"
+    nameEn: "Ancient Scrolls"
+    description: "Добавляет в книгу магии героя все заклинания 1‑го ранга."
+    descriptionEn: "Adds all tier‑1 spells to the hero’s Spellbook."
+  - id: vast_soul
+    tier: 3
+    name: "Необъятная душа"
+    nameEn: "Vast Soul"
+    description: "Каждое утро герой восстанавливает +10% маны."
+    descriptionEn: "+10% mana restored each morning."
+  - id: archmage
+    tier: 3
+    name: "Архимаг"
+    nameEn: "Archmage"
+    description: "Все изученные героем заклинания школ магии получают +1 к уровню."
+    descriptionEn: "All the spells belonging to Magic Schools the hero has learned gain 1 level(s)."
+source: https://www.olden-era.com/ru/skills/basic_thaumaturgy

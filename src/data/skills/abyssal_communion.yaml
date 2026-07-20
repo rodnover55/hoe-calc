@@ -1,0 +1,54 @@
+id: abyssal_communion
+name: "Причастие Бездны"
+nameEn: "Abyssal Communion"
+levels:
+  - name: "Основы Причастия к Бездне"
+    nameEn: "Basic Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 3). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 3). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - name: "Продвинутое Причастие к Бездне"
+    nameEn: "Advanced Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 4). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 4). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+  - name: "Экспертное Причастие к Бездне"
+    nameEn: "Expert Abyssal Communion"
+    description: "Герой получает +1 к Причастию при победе в бою (но не более 5). Каждое утро Причастие сокращается вдвое. +2.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "After each battle victory, the hero increases their Communion level by 1 (up to a max. of 5). Each level increases the number of friendly units by 2.5% until the end of the battle. Each morning, all heroes’ Communion level is halved."
+subskills:
+  - id: our_true_home
+    tier: 2
+    name: "Наш настоящий дом"
+    nameEn: "Our True Home"
+    description: "Дружественные существа Раскола наносят +10% и получают –10% урона на родной земле."
+    descriptionEn: "Friendly Schism creatures deal +10% and take –10% Damage on Native Terrain."
+  - id: comprehensible_depths
+    tier: 2
+    name: "Постижимые пучины"
+    nameEn: "Comprehensible Depths"
+    description: "Максимальный уровень Причастия героя повышается на 1."
+    descriptionEn: "The hero’s maximum Communion level increases by 1."
+  - id: call_of_the_void
+    tier: 2
+    name: "Зов пустоты"
+    nameEn: "Call of the Void"
+    description: "Каждое утро, до снижения уровня Причастия, восстанавливает 2 маны за уровень Причастия."
+    descriptionEn: "Each morning, before the Communion level is halved, restores 2 mana per Communion level."
+  - id: black_ice
+    tier: 3
+    name: "Чернолёд"
+    nameEn: "Black Ice"
+    description: "Заклинания противника стоят +1 маны за уровень Причастия героя."
+    descriptionEn: "Enemy spells cost +1 for each active Communion level."
+  - id: abyssopelagial
+    tier: 3
+    name: "Глубины Бездны"
+    nameEn: "Abyssopelagial"
+    description: "Уровень Причастия повышается ещё на 1 за каждую победу в бою."
+    descriptionEn: "Each victory in battle increases the Communion level by an additional 1."
+  - id: celestial_abyss
+    tier: 3
+    name: "Звёздная Бездна"
+    nameEn: "Celestial Abyss"
+    description: "Ещё +0.5% существ до конца боя за уровень Причастия."
+    descriptionEn: "Increases the number of friendly units per Communion level by an additional 0.5%."
+source: https://www.olden-era.com/ru/skills/basic_abyssal_communion

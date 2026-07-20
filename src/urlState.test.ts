@@ -9,11 +9,23 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { EMPTY_HERO_PICK } from './heroEffects';
+import type { HeroPick } from './heroEffects';
+import { EMPTY_HERO_PICK, defaultSkillPicks } from './heroEffects';
+import { HEROES_BY_ID } from './heroes';
 import type { PresetStore } from './presets';
 import { EMPTY_SELECTION, EMPTY_STORE, createHeroPreset, createSavedUnit } from './presets';
 import type { AppUrlState } from './urlState';
 import { decodeAppState, encodeAppState } from './urlState';
+
+/** Полный выбор героя с навыками и статами для тестов */
+const heroPick = (heroId: string, level: number, over: Partial<HeroPick> = {}): HeroPick => ({
+  heroId,
+  level,
+  skills: [],
+  spellPower: 2,
+  knowledge: 1,
+  ...over,
+});
 
 /** Отряд с различимыми значениями всех девяти статов */
 const stats = (over: Partial<AppUrlState['attacker']> = {}): AppUrlState['attacker'] => ({
@@ -125,25 +137,44 @@ describe('round-trip', () => {
   });
 
   /**
-   * Игровые герои обеих сторон — id и уровень — переживают round-trip,
-   * в том числе внутри пресета героя; режим «Удар героя» сохраняется.
+   * Игровые герои обеих сторон — id, уровень, навыки с поднавыками, сила
+   * магии и знание — переживают round-trip, в том числе внутри пресета
+   * героя; режим «Удар героя» сохраняется. Пустой список навыков
+   * остаётся пустым, а не заменяется стартовыми навыками.
    */
   it('игровые герои сторон и пресетов восстанавливаются', () => {
+    const attackerPick = heroPick('ister', 7, {
+      skills: [
+        { id: 'offence', level: 2, mods: ['archery'] },
+        { id: 'luck', level: 1, mods: [] },
+      ],
+      spellPower: 4,
+      knowledge: 6,
+    });
     const store: PresetStore = {
-      attacker: [createHeroPreset(stats(), null, 'ru', { heroId: 'niev', level: 12 })],
+      attacker: [
+        createHeroPreset(
+          stats(),
+          null,
+          'ru',
+          heroPick('niev', 12, { skills: [{ id: 'defence', level: 3, mods: [] }] }),
+        ),
+      ],
       defender: [],
     };
     const state = manualState({
-      attackerHero: { heroId: 'ister', level: 7 },
-      defenderHero: { heroId: 'bulwark', level: 3 },
+      attackerHero: attackerPick,
+      defenderHero: heroPick('bulwark', 3),
       modeId: 'hero_strike',
       presets: store,
     });
     const decoded = decodeAppState(encodeAppState(state));
-    expect(decoded?.attackerHero).toEqual({ heroId: 'ister', level: 7 });
-    expect(decoded?.defenderHero).toEqual({ heroId: 'bulwark', level: 3 });
+    expect(decoded?.attackerHero).toEqual(attackerPick);
+    expect(decoded?.defenderHero).toEqual(heroPick('bulwark', 3));
     expect(decoded?.modeId).toBe('hero_strike');
-    expect(decoded?.presets.attacker[0].hero).toEqual({ heroId: 'niev', level: 12 });
+    expect(decoded?.presets.attacker[0].hero).toEqual(
+      heroPick('niev', 12, { skills: [{ id: 'defence', level: 3, mods: [] }] }),
+    );
   });
 
   /** Строка пригодна для query-параметра: только A-Za-z0-9-_ */
@@ -264,6 +295,59 @@ describe('мягкая деградация', () => {
   it('уровень героя зажимается в допустимый диапазон', () => {
     expect(decodeAppState(tamper({ ah: ['ister', 99] }))?.attackerHero.level).toBe(30);
     expect(decodeAppState(tamper({ ah: ['ister', Number.NaN] }))?.attackerHero.level).toBe(1);
+  });
+
+  /**
+   * Старая ссылка — кортеж [id, уровень] — сеет стартовые навыки героя
+   * и его силу магии со знанием: расчёт совпадает с прежним поведением.
+   */
+  it('короткий кортеж героя сеет стартовые навыки и статы', () => {
+    const decoded = decodeAppState(tamper({ ah: ['ister', 5] }));
+    const ister = HEROES_BY_ID.get('ister')!;
+    expect(decoded?.attackerHero).toEqual({
+      heroId: 'ister',
+      level: 5,
+      skills: defaultSkillPicks(ister),
+      spellPower: ister.stats.spellPower,
+      knowledge: ister.stats.knowledge,
+    });
+    expect(decoded?.attackerHero.skills.length).toBeGreaterThan(0);
+  });
+
+  /** Битые навыки деградируют поштучно, сила магии/знание — на статы героя */
+  it('битые навыки и статы героя деградируют поштучно', () => {
+    const decoded = decodeAppState(
+      tamper({
+        ah: [
+          'ister',
+          5,
+          [
+            ['offence', 99, ['archery', 'no_such_mod', 'shadow_blades']],
+            ['offence', 1],
+            ['no_such_skill', 2],
+            'junk',
+            ['luck', Number.NaN],
+          ],
+          -3,
+          'junk',
+        ],
+      }),
+    );
+    const ister = HEROES_BY_ID.get('ister')!;
+    expect(decoded?.attackerHero.skills).toEqual([
+      // Уровень 99 зажат в 3; неизвестный поднавык отброшен, доступные
+      // упорядочены как в каталоге; дубль навыка и мусор отброшены.
+      { id: 'offence', level: 3, mods: ['archery', 'shadow_blades'] },
+      { id: 'luck', level: 1, mods: [] },
+    ]);
+    expect(decoded?.attackerHero.spellPower).toBe(ister.stats.spellPower);
+    expect(decoded?.attackerHero.knowledge).toBe(ister.stats.knowledge);
+  });
+
+  /** Пустой список навыков — «все удалены», стартовые не сеются */
+  it('пустой список навыков не заменяется стартовыми', () => {
+    const decoded = decodeAppState(tamper({ ah: ['ister', 5, [], 0, 0] }));
+    expect(decoded?.attackerHero.skills).toEqual([]);
   });
 
   /** «Удар героя» без героя в ссылке откатывается на первый режим */

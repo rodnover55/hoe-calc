@@ -65,15 +65,15 @@ export interface GameHero {
 export const heroName = (hero: GameHero, lang: Lang): string =>
   lang === 'ru' ? hero.name : hero.nameEn || hero.name;
 
-/** Название специализации или навыка на языке интерфейса */
+/** Название двуязычного объекта (специализации, навыка, поднавыка) */
 export const heroTextName = (
-  text: HeroSpecialization | HeroSkill,
+  text: { name: string; nameEn: string },
   lang: Lang,
 ): string => (lang === 'ru' ? text.name : text.nameEn || text.name);
 
-/** Описание специализации или навыка на языке интерфейса */
+/** Описание двуязычного объекта на языке интерфейса */
 export const heroTextDescription = (
-  text: HeroSpecialization | HeroSkill,
+  text: { description: string; descriptionEn: string },
   lang: Lang,
 ): string =>
   lang === 'ru' ? text.description : text.descriptionEn || text.description;

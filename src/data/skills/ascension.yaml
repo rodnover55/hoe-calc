@@ -1,0 +1,54 @@
+id: ascension
+name: "Праведность"
+nameEn: "Righteousness"
+levels:
+  - name: "Основы праведности"
+    nameEn: "Basic Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении двух раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for two rounds. This effect is stackable."
+  - name: "Продвинутая праведность"
+    nameEn: "Advanced Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении трёх раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for three rounds. This effect is stackable."
+  - name: "Экспертная праведность"
+    nameEn: "Expert Righteousness"
+    description: "Все смерти в бою вершатся во имя героя! Каждый раз, когда дружественный отряд убивает противника или погибает, атака, защита, сила магии и знания героя повышаются на 1 на протяжении четырёх раундов. Эффект суммируется."
+    descriptionEn: "All who fall in battle do so in the hero’s name! Whenever a friendly creature dies or kills an enemy, the hero’s Attack, Defense, Spell Power and Knowledge increase by 1 for four rounds. This effect is stackable."
+subskills:
+  - id: fields_of_serenity
+    tier: 2
+    name: "Поля безмятежности"
+    nameEn: "Fields of Serenity"
+    description: "Дружественные существа Храма наносят +10% и получают –10% урона на родной земле."
+    descriptionEn: "Friendly Temple creatures deal +10% and take –10% Damage on Native Terrain."
+  - id: righteous_sacrifice
+    tier: 2
+    name: "Праведная жертва"
+    nameEn: "Righteous Sacrifice"
+    description: "Каждый раз, когда дружественный отряд убивает отряд противника или погибает, герой получает временную ману: +3."
+    descriptionEn: "Whenever a friendly stack dies or kills an enemy stack, the hero gains 3 temporary mana."
+  - id: purging_touch
+    tier: 2
+    name: "Очищающая длань"
+    nameEn: "Purging Touch"
+    description: "Новая способность: снимает с цели все отрицательные эффекты."
+    descriptionEn: "Grants a new ability. It dispels all negative effects from the target."
+  - id: guardian
+    tier: 3
+    name: "Блюститель"
+    nameEn: "Guardian"
+    description: "Каждый раз, когда дружественный отряд убивает противника, он полностью восстанавливает своё здоровье. Не воскрешает павших существ."
+    descriptionEn: "Whenever a friendly creature kills an enemy, it fully restores its HP. This cannot revive fallen units."
+  - id: the_chosen_one
+    tier: 3
+    name: "Избранный"
+    nameEn: "The Chosen One"
+    description: "Новая способность: до конца раунда атака выбранного дружественного отряда повышается на 50% от атаки и силы магии героя, а защита отряда — на 50% от защиты и знаний героя."
+    descriptionEn: "Grants a new ability. It increases Attack of a friendly creature by 50% of the hero’s Attack and Spell Power, and its Defense by 50% of the hero’s Defense and Knowledge (until the end of the round)."
+  - id: strong_faith
+    tier: 3
+    name: "Сила веры"
+    nameEn: "Strong Faith"
+    description: "Каждый раз, когда срабатывает «Праведность», герой получает ещё +1 ко всем характеристикам до конца раунда."
+    descriptionEn: "Whenever Righteousness is triggered, the hero gains +1 to all attributes until the end of the round."
+source: https://www.olden-era.com/ru/skills/basic_ascension

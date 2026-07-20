@@ -1,0 +1,54 @@
+id: summon_swarm
+name: "Призыв роя"
+nameEn: "Summon swarm"
+levels:
+  - name: "Основы призыва роя"
+    nameEn: "Basic Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 8% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 8% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - name: "Продвинутый призыв роя"
+    nameEn: "Advanced Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 12% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 12% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+  - name: "Экспертный призыв роя"
+    nameEn: "Expert Summon Swarm"
+    description: "Раз за раунд создаёт на поле боя кладку яиц. В начале следующего раунда из неё вылупится отряд огненных личинок. Здоровье отряда составляет 16% от здоровья дружественных порождений Роя, а сила их способностей зависит от уровня героя."
+    descriptionEn: "Once per round, lays eggs on the battlefield. At the start of next round, they spawn a stack of Fire Larvae. The stack has 16% of the total HP of all Hive Spawns in its army, and the strength of its abilities scales with the hero’s level."
+subskills:
+  - id: warmth_of_the_nest
+    tier: 2
+    name: "Тепло гнезда"
+    nameEn: "Warmth of the Nest"
+    description: "Дружественные существа Роя наносят +10% и получают –10% урона на родной земле."
+    descriptionEn: "Friendly Hive creatures deal +10% and take –10% Damage on Native Terrain."
+  - id: thy_children
+    tier: 2
+    name: "Дети твои"
+    nameEn: "Thy Children"
+    description: "+1 призываемых огненных личинок за каждый уровень героя."
+    descriptionEn: "+1 Fire Larvae spawned for every hero level."
+  - id: ravage
+    tier: 2
+    name: "Опустошители"
+    nameEn: "Ravage"
+    description: "Огненные личинки наносят +1 урона."
+    descriptionEn: "Fire Larvae deal +1 Damage."
+  - id: hive_power
+    tier: 3
+    name: "Сила роя"
+    nameEn: "Hive Power"
+    description: "Герой получает +1 к удаче и боевому духу."
+    descriptionEn: "The hero gains 1 Luck and Morale."
+  - id: hardened_shells
+    tier: 3
+    name: "Твёрдая скорлупа"
+    nameEn: "Hardened Shells"
+    description: "Кладка может пережить больше ударов: +1."
+    descriptionEn: "The clutch of eggs can withstand +1 hit(s)."
+  - id: hive_flame
+    tier: 3
+    name: "Пламя роя"
+    nameEn: "Hive Flame"
+    description: "Призванные личинки существуют на один раунд дольше."
+    descriptionEn: "Summoned Fire Larvae last one round longer"
+source: https://www.olden-era.com/ru/skills/basic_summon_swarm
