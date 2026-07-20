@@ -1,0 +1,17 @@
+id: inner_light
+name: "Внутренний свет"
+nameEn: "Inner Light"
+school: daylight
+tier: 2
+mana: 8
+image: spells/daylight/inner_light.webp
+levels:
+  - description: "Не действует на нежить и конструкты Снижает длительность отрицательных эффектов, наложенных на выбранный дружественный отряд, на [ 2 + 1 за каждые 5 силы магии героя ]."
+    descriptionEn: "Does not affect Undead or Constructs Reduces the duration of all negative effects applied to the target friendly creature by [ 2 + 1 per every 5 hero’s Spell Power ]."
+  - description: "Базовая сила эффекта: 2 > 3."
+    descriptionEn: "Base spell effectiveness: 2 > 3."
+  - description: "Действует на все дружественные отряды рядом с целью."
+    descriptionEn: "Affects friendly creatures adjacent to the target."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+source: https://www.olden-era.com/ru/spells/inner_light

@@ -1,0 +1,17 @@
+id: twilight
+name: "Сумерки"
+nameEn: "Twilight"
+school: nightshade
+tier: 3
+mana: 16
+image: spells/nightshade/twilight.webp
+levels:
+  - description: "Выбранный отряд противника не может стрелять. Кол-во раундов: [ 1 + 1 за каждые 6 силы магии героя ]."
+    descriptionEn: "Target enemy creature is prevented from using Ranged attacks. Duration: [ 1 + 1 per every 6 hero’s Spell Power ] round(s)."
+  - description: "Базовая длительность эффекта: 1 > 2."
+    descriptionEn: "Base effect duration: 1 > 2."
+  - description: "Цель наносит –15% урона в ближнем бою."
+    descriptionEn: "Targets deal –15% Melee Damage."
+  - description: "Действует на всех существ противника."
+    descriptionEn: "Affects all enemy creatures."
+source: https://www.olden-era.com/ru/spells/twilight

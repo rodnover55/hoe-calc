@@ -20,11 +20,13 @@ import {
   sameHeroPick,
 } from './heroEffects';
 import type { GameHero } from './heroes';
-import { HEROES_BY_ID } from './heroes';
+import { HEROES_BY_ID, heroTextName } from './heroes';
+import type { Lang } from './i18n';
 import { LANGUAGES, numberLocale, pluralWord } from './i18n';
 import { useI18n } from './LangContext';
 import type { DamageGridColumn } from './components/DamageGrid';
 import { DamageGrid } from './components/DamageGrid';
+import { EffectList } from './components/EffectList';
 import { HeroPicker } from './components/HeroPicker';
 import { HeroPresetPanel } from './components/HeroPresetPanel';
 import { NumberField } from './components/NumberField';
@@ -45,6 +47,9 @@ import {
   sameSnapshot,
   snapshotOf,
 } from './presets';
+import type { SpellContribution, SpellEffectPick } from './spellEffects';
+import { spellBonuses } from './spellEffects';
+import { SPELLS_BY_ID } from './spells';
 import type { UnitPreset } from './units';
 import { UNITS_BY_ID } from './units';
 import type { AttackParams } from './urlState';
@@ -121,6 +126,12 @@ const DEFAULT_DEFENDER: DefenderStats = {
 // Состояние из ссылки читается один раз при загрузке страницы.
 const restored = decodeAppState(new URLSearchParams(window.location.search).get(SHARE_PARAM));
 
+/** Подпись числа эффекта в формуле — название заклинания-источника */
+const namedContribution = (item: SpellContribution, lang: Lang) => {
+  const spell = SPELLS_BY_ID.get(item.spellId);
+  return { label: spell ? heroTextName(spell, lang) : item.spellId, value: item.value };
+};
+
 export default function App() {
   const { lang, setLang, t } = useI18n();
 
@@ -182,6 +193,12 @@ export default function App() {
   const [defenderHero, setDefenderHero] = useState<HeroPick>(
     restored?.defenderHero ?? EMPTY_HERO_PICK,
   );
+  const [attackerEffects, setAttackerEffects] = useState<SpellEffectPick[]>(
+    restored?.attackerEffects ?? [],
+  );
+  const [defenderEffects, setDefenderEffects] = useState<SpellEffectPick[]>(
+    restored?.defenderEffects ?? [],
+  );
 
   // Список пресетов героев общий для обеих сторон; каждая сторона
   // выбирает из него независимо.
@@ -208,6 +225,8 @@ export default function App() {
         defenderUnitId,
         attackerHero,
         defenderHero,
+        attackerEffects,
+        defenderEffects,
         presets,
         presetSelection: presetSel,
       }),
@@ -220,6 +239,8 @@ export default function App() {
       defenderUnitId,
       attackerHero,
       defenderHero,
+      attackerEffects,
+      defenderEffects,
       presets,
       presetSel,
     ],
@@ -357,6 +378,8 @@ export default function App() {
     setDefenderUnitId(attackerUnitId);
     setAttackerHero(defenderHero);
     setDefenderHero(attackerHero);
+    setAttackerEffects(defenderEffects);
+    setDefenderEffects(attackerEffects);
     selectMode(attackModesFor(nextAttackerUnit, lang)[0], nextAttackerUnit);
     setPresetSel((sel) => ({
       attackerHeroId: sel.defenderHeroId,
@@ -639,37 +662,50 @@ export default function App() {
     [defenderGameHero, defenderHero, defenderUnit, attackerUnit, defender, attacker, mode, lang],
   );
 
+  // Эффекты заклинаний описывают отряд-носитель, поэтому считаются по
+  // стороне: бафф урона атакующего и снижение входящего урона защитника
+  // складываются в одних и тех же типовых модификаторах.
+  const attSpell = useMemo(
+    () => spellBonuses({ effects: attackerEffects, health: attacker.health, mode, side: 'attacker' }),
+    [attackerEffects, attacker.health, mode],
+  );
+  const defSpell = useMemo(
+    () => spellBonuses({ effects: defenderEffects, health: defender.health, mode, side: 'defender' }),
+    [defenderEffects, defender.health, mode],
+  );
+
   // Бонусы героев складываются с полями формы в момент расчёта и не
   // перезаписывают введённые вручную значения: свои — в атаку/защиту
   // героя, урон и здоровье отряда, штрафы противника — в статы юнита
-  // (формула сама ограничивает их снизу).
+  // (формула сама ограничивает их снизу). Эффекты заклинаний прибавляются
+  // к статам и здоровью юнита-носителя тем же способом.
   const effectiveAttacker = useMemo(
     () => ({
       ...attacker,
-      health: attacker.health + attBonus.health + defBonus.enemyHealth,
-      topHealth: attacker.topHealth + attBonus.health + defBonus.enemyHealth,
+      health: attacker.health + attBonus.health + defBonus.enemyHealth + attSpell.health,
+      topHealth: attacker.topHealth + attBonus.health + defBonus.enemyHealth + attSpell.health,
       damageMin: attacker.damageMin + attBonus.damage + defBonus.enemyDamage,
       damageMax: attacker.damageMax + attBonus.damage + defBonus.enemyDamage,
-      attack: attacker.attack + defBonus.enemyAttack,
-      defense: attacker.defense + defBonus.enemyDefense,
+      attack: attacker.attack + defBonus.enemyAttack + attSpell.attack,
+      defense: attacker.defense + defBonus.enemyDefense + attSpell.defense,
       heroAttack: attacker.heroAttack + attBonus.attack,
       heroDefense: attacker.heroDefense + attBonus.defense,
     }),
-    [attacker, attBonus, defBonus],
+    [attacker, attBonus, defBonus, attSpell],
   );
   const effectiveDefender = useMemo(
     () => ({
       ...defender,
-      health: defender.health + defBonus.health + attBonus.enemyHealth,
-      topHealth: defender.topHealth + defBonus.health + attBonus.enemyHealth,
+      health: defender.health + defBonus.health + attBonus.enemyHealth + defSpell.health,
+      topHealth: defender.topHealth + defBonus.health + attBonus.enemyHealth + defSpell.health,
       damageMin: defender.damageMin + defBonus.damage + attBonus.enemyDamage,
       damageMax: defender.damageMax + defBonus.damage + attBonus.enemyDamage,
-      attack: defender.attack + attBonus.enemyAttack,
-      defense: defender.defense + attBonus.enemyDefense,
+      attack: defender.attack + attBonus.enemyAttack + defSpell.attack,
+      defense: defender.defense + attBonus.enemyDefense + defSpell.defense,
       heroAttack: defender.heroAttack + defBonus.attack,
       heroDefense: defender.heroDefense + defBonus.defense,
     }),
-    [defender, attBonus, defBonus],
+    [defender, attBonus, defBonus, defSpell],
   );
 
   const result = useMemo(
@@ -686,15 +722,39 @@ export default function App() {
               (mode.special ? 0 : (reduction?.percent ?? 0)) +
               attBonus.typeModifiers +
               defBonus.typeModifiers,
+            // Вклады эффектов заклинаний идут отдельными полями, чтобы в
+            // формуле каждое число было подписано своим заклинанием.
+            effectModifiers: [...attSpell.typeModifiers, ...defSpell.typeModifiers].map((item) =>
+              namedContribution(item, lang),
+            ),
             rangePenalty: mode.rangePenalty,
             modeMultiplier: mode.multiplier,
             doubleStrike,
+            // «Всегда максимум» даёт и бафф носителя-атакующего, и
+            // «Уязвимость» на защитнике.
+            maxDamage: attSpell.maxDamage || defSpell.maxDamage,
+            flatDamage: attSpell.flatDamage.map((item) => namedContribution(item, lang)),
+            retaliationModifiers: defSpell.retaliationPercent.map((item) =>
+              namedContribution(item, lang),
+            ),
           },
           defender: effectiveDefender,
         },
         lang,
       ),
-    [effectiveAttacker, attack, effectiveDefender, mode, doubleStrike, reduction, attBonus, defBonus, lang],
+    [
+      effectiveAttacker,
+      attack,
+      effectiveDefender,
+      mode,
+      doubleStrike,
+      reduction,
+      attBonus,
+      defBonus,
+      attSpell,
+      defSpell,
+      lang,
+    ],
   );
 
   // Способности с собственным уроном считаются отдельной формулой.
@@ -916,6 +976,11 @@ export default function App() {
               onChange={(defense) => patchAttacker({ defense })}
             />
           </div>
+          <EffectList
+            idPrefix="attacker"
+            effects={attackerEffects}
+            onChange={setAttackerEffects}
+          />
         </section>
 
         <section className="column">
@@ -1114,6 +1179,11 @@ export default function App() {
               onChange={(defense) => patchDefender({ defense })}
             />
           </div>
+          <EffectList
+            idPrefix="defender"
+            effects={defenderEffects}
+            onChange={setDefenderEffects}
+          />
         </section>
       </div>
 

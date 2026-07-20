@@ -1,0 +1,17 @@
+id: hksmillas_rampage
+name: "Ярость Кшмильи"
+nameEn: "Hksmilla’s Rampage"
+school: primal
+tier: 5
+mana: 28
+image: spells/primal/hksmillas_rampage.webp
+levels:
+  - description: "Выбранный дружественный отряд получает «Двойной удар», а также наносит и получает +10% урона. Кол-во раундов: [ 1 + 1 за каждые 8 силы магии героя ]."
+    descriptionEn: "Target friendly creature gains Double Strike and deals and takes +10% Damage. Duration: [ 1 + 1 per every 8 hero’s Spell Power ] round(s)."
+  - description: "Наносимый и получаемый урон: 10% > 15%."
+    descriptionEn: "Damage dealt and taken: 10% > 15%."
+  - description: "Наносимый и получаемый урон: 15% > 25%."
+    descriptionEn: "Damage dealt and taken: 15% > 25%."
+  - description: "Наносимый и получаемый урон: 25% > 40%."
+    descriptionEn: "Damage dealt and taken: 25% > 40%."
+source: https://www.olden-era.com/ru/spells/hksmillas_rampage

@@ -638,3 +638,43 @@ select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
 }
+
+dialog.modal {
+  width: min(420px, 90vw);
+  max-height: min(560px, 85vh);
+  padding: 12px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+dialog.modal::backdrop {
+  background: rgb(0 0 0 / 0.4);
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+/* Список результатов в модальном окне — статичный, а не выпадающий */
+.modal-search-list {
+  position: static;
+  margin-top: 8px;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+}
+
+.effect-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

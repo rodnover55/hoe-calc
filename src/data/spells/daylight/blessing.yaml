@@ -1,0 +1,17 @@
+id: blessing
+name: "Благословение"
+nameEn: "Blessing"
+school: daylight
+tier: 1
+mana: 7
+image: spells/daylight/blessing.webp
+levels:
+  - description: "Не действует на нежить Выбранный дружественный отряд наносит +15% урона обычными атаками. Кол-во раундов: [ 1 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Does not affect the Undead Target friendly creature deals +15% Damage with basic attacks. Duration: [ 1 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Урон обычных атак: 15% > 20%."
+    descriptionEn: "Basic attacks Damage: 15% > 20%."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+  - description: "Урон обычных атак: 20% > 30%."
+    descriptionEn: "Basic attacks Damage: 20% > 30%."
+source: https://www.olden-era.com/ru/spells/blessing

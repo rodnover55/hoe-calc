@@ -1,0 +1,17 @@
+id: guillotine_m
+name: "Искусная гильотина"
+nameEn: "Masterful Guillotine"
+school: arcane
+tier: 4
+mana: 7
+image: spells/arcane/guillotine.webp
+levels:
+  - description: "Наносит выбранному отряду противника магический урон в размере [ 30% + 3% × сила магии героя ]% от его максимального здоровья. Каждый раз, когда это заклинание повторно применяется к той же цели, оно наносит +200% урона. Эффект суммируется."
+    descriptionEn: "Deals [ 30% + 3% × hero’s Spell Power ]% of target enemy creature’s maximum HP as Magic Damage. Each time this spell is re‑cast on the same target, it deals +200% more Damage. This effect is stackable."
+  - description: "Базовый урон: 30% > 45% здоровья."
+    descriptionEn: "Base Damage: 30% > 45% HP."
+  - description: "Урон за силу магии: 3% > 6% здоровья."
+    descriptionEn: "Damage per Spell Power: 3% > 6% HP."
+  - description: "Мгновенно убивает цель, если её численность не превышает 25% от численности на начало боя."
+    descriptionEn: "Kills target enemy creature if its stack size is lower than or equal to 25% of its original number."
+source: https://www.olden-era.com/ru/spells/guillotine_m

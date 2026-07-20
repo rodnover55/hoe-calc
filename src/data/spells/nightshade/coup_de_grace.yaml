@@ -1,0 +1,17 @@
+id: coup_de_grace
+name: "Удар милосердия"
+nameEn: "Coup de Grâce"
+school: nightshade
+tier: 5
+mana: 24
+image: spells/nightshade/coup_de_grace.webp
+levels:
+  - description: "Выбранный отряд противника погибнет после получения урона, если его численность не превышает 20% от численности на начало боя. Кол-во раундов: [ 1 + 1 за каждые 8 силы магии героя ]."
+    descriptionEn: "Target enemy creature will die after taking any Damage if its stack size is lower than or equal to 20% of its original number. Duration: [ 1 + 1 per every 8 hero’s Spell Power ] round(s)."
+  - description: "Численность отряда: 20% > 25%."
+    descriptionEn: "Stack size: 20% > 25%."
+  - description: "Численность отряда: 25% > 35%."
+    descriptionEn: "Stack size: 25% > 35%."
+  - description: "Действует на всех существ противника."
+    descriptionEn: "Affects all enemy creatures."
+source: https://www.olden-era.com/ru/spells/coup_de_grace

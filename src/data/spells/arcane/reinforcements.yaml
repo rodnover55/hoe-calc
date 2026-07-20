@@ -1,0 +1,17 @@
+id: reinforcements
+name: "Подкрепление"
+nameEn: "Reinforcements"
+school: arcane
+tier: 2
+mana: 18
+image: spells/arcane/reinforcements.webp
+levels:
+  - description: "Герой мгновенно взаимодействует с внешним жилищем существ под вашим контролем в пределах [ 2 × радиус обзора героя ] клеток. 1 раз(а) в день."
+    descriptionEn: "The casting hero immediately interacts with any external dwelling you control within [ 2 × hero’s sight ] squares. Usable 1 times per day."
+  - description: "Расстояние до цели: 2 > 3."
+    descriptionEn: "Target radius: 2 > 3."
+  - description: "Расстояние до цели: 3 > 4."
+    descriptionEn: "Target radius: 3 > 4."
+  - description: "Можно использовать +1 раз в день."
+    descriptionEn: "Can be used +1 time per day."
+source: https://www.olden-era.com/ru/spells/reinforcements

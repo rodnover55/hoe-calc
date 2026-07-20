@@ -1,0 +1,17 @@
+id: trap_temporal_spheres
+name: "Темпоральные сферы"
+nameEn: "Temporal Spheres"
+school: arcane
+tier: 2
+mana: 11
+image: spells/arcane/trap_temporal_spheres.webp
+levels:
+  - description: "Размещает на свободных гексах невидимые ловушки: до 2. Наступив в ловушку, пеший отряд активирует её: она наносит магический урон ему и соседним с ним отрядам, а затем исчезает. Размер урона равен [ 100% + 5% × сила магии героя ]% максимального здоровья одного существа в отряде. Кол‑во раундов: [ 1 + 1 за каждые 5 силы магии героя ]."
+    descriptionEn: "Place up to 2 invisible traps on free hexes. Traps trigger when stepped on by a ground creature, dealing Magic Damage to the creature and adjacent ones before disappearing. The Damage equals [ 100% + 5% × hero’s Spell Power ]% of one unit’s maximum HP. Duration: [ 1 + 1 per every 5 hero’s Spell Power ] round(s)."
+  - description: "Урон за силу магии: 5% > 10%."
+    descriptionEn: "Damage per Spell Power: 5% > 10%."
+  - description: "Количество ловушек: 2 > 3."
+    descriptionEn: "Traps: 2 > 3."
+  - description: "Урон за силу магии: 10% > 15%."
+    descriptionEn: "Damage per Spell Power: 10% > 15%."
+source: https://www.olden-era.com/ru/spells/trap_temporal_spheres

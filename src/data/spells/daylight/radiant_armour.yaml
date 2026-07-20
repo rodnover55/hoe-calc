@@ -1,0 +1,17 @@
+id: radiant_armour
+name: "Лучезарная броня"
+nameEn: "Radiant Armor"
+school: daylight
+tier: 4
+mana: 22
+image: spells/daylight/radiant_armour.webp
+levels:
+  - description: "Выбранный дружественный отряд получает –15% урона. Кол-во раундов: [ 1 + 1 за каждые 7 силы магии героя ]."
+    descriptionEn: "Target friendly creature takes –15% Damage from all sources. Duration: [ 1 + 1 per every 7 hero’s Spell Power ] round(s)."
+  - description: "Снижение урона: 15% > 25%."
+    descriptionEn: "Damage reduction: 15% > 25%."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+  - description: "Снижение урона: 25% > 35%."
+    descriptionEn: "Damage reduction: 25% > 35%."
+source: https://www.olden-era.com/ru/spells/radiant_armour

@@ -1,0 +1,17 @@
+id: blink
+name: "Скачок"
+nameEn: "Blink"
+school: arcane
+tier: 2
+mana: 10
+image: spells/arcane/blink.webp
+levels:
+  - description: "Переносит выбранный дружественный отряд на несколько гексов: до 4."
+    descriptionEn: "Teleports a target friendly creature up to 4 hexes from its current hex."
+  - description: "Дальность скачка: 4 > 6."
+    descriptionEn: "Teleportation range: 4 > 6."
+  - description: "Дальность скачка: 6 > 9."
+    descriptionEn: "Teleportation range: 6 > 9."
+  - description: "Дальность скачка: 9 > 13."
+    descriptionEn: "Teleportation range: 9 > 13."
+source: https://www.olden-era.com/ru/spells/blink

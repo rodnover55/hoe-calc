@@ -1,0 +1,17 @@
+id: reality_distortion
+name: "Искажение реальности"
+nameEn: "Reality Distortion"
+school: arcane
+tier: 5
+mana: 15
+image: spells/arcane/reality_distortion.webp
+levels:
+  - description: "Выбранный отряд не получает урона. Вместо этого в начале каждого последующего раунда он получает весь урон, который должен был получить за предыдущий раунд, в виде чистого урона. Кол-во раундов: [ 1 + 1 за каждые 8 силы магии героя ]."
+    descriptionEn: "Selected target takes no Damage from any source. Instead, at the start of each round, it takes all Damage that it would have taken in the previous round as Pure Damage. Duration: [ 1 + 1 per every 8 hero’s Spell Power ] round(s)."
+  - description: "Накопленный урон снижается на 21%."
+    descriptionEn: "Damage is reduced by 21%."
+  - description: "Базовая длительность эффекта: 1 > 3."
+    descriptionEn: "Base effect duration: 1 > 3."
+  - description: "Снижение урона: 21% > 41%."
+    descriptionEn: "Damage reduction 21% > 41%."
+source: https://www.olden-era.com/ru/spells/reality_distortion

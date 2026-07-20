@@ -1,0 +1,17 @@
+id: berserk_m
+name: "Искусный берсерк"
+nameEn: "Masterful Berserk"
+school: nightshade
+tier: 4
+mana: 16
+image: spells/nightshade/berserk.webp
+levels:
+  - description: "Не действует на воплощения и конструкты Отряды на выбранном гексе и соседних с ним сразу же атакуют ближайшие цели в радиусе атаки, будь то дружественный отряд или противник."
+    descriptionEn: "Does not affect Embodiments or Constructs Each creature on the target hex and adjacent hexes immediately and uncontrollably attacks the closest target within their attack radius, whether they are friendly or enemy creatures."
+  - description: "Отряд под действием эффекта наносит +10% урона."
+    descriptionEn: "With this effect attack deals +10% Damage."
+  - description: "Бонус к урону: 10% > 20%."
+    descriptionEn: "Damage bonus: 10% > 20%."
+  - description: "Бонус к урону: 20% > 30%."
+    descriptionEn: "Damage bonus: 20% > 30%."
+source: https://www.olden-era.com/ru/spells/berserk_m

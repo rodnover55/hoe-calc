@@ -1,0 +1,17 @@
+id: heavenly_blades
+name: "Небесные клинки"
+nameEn: "Heavenly Blades"
+school: daylight
+tier: 4
+mana: 21
+image: spells/daylight/heavenly_blades.webp
+levels:
+  - description: "Исцеление не действует на нежить, воплощения и конструкты Выбранный дружественный отряд наносит +35 чистого урона при каждой обычной атаке и восстанавливает себе столько же здоровья. Не воскрешает павших существ. Кол-во раундов: [ 1 + 1 за каждые 7 силы магии героя ]."
+    descriptionEn: "Healing does not affect Undead, Embodiments, or Constructs Target friendly creature deals +35 Pure Damage with each basic attack and restores the same amount of HP. Cannot revive fallen units. Duration: [ 1 + 1 per every 7 hero’s Spell Power ] round(s)."
+  - description: "Бонус к урону: 35 > 75."
+    descriptionEn: "Damage bonus: 35 > 75."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+  - description: "Бонусный урон мгновенно уничтожает призванных и временных существ."
+    descriptionEn: "Bonus Damage instantly destroys summoned creatures and temporary stacks."
+source: https://www.olden-era.com/ru/spells/heavenly_blades

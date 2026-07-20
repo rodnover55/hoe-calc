@@ -1,0 +1,17 @@
+id: assemble
+name: "Общий сбор!"
+nameEn: "Assemble!"
+school: arcane
+tier: 3
+mana: 12
+image: spells/arcane/assemble.webp
+levels:
+  - description: "Герой мгновенно взаимодействует с героем‑союзником в пределах [ 1 × радиус обзора героя ] клеток. 1 раз(а) в день."
+    descriptionEn: "The casting hero immediately interacts with any allied hero within [ 1 × hero’s sight ] squares. Usable 1 times per day."
+  - description: "Множитель расстояния: 1 > 2."
+    descriptionEn: "Radius multiplier: 1 > 2."
+  - description: "Можно использовать +1 раз в день."
+    descriptionEn: "Can be used +1 time per day."
+  - description: "Множитель расстояния: 2 > 3."
+    descriptionEn: "Radius multiplier: 2 > 3."
+source: https://www.olden-era.com/ru/spells/assemble

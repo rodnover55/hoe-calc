@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "update-units": "tsx scripts/update_units.ts",
     "update-heroes": "tsx scripts/update_heroes.ts",
-    "update-skills": "tsx scripts/update_skills.ts"
+    "update-skills": "tsx scripts/update_skills.ts",
+    "update-spells": "tsx scripts/update_spells.ts"
   },
   "dependencies": {
     "react": "^19.2.7",

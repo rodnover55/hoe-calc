@@ -1,0 +1,17 @@
+id: fatal_decay
+name: "Разложение"
+nameEn: "Fatal Decay"
+school: nightshade
+tier: 2
+mana: 4
+image: spells/nightshade/fatal_decay.webp
+levels:
+  - description: "Не действует на воплощения Выбранный отряд противника не может восстанавливать здоровье. Этот эффект сохраняется после смерти. Кол-во раундов: [ 2 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Does not affect Embodiments Target enemy creature cannot restore HP. This effect remains after the creature’s death. Duration: [ 2 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Снижает максимальное здоровье на 20%."
+    descriptionEn: "Reduces maximum HP by 20%."
+  - description: "Эффект нельзя снять."
+    descriptionEn: "This effect cannot be dispelled."
+  - description: "Снижение максимального здоровья: 20% > 30%."
+    descriptionEn: "Maximum HP reduction: 20% > 30%."
+source: https://www.olden-era.com/ru/spells/fatal_decay

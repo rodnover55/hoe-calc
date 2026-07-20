@@ -1,0 +1,17 @@
+id: favorable_wind
+name: "Благоприятный ветер"
+nameEn: "Favorable Wind"
+school: daylight
+tier: 2
+mana: 10
+image: spells/daylight/favorable_wind.webp
+levels:
+  - description: "Выбранный дружественный отряд наносит +20% урона выстрелами и атаками на расстоянии. Кол-во раундов: [ 1 + 1 за каждые 5 силы магии героя ]."
+    descriptionEn: "Target friendly creature deals +20% Damage with Ranged and Long Reach attacks. Duration: [ 1 + 1 per every 5 hero’s Spell Power ] round(s)."
+  - description: "Урон от выстрелов и на расстоянии: 20% > 30%."
+    descriptionEn: "Ranged and Long Reach Damage: 20% > 30%."
+  - description: "Урон от выстрелов и на расстоянии: 30% > 40%."
+    descriptionEn: "Ranged and Long Reach Damage: 30% > 40%."
+  - description: "Убирает штраф при стрельбе в бою."
+    descriptionEn: "Eliminates Ranged penalty."
+source: https://www.olden-era.com/ru/spells/favorable_wind

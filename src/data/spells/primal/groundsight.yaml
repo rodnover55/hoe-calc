@@ -1,0 +1,17 @@
+id: groundsight
+name: "Просмотр земли"
+nameEn: "Groundsight"
+school: primal
+tier: 1
+mana: 10
+image: spells/primal/groundsight.webp
+levels:
+  - description: "Показывает расположение всех нейтральных армий на карте приключений (включая скрытые туманом войны)."
+    descriptionEn: "Reveals the location of all neutral squads on the global map (including those in the fog of war)."
+  - description: "Базовая стоимость: 10 > 6 маны."
+    descriptionEn: "Base mana cost: 10 > 6."
+  - description: "Показывает расположение ресурсов."
+    descriptionEn: "Reveals the location of resources."
+  - description: "Показывает расположение артефактов."
+    descriptionEn: "Reveals the location of artifacts."
+source: https://www.olden-era.com/ru/spells/groundsight

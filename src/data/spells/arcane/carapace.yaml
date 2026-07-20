@@ -1,0 +1,17 @@
+id: carapace
+name: "Панцирь"
+nameEn: "Carapace"
+school: arcane
+tier: 3
+mana: 18
+image: spells/arcane/carapace.webp
+levels:
+  - description: "Накладывает на выбранный дружественный отряд барьер, который один раз поглощает любой получаемый им урон. Кол-во раундов: [ 1 + 1 за каждые 5 силы магии героя ]."
+    descriptionEn: "Shields a target friendly creature with a barrier that blocks the next instance of Damage. Duration: [ 1 + 1 per every 5 hero’s Spell Power ] round(s)."
+  - description: "Базовая стоимость: 18 > 14 маны."
+    descriptionEn: "Base mana cost: 18 > 14."
+  - description: "Базовая длительность эффекта: 1 > 2."
+    descriptionEn: "Base effect duration: 1 > 2."
+  - description: "Панцирь поглощает урон дважды."
+    descriptionEn: "Barrier blocks the Damage twice."
+source: https://www.olden-era.com/ru/spells/carapace

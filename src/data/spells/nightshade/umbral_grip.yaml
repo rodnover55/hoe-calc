@@ -1,0 +1,17 @@
+id: umbral_grip
+name: "Хватка теней"
+nameEn: "Umbral Grip"
+school: nightshade
+tier: 2
+mana: 10
+image: spells/nightshade/umbral_grip.webp
+levels:
+  - description: "Наносит выбранному отряду противника [ 40 + 10 × сила магии героя ] чистого урона. Этот урон нельзя изменить никакими эффектами."
+    descriptionEn: "Deals [ 40 + 10 × hero’s Spell Power ] Pure Damage to the target enemy. This Damage cannot be modified in any way."
+  - description: "Урон за силу магии: 10 > 15."
+    descriptionEn: "Damage per Spell Power: 10 > 15."
+  - description: "Урон за силу магии: 15 > 20."
+    descriptionEn: "Damage per Spell Power: 15 > 20."
+  - description: "Дополнительно убивает существ: 1. Действует на существ не выше 7‑го ранга."
+    descriptionEn: "Additionally, kills +1 unit(s). Works on creatures up to tier 7."
+source: https://www.olden-era.com/ru/spells/umbral_grip

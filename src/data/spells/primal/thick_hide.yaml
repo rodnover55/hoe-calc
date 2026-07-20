@@ -1,0 +1,17 @@
+id: thick_hide
+name: "Толстая шкура"
+nameEn: "Thick Hide"
+school: primal
+tier: 1
+mana: 6
+image: spells/primal/thick_hide.webp
+levels:
+  - description: "Выбранный дружественный отряд получает –15% урона в ближнем бою. Кол-во раундов: [ 1 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Target friendly creature takes –15% Damage from Melee attacks. Duration: [ 1 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Получаемый урон: –15% > –20%."
+    descriptionEn: "Damage: –15% > –20%."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+  - description: "Получаемый урон: –20% > –30%."
+    descriptionEn: "Damage: –20% > –30%."
+source: https://www.olden-era.com/ru/spells/thick_hide

@@ -1,0 +1,17 @@
+id: crystal_crown
+name: "Кристальная корона"
+nameEn: "Crystal Crown"
+school: primal
+tier: 2
+mana: 8
+image: spells/primal/crystal_crown.webp
+levels:
+  - description: "Размещает на поле боя преграды‑кристаллы: до 2. Их можно разрушить, нанеся урон атаками 1 раз(а). Кол-во раундов: 2."
+    descriptionEn: "Place up to 2 crystal obstacles. An obstacle is destroyed upon taking 1 hit(s) from attacks. Duration: 2 round(s)."
+  - description: "Базовая длительность: 2 > 3."
+    descriptionEn: "Base duration: 2 > 3."
+  - description: "Преграды: 2 > 3."
+    descriptionEn: "Obstacles: 2 > 3."
+  - description: "Для разрушения нужно нанести урон 2 раз(а)."
+    descriptionEn: "Obstacle is destroyed after taking 2 instances of Damage."
+source: https://www.olden-era.com/ru/spells/crystal_crown

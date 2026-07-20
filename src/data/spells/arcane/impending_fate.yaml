@@ -1,0 +1,17 @@
+id: impending_fate
+name: "Неотвратимость"
+nameEn: "Impending Fate"
+school: arcane
+tier: 3
+mana: 13
+image: spells/arcane/impending_fate.webp
+levels:
+  - description: "Наносит урон всем существам противника. Каждая цель получает 15 магического урона за свой ранг."
+    descriptionEn: "Deals Damage to all enemies. Each stack takes 15 Magic Damage per its creature tier"
+  - description: "Урон за ранг цели: 15 > 25."
+    descriptionEn: "Damage per unit tier: 15 > 25."
+  - description: "Урон за ранг цели: 25 > 40."
+    descriptionEn: "Damage per unit tier: 25 > 40."
+  - description: "Заклинание наносит чистый урон."
+    descriptionEn: "Deals Pure Damage."
+source: https://www.olden-era.com/ru/spells/impending_fate

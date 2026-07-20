@@ -1,0 +1,17 @@
+id: shadow_army
+name: "Армия теней"
+nameEn: "Shadow Army"
+school: nightshade
+tier: 5
+mana: 35
+image: spells/nightshade/shadow_army.webp
+levels:
+  - description: "Увеличивает численность выбранного дружественного отряда на [ 15% + 0.5% × сила магии героя ]%. Это временные существа. Их численность не может превышать 100% от текущей численности постоянных существ."
+    descriptionEn: "Increases the number of units in the target friendly stack by [ 15 + 0.5% × hero’s Spell Power ]%. These units are temporary and cannot exceed 100% of the current number of permanent units in the stack."
+  - description: "Базовый бонус численности: 15% > 20%."
+    descriptionEn: "Base effect bonus: 15% > 20%."
+  - description: "Базовый бонус численности: 20% > 30%."
+    descriptionEn: "Base effect bonus: 20% > 30%."
+  - description: "Бонус численности за силу магии: 0.5% > 1%."
+    descriptionEn: "Effect bonus per Spell Power: 0.5% > 1%."
+source: https://www.olden-era.com/ru/spells/shadow_army

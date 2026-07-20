@@ -1,0 +1,17 @@
+id: energy_explosion
+name: "Взрыв магии"
+nameEn: "Energy Explosion"
+school: arcane
+tier: 1
+mana: 8
+image: spells/arcane/energy_explosion.webp
+levels:
+  - description: "Все отряды в пределах одного гекса получают 30 магического урона за каждый заряд концентрации."
+    descriptionEn: "Deals 30 Magic Damage per Focus Charge to all creatures in one‑hex radius."
+  - description: "Урон за заряд концентрации: 30 > 40."
+    descriptionEn: "Damage per Focus Charge: 30 > 40."
+  - description: "Урон за заряд концентрации: 40 > 55."
+    descriptionEn: "Damage per Focus Charge: 40 > 55."
+  - description: "Урон за заряд концентрации: 55 > 75."
+    descriptionEn: "Damage per Focus Charge: 55 > 75."
+source: https://www.olden-era.com/ru/spells/energy_explosion

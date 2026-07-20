@@ -1,0 +1,17 @@
+id: trap_spacial_snare
+name: "Пространственные силки"
+nameEn: "Spatial Snare"
+school: arcane
+tier: 4
+mana: 10
+image: spells/arcane/trap_spacial_snare.webp
+levels:
+  - description: "Размещает на свободных гексах невидимые ловушки: до 2. Пеший отряд, передвигающийся через гекс с ловушкой, прерывает движение, завершает ход и теряет свой следующий ход. Сработав, ловушка исчезает. Если гекс с ловушкой был конечной точкой маршрута отряда, она не срабатывает. Кол-во раундов: [ 1 + 1 за каждые 7 силы магии героя ]."
+    descriptionEn: "Place up to 2 invisible trap(s) on free hexes. Traps trigger when a ground creature moves through them, halting the creature’s movement, ending its current turn and cancelling its next turn. After triggering, the trap disappears. If the trapped hex is the creature’s final destination, the trap does not trigger. Duration: [ 1 + 1 per every 7 hero’s Spell Power ] round(s)."
+  - description: "Базовая стоимость: 10 > 5 маны."
+    descriptionEn: "Base mana cost: 10 > 5."
+  - description: "Количество ловушек: 2 > 3."
+    descriptionEn: "Traps: 2 > 3."
+  - description: "Количество ловушек: 3 > 4."
+    descriptionEn: "Traps: 3 > 4."
+source: https://www.olden-era.com/ru/spells/trap_spacial_snare

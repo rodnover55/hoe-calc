@@ -1,0 +1,17 @@
+id: web
+name: "Паутина"
+nameEn: "Web"
+school: nightshade
+tier: 1
+mana: 9
+image: spells/nightshade/web.webp
+levels:
+  - description: "Выбранный отряд противника получает –2 к скорости. Кол-во раундов: [ 2 + 1 за каждые 5 силы магии героя ]."
+    descriptionEn: "Target enemy creature loses 2 Speed Duration: [ 2 + 1 per every 5 hero’s Spell Power ] round(s)."
+  - description: "Снижение скорости: –2 > –3."
+    descriptionEn: "Speed reduction: –2 > –3."
+  - description: "Снимает «Ускорение»."
+    descriptionEn: "Dispels “Haste.”"
+  - description: "Снижение скорости: –3 > –4."
+    descriptionEn: "Speed reduction: –3 > –4."
+source: https://www.olden-era.com/ru/spells/web

@@ -1,0 +1,17 @@
+id: nairas_kiss
+name: "Поцелуй Наиры"
+nameEn: "Naira’s Kiss"
+school: nightshade
+tier: 5
+mana: 18
+image: spells/nightshade/nairas_kiss.webp
+levels:
+  - description: "Помечает выбранный отряд противника. Каждый раз, когда помеченная цель выполняет действие, она получает [ 150 + 15 × сила магии героя ] магического урона. Кол-во раундов: [ 1 + 1 за каждые 8 силы магии героя ]."
+    descriptionEn: "Marks the target enemy creature. Marked creatures take [ 150 + 15 × hero’s Spell Power ] Magic Damage whenever they perform any action. Duration: [ 1 + 1 per every 8 hero’s Spell Power ] round(s)."
+  - description: "Базовый урон: 150 > 200."
+    descriptionEn: "Base Damage: 150 > 200."
+  - description: "Урон за силу магии: 15 > 20."
+    descriptionEn: "Damage per Spell Power: 15 > 20."
+  - description: "Цель также теряет 1 скорости и инициативы, выполняя действие. Эффект суммируется."
+    descriptionEn: "Marked target additionally loses 1 Speed and Initiative whenever it performs any action. This effect is stackable."
+source: https://www.olden-era.com/ru/spells/nairas_kiss

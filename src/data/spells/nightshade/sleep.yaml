@@ -1,0 +1,17 @@
+id: sleep
+name: "Сон"
+nameEn: "Sleep"
+school: nightshade
+tier: 3
+mana: 13
+image: spells/nightshade/sleep.webp
+levels:
+  - description: "Не действует на порождения Роя, нежить, воплощения и конструкты Выбранный отряд противника засыпает и не может выполнять никаких действий. Эффект снимается при получении урона. После пробуждения на цель нельзя повторно наложить «Сон» до конца боя. Кол-во раундов: 2."
+    descriptionEn: "Does not affect Hive Spawns, Undead, Embodiments, or Constructs Target enemy creature falls asleep and cannot take any actions. Dispelled upon taking Damage. After awakening, the same creature cannot fall asleep again until the end of the battle. Duration: 2 round(s)."
+  - description: "Базовая длительность эффекта: 2 > 3."
+    descriptionEn: "Base effect duration: 2 > 3."
+  - description: "Базовая длительность эффекта: 3 > 4."
+    descriptionEn: "Base effect duration: 3 > 4."
+  - description: "Получение урона не снимает эффект, но снижает его длительность на 2."
+    descriptionEn: "Taking Damage does not dispel effect but instead reduces its duration by 2 rounds."
+source: https://www.olden-era.com/ru/spells/sleep

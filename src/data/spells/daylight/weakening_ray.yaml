@@ -1,0 +1,17 @@
+id: weakening_ray
+name: "Ослабляющий луч"
+nameEn: "Weakening Ray"
+school: daylight
+tier: 2
+mana: 10
+image: spells/daylight/weakening_ray.webp
+levels:
+  - description: "Снимает заряды контратаки с выбранного отряда противника в этом раунде: 1."
+    descriptionEn: "Removes 1 counterattack charge(s) from the target enemy for this round."
+  - description: "Базовая стоимость: 10 > 6 маны."
+    descriptionEn: "Base mana cost: 10 > 6."
+  - description: "Снимает все заряды контратаки с цели в этом раунде."
+    descriptionEn: "Removes all counterattack charges from the target for this round."
+  - description: "Действует на всех существ противника."
+    descriptionEn: "Affects all enemy creatures."
+source: https://www.olden-era.com/ru/spells/weakening_ray

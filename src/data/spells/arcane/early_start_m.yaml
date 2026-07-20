@@ -1,0 +1,17 @@
+id: early_start_m
+name: "Ранний старт"
+nameEn: "Early Start"
+school: arcane
+tier: 1
+mana: 8
+image: spells/arcane/early_start.webp
+levels:
+  - description: "Выбранный дружественный отряд получает +3 к инициативе. Кол-во раундов: [ 2 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Target friendly creature gains +3 Initiative. Duration: [ 2 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Бонус к инициативе: 3 > 4."
+    descriptionEn: "Initiative bonus: 3 > 4."
+  - description: "Бонус к инициативе: 4 > 5."
+    descriptionEn: "Initiative bonus: 4 > 5."
+  - description: "Бонус к инициативе: 5 > 6."
+    descriptionEn: "Initiative bonus: 5 > 6."
+source: https://www.olden-era.com/ru/spells/early_start_m

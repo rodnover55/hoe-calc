@@ -1,0 +1,17 @@
+id: primordial_chaos
+name: "Первозданный хаос"
+nameEn: "Primordial Chaos"
+school: primal
+tier: 4
+mana: 17
+image: spells/primal/primordial_chaos.webp
+levels:
+  - description: "Заменяет выбранную нейтральную армию в пределах [ 1 × радиус обзора героя ] клеток на другую случайную армию равной силы. 1 раз(а) в день."
+    descriptionEn: "Affects a neutral squad in a [ 1 × hero’s sight ]‑square radius. Transforms it into a different squad of the same strength. Usable 1 time(s) per day."
+  - description: "Множитель расстояния: 1 > 2."
+    descriptionEn: "Radius multiplier: 1 > 2."
+  - description: "При замене снижает силу отряда на 5%."
+    descriptionEn: "When transforming a target, its strength is reduced by 5%."
+  - description: "Снижение силы отряда: 5% > 10%."
+    descriptionEn: "Target strength reduction: 5% > 10%."
+source: https://www.olden-era.com/ru/spells/primordial_chaos

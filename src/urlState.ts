@@ -26,10 +26,21 @@ import { HEROES_BY_ID } from './heroes';
 import { SKILLS_BY_ID, clampSkillLevel, normalizeMods } from './skills';
 import type { HeroPreset, PresetSelection, SavedUnit, UnitSnapshot } from './presets';
 import { EMPTY_SELECTION, UNIT_SNAPSHOT_KEYS, newId } from './presets';
+import type { SpellEffectPick } from './spellEffects';
+import { SPELLS_BY_ID, clampSpellLevel } from './spells';
 import { UNITS_BY_ID } from './units';
 
 /** Условия атаки, задаваемые в форме; остальное выводится из режима */
-export type AttackParams = Omit<AttackAbilities, 'rangePenalty' | 'modeMultiplier' | 'doubleStrike'>;
+export type AttackParams = Omit<
+  AttackAbilities,
+  | 'rangePenalty'
+  | 'modeMultiplier'
+  | 'doubleStrike'
+  | 'maxDamage'
+  | 'flatDamage'
+  | 'retaliationModifiers'
+  | 'effectModifiers'
+>;
 
 /** Всё состояние калькулятора, попадающее в ссылку */
 export interface AppUrlState {
@@ -41,6 +52,10 @@ export interface AppUrlState {
   defenderUnitId: string | null;
   attackerHero: HeroPick;
   defenderHero: HeroPick;
+  /** Эффекты заклинаний на отряде атакующего */
+  attackerEffects: SpellEffectPick[];
+  /** Эффекты заклинаний на отряде защитника */
+  defenderEffects: SpellEffectPick[];
   /** Общий список пресетов героев обеих сторон */
   presets: HeroPreset[];
   presetSelection: PresetSelection;
@@ -73,6 +88,9 @@ interface WireUnit {
 /** Навык героя в ссылке: [id, уровень] или [id, уровень, поднавыки] */
 type WireSkillPick = [string, number] | [string, number, string[]];
 
+/** Эффект заклинания в ссылке: [id, уровень] или [id, уровень, сила магии] */
+type WireEffectPick = [string, number] | [string, number, number];
+
 /**
  * Игровой герой в ссылке. Старые ссылки — [id, уровень]; новые всегда
  * пишутся как [id, уровень, навыки, сила магии, знание] (список навыков
@@ -98,6 +116,8 @@ interface WireHero {
  * для неё сеются стартовые навыки героя и его сила магии и знание.
  * Версия 3 объединила раздельные списки пресетов сторон pa/pd в общий
  * список p: индексы героев в ps теперь адресуют его для обеих сторон.
+ * Затем добавились необязательные списки эффектов заклинаний ae/de:
+ * старые ссылки декодируются пустыми списками, версия не меняется.
  * Декодер принимает все версии (старые pa/pd склеиваются в общий
  * список), кодер всегда пишет третью. При изменении смысла
  * существующих полей заводится версия 4.
@@ -120,6 +140,10 @@ interface ShareV3 {
   ah?: WireHeroPick;
   /** Игровой герой защитника; нет — не выбран */
   dh?: WireHeroPick;
+  /** Эффекты заклинаний на отряде атакующего; нет — пусто */
+  ae?: WireEffectPick[];
+  /** Эффекты заклинаний на отряде защитника; нет — пусто */
+  de?: WireEffectPick[];
   /** Общий список пресетов героев (v3); нет — пусто */
   p?: WireHero[];
   /** Пресеты героев атакующего (v1/v2); в v3 не пишется */
@@ -202,6 +226,33 @@ const toSkillPicks = (value: unknown): SkillPick[] => {
 /** Конечное неотрицательное число из ссылки; иначе — запасное значение */
 const toStat = (value: unknown, fallback: number): number =>
   typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : fallback;
+
+const toWireEffectPick = (pick: SpellEffectPick): WireEffectPick =>
+  pick.spellPower !== 0
+    ? [pick.spellId, pick.level, pick.spellPower]
+    : [pick.spellId, pick.level];
+
+/**
+ * Эффекты отряда из ссылки: неизвестное заклинание и повтор по id
+ * отбрасываются поштучно, уровень зажимается в 1–4, сила магии —
+ * неотрицательное число (иначе 0).
+ */
+const toEffectPicks = (value: unknown): SpellEffectPick[] => {
+  if (!Array.isArray(value)) return [];
+  const picks: SpellEffectPick[] = [];
+  for (const item of value) {
+    if (!Array.isArray(item) || item.length < 2) continue;
+    const [id, level, spellPower] = item as unknown[];
+    if (typeof id !== 'string' || !SPELLS_BY_ID.has(id)) continue;
+    if (picks.some((pick) => pick.spellId === id)) continue;
+    picks.push({
+      spellId: id,
+      level: clampSpellLevel(typeof level === 'number' && Number.isFinite(level) ? level : 1),
+      spellPower: toStat(spellPower, 0),
+    });
+  }
+  return picks;
+};
 
 /**
  * Игровой герой из ссылки. Неизвестный или нестроковый id даёт пустой
@@ -359,6 +410,8 @@ export function encodeAppState(state: AppUrlState): string {
   if (attackerHero) payload.ah = attackerHero;
   const defenderHero = toWireHeroPick(state.defenderHero);
   if (defenderHero) payload.dh = defenderHero;
+  if (state.attackerEffects.length > 0) payload.ae = state.attackerEffects.map(toWireEffectPick);
+  if (state.defenderEffects.length > 0) payload.de = state.defenderEffects.map(toWireEffectPick);
   if (state.presets.length > 0) payload.p = state.presets.map(toWireHero);
   const selection = toWireSelection(state.presets, state.presetSelection);
   if (selection) payload.ps = selection;
@@ -429,6 +482,8 @@ export function decodeAppState(raw: string | null | undefined): AppUrlState | nu
       defenderUnitId,
       attackerHero,
       defenderHero: toHeroPick(share.dh),
+      attackerEffects: toEffectPicks(share.ae),
+      defenderEffects: toEffectPicks(share.de),
       presets,
       presetSelection:
         share.ps === undefined

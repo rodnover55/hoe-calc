@@ -1,0 +1,17 @@
+id: haste
+name: "Ускорение"
+nameEn: "Haste"
+school: daylight
+tier: 1
+mana: 8
+image: spells/daylight/haste.webp
+levels:
+  - description: "Выбранный дружественный отряд получает +2 к скорости. Кол-во раундов: [ 2 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Target friendly creature gains +2 Speed. Duration: [ 2 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Бонус к скорости: 2 > 4."
+    descriptionEn: "Speed bonus: 2 > 4."
+  - description: "Снимает «Паутину»."
+    descriptionEn: "Dispels “Web.”"
+  - description: "Бонус к скорости: 4 > 6."
+    descriptionEn: "Speed bonus: 4 > 6."
+source: https://www.olden-era.com/ru/spells/haste

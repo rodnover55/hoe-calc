@@ -1,0 +1,17 @@
+id: read_minds
+name: "Чтение мыслей"
+nameEn: "Read Minds"
+school: nightshade
+tier: 2
+mana: 10
+image: spells/nightshade/read_minds.webp
+levels:
+  - description: "Показывает точную информацию о всех нейтральных армиях в пределах [ 3 × радиус обзора героя ] клеток вокруг героя."
+    descriptionEn: "Reveals the precise number and intentions of all neutral squads within [ 3 × hero’s sight ] squares of the hero."
+  - description: "Базовая стоимость: 10 > 7 маны."
+    descriptionEn: "Base mana cost: 10 > 7."
+  - description: "Показывает информацию о героях противника."
+    descriptionEn: "Reveals information on enemy heroes."
+  - description: "Показывает информацию о городах противника."
+    descriptionEn: "Reveals information on enemy cities."
+source: https://www.olden-era.com/ru/spells/read_minds

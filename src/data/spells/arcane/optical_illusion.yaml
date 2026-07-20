@@ -1,0 +1,17 @@
+id: optical_illusion
+name: "Оптическая иллюзия"
+nameEn: "Optical Illusion"
+school: arcane
+tier: 2
+mana: 8
+image: spells/arcane/optical_illusion.webp
+levels:
+  - description: "Выбранный дружественный отряд получает –30% урона от выстрелов. Кол-во раундов: [ 1 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Target friendly creature takes –30% Ranged Damage. Duration: [ 1 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Получаемый урон: –30% > –60%."
+    descriptionEn: "Damage: –30% > –60%."
+  - description: "Эффект также распространяется на атаки на расстоянии."
+    descriptionEn: "Also applies to Long Reach Damage."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+source: https://www.olden-era.com/ru/spells/optical_illusion

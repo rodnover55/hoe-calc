@@ -1,0 +1,17 @@
+id: unnatural_calm_m
+name: "Искусный странный покой"
+nameEn: "Masterful Unnatural Calm"
+school: nightshade
+tier: 1
+mana: 6
+image: spells/nightshade/unnatural_calm.webp
+levels:
+  - description: "Выбранный отряд противника наносит –15% урона обычными атаками. Кол-во раундов: [ 1 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Target enemy deals –15% Damage with basic attacks. Duration: [ 1 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Урон обычных атак: –15% > –20%."
+    descriptionEn: "Basic attack Damage: –15% > –20%."
+  - description: "Действует на всех существ противника."
+    descriptionEn: "Affects all enemy creatures."
+  - description: "Урон обычных атак: –20% > –30%."
+    descriptionEn: "Basic attack Damage: –20% > –30%."
+source: https://www.olden-era.com/ru/spells/unnatural_calm_m

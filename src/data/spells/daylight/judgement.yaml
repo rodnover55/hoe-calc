@@ -1,0 +1,17 @@
+id: judgement
+name: "Кара"
+nameEn: "Judgement"
+school: daylight
+tier: 5
+mana: 30
+image: spells/daylight/judgement.webp
+levels:
+  - description: "За четыре удара наносит выбранному отряду противника [ 200 + 30 × сила магии героя ] магического урона."
+    descriptionEn: "Strikes target enemy four times, dealing a total of [ 200 + 30 × hero’s Spell Power ] Magic Damage."
+  - description: "Базовый урон: 200 > 400."
+    descriptionEn: "Base Damage: 200 > 400."
+  - description: "Урон за силу магии: 30 > 40."
+    descriptionEn: "Damage per Spell Power: 30 > 40."
+  - description: "Урон за силу магии: 40 > 60."
+    descriptionEn: "Damage per Spell Power: 40 > 60."
+source: https://www.olden-era.com/ru/spells/judgement

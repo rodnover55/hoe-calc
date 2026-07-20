@@ -52,6 +52,8 @@ const manualState = (over: Partial<AppUrlState> = {}): AppUrlState => ({
   defenderUnitId: null,
   attackerHero: EMPTY_HERO_PICK,
   defenderHero: EMPTY_HERO_PICK,
+  attackerEffects: [],
+  defenderEffects: [],
   presets: [],
   presetSelection: EMPTY_SELECTION,
   ...over,
@@ -418,5 +420,66 @@ describe('мягкая деградация', () => {
       defenderHeroId: null,
       defenderSavedUnitId: null,
     });
+  });
+});
+
+describe('эффекты заклинаний в ссылке', () => {
+  /**
+   * Эффекты обеих сторон переживают round-trip: уровень и ненулевая
+   * сила магии сохраняются, нулевая сила магии восстанавливается нулём.
+   */
+  it('эффекты обеих сторон восстанавливаются без изменений', () => {
+    const state = manualState({
+      attackerEffects: [
+        { spellId: 'blessing', level: 4, spellPower: 0 },
+        { spellId: 'heavenly_blades', level: 2, spellPower: 6 },
+      ],
+      defenderEffects: [{ spellId: 'vulnerability', level: 3, spellPower: 0 }],
+    });
+    const decoded = decodeAppState(encodeAppState(state));
+    expect(decoded?.attackerEffects).toEqual(state.attackerEffects);
+    expect(decoded?.defenderEffects).toEqual(state.defenderEffects);
+  });
+
+  /** Пустые списки эффектов не пишутся в wire-формат */
+  it('пустые списки эффектов опускаются в ссылке', () => {
+    const payload = JSON.parse(atob(encodeAppState(manualState()))) as Record<string, unknown>;
+    expect('ae' in payload).toBe(false);
+    expect('de' in payload).toBe(false);
+  });
+
+  /** Старая ссылка без полей ae/de даёт пустые списки */
+  it('старая ссылка декодируется с пустыми эффектами', () => {
+    const decoded = decodeAppState(tamper({ v: 1 }));
+    expect(decoded?.attackerEffects).toEqual([]);
+    expect(decoded?.defenderEffects).toEqual([]);
+  });
+
+  /**
+   * Неизвестное заклинание, короткий кортеж и повтор по id отбрасываются
+   * поштучно; уровень зажимается в 1–4, отрицательная сила магии — 0.
+   */
+  it('битые эффекты отбрасываются поштучно с зажимом значений', () => {
+    const decoded = decodeAppState(
+      tamper({
+        ae: [
+          ['no_such_spell', 2],
+          ['blessing'],
+          ['blessing', 99],
+          ['blessing', 1],
+          ['heavenly_blades', 0, -5],
+          7,
+        ],
+      }),
+    );
+    expect(decoded?.attackerEffects).toEqual([
+      { spellId: 'blessing', level: 4, spellPower: 0 },
+      { spellId: 'heavenly_blades', level: 1, spellPower: 0 },
+    ]);
+  });
+
+  /** Не-массив в поле эффектов не роняет декодер */
+  it('не-массив в поле эффектов даёт пустой список', () => {
+    expect(decodeAppState(tamper({ de: 'junk' }))?.defenderEffects).toEqual([]);
   });
 });

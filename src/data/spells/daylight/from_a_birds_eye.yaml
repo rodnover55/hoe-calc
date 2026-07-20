@@ -1,0 +1,17 @@
+id: from_a_birds_eye
+name: "Небесное око"
+nameEn: "From a Bird’s Eye"
+school: daylight
+tier: 1
+mana: 10
+image: spells/daylight/from_a_birds_eye.webp
+levels:
+  - description: "Показывает границы всех территорий, включая скрытые туманом войны."
+    descriptionEn: "Reveals the borders of all areas, including those hidden by the fog of war."
+  - description: "Базовая стоимость: 10 > 6 маны."
+    descriptionEn: "Base mana cost: 10 > 6."
+  - description: "Показывает всех героев противников на карте."
+    descriptionEn: "Reveals the location of all enemy heroes."
+  - description: "Показывает все города на карте."
+    descriptionEn: "Reveals the location of all cities."
+source: https://www.olden-era.com/ru/spells/from_a_birds_eye

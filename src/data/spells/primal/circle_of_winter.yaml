@@ -1,0 +1,17 @@
+id: circle_of_winter
+name: "Кольцо холода"
+nameEn: "Circle of Winter"
+school: primal
+tier: 4
+mana: 21
+image: spells/primal/circle_of_winter.webp
+levels:
+  - description: "Не действует на наяд Наносит [ 75 + 15 × сила магии героя ] магического урона всем отрядам, соседним с выбранным гексом (но не отряду на нём). Если возможно, отталкивает поражённые отряды от центра."
+    descriptionEn: "Does not affect Naiads Deals [ 75 + 15 × hero’s Spell Power ] Magic Damage to all creatures adjacent to target hex. All affected stacks are pushed away from the center if possible."
+  - description: "Урон за силу магии: 15 > 20."
+    descriptionEn: "Damage per Spell Power: 15 > 20."
+  - description: "Все цели получают –2 к инициативе."
+    descriptionEn: "Initiative of all targets decreases by 2."
+  - description: "Удваивает урон и снижение инициативы."
+    descriptionEn: "Doubles base Damage and Initiative reduction."
+source: https://www.olden-era.com/ru/spells/circle_of_winter

@@ -1,0 +1,17 @@
+id: earths_rage
+name: "Гнев земли"
+nameEn: "Earth’s Rage"
+school: primal
+tier: 3
+mana: 16
+image: spells/primal/earths_rage.webp
+levels:
+  - description: "Наносит [ 100 + 15 × сила магии героя ] урона всем защитным сооружениям. Также наносит [ 15 × сила магии героя ] урона всем существам на территории замка."
+    descriptionEn: "Deals [ 100 + 15 × hero’s Spell Power ] Damage to all defensive structures on the battlefield. Also deals [ 15 × hero’s Spell Power ] Damage to all creatures within castle walls."
+  - description: "Урон защитным сооружениям: 100 > 200."
+    descriptionEn: "Damage to defensive structures: 100 > 200."
+  - description: "Также наносит 100 урона всем существам на территории замка."
+    descriptionEn: "Also deals 100 Damage to all creatures within castle walls."
+  - description: "Урон защитным сооружениям: 200 > 400."
+    descriptionEn: "Damage to defensive structures: 200 > 400."
+source: https://www.olden-era.com/ru/spells/earths_rage

@@ -1,0 +1,17 @@
+id: silence
+name: "Немота"
+nameEn: "Silence"
+school: nightshade
+tier: 3
+mana: 5
+image: spells/nightshade/silence.webp
+levels:
+  - description: "Не действует на воплощения и конструкты Выбранный отряд противника не может использовать способности и не генерирует очки концентрации. Кол-во раундов: [ 1 + 1 за каждые 6 силы магии героя ]."
+    descriptionEn: "Does not affect Embodiments or Constructs Target enemy creature is prevented from using abilities or generating Focus Points. Duration: [ 1 + 1 per every 6 hero’s Spell Power ] round(s)."
+  - description: "Базовая длительность эффекта: 1 > 2."
+    descriptionEn: "Base effect duration: 1 > 2."
+  - description: "Действует на все отряды противника рядом с целью."
+    descriptionEn: "Affects enemy creatures adjacent to the target."
+  - description: "Действует на всех существ противника."
+    descriptionEn: "Affects all enemy creatures."
+source: https://www.olden-era.com/ru/spells/silence

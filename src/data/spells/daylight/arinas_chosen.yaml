@@ -1,0 +1,17 @@
+id: arinas_chosen
+name: "Избранник Арины"
+nameEn: "Arina’s Chosen"
+school: daylight
+tier: 5
+mana: 18
+image: spells/daylight/arinas_chosen.webp
+levels:
+  - description: "Численность выбранного дружественного отряда не может стать ниже 20% от текущей. Получение урона снижает длительность эффекта на 1. Кол-во раундов: 2."
+    descriptionEn: "Target friendly creature cannot have less than 20% of their current units. Taking Damage reduces the duration of the effect by 1 round(s). Duration: 2 round(s)."
+  - description: "Минимальный размер отряда: 20% > 35%."
+    descriptionEn: "Minimum stack size: 20% > 35%."
+  - description: "Базовая длительность эффекта: 2 > 4."
+    descriptionEn: "Base effect duration: 2 > 4."
+  - description: "Минимальный размер отряда: 35% > 50%."
+    descriptionEn: "Minimum stack size: 35% > 50%."
+source: https://www.olden-era.com/ru/spells/arinas_chosen

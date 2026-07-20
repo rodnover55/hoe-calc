@@ -1,0 +1,17 @@
+id: song_of_power
+name: "Прилив сил"
+nameEn: "Song of Power"
+school: daylight
+tier: 3
+mana: 6
+image: spells/daylight/song_of_power.webp
+levels:
+  - description: "Не действует на конструкты Сбрасывает перезарядку способностей выбранного дружественного отряда."
+    descriptionEn: "Does not affect Constructs Resets the cooldowns of the target friendly creature."
+  - description: "Снимает все эффекты, блокирующие атаки или способности отряда."
+    descriptionEn: "Dispels all effects that block creature attacks or abilities."
+  - description: "Отряд также восстанавливает заряды способностей, которые больше нельзя использовать в бою."
+    descriptionEn: "The creature may use its limited abilities again."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+source: https://www.olden-era.com/ru/spells/song_of_power

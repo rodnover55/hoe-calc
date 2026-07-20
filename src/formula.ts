@@ -56,6 +56,21 @@ export interface DefenderStats {
   heroDefense: number;
 }
 
+/**
+ * Именованное слагаемое от эффекта заклинания: в числовой строке формулы
+ * подпись числа — название заклинания-источника
+ */
+export interface EffectContribution {
+  /** Название заклинания для подсказки у числа */
+  label: string;
+  /** Величина слагаемого */
+  value: number;
+}
+
+/** Сумма именованных слагаемых */
+const contributionSum = (list: EffectContribution[]): number =>
+  list.reduce((total, item) => total + item.value, 0);
+
 /** Учитываемые абилки и условия атаки */
 export interface AttackAbilities {
   /** Гексы до цели (для дальнобойной атаки) */
@@ -68,10 +83,26 @@ export interface AttackAbilities {
   generalModifiers: number;
   /** Сумма типовых модификаторов, % */
   typeModifiers: number;
+  /**
+   * Слагаемые типовых модификаторов от эффектов заклинаний, %; в бакете
+   * формулы каждое показывается своим числом с названием заклинания, а
+   * порог в 10% действует на общую сумму
+   */
+  effectModifiers: EffectContribution[];
   /** Будет ли ответный удар */
   retaliation: boolean;
   /** Второй удар после ответа: двойной удар или двойной выстрел */
   doubleStrike: boolean;
+  /** Защитник всегда получает максимальный урон («Уязвимость» 3-го уровня) */
+  maxDamage: boolean;
+  /**
+   * Чистый урон, прибавляемый к каждому удару атакующего («Небесные
+   * клинки»); не масштабируется модификаторами и удачей, к ответному
+   * удару не применяется
+   */
+  flatDamage: EffectContribution[];
+  /** Модификаторы урона ответного удара, % («Парирование» 2-го уровня) */
+  retaliationModifiers: EffectContribution[];
 }
 
 /** Полное описание боя: обе стороны с героями и абилки атаки */
@@ -434,8 +465,14 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
   const count = Math.max(1, attacker.count);
   const health = Math.max(1, attacker.health);
   const topHealth = Math.min(health, Math.max(1, attacker.topHealth));
-  const damageMin = Math.max(0, attacker.damageMin);
-  const damageMax = Math.max(damageMin, attacker.damageMax);
+  const damageMinInput = Math.max(0, attacker.damageMin);
+  const damageMax = Math.max(damageMinInput, attacker.damageMax);
+  // «Всегда максимальный урон» схлопывает диапазон урона атакующего.
+  const damageMin = abilities.maxDamage ? damageMax : damageMinInput;
+  const flatContributions = abilities.flatDamage.filter((item) => item.value > 0);
+  const flatDamage = contributionSum(flatContributions);
+  const effectContributions = abilities.effectModifiers.filter((item) => item.value !== 0);
+  const retContributions = abilities.retaliationModifiers.filter((item) => item.value !== 0);
   const unitAtk = Math.max(0, attacker.attack);
   const heroAtk = Math.max(0, attacker.heroAttack);
   const unitDef = Math.max(0, defender.defense);
@@ -453,10 +490,13 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
 
   const attackDefenseModifier = (20 + unitAtk + heroAtk) / (20 + unitDef + heroDef);
   const retaliationModifier = (20 + defUnitAtk + defHeroAtk) / (20 + attUnitDef + attHeroDef);
+  // Модификаторы ответного удара, как и общие, ниже нуля не опускают урон.
+  const retaliationRaw = 1 + contributionSum(retContributions) / 100;
+  const retaliationFactor = Math.max(0, retaliationRaw);
   // Общие модификаторы, в отличие от типовых, нижнего порога не имеют:
   // от ухода множителя в минус спасает только минимум в 1 урона.
   const general = 1 + abilities.generalModifiers / 100;
-  const typeRaw = 1 + abilities.typeModifiers / 100;
+  const typeRaw = 1 + (abilities.typeModifiers + contributionSum(effectContributions)) / 100;
   const type = Math.max(0.1, typeRaw);
   const typeCapped = typeRaw < 0.1;
   const distance = Math.max(1, abilities.distance);
@@ -481,11 +521,11 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     const survivorsMax = survivorsAfter(attackMin);
     const min =
       survivorsMin > 0
-        ? Math.max(1, round(survivorsMin * defDamageMin * retaliationModifier))
+        ? Math.max(1, round(survivorsMin * defDamageMin * retaliationModifier * retaliationFactor))
         : 0;
     const max =
       survivorsMax > 0
-        ? Math.max(1, round(survivorsMax * defDamageMax * retaliationModifier))
+        ? Math.max(1, round(survivorsMax * defDamageMax * retaliationModifier * retaliationFactor))
         : 0;
     return {
       survivorsMin,
@@ -503,8 +543,8 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
   const base = attackDefenseModifier * general * type * range * mode;
   const byLuck = LUCK_ORDER.map((luck) => {
     const total = base * LUCK_FACTOR[luck];
-    const min = Math.max(1, round(count * damageMin * total));
-    const max = Math.max(1, round(count * damageMax * total));
+    const min = Math.max(1, round(count * damageMin * total)) + flatDamage;
+    const max = Math.max(1, round(count * damageMax * total)) + flatDamage;
     const retaliation = abilities.retaliation ? retaliationAfter(min, max) : null;
 
     // Второй удар идёт после ответа: худшая цепочка — минимальный урон и
@@ -514,8 +554,10 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
       const full = { alive: count, topHealth };
       const worst = retaliation ? remainingAfter(attTotalHealth, health, retaliation.max) : full;
       const best = retaliation ? remainingAfter(attTotalHealth, health, retaliation.min) : full;
-      const minSecond = worst.alive > 0 ? Math.max(1, round(worst.alive * damageMin * total)) : 0;
-      const maxSecond = best.alive > 0 ? Math.max(1, round(best.alive * damageMax * total)) : 0;
+      const minSecond =
+        worst.alive > 0 ? Math.max(1, round(worst.alive * damageMin * total)) + flatDamage : 0;
+      const maxSecond =
+        best.alive > 0 ? Math.max(1, round(best.alive * damageMax * total)) + flatDamage : 0;
       const defAfterMin = remainingAfter(defTotalHealth, defHealth, min);
       const defAfterMax = remainingAfter(defTotalHealth, defHealth, max);
       secondStrike = {
@@ -554,12 +596,61 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     };
   };
 
+  /**
+   * Последовательность слагаемых с подписями: первое со своим знаком,
+   * остальные — через « + » и « − »; каждое число несёт название своего
+   * источника в подсказке.
+   */
+  const contributionTokens = (list: EffectContribution[]): (string | FormulaToken)[] =>
+    list.flatMap((item, index) =>
+      index === 0
+        ? item.value < 0
+          ? ['−', num(-item.value, item.label)]
+          : [num(item.value, item.label)]
+        : [item.value >= 0 ? ' + ' : ' − ', num(Math.abs(item.value), item.label)],
+    );
+
+  /**
+   * Бакет типовых модификаторов: сумма процента поля и слагаемых эффектов
+   * под общим порогом, где каждое число подписано названием источника —
+   * поля или заклинания. Легенда при этом остаётся короткой. Нулевые
+   * слагаемые не показываются, а при множителе 1 (сумма слагаемых равна
+   * нулю) бакет не выводится вовсе — он не влияет на урон.
+   */
+  const typeStep = (): DamageStep | null => {
+    if (typeRaw === 1) return null;
+    const terms = [
+      { label: P('type'), value: abilities.typeModifiers },
+      ...effectContributions,
+    ].filter((item) => item.value !== 0);
+    const open = typeCapped ? 'max(0.1; ' : '';
+    const close = typeCapped ? ')' : '';
+    const single = terms.length === 1;
+    return {
+      label: B('type'),
+      formula: `${open}1 + ${P('type')}/100${close}`,
+      tokens: tokens(
+        `${open}1 ${single && terms[0].value < 0 ? '−' : '+'} ${single ? '' : '('}`,
+        ...(single
+          ? [num(Math.abs(terms[0].value), terms[0].label)]
+          : contributionTokens(terms)),
+        `${single ? '' : ')'}/100${close}`,
+      ),
+    };
+  };
+
   const steps: DamageStep[] = [
     stackStep(P, B('stackDamage'), count, damageMin, damageMax),
     atkDefStep(P, B('atkDef'), { unit: unitAtk, hero: heroAtk }, { unit: unitDef, hero: heroDef }),
-    pctStep(abilities.generalModifiers, B('general'), P('general'), null),
-    pctStep(abilities.typeModifiers, B('type'), P('type'), typeCapped ? 0.1 : null),
   ];
+  // Единичный множитель не влияет на урон, и его бакет в формулу не попадает.
+  if (abilities.generalModifiers !== 0) {
+    steps.push(pctStep(abilities.generalModifiers, B('general'), P('general'), null));
+  }
+  const typeBucket = typeStep();
+  if (typeBucket !== null) {
+    steps.push(typeBucket);
+  }
   // Дальность попадает в формулу, только когда штраф действует.
   if (abilities.rangePenalty && distance > 3) {
     const capped = 1 - 0.1 * (distance - 3) < 0.5;
@@ -579,6 +670,18 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     formula: `${P('unlucky')} / ${P('normalLuck')} / ${P('lucky')}`,
     tokens: tokens(`(${LUCK_FACTOR.unlucky} / ${LUCK_FACTOR.normal} / ${LUCK_FACTOR.lucky})`),
   });
+  if (flatDamage > 0) {
+    steps.push({
+      op: '+',
+      label: B('flatDamage'),
+      formula: P('flatDamage'),
+      tokens: tokens(
+        ...(flatContributions.length === 1
+          ? contributionTokens(flatContributions)
+          : ['(', ...contributionTokens(flatContributions), ')']),
+      ),
+    });
+  }
 
   // Формула у карточки одна на все варианты удачи, поэтому выжившие в ней
   // берутся диапазоном по всем строкам: меньше всего защитников остаётся
@@ -597,6 +700,22 @@ export function calculateDamage(input: DamageInput, lang: Lang = 'ru'): DamageRe
     ),
     atkDefStep(P, B('atkDef'), { unit: defUnitAtk, hero: defHeroAtk }, { unit: attUnitDef, hero: attHeroDef }),
   ];
+  if (retContributions.length > 0) {
+    const open = retaliationRaw < 0 ? 'max(0; ' : '';
+    const close = retaliationRaw < 0 ? ')' : '';
+    const single = retContributions.length === 1;
+    retaliationSteps.push({
+      label: B('retaliationBonus'),
+      formula: `${open}1 + ${P('retaliationModifiers')}/100${close}`,
+      tokens: tokens(
+        `${open}1 ${retContributions[0].value >= 0 || !single ? '+' : '−'} `,
+        ...(single
+          ? [num(Math.abs(retContributions[0].value), retContributions[0].label)]
+          : ['(', ...contributionTokens(retContributions), ')']),
+        `/100${close}`,
+      ),
+    });
+  }
 
   // Второй удар считается по формуле первого, но от выживших атакующих:
   // их тем меньше, чем сильнее ответный удар защитника.

@@ -1,0 +1,17 @@
+id: cave_in_m
+name: "Искусный завал"
+nameEn: "Masterful Cave In"
+school: primal
+tier: 3
+mana: 12
+image: spells/primal/cave_in.webp
+levels:
+  - description: "Не действует на ириадов Наносит выбранному противнику [ 75 + 15 × сила магии героя ] магического урона. Все свободные гексы вокруг цели заполняются каменными преградами. Их можно разрушить, нанеся урон атаками 2 раза. Кол-во раундов: 1."
+    descriptionEn: "Does not affect Iriyads Deals [ 75 + 15 × hero’s Spell Power ] Magic Damage to the target enemy. All adjacent empty hexes are filled with rock obstacles. An obstacle is destroyed upon taking 2 hit(s) from attacks. Duration: 1 round(s)."
+  - description: "Базовый урон: 75 > 150."
+    descriptionEn: "Base Damage: 75 > 150."
+  - description: "Преграды сохраняются на несколько раундов дольше: +1."
+    descriptionEn: "The obstacles it creates remain for +1 round."
+  - description: "Урон за силу магии: 15 > 20."
+    descriptionEn: "Damage per Spell Power: 15 > 20."
+source: https://www.olden-era.com/ru/spells/cave_in_m

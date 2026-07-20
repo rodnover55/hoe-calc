@@ -1,0 +1,17 @@
+id: ice_bolt
+name: "Ледяная стрела"
+nameEn: "Ice Bolt"
+school: primal
+tier: 2
+mana: 10
+image: spells/primal/ice_bolt.webp
+levels:
+  - description: "Не действует на наяд Наносит [ 50 + 10 × сила магии героя ] магического урона выбранному отряду противника и снижает его инициативу на 3. Кол-во раундов: 2."
+    descriptionEn: "Does not affect Naiads Deals [ 50 + 10 × hero’s Spell Power ] Magic Damage to target enemy creature and reduces their Initiative by 3. Duration: 2 round(s)."
+  - description: "Базовый урон: 50 > 100."
+    descriptionEn: "Base Damage: 50 > 100."
+  - description: "Урон за силу магии: 10 > 15."
+    descriptionEn: "Damage per Spell Power: 10 > 15."
+  - description: "Снижение инициативы: –3 > –6."
+    descriptionEn: "Initiative reduction: –3 > –6."
+source: https://www.olden-era.com/ru/spells/ice_bolt

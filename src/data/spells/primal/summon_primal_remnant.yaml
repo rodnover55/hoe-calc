@@ -1,0 +1,17 @@
+id: summon_primal_remnant
+name: "Призыв первородных существ"
+nameEn: "Summon Primal Remnant"
+school: primal
+tier: 5
+mana: 20
+image: spells/primal/summon_primal_remnant.webp
+levels:
+  - description: "Призывает отряд из [ 12 + 1 × сила магии героя ] первородных существ. Призванные существа пропадают в конце боя."
+    descriptionEn: "Summons a stack of [ 12 + 1 × hero’s Spell Power ] Primal Remnants. They will disappear at the end of the battle."
+  - description: "Радиус призыва: 1 > 2."
+    descriptionEn: "Summon radius: 1 > 2."
+  - description: "Призванный отряд может использовать способности."
+    descriptionEn: "Summoned stack can use abilities."
+  - description: "Множитель силы магии: 1 > 2."
+    descriptionEn: "Spell Power multiplier: 1 > 2."
+source: https://www.olden-era.com/ru/spells/summon_primal_remnant

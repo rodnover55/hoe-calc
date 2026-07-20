@@ -1,0 +1,17 @@
+id: mirror_copy
+name: "Зеркальная копия"
+nameEn: "Mirror Copy"
+school: arcane
+tier: 4
+mana: 20
+image: spells/arcane/mirror_copy.webp
+levels:
+  - description: "Призывает копию выбранного дружественного отряда. Она наносит –75% и получает +300% урона и не может использовать способности. Кол-во раундов: [ 1 + 1 за каждые 7 силы магии героя ]."
+    descriptionEn: "Summons a copy of a target friendly creature. The copy deals –75% and takes +300% Damage and can’t use special abilities. Duration: [ 1 + 1 per every 7 hero’s Spell Power ] round(s)."
+  - description: "Наносимый урон: –75% > –67% Получаемый урон: +300% > +200%."
+    descriptionEn: "Damage dealt: –75% > –67%. Damage taken: +300% > +200%."
+  - description: "Наносимый урон: –67% > –50% Получаемый урон: +200% > +100%."
+    descriptionEn: "Damage dealt: –67% > –50%. Damage taken: +200% > +100%."
+  - description: "Наносимый урон: –50% > –30% Получаемый урон: +100% > +50%."
+    descriptionEn: "Damage dealt: –50% > –30%. Damage taken: +100% > +50%."
+source: https://www.olden-era.com/ru/spells/mirror_copy

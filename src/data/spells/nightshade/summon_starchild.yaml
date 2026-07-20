@@ -1,0 +1,17 @@
+id: summon_starchild
+name: "Призыв детей звёзд"
+nameEn: "Summon Starchild"
+school: nightshade
+tier: 4
+mana: 20
+image: spells/nightshade/summon_starchild.webp
+levels:
+  - description: "Призывает отряд из [ 8 + 1 × сила магии героя ] детей звёзд на соседнем с любым дружественным отрядом гексе. Призванные существа пропадают в конце боя."
+    descriptionEn: "Summons a stack of [ 8 + 1 × hero’s Spell Power ] Starchildren on an adjacent free hex. They will disappear at the end of the battle."
+  - description: "Расстояние призыва: 1 > 2."
+    descriptionEn: "Summon radius: 1 > 2."
+  - description: "Призванный отряд может использовать способности."
+    descriptionEn: "Summoned stack can use abilities."
+  - description: "Множитель силы магии: 1 > 2."
+    descriptionEn: "Spell Power multiplier: 1 > 2."
+source: https://www.olden-era.com/ru/spells/summon_starchild

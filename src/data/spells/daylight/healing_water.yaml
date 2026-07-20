@@ -1,0 +1,17 @@
+id: healing_water
+name: "Целебная вода"
+nameEn: "Healing Water"
+school: daylight
+tier: 1
+mana: 5
+image: spells/daylight/healing_water.webp
+levels:
+  - description: "Не действует на нежить, воплощения и конструкты Выбранный дружественный отряд восстанавливает [ 50 + 5 × сила магии героя ] здоровья. Не воскрешает павших существ."
+    descriptionEn: "Does not affect Undead, Embodiments, or Constructs Target friendly creature restores [ 50 + 5 × hero’s Spell Power ] HP. Cannot revive fallen units."
+  - description: "Восстановление за силу магии: 5 > 10."
+    descriptionEn: "HP per Spell Power: 5 > 10."
+  - description: "Срабатывает ещё раз в начале следующего раунда."
+    descriptionEn: "Triggers one more time at the beginning of the next round."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+source: https://www.olden-era.com/ru/spells/healing_water

@@ -84,6 +84,8 @@ strings:
       strikeLevel: "level scaling"
       strikeSpec: "specialty bonus"
       strikeSkill: "skill bonus"
+      flatDamage: "effect pure damage"
+      retaliationBonus: "retaliation modifier"
     params:
       count: "units in the stack"
       countMin: "minimum units in the stack"
@@ -112,6 +114,8 @@ strings:
       specAmount: "specialty increase"
       specLevels: "levels per increase"
       skillBonus: "skill bonus"
+      flatDamage: "effect pure damage"
+      retaliationModifiers: "retaliation strike modifiers"
   faction:
     temple: "Temple"
     necropolis: "Necropolis"
@@ -161,6 +165,23 @@ strings:
     search: "Find a skill by name"
     searchLabel: "Skill search"
     searchPlaceholder: "Skill name…"
+  effects:
+    title: "Effects"
+    add: "Add effect"
+    remove: "Remove effect"
+    level: "Spell level"
+    levelOption: "Lv. {n}"
+    spellPower: "Caster's Spell Power"
+    searchLabel: "Spell search"
+    searchPlaceholder: "Spell name…"
+    modalTitle: "Add effect"
+  modal:
+    close: "Close"
+  school:
+    arcane: "Arcane"
+    daylight: "Daylight"
+    nightshade: "Nightshade"
+    primal: "Primal"
   heroBonus:
     specSource: "Specialty “{name}”"
     skillSource: "Skill “{name}”"
@@ -230,5 +251,13 @@ strings:
     shooting) is dealt by the attackers surviving the retaliation to the
     remainder of the defending stack; luck applies to both strikes
     equally, although in the game it rolls for each strike separately.
-    Data comes from the game's official wiki; the game is in early access,
-    numbers may change.
+    Spell effects added to stacks are summed with each other and with
+    hero bonuses: magnitudes come from the spell descriptions and depend
+    on the spell level 1–4, while the caster's Spell Power only
+    participates where the description's formula includes it. Percent
+    effects and pure damage apply to the carrier stack's basic attacks;
+    among effects only level-2 Riposte boosts retaliation (stat effects
+    affect it through ATK/DEF). The per-round growth of Enlarge/Shorten
+    Shadow is not modeled — the base ±3 is used. Data comes from the
+    game's official wiki; the game is in early access, numbers may
+    change.

@@ -1,0 +1,17 @@
+id: stone_fangs
+name: "Каменные клыки"
+nameEn: "Stone Fangs"
+school: primal
+tier: 3
+mana: 11
+image: spells/primal/stone_fangs.webp
+levels:
+  - description: "Не действует на ириадов Наносит [ 50 + 5 × сила магии героя ] магического урона 3 или менее разным выбранным отрядам противника."
+    descriptionEn: "Does not affect Iriyads Deals [ 50 + 5 × hero’s Spell Power ] Magic Damage to up to 3 different target enemies."
+  - description: "Базовый урон: 50 > 100."
+    descriptionEn: "Base Damage: 50 > 100."
+  - description: "Количество целей: 3 > 4."
+    descriptionEn: "Targets: 3 > 4."
+  - description: "Урон за силу магии: 5 > 10."
+    descriptionEn: "Damage per Spell Power: 5 > 10."
+source: https://www.olden-era.com/ru/spells/stone_fangs

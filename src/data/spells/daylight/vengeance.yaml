@@ -1,0 +1,17 @@
+id: vengeance
+name: "Возмездие"
+nameEn: "Vengeance"
+school: daylight
+tier: 4
+mana: 16
+image: spells/daylight/vengeance.webp
+levels:
+  - description: "Если отряд противника атакует выбранный дружественный отряд в ближнем бою, он получает [ 60 + 15 × сила магии героя ] магического урона в ответ. Кол-во раундов: [ 1 + 1 за каждые 7 силы магии героя ]."
+    descriptionEn: "Whenever an enemy attacks target friendly creature in Melee, that enemy takes [ 60 + 15 × hero’s Spell Power ] Magic Damage. Duration: [ 1 + 1 per every 7 hero’s Spell Power ] round(s)."
+  - description: "Базовая длительность эффекта: 1 > 3."
+    descriptionEn: "Base effect duration: 1 > 3."
+  - description: "Урон за силу магии: 15 > 20."
+    descriptionEn: "Damage per Spell Power: 15 > 20."
+  - description: "Эффект применяется ко всем обычным атакам."
+    descriptionEn: "The effect applies to all basic attacks."
+source: https://www.olden-era.com/ru/spells/vengeance

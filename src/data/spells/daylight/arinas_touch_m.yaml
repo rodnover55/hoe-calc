@@ -1,0 +1,17 @@
+id: arinas_touch_m
+name: "Искусное прикосновение Арины"
+nameEn: "Masterful Arina’s Touch"
+school: daylight
+tier: 3
+mana: 14
+image: spells/daylight/arinas_touch.webp
+levels:
+  - description: "Выбранный дружественный отряд получает +1 к скорости и инициативе, а также +10% к максимальному здоровью. Кол-во раундов: [ 1 + 1 за каждые 6 силы магии героя ]."
+    descriptionEn: "Target friendly creature gains 1 Speed, 1 Initiative, and 10% maximum HP. Duration: [ 1 + 1 per every 6 hero’s Spell Power ] round(s)."
+  - description: "Максимальное здоровье: +10% > +20%."
+    descriptionEn: "Maximum HP bonus: 10% > 20%."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+  - description: "Удваивает бонус к инициативе и скорости."
+    descriptionEn: "Doubles Speed and Initiative bonuses."
+source: https://www.olden-era.com/ru/spells/arinas_touch_m

@@ -1,0 +1,17 @@
+id: anti_magic
+name: "Антимагия"
+nameEn: "Anti‑Magic"
+school: primal
+tier: 4
+mana: 12
+image: spells/primal/anti_magic.webp
+levels:
+  - description: "Выбранный отряд становится неуязвим для заклинаний 3‑го ранга и ниже. Эффект нельзя снять. Если цель — призванный отряд или отряд с временными существами, они мгновенно уничтожаются. Кол-во раундов: 1."
+    descriptionEn: "Any chosen target becomes immune to spells of tier 3 and lower. This effect cannot be dispelled. If the target is a summoned creature or contains temporary units in its stack, those are destroyed. Duration: 1 round(s)."
+  - description: "Базовая длительность эффекта: 1 > 2."
+    descriptionEn: "Base effect duration: 1 > 2."
+  - description: "Действует на заклинания 1-4‑го ранга."
+    descriptionEn: "Affects tier‑1-4 spells."
+  - description: "Также действует на заклинания 1-5‑го ранга."
+    descriptionEn: "Also affects tier‑1-5 spells."
+source: https://www.olden-era.com/ru/spells/anti_magic

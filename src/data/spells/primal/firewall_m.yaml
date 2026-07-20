@@ -1,0 +1,17 @@
+id: firewall_m
+name: "Искусная стена огня"
+nameEn: "Masterful Firewall"
+school: primal
+tier: 3
+mana: 12
+image: spells/primal/firewall.webp
+levels:
+  - description: "Не действует на фениксов Поджигает несколько гексов: 2. Пеший отряд, наступивший на горящий гекс, получает [ 80 + 10 × сила магии героя ] магического урона. Кол-во раундов: 4."
+    descriptionEn: "Does not affect Phoenixes Burns 2 selected hexes. A ground creature that steps onto a burning hex takes [ 80 + 10 × hero’s Spell Power ] Magic Damage. Duration: 4 round(s)."
+  - description: "Базовая стоимость: 12 > 9 маны."
+    descriptionEn: "Base mana cost: 12 > 9."
+  - description: "Горящие гексы: 2 > 3."
+    descriptionEn: "Burning hexes: 2 > 3."
+  - description: "Наносит +50% урона."
+    descriptionEn: "Deals +50% Damage."
+source: https://www.olden-era.com/ru/spells/firewall_m

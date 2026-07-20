@@ -1,0 +1,17 @@
+id: armageddon
+name: "Армагеддон"
+nameEn: "Armageddon"
+school: primal
+tier: 5
+mana: 40
+image: spells/primal/armageddon.webp
+levels:
+  - description: "Не действует на фениксов Наносит всем существам на поле боя [ 150 + 15 × сила магии героя ] магического урона."
+    descriptionEn: "Does not affect Phoenixes Deals [ 150 + 15 × hero’s Spell Power ] Magic Damage to all creatures on the battlefield."
+  - description: "Базовый урон: 150 > 250."
+    descriptionEn: "Base Damage: 150 > 250."
+  - description: "Базовый урон: 250 > 350."
+    descriptionEn: "Base Damage: 250 > 350."
+  - description: "Урон за силу магии: 15 > 25."
+    descriptionEn: "Damage per Spell Power: 15 > 25."
+source: https://www.olden-era.com/ru/spells/armageddon

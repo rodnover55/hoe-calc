@@ -1,0 +1,17 @@
+id: shade_cloak
+name: "Покров тьмы"
+nameEn: "Shade Cloak"
+school: nightshade
+tier: 2
+mana: 7
+image: spells/nightshade/shade_cloak.webp
+levels:
+  - description: "Выбранный дружественный отряд не может быть целью до конца раунда или до выполнения любого действия."
+    descriptionEn: "Target friendly creature cannot be targeted. Effect ends when the unit takes any action or at the end of the round."
+  - description: "Первая атака под этим эффектом наносит +25% урона."
+    descriptionEn: "First attack under this effect deals +25% Damage."
+  - description: "Базовая стоимость: 7 > 4 маны."
+    descriptionEn: "Base mana cost: 7 > 4."
+  - description: "Бонус к урону: 25% > 50%."
+    descriptionEn: "Damage bonus: 25% > 50%."
+source: https://www.olden-era.com/ru/spells/shade_cloak

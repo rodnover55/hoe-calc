@@ -1,0 +1,17 @@
+id: enlarge_shadow
+name: "Удлинить тень"
+nameEn: "Enlarge Shadow"
+school: nightshade
+tier: 1
+mana: 7
+image: spells/nightshade/enlarge_shadow.webp
+levels:
+  - description: "Выбранный дружественный отряд получает +3 к атаке и защите. Кол-во раундов: [ 1 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Target friendly creature gains 3 Attack and Defense. Duration: [ 1 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Бонус к атаке и защите повышается каждый раунд."
+    descriptionEn: "The bonus to Attack and Defense increases each round."
+  - description: "Снимает «Укоротить тень»."
+    descriptionEn: "Dispels “Shorten Shadow.”"
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+source: https://www.olden-era.com/ru/spells/enlarge_shadow

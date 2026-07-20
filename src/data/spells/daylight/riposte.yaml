@@ -1,0 +1,17 @@
+id: riposte
+name: "Парирование"
+nameEn: "Riposte"
+school: daylight
+tier: 3
+mana: 10
+image: spells/daylight/riposte.webp
+levels:
+  - description: "Выбранный дружественный отряд контратакует до атаки противника. Кол-во раундов: [ 1 + 1 за каждые 5 силы магии героя ]."
+    descriptionEn: "Target friendly creature counterattacks before enemy attack lands. Duration: [ 1 + 1 per every 5 hero’s Spell Power ] round(s)."
+  - description: "Цель наносит +20% урона контратаками."
+    descriptionEn: "Deal +20% Damage with counterattacks."
+  - description: "Цель получает бонусные контратаки каждый раунд: +1."
+    descriptionEn: "Gain +1 additional counterattack per round."
+  - description: "Действует на всех дружественных существ."
+    descriptionEn: "Affects all friendly creatures."
+source: https://www.olden-era.com/ru/spells/riposte

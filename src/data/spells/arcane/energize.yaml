@@ -1,0 +1,17 @@
+id: energize
+name: "Подзарядка"
+nameEn: "Energize"
+school: arcane
+tier: 1
+mana: 9
+image: spells/arcane/energize.webp
+levels:
+  - description: "Генерирует заряды концентрации: 1."
+    descriptionEn: "Immediately generates 1 Focus Charge(s)."
+  - description: "Базовая стоимость: 9 > 7 маны."
+    descriptionEn: "Base mana cost: 9 > 7."
+  - description: "Заряды концентрации: 1 > 2."
+    descriptionEn: "Focus Charges: 1 > 2."
+  - description: "Заряды концентрации: 2 > 3."
+    descriptionEn: "Focus Charges: 2 > 3."
+source: https://www.olden-era.com/ru/spells/energize

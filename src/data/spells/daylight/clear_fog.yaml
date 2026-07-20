@@ -1,0 +1,17 @@
+id: clear_fog
+name: "Разогнать туман"
+nameEn: "Clear Fog"
+school: daylight
+tier: 4
+mana: 14
+image: spells/daylight/clear_fog.webp
+levels:
+  - description: "Развеивает 5 клеток тумана войны вокруг выбранной точки в пределах [ 2 × радиус обзора героя ] клеток от героя. 1 раз(а) в день."
+    descriptionEn: "Reveals 5 squares around the selected space on the global map up to [ 2 × hero’s sight ] square(s) away from the hero. Usable 1 time(s) per day."
+  - description: "Множитель расстояния до точки: 2 > 3."
+    descriptionEn: "Selection radius multiplier: 2 > 3."
+  - description: "Клетки развеиваемого тумана: 5 > 8."
+    descriptionEn: "Squares revealed: 5 > 8."
+  - description: "Можно выбрать любую точку."
+    descriptionEn: "Unlimited casting range."
+source: https://www.olden-era.com/ru/spells/clear_fog

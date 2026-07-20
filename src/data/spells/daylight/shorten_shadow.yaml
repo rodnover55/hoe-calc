@@ -1,0 +1,17 @@
+id: shorten_shadow
+name: "Укоротить тень"
+nameEn: "Shorten Shadow"
+school: daylight
+tier: 2
+mana: 6
+image: spells/daylight/shorten_shadow.webp
+levels:
+  - description: "Выбранный отряд противника получает –3 к атаке и защите. Кол-во раундов: [ 1 + 1 за каждые 4 силы магии героя ]."
+    descriptionEn: "Target enemy creature loses 3 Attack and Defense. Duration: [ 1 + 1 per every 4 hero’s Spell Power ] round(s)."
+  - description: "Значение снижения атаки и защиты увеличивается каждый раунд."
+    descriptionEn: "The reduction of Attack and Defense increases each round."
+  - description: "Снимает «Удлинить тень»."
+    descriptionEn: "Dispels “Enlarge Shadow.”"
+  - description: "Действует на всех существ противника."
+    descriptionEn: "Affects all enemy creatures."
+source: https://www.olden-era.com/ru/spells/shorten_shadow

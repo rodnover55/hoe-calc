@@ -1,0 +1,17 @@
+id: rewind_life
+name: "Перемотка жизни"
+nameEn: "Rewind Life"
+school: arcane
+tier: 4
+mana: 17
+image: spells/arcane/rewind_life.webp
+levels:
+  - description: "Восстанавливает [ 50 + 20 × сила магии героя ] здоровья выбранному дружественному отряду. Воскрешает павших существ."
+    descriptionEn: "Restore [ 50 + 20 × hero’s Spell Power ] HP to a target friendly creature. This can revive fallen units."
+  - description: "Базовое восстановление: 50 > 100."
+    descriptionEn: "Base Recovery: 50 > 100."
+  - description: "Восстановление за силу магии: 20 > 25."
+    descriptionEn: "HP per Spell Power: 20 > 25."
+  - description: "Восстановление за силу магии: 25 > 35."
+    descriptionEn: "HP per Spell Power: 25 > 35."
+source: https://www.olden-era.com/ru/spells/rewind_life

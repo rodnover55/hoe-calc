@@ -1,0 +1,17 @@
+id: nairas_veil
+name: "Вуаль Наиры"
+nameEn: "Naira’s Veil"
+school: nightshade
+tier: 3
+mana: 16
+image: spells/nightshade/nairas_veil.webp
+levels:
+  - description: "Создаёт туман войны в пределах 8 клеток вокруг героя, скрывая его от противников, пока туман вновь не развеют. 1 раз(а) в день."
+    descriptionEn: "Renews the fog of war in a 8‑square radius around the hero, concealing them from opponents until the fog is re‑cleared. Usable 1 time(s) per day."
+  - description: "Базовая стоимость: 16 > 12 маны."
+    descriptionEn: "Base mana cost: 16 > 12."
+  - description: "Радиус тумана войны: 8 > 10."
+    descriptionEn: "Fog of war radius: 8 > 10."
+  - description: "Радиус тумана войны: 10 > 14."
+    descriptionEn: "Fog of war radius: 10 > 14."
+source: https://www.olden-era.com/ru/spells/nairas_veil

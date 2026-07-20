@@ -1,0 +1,17 @@
+id: lighting_bolt
+name: "Молния"
+nameEn: "Lightning Bolt"
+school: primal
+tier: 1
+mana: 6
+image: spells/primal/lighting_bolt.webp
+levels:
+  - description: "Не действует на киринов Наносит [ 25 + 10 × сила магии героя ] магического урона выбранному отряду противника."
+    descriptionEn: "Does not affect Qilins Deals [ 25 + 10 × hero’s Spell Power ] Magic Damage to target enemy creature."
+  - description: "Базовый урон: 25 > 50."
+    descriptionEn: "Base Damage: 25 > 50."
+  - description: "Базовый урон: 50 > 100."
+    descriptionEn: "Base Damage: 50 > 100."
+  - description: "Урон за силу магии: 10 > 15."
+    descriptionEn: "Damage per Spell Power: 10 > 15."
+source: https://www.olden-era.com/ru/spells/lighting_bolt

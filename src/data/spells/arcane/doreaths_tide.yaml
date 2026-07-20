@@ -1,0 +1,17 @@
+id: doreaths_tide
+name: "Волна Дореата"
+nameEn: "Doreath’s Tide"
+school: arcane
+tier: 5
+mana: 23
+image: spells/arcane/doreaths_tide.webp
+levels:
+  - description: "Все дружественные существа получают +1 к скорости и инициативе. Все существа противника получают –1 к скорости и инициативе. Кол-во раундов: [ 1 + 1 за каждые 8 силы магии героя ]."
+    descriptionEn: "All friendly creatures gain 1 Speed and Initiative. All enemies lose 1 Speed and Initiative. Duration: [ 1 + 1 per every 8 hero’s Spell Power ] round(s)."
+  - description: "Базовая длительность: 1 > 2."
+    descriptionEn: "Base duration of effect: 1 > 2."
+  - description: "Базовая стоимость: 23 > 19 маны."
+    descriptionEn: "Base mana cost: 23 > 19."
+  - description: "Снимает все эффекты, ограничивающие передвижение, с дружественных существ, а с существ противника — усиливающие передвижение."
+    descriptionEn: "Dispels all negative movement‑restricting effects from friendly creatures and all positive movement‑enhancing effects from enemies."
+source: https://www.olden-era.com/ru/spells/doreaths_tide

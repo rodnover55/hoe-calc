@@ -1,0 +1,17 @@
+id: whean
+name: "Изгнание"
+nameEn: "Wean"
+school: primal
+tier: 1
+mana: 8
+image: spells/primal/whean.webp
+levels:
+  - description: "Снижает длительность положительных эффектов, наложенных на цель, на [ 2 + 1 за каждые 5 силы магии героя ]."
+    descriptionEn: "Reduces the duration of all positive effects applied to the target by [ 2 + 1 per every 5 hero’s Spell Power ]."
+  - description: "Базовая сила эффекта: 1 > 2."
+    descriptionEn: "Base spell effectiveness: 1 > 2."
+  - description: "Действует на все отряды противника рядом с целью."
+    descriptionEn: "Affects enemy creatures adjacent to the target."
+  - description: "Действует на всех существ противника."
+    descriptionEn: "Affects all enemy creatures."
+source: https://www.olden-era.com/ru/spells/whean

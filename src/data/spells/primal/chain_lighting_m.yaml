@@ -1,0 +1,17 @@
+id: chain_lighting_m
+name: "Искусная цепная молния"
+nameEn: "Masterful Chain Lightning"
+school: primal
+tier: 4
+mana: 24
+image: spells/primal/chain_lighting.webp
+levels:
+  - description: "Не действует на киринов Наносит [ 100 + 20 × сила магии героя ] магического урона выбранному отряду противника. Затем молния перескакивает 1 раз(а) на случайный отряд в пределах нескольких гексов: 3. Наносит –25% урона с каждым скачком."
+    descriptionEn: "Does not affect Qilins Deals [ 100 + 20 × hero’s Spell Power ] Magic Damage to the target enemy creature. The lightning then jumps 1 time(s) to a random target within 3 hex(es), dealing –25% Damage with each jump."
+  - description: "Молния делает больше скачков: +1."
+    descriptionEn: "Makes +1 jump(s)."
+  - description: "Молния делает больше скачков: +1. Базовый урон: 100 > 300."
+    descriptionEn: "Makes +1 jump(s). Base Damage: 100 > 300."
+  - description: "Молния делает больше скачков: +1. Урон за силу магии: 20 > 30."
+    descriptionEn: "Makes +1 jump(s). Damage per Spell Power: 20 > 30."
+source: https://www.olden-era.com/ru/spells/chain_lighting_m

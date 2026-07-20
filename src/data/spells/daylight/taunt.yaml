@@ -1,0 +1,17 @@
+id: taunt
+name: "Провокация"
+nameEn: "Taunt"
+school: daylight
+tier: 3
+mana: 11
+image: spells/daylight/taunt.webp
+levels:
+  - description: "Все отряды противника в пределах 2 гексов от выбранного дружественного отряда могут выбирать целью только его. Каждое нанесение урона снижает длительность эффекта на 1. Кол-во раундов: [ 1 + 1 за каждые 6 силы магии героя ]."
+    descriptionEn: "All enemies within 2 hexes from the target friendly creature can only target that creature. Each instance of Damage makes the effect last 1 round(s) shorter. Duration: [ 1 + 1 per every 6 hero’s Spell Power ] round(s)."
+  - description: "Радиус действия: 2 > 3."
+    descriptionEn: "Radius of effect: 2 > 3."
+  - description: "Базовая длительность эффекта: 1 > 3."
+    descriptionEn: "Base effect duration: 1 > 3."
+  - description: "Радиус действия: 3 > 4."
+    descriptionEn: "Radius of effect: 3 > 4."
+source: https://www.olden-era.com/ru/spells/taunt

@@ -1,0 +1,17 @@
+id: black_hole
+name: "Чёрная дыра"
+nameEn: "Black Hole"
+school: arcane
+tier: 5
+mana: 30
+image: spells/arcane/black_hole.webp
+levels:
+  - description: "Наносит [ 80 + 15 × сила магии героя ] магического урона всем отрядам на выбранном гексе и 2 гексах по прямой от него (в каждом направлении). Если возможно, притягивает все дальние цели на один гекс к центру."
+    descriptionEn: "Deals [ 80 + 15 × hero’s Spell Power ] Magic Damage to all creatures on the target hex and up to 2 hexes away in every direction. Pulls the furthest affected targets towards the center if possible."
+  - description: "Базовый урон: 80 > 120."
+    descriptionEn: "Base Damage: 80 > 120."
+  - description: "Базовый урон: 120 > 200."
+    descriptionEn: "Base Damage: 120 > 200."
+  - description: "Урон за силу магии: 15 > 20."
+    descriptionEn: "Damage per Spell Power: 15 > 20."
+source: https://www.olden-era.com/ru/spells/black_hole
